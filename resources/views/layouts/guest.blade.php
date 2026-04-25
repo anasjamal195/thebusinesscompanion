@@ -16,6 +16,9 @@
                 extend: {
                     colors: {
                         primary: "#00AFF0",
+                        blue: {
+                            600: "#00AFF0",
+                        },
                         "on-primary": "#ffffff",
                         "primary-fixed": "#dbe1ff",
                         "on-primary-fixed": "#00174b",
