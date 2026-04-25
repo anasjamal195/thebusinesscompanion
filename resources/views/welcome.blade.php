@@ -8,6 +8,7 @@
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
   <script id="tailwind-config">
     tailwind.config = {
       darkMode: "class",
@@ -147,7 +148,7 @@
       <div class="max-w-7xl mx-auto px-6 md:px-12 text-center">
         <h2 class="text-primary font-bold tracking-wider uppercase text-sm mb-3">The Paradigm Shift</h2>
         <h3 class="text-4xl md:text-5xl font-extrabold text-gray-900 mb-8 max-w-3xl mx-auto leading-tight">
-          Not just a text box. Your Companion operates an entirely separate computer.
+          Operates autonomously.<br/>Navigates the web.<br/>Delivers results.
         </h3>
         <p class="text-xl text-gray-600 max-w-4xl mx-auto mb-16 leading-relaxed">
           Standard AI operates in a restrictive chat window. The Business Companion is assigned a dedicated cloud machine instance. When you give it a task, it uses a real browser, writes real code, compiles data, formats PDF reports, and then emails the deliverables to you.
@@ -310,6 +311,145 @@
                 </div>
             </div>
         </div>
+    </section>
+
+    <!-- PROFESSIONS SECTION -->
+    <section id="professions" class="py-24 bg-surface" x-data="{ 
+        activeProfession: 'Founder',
+        professions: {
+            'Founder': {
+                icon: 'rocket_launch',
+                description: 'Scale your vision with autonomous executive support.',
+                features: ['Strategic GTM Planning', 'Competitor Intelligence', 'Investor Pitch Refinement', 'KPI Tracking & Reporting']
+            },
+            'Engineer': {
+                icon: 'terminal',
+                description: 'Accelerate delivery with technical architecture assistance.',
+                features: ['Implementation Roadmaps', 'Automated Code Documentation', 'Technical Debt Audits', 'Security Compliance Checks']
+            },
+            'Marketer': {
+                icon: 'campaign',
+                description: 'Optimize growth loops and brand positioning.',
+                features: ['High-Conversion Ad Copy', 'Customer Sentiment Analysis', 'Automated Campaign Reporting', 'Competitor Ad Monitoring']
+            },
+            'Researcher': {
+                icon: 'biotech',
+                description: 'Synthesize complex data into evidentiary summaries.',
+                features: ['Literature Review Synthesis', 'Trend Forecasting Models', 'Deep-Dive Market Analysis', 'Data Extraction & Cleaning']
+            },
+            'Creator': {
+                icon: 'article',
+                description: 'Turn ideas into high-performing content assets.',
+                features: ['Multi-Platform Strategy', 'Script & Hook Ideation', 'Publishing Cadence Optimization', 'Audience Growth Analytics']
+            },
+            'Musician': {
+                icon: 'music_note',
+                description: 'Manage releases and fan engagement efficiently.',
+                features: ['Release Project Management', 'Digital Marketing Plans', 'Tour Logistics Support', 'Royalties Analysis']
+            },
+            'Parent': {
+                icon: 'family_restroom',
+                description: 'Organize your household with calm, digital structure.',
+                features: ['Family Schedule Optimization', 'Nutritional Meal Planning', 'Educational Resource Discovery', 'Travel & Logic Coordination']
+            },
+            'Trader': {
+                icon: 'monitoring',
+                description: 'Manage risk and discipline with automated logic.',
+                features: ['Post-Trade Performance Audits', 'Market Sentiment Monitoring', 'Trading Plan Structuring', 'Risk Exposure Reporting']
+            },
+            'Teacher': {
+                icon: 'school',
+                description: 'Focus on teaching while AI handles the prep.',
+                features: ['Curriculum Content Generation', 'Educational Research Summaries', 'Lesson Plan Optimization', 'Automated Grading Assistance']
+            },
+            'Student': {
+                icon: 'edit_note',
+                description: 'Master complex topics with organized intelligence.',
+                features: ['Thesis Research Organization', 'Complex Concept Synthesis', 'Study Schedule Automation', 'Citation & Source Management']
+            },
+            'Doctor': {
+                icon: 'medical_services',
+                description: 'Streamline research and administrative workflows.',
+                features: ['Clinical Literature Updates', 'Patient Communication Templates', 'Medical Case Organization', 'Continuing Education Planning']
+            },
+            'Medical Staff': {
+                icon: 'health_and_safety',
+                description: 'Manage operations and administrative logistics.',
+                features: ['Facility Inventory Forecasting', 'Shift Coordination Support', 'Compliance Documentation', 'Supplier Management']
+            },
+            'Healthcare': {
+                icon: 'healing',
+                description: 'Optimize care delivery and policy compliance.',
+                features: ['Policy Audit Summaries', 'Care Workflow Optimization', 'Public Health Monitoring', 'Insurance Logic Research']
+            },
+            'Drivers': {
+                icon: 'local_shipping',
+                description: 'Track logistics and maintenance autonomously.',
+                features: ['Route Optimization Research', 'Vehicle Maintenance Tracking', 'Automated Logbook Summaries', 'Fuel Efficiency Auditing']
+            },
+            'Textile Owner': {
+                icon: 'inventory',
+                description: 'Manage supply chains and manufacturing trends.',
+                features: ['Fabric Trend Analysis', 'Supply Chain Visibility', 'Production Scheduling', 'Export Compliance Logic']
+            },
+            'Food Business Owner': {
+                icon: 'restaurant',
+                description: 'Optimize menus and control kitchen costs.',
+                features: ['Recipe Cost Analysis', 'Supplier Price Fluctuations', 'Menu Profitability Audits', 'Operational Safety Checks']
+            }
+        }
+    }">
+        <div class="max-w-7xl mx-auto px-6 md:px-12 text-center">
+            <h2 class="text-primary font-bold tracking-wider uppercase text-sm mb-3">One Tool, Every Industry</h2>
+            <h3 class="text-4xl font-extrabold text-gray-900 mb-12">The perfect teammate for your profession.</h3>
+
+            <div class="flex flex-col lg:flex-row gap-12">
+                <!-- Navigation -->
+                <div class="lg:w-1/3 text-left overflow-y-auto max-h-[600px] pr-4 custom-scrollbar">
+                    <div class="grid grid-cols-2 lg:grid-cols-1 gap-2">
+                        <template x-for="(data, name) in professions" :key="name">
+                            <button 
+                                @click="activeProfession = name"
+                                :class="activeProfession === name ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'bg-white text-gray-600 hover:bg-gray-50 border border-gray-100'"
+                                class="flex items-center gap-3 px-6 py-4 rounded-2xl transition-all duration-200 group text-left"
+                            >
+                                <span class="material-symbols-outlined" x-text="data.icon"></span>
+                                <span class="font-semibold text-sm lg:text-base" x-text="name"></span>
+                            </button>
+                        </template>
+                    </div>
+                </div>
+
+                <!-- Dynamic Content -->
+                <div class="lg:w-2/3">
+                    <div class="bg-white rounded-[3rem] p-8 md:p-16 shadow-2xl border border-gray-50 text-left min-h-[500px] flex flex-col justify-center relative overflow-hidden">
+                        <!-- Decorative background icon -->
+                        <span class="absolute -right-8 -bottom-8 material-symbols-outlined text-[15rem] text-primary/5 opacity-40 select-none" x-text="professions[activeProfession].icon"></span>
+                        
+                        <div class="relative z-10">
+                            <h4 class="text-3xl md:text-5xl font-extrabold text-gray-900 mb-6" x-text="activeProfession"></h4>
+                            <p class="text-xl md:text-2xl text-gray-600 mb-12 leading-relaxed" x-text="professions[activeProfession].description"></p>
+                            
+                            <p class="text-sm font-bold text-primary uppercase tracking-widest mb-6">Key Usecases</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <template x-for="feature in professions[activeProfession].features" :key="feature">
+                                    <div class="flex items-center gap-3 p-4 bg-gray-50 rounded-2xl border border-gray-100">
+                                        <span class="material-symbols-outlined text-primary">check_circle</span>
+                                        <span class="text-gray-700 font-medium" x-text="feature"></span>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <style>
+            .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+            .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
+            .custom-scrollbar::-webkit-scrollbar-thumb { background: #00AFF0; border-radius: 10px; }
+            .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #0088bb; }
+        </style>
     </section>
 
     <!-- Final CTA Section -->

@@ -68,9 +68,9 @@ class GenerateAiCharacters extends Command
         $baseStyle = "Professional premium SaaS assistant. Practical, specific, action-driven. Uses short sections and checklists. No fluff.";
 
         $variants = [
-            1 => ['style' => 'Direct and structured', 'visual' => 'A highly attractive, natural, modern professional American headshot portrait, friendly expression, well-lit, natural outdoor or modern bright office background, sharp focus, 85mm lens look'],
-            2 => ['style' => 'Warm and coaching', 'visual' => 'A highly attractive, natural, modern professional American headshot portrait, warm smile, welcoming, natural sunlight filtering in, blurred modern office background, sharp focus'],
-            3 => ['style' => 'Analytical and strategic', 'visual' => 'A highly attractive, natural, modern professional American headshot portrait, confident and intelligent expression, premium modern corporate background, sharp focus, cinematic lighting'],
+            1 => ['style' => 'Direct and structured', 'visual' => 'A natural, friendly, candid portrait of an American person, very realistic, casual everyday clothing, relaxed environment setting like a cozy cafe, soft natural daylight, iPhone photography aesthetic, unedited look'],
+            2 => ['style' => 'Warm and coaching', 'visual' => 'A warm, approachable, natural candid portrait of an American person smiling, very realistic, standing in a bright modern home office, candid smile, everyday look, soft authentic lighting'],
+            3 => ['style' => 'Analytical and strategic', 'visual' => 'A calm, intelligent, natural portrait of an American person, very realistic, casual sweater or simple attire, sitting at a wooden desk with plants, soft afternoon sunlight, highly authentic human look'],
         ];
         $v = $variants[$variant] ?? $variants[1];
 
