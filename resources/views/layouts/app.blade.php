@@ -5,13 +5,13 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ $title ?? config('app.name', 'Business Companion AI') }}</title>
+        <title>{{ $title ?? config('app.name', 'The Business Companion AI') }}</title>
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="bg-gray-50 text-gray-900 antialiased">
         <div class="min-h-dvh">
-            <x-sidebar :active="$activeNav ?? 'dashboard'" :activeProjectId="$activeProjectId ?? 'acme'" />
+            <x-sidebar :active="$activeNav ?? 'dashboard'" :activeProjectId="$activeProjectId ?? 'acme'" :activeTaskId="$activeTaskId ?? null" />
 
             <div class="pl-[260px]">
                 <x-header :title="$pageTitle ?? ($title ?? 'Dashboard')" />

@@ -7,3 +7,35 @@
         font-family: 'Instrument Sans', ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
     }
 }
+
+@layer components {
+    .chat-md h1,
+    .chat-md h2,
+    .chat-md h3 {
+        @apply font-semibold text-gray-900;
+    }
+    .chat-md h1 { @apply text-base; }
+    .chat-md h2 { @apply text-sm; }
+    .chat-md h3 { @apply text-sm; }
+
+    .chat-md p { @apply my-1; }
+    .chat-md ul { @apply my-1 list-disc pl-5; }
+    .chat-md ol { @apply my-1 list-decimal pl-5; }
+    .chat-md li { @apply my-0.5; }
+
+    .chat-md strong { @apply font-semibold; }
+    .chat-md em { @apply italic; }
+
+    .chat-md code { @apply rounded bg-white/70 px-1 py-0.5 font-mono text-[0.85em]; }
+    .chat-md pre { @apply my-2 overflow-x-auto rounded-lg bg-white/70 p-3; }
+    .chat-md pre code { @apply bg-transparent p-0; }
+
+    .chat-log-row {
+        animation: chatFadeIn 240ms ease-out both;
+    }
+
+    @keyframes chatFadeIn {
+        from { opacity: 0; transform: translateY(2px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+}

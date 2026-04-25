@@ -34,14 +34,17 @@
                 </svg>
             </button>
 
-            <button class="flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-2 py-2 hover:bg-gray-50" type="button" aria-label="User menu">
-                <div class="h-8 w-8 rounded-full bg-gray-100 ring-1 ring-gray-200"></div>
-                <span class="hidden text-sm font-medium text-gray-900 sm:inline">A. User</span>
-                <svg viewBox="0 0 20 20" fill="currentColor" class="hidden h-4 w-4 text-gray-500 sm:inline" aria-hidden="true">
-                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 0 1 1.414 0L10 10.586l3.293-3.293a1 1 0 1 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-4-4a1 1 0 0 1 0-1.414Z" clip-rule="evenodd" />
-                </svg>
-            </button>
+            @auth
+                <button class="flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-2 py-2 hover:bg-gray-50" type="button" aria-label="User menu">
+                    <div class="h-8 w-8 rounded-full bg-gray-100 ring-1 ring-gray-200"></div>
+                    <span class="hidden text-sm font-medium text-gray-900 sm:inline">{{ auth()->user()->name }}</span>
+                    <svg viewBox="0 0 20 20" fill="currentColor" class="hidden h-4 w-4 text-gray-500 sm:inline" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 0 1 1.414 0L10 10.586l3.293-3.293a1 1 0 1 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-4-4a1 1 0 0 1 0-1.414Z" clip-rule="evenodd" />
+                    </svg>
+                </button>
+            @else
+                <a href="{{ route('login') }}" class="rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-semibold text-gray-900 hover:bg-gray-50">Login</a>
+            @endauth
         </div>
     </div>
 </header>
-

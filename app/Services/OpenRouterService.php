@@ -5,6 +5,7 @@ namespace App\Services;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Psr\Http\Message\StreamInterface;
 
 class OpenRouterService
 {
@@ -51,6 +52,59 @@ class OpenRouterService
         return $client
             ->timeout(180)
             ->post("{$this->baseUrl}/chat/completions", $payload);
+    }
+
+    /**
+     * Stream chat completion text deltas from OpenRouter.
+     *
+     * Yields strings (delta content). Caller is responsible for concatenation.
+     */
+    public function streamChatCompletion(array $messages, int $maxTokens = 800): \Generator
+    {
+        $response = $this->chatCompletion($messages, true, $maxTokens);
+        if (!$response->successful()) {
+            throw new \RuntimeException('OpenRouter stream request failed: ' . $response->status());
+        }
+
+        $psr = $response->toPsrResponse();
+        /** @var StreamInterface $body */
+        $body = $psr->getBody();
+
+        $buffer = '';
+        while (!$body->eof()) {
+            $chunk = $body->read(8192);
+            if ($chunk === '') {
+                usleep(20_000);
+                continue;
+            }
+
+            $buffer .= $chunk;
+
+            while (($pos = strpos($buffer, "\n")) !== false) {
+                $line = substr($buffer, 0, $pos);
+                $buffer = substr($buffer, $pos + 1);
+
+                $line = trim($line);
+                if ($line === '' || !str_starts_with($line, 'data:')) {
+                    continue;
+                }
+
+                $payload = trim(substr($line, 5));
+                if ($payload === '[DONE]') {
+                    return;
+                }
+
+                $json = json_decode($payload, true);
+                if (!is_array($json)) {
+                    continue;
+                }
+
+                $delta = $json['choices'][0]['delta']['content'] ?? null;
+                if (is_string($delta) && $delta !== '') {
+                    yield $delta;
+                }
+            }
+        }
     }
 
     public function generateImage(string $prompt): ?string
@@ -151,4 +205,3 @@ class OpenRouterService
         return $prompt;
     }
 }
-
