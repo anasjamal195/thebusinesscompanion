@@ -54,32 +54,37 @@
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
     }
+
+    [x-cloak] {
+      display: none !important;
+    }
   </style>
 </head>
 
-<body class="bg-background text-on-background font-body-md selection:bg-primary-fixed selection:text-primary">
+<body class="bg-background text-on-background font-body-md selection:bg-primary-fixed selection:text-primary"
+  x-data="{ waitlistModalOpen: false, waitlistSubmitted: false, email: '' }">
 
   <!-- Top Nav -->
   <nav
     class="docked full-width top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-100 shadow-sm fixed w-full">
     <div
       class="flex justify-between items-center h-16 px-6 md:px-12 max-w-7xl mx-auto font-inter antialiased tracking-tight">
-      <div class="text-xl font-bold tracking-tighter text-slate-900">The Business Companion</div>
+      <div class="font-black tracking-tighter text-slate-900 flex items-baseline">
+        <span class="text-lg font-bold opacity-40 uppercase mr-0.5">The</span><span
+          class="text-primary text-2xl">Business</span><span class="text-dark text-2xl">Companion</span>
+      </div>
       <div class="hidden md:flex items-center space-x-8">
         <a class="text-slate-600 hover:text-slate-900 transition-colors font-medium text-sm" href="#concept">Concept</a>
-        <a class="text-slate-600 hover:text-slate-900 transition-colors font-medium text-sm" href="#workflow">How It
-          Works</a>
+
         <a class="text-slate-600 hover:text-slate-900 transition-colors font-medium text-sm" href="#voice">Voice
           Calls</a>
         <a class="text-slate-600 hover:text-slate-900 transition-colors font-medium text-sm" href="#faq">FAQ</a>
       </div>
       <div class="flex items-center gap-4">
-        <a href="{{ url('/login') }}"
-          class="text-slate-600 hover:bg-slate-50 transition-all duration-200 px-4 py-2 rounded-lg text-sm font-medium">Sign
-          In</a>
-        <a href="{{ url('/companions') }}"
-          class="bg-primary hover:bg-primary-container text-white transition-all duration-200 px-5 py-2 rounded-lg text-sm font-semibold shadow-md active:scale-95">Get
-          Started</a>
+
+        <button @click="waitlistModalOpen = true"
+          class="bg-primary hover:bg-primary-container text-white transition-all duration-200 px-5 py-2 rounded-lg text-sm font-semibold shadow-md active:scale-95">Join
+          Waitlist</button>
       </div>
     </div>
   </nav>
@@ -108,9 +113,13 @@
             </div>
             <div class="flex flex-wrap gap-4 pt-4">
               <a href="{{ url('/companions') }}"
-                class="px-8 py-4 bg-primary hover:bg-primary-container text-white font-semibold rounded-xl shadow-lg hover:shadow-primary/20 transition-all active:scale-95 text-lg flex items-center gap-2">
-                Select your Companion <span class="material-symbols-outlined">arrow_forward</span>
+                class="px-8 py-4 bg-primary hover:bg-primary-container text-white font-bold rounded-xl shadow-lg hover:shadow-primary/20 transition-all active:scale-95 text-lg flex items-center gap-2">
+                Hire my Companion <span class="material-symbols-outlined">arrow_forward</span>
               </a>
+              <button @click="waitlistModalOpen = true"
+                class="px-8 py-4 bg-white text-gray-900 border border-gray-100 font-bold rounded-xl hover:bg-gray-50 transition-all active:scale-95 text-lg">
+                Join the Waitlist
+              </button>
             </div>
 
             <div class="flex items-center gap-4 pt-6 text-sm text-gray-500 font-medium">
@@ -426,12 +435,12 @@
                   environment to execute your industry-specific tasks autonomously.</p>
 
                 <div class="pt-4">
-                  <a href="{{ url('/companions') }}"
+                  <button @click="waitlistModalOpen = true"
                     class="inline-flex items-center gap-2 px-8 py-4 bg-gray-900 text-white font-bold rounded-2xl hover:bg-gray-800 transition-all shadow-xl hover:shadow-gray-900/20 group/btn">
-                    Hire for this role
+                    Join the Waitlist
                     <span
                       class="material-symbols-outlined group-hover/btn:translate-x-1 transition-transform">arrow_forward</span>
-                  </a>
+                  </button>
                 </div>
               </div>
 
@@ -552,10 +561,10 @@
           Scale your productivity and get hours back into your day without expanding your payroll.
         </p>
         <div class="pt-8">
-          <a href="{{ url('/companions') }}"
+          <button @click="waitlistModalOpen = true"
             class="inline-block px-12 py-5 bg-white text-primary font-bold text-lg rounded-2xl shadow-xl hover:scale-105 transition-transform active:scale-95 border-b-[4px] border-gray-300">
-            View the Companions Directory
-          </a>
+            Join the Waitlist
+          </button>
         </div>
         <p class="text-sm text-primary-fixed pt-4">Secure subscriptions starting at $4.99/mo.</p>
       </div>
@@ -566,7 +575,10 @@
   <footer class="py-12 bg-slate-50 border-t border-gray-200">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 px-6 md:px-12 max-w-7xl mx-auto font-inter">
       <div class="space-y-4">
-        <div class="font-bold text-slate-900 text-lg">The Business Companion AI</div>
+        <div class="font-black tracking-tighter text-slate-900 flex items-baseline">
+          <span class="text-xs font-bold opacity-40 uppercase mr-0.5">The</span><span
+            class="text-primary text-lg">Business</span><span class="text-dark text-lg">Companion</span>
+        </div>
         <p class="text-sm text-slate-500 max-w-sm">
           Revolutionizing professional productivity through autonomous cloud computers, contextual intelligence and
           voice-first interaction.
@@ -587,6 +599,72 @@
       </div>
     </div>
   </footer>
+
+  <!-- Waitlist Modal -->
+  <div x-show="waitlistModalOpen" x-cloak
+    class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm"
+    x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-95"
+    x-transition:enter-end="opacity-100 scale-100" x-transition:leave="transition ease-in duration-200"
+    x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
+    @keydown.escape.window="waitlistModalOpen = false">
+    <div class="bg-white rounded-[2.5rem] p-8 md:p-12 max-w-lg w-full shadow-2xl relative border border-gray-100"
+      @click.away="waitlistModalOpen = false">
+      <button @click="waitlistModalOpen = false"
+        class="absolute top-6 right-6 text-gray-400 hover:text-gray-600 transition">
+        <span class="material-symbols-outlined text-3xl">close</span>
+      </button>
+
+      <div x-show="!waitlistSubmitted">
+        <div class="mb-8">
+          <div class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center text-primary mb-6">
+            <span class="material-symbols-outlined text-3xl">mail</span>
+          </div>
+          <h3 class="text-3xl font-black text-gray-900 mb-3">Join the Waitlist</h3>
+          <p class="text-gray-500">We are currently in private beta. Leave your email to get early access when we
+            expand.
+          </p>
+        </div>
+
+        <form @submit.prevent="
+                fetch('/waitlist', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({ email: email })
+                })
+                .then(response => {
+                    if (response.ok) {
+                        waitlistSubmitted = true;
+                    } else {
+                        alert('Check your email address or you might already be on the list!');
+                    }
+                })
+            " class="space-y-4">
+          <input type="email" x-model="email" required placeholder="Enter your business email"
+            class="w-full px-6 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition font-medium">
+          <button type="submit"
+            class="w-full py-4 bg-primary text-white font-bold rounded-2xl shadow-lg shadow-primary/20 hover:bg-primary-container transition-all active:scale-95 flex items-center justify-center gap-2">
+            Reserve my spot
+            <span class="material-symbols-outlined">send</span>
+          </button>
+        </form>
+      </div>
+
+      <div x-show="waitlistSubmitted" class="text-center py-8">
+        <div
+          class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center text-green-600 mx-auto mb-8 animate-bounce">
+          <span class="material-symbols-outlined text-4xl">check_circle</span>
+        </div>
+        <h3 class="text-3xl font-black text-gray-900 mb-4">You're on the list!</h3>
+        <p class="text-lg text-gray-600 leading-relaxed font-medium">You have been added to waitlist, we will update you
+          through email</p>
+        <button @click="waitlistModalOpen = false; waitlistSubmitted = false; email = ''"
+          class="mt-12 text-primary font-bold hover:underline">Close</button>
+      </div>
+    </div>
+  </div>
 
 </body>
 

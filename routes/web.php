@@ -15,6 +15,19 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::post('/waitlist', function (Illuminate\Http\Request $request) {
+    $request->validate([
+        'email' => 'required|email|unique:waitlist_entries,email'
+    ]);
+
+    App\Models\WaitlistEntry::create([
+        'email' => $request->email
+    ]);
+
+    return response()->json(['message' => 'Success']);
+})->name('waitlist.store');
+
+
 Route::get('/companions', [CompanionController::class, 'index'])->name('companions.index');
 Route::get('/companions/{id}', [CompanionController::class, 'show'])->name('companions.show');
 

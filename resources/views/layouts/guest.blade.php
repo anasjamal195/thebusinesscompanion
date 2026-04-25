@@ -68,8 +68,8 @@
     <!-- TopNavBar -->
     <nav class="docked full-width top-0 z-50 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md border-b border-slate-100 dark:border-slate-800 shadow-sm fixed w-full">
         <div class="flex justify-between items-center h-16 px-6 md:px-12 max-w-7xl mx-auto font-inter antialiased tracking-tight">
-            <a href="{{ url('/') }}" class="text-xl font-bold tracking-tighter text-slate-900 dark:text-white">
-                The Business Companion
+            <a href="{{ url('/') }}" class="font-black tracking-tighter text-slate-900 dark:text-white flex items-baseline">
+                <span class="text-sm font-bold opacity-40 uppercase mr-0.5">The</span><span class="text-primary text-2xl">BusinessCompanion</span>
             </a>
             <div class="hidden md:flex items-center space-x-8">
                 <a class="text-blue-600 dark:text-blue-400 font-semibold border-b-2 border-blue-600 py-1" href="{{ url('/companions') }}">Product</a>
