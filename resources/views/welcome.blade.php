@@ -81,9 +81,9 @@
       </div>
       <div class="flex items-center gap-4">
 
-        <button @click="waitlistModalOpen = true"
-          class="bg-primary hover:bg-primary-container text-white transition-all duration-200 px-5 py-2 rounded-lg text-sm font-semibold shadow-md active:scale-95">Join
-          Waitlist</button>
+        <a href="{{ url('/companions') }}"
+          class="bg-primary hover:bg-primary-container text-white transition-all duration-200 px-5 py-2 rounded-lg text-sm font-semibold shadow-md active:scale-95">Get
+          Started</a>
       </div>
     </div>
   </nav>
@@ -115,10 +115,10 @@
                 class="px-8 py-4 bg-primary hover:bg-primary-container text-white font-bold rounded-xl shadow-lg hover:shadow-primary/20 transition-all active:scale-95 text-lg flex items-center gap-2">
                 Hire my Companion <span class="material-symbols-outlined">arrow_forward</span>
               </a>
-              <button @click="waitlistModalOpen = true"
-                class="px-8 py-4 bg-white text-gray-900 border border-gray-100 font-bold rounded-xl hover:bg-gray-50 transition-all active:scale-95 text-lg">
+              <a href="{{ url('/companions') }}"
+                class="px-8 py-4 bg-white text-gray-900 border border-gray-200 font-bold rounded-xl hover:bg-gray-50 transition-all active:scale-95 text-lg">
                 Join the Waitlist
-              </button>
+              </a>
             </div>
 
             <div class="flex items-center gap-4 pt-6 text-sm text-gray-500 font-medium">
@@ -434,12 +434,12 @@
                   environment to execute your industry-specific tasks autonomously.</p>
 
                 <div class="pt-4">
-                  <button @click="waitlistModalOpen = true"
+                  <a href="{{ url('/companions') }}"
                     class="inline-flex items-center gap-2 px-8 py-4 bg-gray-900 text-white font-bold rounded-2xl hover:bg-gray-800 transition-all shadow-xl hover:shadow-gray-900/20 group/btn">
                     Join the Waitlist
                     <span
                       class="material-symbols-outlined group-hover/btn:translate-x-1 transition-transform">arrow_forward</span>
-                  </button>
+                  </a>
                 </div>
               </div>
 
@@ -560,10 +560,10 @@
           Scale your productivity and get hours back into your day without expanding your payroll.
         </p>
         <div class="pt-8">
-          <button @click="waitlistModalOpen = true"
+          <a href="{{ url('/companions') }}"
             class="inline-block px-12 py-5 bg-white text-primary font-bold text-lg rounded-2xl shadow-xl hover:scale-105 transition-transform active:scale-95 border-b-[4px] border-gray-300">
             Join the Waitlist
-          </button>
+          </a>
         </div>
         <p class="text-sm text-primary-fixed pt-4">Secure subscriptions starting at $4.99/mo.</p>
       </div>
