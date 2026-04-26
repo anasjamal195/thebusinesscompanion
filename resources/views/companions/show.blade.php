@@ -92,10 +92,10 @@
                         <p class="text-xs text-gray-400 mt-2">Billed monthly. Cancel anytime.</p>
                     </div>
 
-                    <a href="{{ route('companions.checkoutForm', $aiCharacter->id) }}" class="w-full flex items-center justify-center gap-2 bg-primary hover:bg-primary-container text-white text-lg font-bold py-4 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 active:scale-95">
+                    <button @click="waitlistModalOpen = true" class="w-full flex items-center justify-center gap-2 bg-primary hover:bg-primary-container text-white text-lg font-bold py-4 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 active:scale-95">
                         <span class="material-symbols-outlined">lock_open</span>
                         Subscribe & Unlock
-                    </a>
+                    </button>
                     
                     <div class="mt-6 flex flex-col gap-3">
                         <div class="flex items-center gap-3 text-sm text-gray-600">
