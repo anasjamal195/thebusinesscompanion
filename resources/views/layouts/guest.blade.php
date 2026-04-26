@@ -82,7 +82,7 @@
             </div>
             <div class="flex items-center gap-4">
                 <a href="{{ url('/login') }}" class="text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-900 transition-all duration-200 px-4 py-2 rounded-lg text-sm font-medium">Sign In</a>
-                <a href="{{ url('/companions') }}" class="bg-primary hover:bg-primary-container text-white active:scale-95 transition-all duration-200 px-5 py-2 rounded-lg text-sm font-semibold">Join Waitlist</a>
+                <button @click="waitlistModalOpen = true" class="bg-primary hover:bg-primary-container text-white active:scale-95 transition-all duration-200 px-5 py-2 rounded-lg text-sm font-semibold">Join Waitlist</button>
             </div>
         </div>
     </nav>
