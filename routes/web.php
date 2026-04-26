@@ -17,13 +17,11 @@ Route::get('/', function () {
 
 Route::post('/waitlist', function (Illuminate\Http\Request $request) {
     $request->validate([
-        'email' => 'required|email|unique:waitlist_entries,email',
-        'password' => 'nullable|string|min:8'
+        'email' => 'required|email|unique:waitlist_entries,email'
     ]);
 
     App\Models\WaitlistEntry::create([
-        'email' => $request->email,
-        'password' => $request->password ? Illuminate\Support\Facades\Hash::make($request->password) : null
+        'email' => $request->email
     ]);
 
     return response()->json(['message' => 'Success']);
