@@ -61,8 +61,7 @@
   </style>
 </head>
 
-<body class="bg-background text-on-background font-body-md selection:bg-primary-fixed selection:text-primary"
-  x-data="{ waitlistModalOpen: false, waitlistSubmitted: false, email: '' }">
+<body class="bg-background text-on-background font-body-md selection:bg-primary-fixed selection:text-primary">
 
   <!-- Top Nav -->
   <nav
@@ -599,72 +598,6 @@
       </div>
     </div>
   </footer>
-
-  <!-- Waitlist Modal -->
-  <div x-show="waitlistModalOpen" x-cloak
-    class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm"
-    x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-95"
-    x-transition:enter-end="opacity-100 scale-100" x-transition:leave="transition ease-in duration-200"
-    x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
-    @keydown.escape.window="waitlistModalOpen = false">
-    <div class="bg-white rounded-[2.5rem] p-8 md:p-12 max-w-lg w-full shadow-2xl relative border border-gray-100"
-      @click.away="waitlistModalOpen = false">
-      <button @click="waitlistModalOpen = false"
-        class="absolute top-6 right-6 text-gray-400 hover:text-gray-600 transition">
-        <span class="material-symbols-outlined text-3xl">close</span>
-      </button>
-
-      <div x-show="!waitlistSubmitted">
-        <div class="mb-8">
-          <div class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center text-primary mb-6">
-            <span class="material-symbols-outlined text-3xl">mail</span>
-          </div>
-          <h3 class="text-3xl font-black text-gray-900 mb-3">Join the Waitlist</h3>
-          <p class="text-gray-500">We are currently in private beta. Leave your email to get early access when we
-            expand.
-          </p>
-        </div>
-
-        <form @submit.prevent="
-                fetch('/waitlist', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify({ email: email })
-                })
-                .then(response => {
-                    if (response.ok) {
-                        waitlistSubmitted = true;
-                    } else {
-                        alert('Check your email address or you might already be on the list!');
-                    }
-                })
-            " class="space-y-4">
-          <input type="email" x-model="email" required placeholder="Enter your business email"
-            class="w-full px-6 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition font-medium">
-          <button type="submit"
-            class="w-full py-4 bg-primary text-white font-bold rounded-2xl shadow-lg shadow-primary/20 hover:bg-primary-container transition-all active:scale-95 flex items-center justify-center gap-2">
-            Reserve my spot
-            <span class="material-symbols-outlined">send</span>
-          </button>
-        </form>
-      </div>
-
-      <div x-show="waitlistSubmitted" class="text-center py-8">
-        <div
-          class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center text-green-600 mx-auto mb-8 animate-bounce">
-          <span class="material-symbols-outlined text-4xl">check_circle</span>
-        </div>
-        <h3 class="text-3xl font-black text-gray-900 mb-4">You're on the list!</h3>
-        <p class="text-lg text-gray-600 leading-relaxed font-medium">You have been added to waitlist, we will update you
-          through email</p>
-        <button @click="waitlistModalOpen = false; waitlistSubmitted = false; email = ''"
-          class="mt-12 text-primary font-bold hover:underline">Close</button>
-      </div>
-    </div>
-  </div>
 
 </body>
 
