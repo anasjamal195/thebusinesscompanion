@@ -276,8 +276,8 @@
           <span class="text-primary-fixed uppercase tracking-widest font-bold text-sm">Flagship Feature</span>
           <h2 class="text-4xl md:text-5xl font-extrabold leading-tight">Drop in for a live status update anytime.</h2>
           <p class="text-xl text-gray-400 leading-relaxed">
-            Need an update on a long-running research task? Stuck on a strategic decision? Schedule a call natively
-            within the app.
+            Need an update on a long-running research task? Stuck on a strategic decision? Schedule a call with your
+            companion directly on your mobile number.
           </p>
           <ul class="space-y-4 text-lg text-gray-300">
             <li class="flex items-start gap-4">
