@@ -107,70 +107,63 @@
     <!-- Waitlist Modal -->
     <div x-show="waitlistModalOpen" x-cloak
         class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm"
-        x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-95"
-        x-transition:enter-end="opacity-100 scale-100" x-transition:leave="transition ease-in duration-200"
-        x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
         @keydown.escape.window="waitlistModalOpen = false">
-        <div class="bg-white rounded-[2.5rem] p-8 md:p-12 max-w-lg w-full shadow-2xl relative border border-gray-100"
-        @click.away="waitlistModalOpen = false">
-        <button @click="waitlistModalOpen = false" class="absolute top-6 right-6 text-gray-400 hover:text-gray-600 transition">
-            <span class="material-symbols-outlined text-3xl">close</span>
-        </button>
-
-        <div x-show="!waitlistSubmitted">
-            <div class="mb-8 text-center md:text-left">
-            <div class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center text-primary mb-6 mx-auto md:mx-0">
-                <span class="material-symbols-outlined text-3xl">mail</span>
-            </div>
-            <h3 class="text-3xl font-black text-gray-900 mb-3 tracking-tight">Join the Waitlist</h3>
-            <p class="text-gray-500">We are currently in private beta. Leave your email and set a password to reserve your spot.</p>
-            </div>
-
-            <form @submit.prevent="
-                    fetch('/waitlist', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        },
-                        body: JSON.stringify({ email: email, password: password })
-                    })
-                    .then(response => {
-                        if (response.ok) {
-                            waitlistSubmitted = true;
-                        } else {
-                            alert('Check your input or you might already be on the list!');
-                        }
-                    })
-                " class="space-y-4">
-            <div>
-                <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 ml-1">Business Email</label>
-                <input type="email" x-model="email" required placeholder="Enter your business email"
-                    class="w-full px-6 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition font-medium">
-            </div>
-            <div>
-                <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 ml-1">Choose Password</label>
-                <input type="password" x-model="password" required placeholder="Create a secure password"
-                    class="w-full px-6 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition font-medium">
-            </div>
-            <button type="submit"
-                class="w-full py-4 bg-primary text-white font-bold rounded-2xl shadow-lg shadow-primary/20 hover:bg-primary-container transition-all active:scale-95 flex items-center justify-center gap-2 mt-2">
-                Reserve my spot
-                <span class="material-symbols-outlined">send</span>
+        <div class="bg-white rounded-[2rem] p-6 md:p-10 max-w-2xl w-full shadow-2xl relative border border-gray-100 overflow-hidden"
+            @click.away="waitlistModalOpen = false">
+            
+            <button @click="waitlistModalOpen = false" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition">
+                <span class="material-symbols-outlined">close</span>
             </button>
-            </form>
-        </div>
 
-        <div x-show="waitlistSubmitted" class="text-center py-8">
-            <div
-            class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center text-green-600 mx-auto mb-8 animate-bounce transition-all">
-            <span class="material-symbols-outlined text-4xl">check_circle</span>
+            <div x-show="!waitlistSubmitted" class="flex flex-col md:flex-row gap-8 items-center">
+                <!-- Icon/Side Decor -->
+                <div class="hidden md:flex w-1/3 aspect-square bg-primary/10 rounded-2xl items-center justify-center text-primary">
+                    <span class="material-symbols-outlined text-6xl">upcoming</span>
+                </div>
+
+                <div class="flex-1 flex flex-col justify-center text-center md:text-left">
+                    <h3 class="text-3xl font-black text-gray-900 mb-2 tracking-tight">Access Beta</h3>
+                    <p class="text-gray-500 mb-6 text-sm">Leave your email to get early access and we'll update you soon.</p>
+
+                    <form @submit.prevent="
+                            fetch('/waitlist', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                },
+                                body: JSON.stringify({ email: email })
+                            })
+                            .then(response => {
+                                if (response.ok) {
+                                    waitlistSubmitted = true;
+                                } else {
+                                    alert('Please check your email address.');
+                                }
+                            })
+                        " class="space-y-4">
+                        <div class="relative">
+                            <input type="email" x-model="email" required placeholder="Business Email"
+                                class="w-full px-5 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition font-medium">
+                        </div>
+                        <button type="submit"
+                            class="w-full py-3.5 bg-primary text-white font-bold rounded-xl shadow-lg shadow-primary/20 hover:bg-primary-container transition-all active:scale-95 flex items-center justify-center gap-2">
+                            Join Waitlist
+                            <span class="material-symbols-outlined text-sm">send</span>
+                        </button>
+                    </form>
+                </div>
             </div>
-            <h3 class="text-3xl font-black text-gray-900 mb-4 tracking-tight">You're on the list!</h3>
-            <p class="text-lg text-gray-600 leading-relaxed font-medium">You have been added to waitlist, we will update you through email</p>
-            <button @click="waitlistModalOpen = false; waitlistSubmitted = false; email = ''; password = ''"
-            class="mt-12 text-primary font-bold hover:underline">Close</button>
-        </div>
+
+            <div x-show="waitlistSubmitted" class="text-center py-4">
+                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center text-green-600 mx-auto mb-4">
+                    <span class="material-symbols-outlined text-3xl">check</span>
+                </div>
+                <h3 class="text-2xl font-black text-gray-900 mb-2">You're on the list!</h3>
+                <p class="text-gray-600 text-sm">We'll update you through email soon.</p>
+                <button @click="waitlistModalOpen = false; waitlistSubmitted = false; email = ''"
+                    class="mt-6 text-primary font-bold hover:underline">Close</button>
+            </div>
         </div>
     </div>
 </body>
