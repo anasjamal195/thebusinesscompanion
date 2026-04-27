@@ -64,17 +64,19 @@ class SyncRetellAgents extends Command
         $llmData = [
             'general_prompt' => $prompt,
             'begin_message' => "Hi there, I'm {$character->name}. How can I help you today?",
+            'model' => 'gpt-4o', // or gpt-3.5-turbo
+            'start_speaker' => 'agent',
         ];
 
         try {
             if ($character->retell_llm_id) {
                 $this->line("Updating existing Retell LLM: {$character->retell_llm_id}");
                 $response = Http::withToken($apiKey)
-                    ->patch("{$baseUrl}/v2/update-retell-llm/{$character->retell_llm_id}", $llmData);
+                    ->patch("{$baseUrl}/update-retell-llm/{$character->retell_llm_id}", $llmData);
             } else {
                 $this->line("Creating new Retell LLM...");
                 $response = Http::withToken($apiKey)
-                    ->post("{$baseUrl}/v2/create-retell-llm", $llmData);
+                    ->post("{$baseUrl}/create-retell-llm", $llmData);
             }
 
             if ($response->successful()) {
@@ -99,7 +101,7 @@ class SyncRetellAgents extends Command
             'agent_name' => "Companion: " . $character->name,
             'voice_id' => $character->meta['voice_id'] ?? '11labs-Adrian',
             'llm_id' => $llmId,
-            'webhook_url' => config('app.url') . '/retell/webhook',
+            'webhook_url' => route('retell.webhook'),
             'avatar_url' => $character->avatar_url,
         ];
 
@@ -107,11 +109,11 @@ class SyncRetellAgents extends Command
             if ($character->retell_agent_id) {
                 $this->line("Updating existing Retell Agent: {$character->retell_agent_id}");
                 $response = Http::withToken($apiKey)
-                    ->patch("{$baseUrl}/v2/update-agent/{$character->retell_agent_id}", $agentData);
+                    ->patch("{$baseUrl}/update-agent/{$character->retell_agent_id}", $agentData);
             } else {
                 $this->line("Creating new Retell Agent...");
                 $response = Http::withToken($apiKey)
-                    ->post("{$baseUrl}/v2/create-agent", $agentData);
+                    ->post("{$baseUrl}/create-agent", $agentData);
             }
 
             if ($response->successful()) {
