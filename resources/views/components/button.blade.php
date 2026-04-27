@@ -1,15 +1,14 @@
 @props([
-    'variant' => 'primary', // primary | outline | ghost
+    'variant' => 'primary', // primary | outline
     'href' => null,
     'type' => 'button',
 ])
 
 @php
-    $base = 'inline-flex items-center justify-center gap-2 rounded-2xl px-5 py-3 text-sm font-bold transition-all duration-200 active:scale-95 focus:outline-none focus:ring-4 focus:ring-primary/10';
+    $base = 'inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-50';
     $styles = match ($variant) {
-        'outline' => 'border border-gray-200 bg-white text-gray-700 hover:bg-gray-50 hover:border-gray-300',
-        'ghost' => 'text-gray-500 hover:bg-gray-50 hover:text-gray-900',
-        default => 'bg-primary text-white shadow-lg shadow-primary/20 hover:bg-primary-container',
+        'outline' => 'border border-gray-200 bg-white text-gray-900 hover:bg-gray-50',
+        default => 'bg-blue-600 text-white hover:bg-blue-700',
     };
 @endphp
 
@@ -22,5 +21,4 @@
         {{ $slot }}
     </button>
 @endif
-
 

@@ -12,14 +12,20 @@
             @csrf
             
             <div class="space-y-2">
+                <label for="project_name" class="block text-sm font-bold text-slate-700 ml-1">Project Name</label>
+                <input type="text" name="project_name" id="project_name" required placeholder="name your first project (e.g. Acme Corp Launch)"
+                    class="w-full px-6 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all duration-300 font-medium">
+            </div>
+
+            <div class="space-y-2">
                 <label for="current_problems" class="block text-sm font-bold text-slate-700 ml-1">Current Challenges (Optional)</label>
-                <textarea name="current_problems" id="current_problems" rows="3" placeholder="e.g. Sales plateaued, hiring is slow, scaling technical infrastructure..."
+                <textarea name="current_problems" id="current_problems" rows="2" placeholder="e.g. Sales plateaued, hiring is slow, scaling technical infrastructure..."
                     class="w-full px-6 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all duration-300"></textarea>
             </div>
 
             <div class="space-y-2">
                 <label for="urgent_tasks" class="block text-sm font-bold text-slate-700 ml-1">Most Urgent Task (Optional)</label>
-                <textarea name="urgent_tasks" id="urgent_tasks" rows="3" placeholder="e.g. Need a GTM strategy for our new feature launch by Friday..."
+                <textarea name="urgent_tasks" id="urgent_tasks" rows="2" placeholder="e.g. Need a GTM strategy for our new feature launch by Friday..."
                     class="w-full px-6 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all duration-300"></textarea>
             </div>
 
@@ -27,9 +33,6 @@
                 <button type="submit" class="w-full py-5 bg-primary hover:bg-primary-container text-white font-black text-2xl rounded-2xl shadow-xl shadow-primary/20 transition-all active:scale-[0.98] flex items-center justify-center gap-3">
                     Finish & Start Work
                     <span class="material-symbols-outlined font-bold text-3xl">task_alt</span>
-                </button>
-                <button type="submit" class="text-slate-400 hover:text-slate-600 transition-colors font-medium text-sm">
-                    Skip this for now and go to Dashboard
                 </button>
             </div>
         </form>

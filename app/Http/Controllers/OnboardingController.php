@@ -219,6 +219,7 @@ class OnboardingController extends Controller
     public function complete(Request $request)
     {
         $validated = $request->validate([
+            'project_name' => ['required', 'string', 'max:255'],
             'current_problems' => ['nullable', 'string'],
             'urgent_tasks' => ['nullable', 'string'],
         ]);
@@ -226,35 +227,35 @@ class OnboardingController extends Controller
         $user = Auth::user();
         $profile = $user->profile;
 
-        if ($validated['current_problems'] || $validated['urgent_tasks']) {
-            $profile->update($validated);
+        return DB::transaction(function () use ($user, $profile, $validated) {
+            $profile->update([
+                'current_problems' => $validated['current_problems'],
+                'urgent_tasks' => $validated['urgent_tasks'],
+            ]);
 
-            // Create initial project and task
-            return DB::transaction(function () use ($user, $profile) {
-                $project = Project::create([
-                    'user_id' => $user->id,
-                    'name' => $profile->business_name . ' Initial Project',
-                    'description' => 'Initial project based on onboarding input.',
-                ]);
+            // Create initial project with the provided name
+            $project = Project::create([
+                'user_id' => $user->id,
+                'name' => $validated['project_name'],
+                'description' => 'Initial project based on onboarding input.',
+            ]);
 
+            if ($validated['current_problems'] || $validated['urgent_tasks']) {
                 $task = Task::create([
                     'project_id' => $project->id,
                     'user_id' => $user->id,
                     'title' => 'Initial Assessment',
-                    'input_text' => "Current Problems: " . $profile->current_problems . "\nUrgent Tasks: " . $profile->urgent_tasks,
+                    'input_text' => "Current Problems: " . $validated['current_problems'] . "\nUrgent Tasks: " . $validated['urgent_tasks'],
                     'priority' => 'high',
                     'status' => 'pending',
                 ]);
 
                 ProcessTaskJob::dispatch($task->id);
+            }
 
-                $user->update(['onboarding_completed' => true]);
+            $user->update(['onboarding_completed' => true]);
 
-                return redirect()->route('projects.show', $project);
-            });
-        }
-
-        $user->update(['onboarding_completed' => true]);
-        return redirect()->route('dashboard');
+            return redirect()->route('projects.show', $project);
+        });
     }
 }

@@ -7,158 +7,150 @@
 @extends('layouts.app')
 
 @section('content')
-    <!-- Welcome Header Card -->
-    <div class="mb-10">
-        <div class="flex flex-col md:flex-row items-center justify-between gap-6 p-10 rounded-[3rem] bg-gradient-to-br from-gray-900 to-black text-white relative overflow-hidden shadow-2xl">
-            <!-- Background Glow -->
-            <div class="absolute -right-20 -top-20 w-96 h-96 bg-primary/20 rounded-full blur-3xl opacity-50"></div>
-            <div class="absolute -left-20 -bottom-20 w-80 h-80 bg-blue-600/10 rounded-full blur-3xl opacity-30"></div>
-            
-            <div class="relative z-10 space-y-4 max-w-2xl">
-                <div class="inline-flex items-center gap-2 px-3 py-1 bg-white/10 rounded-full text-[11px] font-bold uppercase tracking-widest text-primary-fixed">
-                    <span class="material-symbols-outlined text-[14px]">bolt</span>
-                    System Status: Operational
+<div class="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+    <!-- Welcome Header -->
+    <div class="relative overflow-hidden bg-white rounded-[3rem] p-8 md:p-12 shadow-xl shadow-gray-200/50 border border-gray-100 group">
+        <div class="absolute -right-20 -top-20 w-80 h-80 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/10 transition-colors duration-700"></div>
+        <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-8">
+            <div class="space-y-4">
+                <div class="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 text-primary rounded-full text-xs font-black uppercase tracking-wider">
+                    <span class="material-symbols-outlined text-[16px]">verified</span>
+                    <span>Workspace Active</span>
                 </div>
-                <h1 class="text-4xl md:text-5xl font-black tracking-tight leading-tight">
-                    Welcome back, <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-blue-400">{{ explode(' ', auth()->user()->name)[0] }}</span>.
-                </h1>
-                <p class="text-lg text-gray-400 font-medium leading-relaxed">
-                    Your AI companion has been busy. We've processed 4 tasks across your active projects while you were away.
+                <h2 class="text-4xl md:text-5xl font-black text-gray-900 tracking-tight">
+                    Welcome back, <span class="text-primary">{{ explode(' ', auth()->user()->name)[0] }}</span>.
+                </h2>
+                <p class="text-lg text-gray-500 max-w-xl font-medium">
+                    Your companion has processed <span class="text-gray-900 font-bold">12 tasks</span> this week. Everything is looking good.
                 </p>
             </div>
-            
-            <div class="relative z-10 hidden lg:block">
-                <div class="glass-panel p-6 rounded-[2rem] border border-white/10 shadow-xl flex items-center gap-4 animate-float">
-                    <div class="w-14 h-14 rounded-2xl bg-primary flex items-center justify-center shadow-lg shadow-primary/30">
-                        <span class="material-symbols-outlined text-3xl">psychology</span>
-                    </div>
-                    <div>
-                        <p class="text-xs font-bold text-gray-400 uppercase tracking-widest">Active Intelligence</p>
-                        <p class="text-xl font-black text-white">4 Pending Tasks</p>
-                    </div>
-                </div>
+            <div class="flex gap-4">
+                <a href="{{ route('projects.index') }}" class="px-8 py-4 bg-primary hover:bg-primary-container text-white font-bold rounded-2xl shadow-xl shadow-primary/20 transition-all active:scale-95 flex items-center gap-3">
+                    <span class="material-symbols-outlined">add</span>
+                    New Project
+                </a>
             </div>
         </div>
     </div>
 
-    <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
-        <!-- Active Projects -->
-        <x-card class="lg:col-span-2 relative overflow-hidden">
-            <div class="flex items-center justify-between gap-4 mb-8">
-                <div>
-                    <h2 class="text-2xl font-black text-gray-900 tracking-tight">Active Projects</h2>
-                    <p class="mt-1 text-sm font-medium text-gray-500">Track your ongoing autonomous workflows.</p>
-                </div>
-                <x-button variant="ghost" href="{{ route('projects.index') }}">
-                    View all
-                    <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
-                </x-button>
-            </div>
-
-            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                @foreach (($projects ?? collect()) as $p)
-                    <a href="{{ route('projects.show', $p) }}" class="group relative p-6 rounded-3xl bg-gray-50 border border-gray-100 transition-all duration-300 hover:bg-white hover:border-primary/20 hover:shadow-xl hover:shadow-primary/5">
-                        <div class="flex items-start justify-between gap-3 mb-6">
-                            <div class="h-12 w-12 rounded-2xl bg-white shadow-sm flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
-                                <span class="material-symbols-outlined text-[28px]">folder</span>
-                            </div>
-                            <x-badge status="active">Active</x-badge>
-                        </div>
-                        <div class="min-w-0">
-                            <div class="truncate text-lg font-bold text-gray-900 group-hover:text-primary transition-colors">{{ $p['name'] }}</div>
-                            <div class="mt-1 text-sm font-medium text-gray-500 flex items-center gap-2">
-                                <span class="material-symbols-outlined text-[16px]">domain</span>
-                                {{ $p['domain'] ?? 'General' }}
-                            </div>
-                        </div>
-                    </a>
-                @endforeach
-
-                @if (($projects ?? collect())->isEmpty())
-                    <div class="flex flex-col items-center justify-center p-12 rounded-3xl bg-gray-50 border border-dashed border-gray-200 text-center sm:col-span-2">
-                        <div class="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 mb-4">
-                            <span class="material-symbols-outlined text-3xl">add_card</span>
-                        </div>
-                        <h3 class="text-lg font-bold text-gray-900">No active projects</h3>
-                        <p class="text-sm text-gray-500 max-w-xs mt-2">Complete your onboarding to hire your first Business Companion.</p>
-                        <x-button href="{{ route('onboarding.role') }}" class="mt-6">Hire a Companion</x-button>
+    <!-- Main Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Left Column: Active Projects -->
+        <div class="lg:col-span-2 space-y-8">
+            <div class="bg-white rounded-[2.5rem] p-8 shadow-lg shadow-gray-200/30 border border-gray-50">
+                <div class="flex items-center justify-between mb-8">
+                    <div>
+                        <h3 class="text-2xl font-black text-gray-900 tracking-tight">Active Projects</h3>
+                        <p class="text-sm text-gray-500 font-medium">Quick overview of your current focuses.</p>
                     </div>
-                @endif
-            </div>
-        </x-card>
-
-        <!-- AI Insights -->
-        <x-card class="bg-primary/5 border-primary/10">
-            <div class="flex items-center gap-3 mb-2">
-                <span class="material-symbols-outlined text-primary text-[28px]">auto_awesome</span>
-                <h2 class="text-2xl font-black text-gray-900 tracking-tight">AI Insights</h2>
-            </div>
-            <p class="text-sm font-medium text-gray-500 mb-8">Strategically distilled suggestions.</p>
-
-            <div class="space-y-4">
-                <div class="group p-5 rounded-2xl bg-white border border-gray-100 shadow-sm hover:border-primary/20 transition-all">
-                    <div class="flex items-center gap-2 mb-2">
-                        <div class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></div>
-                        <span class="text-[10px] font-bold text-primary uppercase tracking-[0.1em]">Next best action</span>
-                    </div>
-                    <p class="text-[15px] font-bold text-gray-900 leading-snug">Draft a launch checklist for Acme and assign owners based on task history.</p>
+                    <a href="{{ route('projects.index') }}" class="text-sm font-bold text-primary hover:underline">View All</a>
                 </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    @foreach (($projects ?? collect()) as $p)
+                        <a href="{{ route('projects.show', $p) }}" class="group relative overflow-hidden bg-gray-50/50 hover:bg-white rounded-3xl p-6 border border-transparent hover:border-primary/20 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300">
+                            <div class="flex items-start justify-between gap-4 relative z-10">
+                                <div class="space-y-1">
+                                    <h4 class="font-black text-gray-900 group-hover:text-primary transition-colors">{{ $p['name'] }}</h4>
+                                    <p class="text-xs text-gray-500 font-bold uppercase tracking-wider">{{ $p['domain'] ?? 'General' }}</p>
+                                </div>
+                                <span class="material-symbols-outlined text-primary opacity-0 group-hover:opacity-100 transition-all group-hover:translate-x-1">arrow_forward</span>
+                            </div>
+                            <div class="mt-6 flex items-center gap-4">
+                                <div class="flex-grow h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                                    <div class="h-full bg-primary rounded-full transition-all duration-1000" style="width: 65%"></div>
+                                </div>
+                                <span class="text-[10px] font-black text-gray-400">65%</span>
+                            </div>
+                        </a>
+                    @endforeach
+
+                    @if (($projects ?? collect())->isEmpty())
+                        <div class="md:col-span-2 p-12 text-center bg-gray-50 rounded-3xl border-2 border-dashed border-gray-200">
+                            <span class="material-symbols-outlined text-4xl text-gray-300 mb-4">folder_off</span>
+                            <p class="text-gray-500 font-medium mb-4">No active projects yet.</p>
+                            <a href="{{ route('projects.index') }}" class="text-primary font-bold hover:underline">Create your first project</a>
+                        </div>
+                    @endif
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="bg-white rounded-[2.5rem] p-8 shadow-lg shadow-gray-200/30 border border-gray-50">
+                <div class="flex items-center justify-between mb-8">
+                    <div>
+                        <h3 class="text-2xl font-black text-gray-900 tracking-tight">Recent Tasks</h3>
+                        <p class="text-sm text-gray-500 font-medium">Updates from your digital employee.</p>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="flex items-center justify-center p-12 bg-gray-50/50 rounded-3xl border border-gray-100">
+                        <div class="text-center">
+                            <span class="material-symbols-outlined text-4xl text-gray-200 mb-2">pending_actions</span>
+                            <p class="text-gray-400 text-sm font-medium">Recent tasks will appear as your companion works.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column: AI Insights & Status -->
+        <div class="space-y-8">
+            <div class="bg-gray-900 rounded-[2.5rem] p-8 text-white relative overflow-hidden shadow-xl shadow-gray-900/20">
+                <div class="absolute -right-10 -top-10 w-40 h-40 bg-primary/20 rounded-full blur-3xl"></div>
+                <h3 class="text-xl font-black mb-6 flex items-center gap-2 relative z-10">
+                    <span class="material-symbols-outlined text-primary">auto_awesome</span>
+                    Daily Insights
+                </h3>
                 
-                <div class="group p-5 rounded-2xl bg-white border border-gray-100 shadow-sm hover:border-red-100 transition-all">
-                    <div class="flex items-center gap-2 mb-2 text-red-500">
-                        <span class="material-symbols-outlined text-[16px]">report_problem</span>
-                        <span class="text-[10px] font-bold uppercase tracking-[0.1em]">Risk identified</span>
+                <div class="space-y-4 relative z-10">
+                    <div class="bg-white/5 rounded-2xl p-5 border border-white/10 hover:bg-white/10 transition-colors">
+                        <p class="text-xs font-bold text-primary uppercase tracking-widest mb-1 leading-none">Recommendation</p>
+                        <p class="text-sm font-medium text-gray-300">Check the market analysis for Acme. I've found 3 new competitors.</p>
                     </div>
-                    <p class="text-[15px] font-bold text-gray-900 leading-snug">Northstar dependencies are unclear. Add a logic-gate to blocking tasks.</p>
+                    <div class="bg-white/5 rounded-2xl p-5 border border-white/10 hover:bg-white/10 transition-colors">
+                        <p class="text-xs font-bold text-green-400 uppercase tracking-widest mb-1 leading-none">Status</p>
+                        <p class="text-sm font-medium text-gray-300">GTM Strategy for Project Northstar is 80% complete.</p>
+                    </div>
+                </div>
+
+                <div class="mt-8 pt-6 border-t border-white/10">
+                    <button class="w-full py-4 bg-white text-gray-900 font-bold rounded-2xl hover:bg-gray-100 transition-all active:scale-95 flex items-center justify-center gap-2 text-sm shadow-xl shadow-black/20">
+                        <span class="material-symbols-outlined text-[18px]">chat</span>
+                        Ask your Companion
+                    </button>
                 </div>
             </div>
 
-            <div class="mt-10">
-                @php $firstProject = ($projects ?? collect())->first(); @endphp
-                @if ($firstProject)
-                    <x-button href="{{ route('projects.show', $firstProject) }}" class="w-full">
-                        <span class="material-symbols-outlined">chat</span>
-                        Open Project Chat
-                    </x-button>
-                @else
-                    <x-button href="{{ route('onboarding.role') }}" class="w-full">
-                        <span class="material-symbols-outlined">rocket_launch</span>
-                        Ready to Start?
-                    </x-button>
-                @endif
-            </div>
-        </x-card>
-
-        <!-- Recent Activity -->
-        <x-card class="lg:col-span-3">
-            <div class="flex items-center justify-between gap-4 mb-8">
-                <div>
-                    <h2 class="text-2xl font-black text-gray-900 tracking-tight">Recent Activity</h2>
-                    <p class="mt-1 text-sm font-medium text-gray-500">Your companion's most recent accomplishments.</p>
+            <!-- Subscription Status -->
+            <div class="bg-white rounded-[2.5rem] p-8 shadow-lg shadow-gray-200/30 border border-gray-50 overflow-hidden relative group">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 transition-transform group-hover:scale-150 duration-700"></div>
+                <h3 class="text-lg font-black text-gray-900 mb-6">Plan Status</h3>
+                
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="h-12 w-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center">
+                        <span class="material-symbols-outlined text-[24px]">workspace_premium</span>
+                    </div>
+                    <div>
+                        <p class="text-sm font-black text-gray-900">Business Pro</p>
+                        <p class="text-xs text-gray-500 font-medium">Renews in 12 days</p>
+                    </div>
                 </div>
-                <x-button variant="outline">
-                    <span class="material-symbols-outlined text-[18px]">history</span>
-                    Full Logs
-                </x-button>
-            </div>
 
-            <div class="divide-y divide-gray-50 bg-gray-50/50 rounded-3xl border border-gray-100 overflow-hidden">
-                <div class="p-8 text-center">
-                    <span class="material-symbols-outlined text-4xl text-gray-300 mb-4 block">inventory_2</span>
-                    <p class="text-sm font-semibold text-gray-500">Activity logs will appear here once your companion starts executing tasks.</p>
+                <div class="space-y-4">
+                    <div class="flex justify-between text-xs font-bold">
+                        <span class="text-gray-500 uppercase tracking-widest">Task Credits</span>
+                        <span class="text-gray-900 underline">84 / 100</span>
+                    </div>
+                    <div class="h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                        <div class="h-full bg-primary rounded-full scale-x-75 origin-left"></div>
+                    </div>
                 </div>
+
+                <a href="{{ route('onboarding.business') }}" class="mt-8 block w-full text-center py-3 rounded-xl border border-gray-200 text-xs font-bold text-gray-600 hover:bg-gray-50 hover:border-gray-300 transition-all active:scale-95">Manage Subscription</a>
             </div>
-        </x-card>
+        </div>
     </div>
-
-    <style>
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-        .animate-float {
-            animation: float 6s ease-in-out infinite;
-        }
-    </style>
+</div>
 @endsection
-
