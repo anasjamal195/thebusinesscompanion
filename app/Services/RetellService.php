@@ -43,7 +43,7 @@ class RetellService
 
         try {
             $response = Http::withToken($this->apiKey)
-                ->post("{$this->baseUrl}/create-phone-call", [
+                ->post("{$this->baseUrl}/v2/create-phone-call", [
                     'from_number' => config('services.retell.from_number'),
                     'to_number' => $phoneNumber,
                     'override_agent_id' => $companion->retell_agent_id,
