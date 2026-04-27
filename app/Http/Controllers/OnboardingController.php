@@ -38,7 +38,7 @@ class OnboardingController extends Controller
     {
         $role = Session::get('onboarding.role', 'Founder');
         $companions = AiCharacter::where('occupation', $role)->get();
-        
+
         // Fallback if no companions for role
         if ($companions->isEmpty()) {
             $companions = AiCharacter::all();
@@ -62,8 +62,9 @@ class OnboardingController extends Controller
     public function checkout()
     {
         $companionId = Session::get('onboarding.companion_id');
-        if (!$companionId) return redirect()->route('onboarding.role');
-        
+        if (!$companionId)
+            return redirect()->route('onboarding.role');
+
         $companion = AiCharacter::find($companionId);
         return view('onboarding.checkout', compact('companion'));
     }
@@ -89,12 +90,37 @@ class OnboardingController extends Controller
 
         $companion = AiCharacter::find($user->companion_id);
 
-        // Redirect to Stripe Checkout
-        return $user->newSubscription('default', $companion->stripe_price_id ?? 'price_default_placeholder')
-            ->checkout([
-                'success_url' => route('onboarding.business'),
-                'cancel_url' => route('onboarding.checkout'),
-            ]);
+        /** @var User $user */
+        $amountInCents = (int)round($companion->monthly_price * 100);
+        $productName = $companion->name . ' - Business Companion Subscription';
+
+        // Use Cashier's checkout with price_data to create price on the fly
+        return $user->checkout([
+            [
+                'price_data' => [
+                    'currency' => 'usd',
+                    'product_data' => [
+                        'name' => $productName,
+                    ],
+                    'unit_amount' => $amountInCents,
+                    'recurring' => [
+                        'interval' => 'month',
+                    ]
+                ],
+                'quantity' => 1,
+            ]
+        ], [
+            'success_url' => route('onboarding.business'),
+            'cancel_url' => route('onboarding.checkout'),
+            'mode' => 'subscription',
+            'subscription_data' => [
+                'metadata' => [
+                    'user_id' => $user->id,
+                    'companion_id' => $companion->id,
+                    'type' => 'subscription'
+                ]
+            ]
+        ]);
     }
 
     // Step 4: Business Information (Auth)
@@ -151,7 +177,7 @@ class OnboardingController extends Controller
     public function saveMethod(Request $request)
     {
         $method = $request->input('method');
-        
+
         if ($method === 'call') {
             // For now, call onboarding is just a concept, maybe redirect to a specialized landing
             // But the user said "implement platform onboarding flow"
