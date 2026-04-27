@@ -220,6 +220,9 @@ class OnboardingController extends Controller
     {
         $validated = $request->validate([
             'project_name' => ['required', 'string', 'max:255'],
+            'project_url' => ['nullable', 'url', 'max:255'],
+            'project_description' => ['nullable', 'string'],
+            'success_metric' => ['nullable', 'string', 'max:255'],
             'current_problems' => ['nullable', 'string'],
             'urgent_tasks' => ['nullable', 'string'],
         ]);
@@ -233,11 +236,13 @@ class OnboardingController extends Controller
                 'urgent_tasks' => $validated['urgent_tasks'],
             ]);
 
-            // Create initial project with the provided name
+            // Create initial project with the provided name and details
             $project = Project::create([
                 'user_id' => $user->id,
                 'name' => $validated['project_name'],
-                'description' => 'Initial project based on onboarding input.',
+                'domain' => $validated['project_url'],
+                'description' => $validated['project_description'] ?? 'Initial project based on onboarding input.',
+                'success_metric' => $validated['success_metric'],
             ]);
 
             if ($validated['current_problems'] || $validated['urgent_tasks']) {
@@ -245,7 +250,7 @@ class OnboardingController extends Controller
                     'project_id' => $project->id,
                     'user_id' => $user->id,
                     'title' => 'Initial Assessment',
-                    'input_text' => "Current Problems: " . $validated['current_problems'] . "\nUrgent Tasks: " . $validated['urgent_tasks'],
+                    'input_text' => "Current Problems: " . ($validated['current_problems'] ?? 'None') . "\nUrgent Tasks: " . ($validated['urgent_tasks'] ?? 'None'),
                     'priority' => 'high',
                     'status' => 'pending',
                 ]);

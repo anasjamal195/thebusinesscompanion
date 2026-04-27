@@ -11,22 +11,46 @@
         <form action="{{ route('onboarding.complete') }}" method="POST" class="space-y-8">
             @csrf
             
-            <div class="space-y-2">
-                <label for="project_name" class="block text-sm font-bold text-slate-700 ml-1">Project Name</label>
-                <input type="text" name="project_name" id="project_name" required placeholder="name your first project (e.g. Acme Corp Launch)"
-                    class="w-full px-6 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all duration-300 font-medium">
+            <div class="space-y-4">
+                <div class="space-y-2">
+                    <label for="project_name" class="block text-sm font-bold text-slate-700 ml-1">Project Name</label>
+                    <input type="text" name="project_name" id="project_name" required placeholder="Name your first project (e.g. Acme Corp Launch)"
+                        class="w-full px-6 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all duration-300 font-medium">
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="space-y-2">
+                        <label for="project_url" class="block text-sm font-bold text-slate-700 ml-1">Project URL (Optional)</label>
+                        <input type="url" name="project_url" id="project_url" placeholder="https://example.com"
+                            class="w-full px-6 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all duration-300 font-medium">
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <label for="project_description" class="block text-sm font-bold text-slate-700 ml-1">Project Objective / Description</label>
+                    <textarea name="project_description" id="project_description" rows="2" placeholder="What are we trying to achieve with this project?"
+                        class="w-full px-6 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all duration-300 font-medium"></textarea>
+                </div>
+
+                <div class="space-y-2">
+                    <label for="success_metric" class="block text-sm font-bold text-slate-700 ml-1">Success Metric (Optional)</label>
+                    <input type="text" name="success_metric" id="success_metric" placeholder="What would make this project a success? (e.g. 10% increase in leads)"
+                        class="w-full px-6 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all duration-300 font-medium">
+                </div>
             </div>
 
-            <div class="space-y-2">
-                <label for="current_problems" class="block text-sm font-bold text-slate-700 ml-1">Current Challenges (Optional)</label>
-                <textarea name="current_problems" id="current_problems" rows="2" placeholder="e.g. Sales plateaued, hiring is slow, scaling technical infrastructure..."
-                    class="w-full px-6 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all duration-300"></textarea>
-            </div>
+            <div class="space-y-4 pt-4 border-t border-slate-100">
+                <div class="space-y-2">
+                    <label for="current_problems" class="block text-sm font-bold text-slate-700 ml-1">Current Challenges & Pain Points</label>
+                    <textarea name="current_problems" id="current_problems" rows="2" placeholder="e.g. Sales plateaued, hiring is slow, scaling technical infrastructure..."
+                        class="w-full px-6 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all duration-300 font-medium"></textarea>
+                </div>
 
-            <div class="space-y-2">
-                <label for="urgent_tasks" class="block text-sm font-bold text-slate-700 ml-1">Most Urgent Task (Optional)</label>
-                <textarea name="urgent_tasks" id="urgent_tasks" rows="2" placeholder="e.g. Need a GTM strategy for our new feature launch by Friday..."
-                    class="w-full px-6 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all duration-300"></textarea>
+                <div class="space-y-2">
+                    <label for="urgent_tasks" class="block text-sm font-bold text-slate-700 ml-1">Most Urgent Task</label>
+                    <textarea name="urgent_tasks" id="urgent_tasks" rows="2" placeholder="e.g. Need a GTM strategy for our new feature launch by Friday..."
+                        class="w-full px-6 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all duration-300 font-medium"></textarea>
+                </div>
             </div>
 
             <div class="pt-6 flex flex-col items-center gap-4">

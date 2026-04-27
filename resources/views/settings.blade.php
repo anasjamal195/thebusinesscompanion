@@ -66,6 +66,16 @@
                     <label class="text-xs font-black text-gray-400 uppercase tracking-widest px-1">Describe your Business</label>
                     <textarea name="business_description" rows="4" class="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all font-semibold">{{ old('business_description', $profile->business_description) }}</textarea>
                 </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-2">
+                        <label class="text-xs font-black text-gray-400 uppercase tracking-widest px-1">Current Challenges & Pain Points</label>
+                        <textarea name="current_problems" rows="4" class="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all font-semibold">{{ old('current_problems', $profile->current_problems) }}</textarea>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-xs font-black text-gray-400 uppercase tracking-widest px-1">Most Urgent Task</label>
+                        <textarea name="urgent_tasks" rows="4" class="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all font-semibold">{{ old('urgent_tasks', $profile->urgent_tasks) }}</textarea>
+                    </div>
+                </div>
                 <div class="space-y-2">
                     <label class="text-xs font-black text-gray-400 uppercase tracking-widest px-1">Experience Level</label>
                     <select name="experience_level" class="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all font-semibold appearance-none">

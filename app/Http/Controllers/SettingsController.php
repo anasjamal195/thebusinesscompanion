@@ -31,6 +31,8 @@ class SettingsController extends Controller
             'industry' => 'required|string|max:255',
             'experience_level' => 'required|in:beginner,intermediate,expert',
             'companion_id' => 'required|exists:ai_characters,id',
+            'current_problems' => 'nullable|string',
+            'urgent_tasks' => 'nullable|string',
         ]);
 
         $user->update([
@@ -47,6 +49,8 @@ class SettingsController extends Controller
                 'business_description' => $validated['business_description'],
                 'industry' => $validated['industry'],
                 'experience_level' => $validated['experience_level'],
+                'current_problems' => $validated['current_problems'],
+                'urgent_tasks' => $validated['urgent_tasks'],
             ]
         );
 
