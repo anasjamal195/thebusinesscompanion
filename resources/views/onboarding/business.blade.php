@@ -1,84 +1,47 @@
-@php
-    $title = 'Business Info';
-    $pageTitle = 'Business Info';
-    $activeNav = 'dashboard';
-@endphp
-
-@extends('layouts.app')
+@extends('layouts.onboarding', ['step' => 4])
 
 @section('content')
-    <div class="max-w-3xl">
-        <x-card>
-            <div>
-                <h2 class="text-base font-semibold text-gray-900">Tell us about your business</h2>
-                <p class="mt-1 text-sm text-gray-500">Dummy fields only. Focus is UI structure and style.</p>
+<div class="max-w-3xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+    <div class="text-center space-y-4">
+        <h1 class="text-4xl md:text-5xl font-black text-slate-900 tracking-tight">Business Profile</h1>
+        <p class="text-lg text-slate-500 max-w-2xl mx-auto">Set up your workspace. This helps your companion understand your business context from day one.</p>
+    </div>
+
+    <div class="bg-white rounded-[3rem] p-8 md:p-12 shadow-xl shadow-slate-200/50 border border-slate-100">
+        <form action="{{ route('onboarding.business.save') }}" method="POST" class="space-y-8">
+            @csrf
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="space-y-2">
+                    <label for="business_name" class="block text-sm font-bold text-slate-700 ml-1">Company Name</label>
+                    <input type="text" name="business_name" id="business_name" value="{{ old('business_name', auth()->user()->profile->business_name ?? '') }}" required placeholder="Acme Corp"
+                        class="w-full px-6 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all duration-300">
+                </div>
+
+                <div class="space-y-2">
+                    <label for="business_url" class="block text-sm font-bold text-slate-700 ml-1">Website URL</label>
+                    <input type="url" name="business_url" id="business_url" value="{{ old('business_url', auth()->user()->profile->business_url ?? '') }}" placeholder="https://acme.com"
+                        class="w-full px-6 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all duration-300">
+                </div>
             </div>
 
-            <form method="POST" action="{{ route('onboarding.business.save') }}" class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
-                @csrf
-                <div class="sm:col-span-2">
-                    <label class="text-sm font-medium text-gray-900">Business name</label>
-                    <input name="business_name" value="{{ old('business_name') }}" class="mt-2 w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm focus:border-blue-500 focus:ring-blue-500" placeholder="Acme Inc." required />
-                    @error('business_name')<p class="mt-2 text-sm text-red-600">{{ $message }}</p>@enderror
-                </div>
+            <div class="space-y-2">
+                <label for="business_description" class="block text-sm font-bold text-slate-700 ml-1">Business Description</label>
+                <textarea name="business_description" id="business_description" rows="4" required placeholder="Briefly describe what your business does, your mission, and your core products or services..."
+                    class="w-full px-6 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all duration-300">{{ old('business_description', auth()->user()->profile->business_description ?? '') }}</textarea>
+            </div>
 
-                <div>
-                    <label class="text-sm font-medium text-gray-900">Industry</label>
-                    <input name="industry" value="{{ old('industry') }}" class="mt-2 w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm focus:border-blue-500 focus:ring-blue-500" placeholder="SaaS" />
-                    @error('industry')<p class="mt-2 text-sm text-red-600">{{ $message }}</p>@enderror
+            <div class="pt-4 flex justify-between items-center">
+                <div class="flex items-center gap-2 text-slate-400">
+                    <span class="material-symbols-outlined text-[20px]">verified_user</span>
+                    <span class="text-sm">Information remains private</span>
                 </div>
-
-                <div>
-                    <label class="text-sm font-medium text-gray-900">Business type</label>
-                    <select name="business_type" class="mt-2 w-full rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm focus:border-blue-500 focus:ring-blue-500" required>
-                        @php $bt = old('business_type', 'startup'); @endphp
-                        @foreach (['freelancer','startup','agency','ecommerce','local_business','enterprise'] as $type)
-                            <option value="{{ $type }}" {{ $bt === $type ? 'selected' : '' }}>{{ ucfirst(str_replace('_',' ', $type)) }}</option>
-                        @endforeach
-                    </select>
-                    @error('business_type')<p class="mt-2 text-sm text-red-600">{{ $message }}</p>@enderror
-                </div>
-
-                <div class="sm:col-span-2">
-                    <label class="text-sm font-medium text-gray-900">Target audience</label>
-                    <textarea name="target_audience" rows="3" class="mt-2 w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm focus:border-blue-500 focus:ring-blue-500" placeholder="Who do you serve?">{{ old('target_audience') }}</textarea>
-                    @error('target_audience')<p class="mt-2 text-sm text-red-600">{{ $message }}</p>@enderror
-                </div>
-
-                <div class="sm:col-span-2">
-                    <label class="text-sm font-medium text-gray-900">Goals</label>
-                    <textarea name="goals" rows="3" class="mt-2 w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm focus:border-blue-500 focus:ring-blue-500" placeholder="What do you want to achieve?">{{ old('goals') }}</textarea>
-                    @error('goals')<p class="mt-2 text-sm text-red-600">{{ $message }}</p>@enderror
-                </div>
-
-                <div class="sm:col-span-2">
-                    <label class="text-sm font-medium text-gray-900">Challenges</label>
-                    <textarea name="challenges" rows="3" class="mt-2 w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm focus:border-blue-500 focus:ring-blue-500" placeholder="What’s hard right now?">{{ old('challenges') }}</textarea>
-                    @error('challenges')<p class="mt-2 text-sm text-red-600">{{ $message }}</p>@enderror
-                </div>
-
-                <div class="sm:col-span-2">
-                    <label class="text-sm font-medium text-gray-900">What are you trying to achieve?</label>
-                    <div class="mt-2 grid grid-cols-1 gap-3 sm:grid-cols-3">
-                        @php $xl = old('experience_level', 'beginner'); @endphp
-                        @foreach (['beginner','intermediate','expert'] as $level)
-                            <label class="cursor-pointer">
-                                <input type="radio" name="experience_level" value="{{ $level }}" class="peer sr-only" {{ $xl === $level ? 'checked' : '' }} />
-                                <div class="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm shadow-sm transition hover:border-blue-500 peer-checked:border-blue-600 peer-checked:bg-blue-50">
-                                    <div class="font-semibold text-gray-900">{{ ucfirst($level) }}</div>
-                                    <div class="mt-0.5 text-xs text-gray-500">Experience level</div>
-                                </div>
-                            </label>
-                        @endforeach
-                    </div>
-                    @error('experience_level')<p class="mt-2 text-sm text-red-600">{{ $message }}</p>@enderror
-                </div>
-
-                <div class="sm:col-span-2 mt-2 flex items-center justify-between gap-3">
-                    <x-button variant="outline" href="{{ route('onboarding.role') }}">Back</x-button>
-                    <x-button type="submit">Continue</x-button>
-                </div>
-            </form>
-        </x-card>
+                <button type="submit" class="group px-12 py-4 bg-primary hover:bg-primary-container text-white font-bold rounded-2xl shadow-xl shadow-primary/20 transition-all active:scale-95 flex items-center gap-2">
+                    Next: Calling Setup
+                    <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">headset_mic</span>
+                </button>
+            </div>
+        </form>
     </div>
+</div>
 @endsection

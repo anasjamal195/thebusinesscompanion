@@ -22,7 +22,9 @@ class GenerateAiCharacters extends Command
         $force = (bool) $this->option('force');
 
         $this->info('Wiping out previous characters...');
+        \Illuminate\Support\Facades\Schema::disableForeignKeyConstraints();
         AiCharacter::truncate();
+        \Illuminate\Support\Facades\Schema::enableForeignKeyConstraints();
 
         $this->info('Generating 3 characters per occupation...');
 

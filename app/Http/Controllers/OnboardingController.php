@@ -3,28 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\ProcessTaskJob;
+use App\Models\AiCharacter;
 use App\Models\Project;
 use App\Models\Task;
+use App\Models\User;
 use App\Models\UserProfile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 
 class OnboardingController extends Controller
 {
+    // Step 1: Role Selection (Guest)
     public function role()
     {
         return view('onboarding.role');
-    }
-
-    public function business()
-    {
-        return view('onboarding.business');
-    }
-
-    public function character()
-    {
-        return view('onboarding.character');
     }
 
     public function saveRole(Request $request)
@@ -33,110 +28,207 @@ class OnboardingController extends Controller
             'role' => ['required', 'string', 'max:255'],
         ]);
 
-        $request->user()->update([
-            'role' => $validated['role'],
-        ]);
+        Session::put('onboarding.role', $validated['role']);
 
-        return redirect()->route('onboarding.business');
+        return redirect()->route('onboarding.companion');
     }
 
-    public function saveBusinessInfo(Request $request)
+    // Step 2: Companion Selection (Guest)
+    public function companion()
+    {
+        $role = Session::get('onboarding.role', 'Founder');
+        $companions = AiCharacter::where('occupation', $role)->get();
+        
+        // Fallback if no companions for role
+        if ($companions->isEmpty()) {
+            $companions = AiCharacter::all();
+        }
+
+        return view('onboarding.companion', compact('companions'));
+    }
+
+    public function saveCompanion(Request $request)
+    {
+        $validated = $request->validate([
+            'companion_id' => ['required', 'exists:ai_characters,id'],
+        ]);
+
+        Session::put('onboarding.companion_id', $validated['companion_id']);
+
+        return redirect()->route('onboarding.checkout');
+    }
+
+    // Step 3: Checkout & Registration (Guest)
+    public function checkout()
+    {
+        $companionId = Session::get('onboarding.companion_id');
+        if (!$companionId) return redirect()->route('onboarding.role');
+        
+        $companion = AiCharacter::find($companionId);
+        return view('onboarding.checkout', compact('companion'));
+    }
+
+    public function processCheckout(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        // Create the user
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'role' => Session::get('onboarding.role'),
+            'companion_id' => Session::get('onboarding.companion_id'),
+        ]);
+
+        Auth::login($user);
+
+        $companion = AiCharacter::find($user->companion_id);
+
+        // Redirect to Stripe Checkout
+        return $user->newSubscription('default', $companion->stripe_price_id ?? 'price_default_placeholder')
+            ->checkout([
+                'success_url' => route('onboarding.business'),
+                'cancel_url' => route('onboarding.checkout'),
+            ]);
+    }
+
+    // Step 4: Business Information (Auth)
+    public function business()
+    {
+        return view('onboarding.business');
+    }
+
+    public function saveBusiness(Request $request)
     {
         $validated = $request->validate([
             'business_name' => ['required', 'string', 'max:255'],
+            'business_url' => ['nullable', 'url', 'max:255'],
+            'business_description' => ['required', 'string'],
+        ]);
+
+        UserProfile::updateOrCreate(
+            ['user_id' => Auth::id()],
+            $validated
+        );
+
+        return redirect()->route('onboarding.calling');
+    }
+
+    // Step 5: Calling Setup (Auth)
+    public function calling()
+    {
+        return view('onboarding.calling');
+    }
+
+    public function saveCalling(Request $request)
+    {
+        $validated = $request->validate([
+            'phone_number' => ['required', 'string', 'max:20'],
+            'availability_hours' => ['required', 'array'],
+            'max_call_duration' => ['required', 'integer', 'min:1', 'max:60'],
+            'daily_calling_limit' => ['required', 'integer', 'min:1', 'max:20'],
+        ]);
+
+        UserProfile::updateOrCreate(
+            ['user_id' => Auth::id()],
+            $validated
+        );
+
+        return redirect()->route('onboarding.method');
+    }
+
+    // Step 6: Onboarding Method Choice (Auth)
+    public function method()
+    {
+        return view('onboarding.method');
+    }
+
+    public function saveMethod(Request $request)
+    {
+        $method = $request->input('method');
+        
+        if ($method === 'call') {
+            // For now, call onboarding is just a concept, maybe redirect to a specialized landing
+            // But the user said "implement platform onboarding flow"
+            return redirect()->route('onboarding.details');
+        }
+
+        return redirect()->route('onboarding.details');
+    }
+
+    // Step 7: Platform Onboarding Details (Auth)
+    public function details()
+    {
+        return view('onboarding.details');
+    }
+
+    public function saveDetails(Request $request)
+    {
+        $validated = $request->validate([
             'business_type' => ['required', 'string', 'max:255'],
-            'industry' => ['nullable', 'string', 'max:255'],
+            'industry' => ['required', 'string', 'max:255'],
             'target_audience' => ['nullable', 'string'],
-            'goals' => ['nullable', 'string'],
-            'challenges' => ['nullable', 'string'],
             'experience_level' => ['required', 'in:beginner,intermediate,expert'],
         ]);
 
         UserProfile::updateOrCreate(
-            ['user_id' => $request->user()->id],
+            ['user_id' => Auth::id()],
             $validated
         );
 
-        return redirect()->route('onboarding.character');
+        return redirect()->route('onboarding.task');
     }
 
-    public function createInitialProjectAndTask(Request $request)
+    // Step 8: Optional Problem/Task (Auth)
+    public function task()
+    {
+        return view('onboarding.task');
+    }
+
+    public function complete(Request $request)
     {
         $validated = $request->validate([
-            'character_type' => ['nullable', 'string', 'max:255'],
-
-            'project_name' => ['required', 'string', 'max:255'],
-            'project_description' => ['nullable', 'string'],
-            'domain' => ['nullable', 'string', 'max:255'],
-            'objective' => ['nullable', 'string'],
-            'success_metric' => ['nullable', 'string'],
-
-            'task_title' => ['required', 'string', 'max:255'],
-            'task_description' => ['required', 'string'],
-            'priority' => ['required', 'in:low,medium,high'],
+            'current_problems' => ['nullable', 'string'],
+            'urgent_tasks' => ['nullable', 'string'],
         ]);
 
-        $user = $request->user();
+        $user = Auth::user();
         $profile = $user->profile;
 
-        return DB::transaction(function () use ($validated, $user, $profile) {
-            if (!empty($validated['character_type'])) {
-                $user->character_type = $validated['character_type'];
-            }
+        if ($validated['current_problems'] || $validated['urgent_tasks']) {
+            $profile->update($validated);
 
-            $project = Project::create([
-                'user_id' => $user->id,
-                'name' => $validated['project_name'],
-                'description' => $validated['project_description'] ?? null,
-                'domain' => $validated['domain'] ?? null,
-                'objective' => $validated['objective'] ?? null,
-                'success_metric' => $validated['success_metric'] ?? null,
-            ]);
+            // Create initial project and task
+            return DB::transaction(function () use ($user, $profile) {
+                $project = Project::create([
+                    'user_id' => $user->id,
+                    'name' => $profile->business_name . ' Initial Project',
+                    'description' => 'Initial project based on onboarding input.',
+                ]);
 
-            $context = [
-                'user' => [
-                    'role' => $user->role,
-                    'character_type' => $user->character_type,
-                ],
-                'business' => $profile ? [
-                    'business_name' => $profile->business_name,
-                    'business_type' => $profile->business_type,
-                    'industry' => $profile->industry,
-                    'target_audience' => $profile->target_audience,
-                    'goals' => $profile->goals,
-                    'challenges' => $profile->challenges,
-                    'experience_level' => $profile->experience_level,
-                ] : null,
-                'project' => [
-                    'name' => $project->name,
-                    'description' => $project->description,
-                    'domain' => $project->domain,
-                    'objective' => $project->objective,
-                    'success_metric' => $project->success_metric,
-                ],
-                'task' => [
-                    'title' => $validated['task_title'],
-                    'input_text' => $validated['task_description'],
-                    'priority' => $validated['priority'],
-                ],
-            ];
+                $task = Task::create([
+                    'project_id' => $project->id,
+                    'user_id' => $user->id,
+                    'title' => 'Initial Assessment',
+                    'input_text' => "Current Problems: " . $profile->current_problems . "\nUrgent Tasks: " . $profile->urgent_tasks,
+                    'priority' => 'high',
+                    'status' => 'pending',
+                ]);
 
-            $task = Task::create([
-                'project_id' => $project->id,
-                'user_id' => $user->id,
-                'title' => $validated['task_title'],
-                'input_text' => $validated['task_description'],
-                'priority' => $validated['priority'],
-                'status' => 'pending',
-                'context_snapshot' => $context,
-            ]);
+                ProcessTaskJob::dispatch($task->id);
 
-            $user->onboarding_completed = true;
-            $user->save();
+                $user->update(['onboarding_completed' => true]);
 
-            ProcessTaskJob::dispatch($task->id);
+                return redirect()->route('projects.show', $project);
+            });
+        }
 
-            return redirect()->route('projects.show', $project);
-        });
+        $user->update(['onboarding_completed' => true]);
+        return redirect()->route('dashboard');
     }
 }

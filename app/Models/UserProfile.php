@@ -16,6 +16,18 @@ class UserProfile extends Model
         'goals',
         'challenges',
         'experience_level',
+        'phone_number',
+        'availability_hours',
+        'max_call_duration',
+        'daily_calling_limit',
+        'business_url',
+        'business_description',
+        'current_problems',
+        'urgent_tasks',
+    ];
+
+    protected $casts = [
+        'availability_hours' => 'array',
     ];
 
     public function user(): BelongsTo

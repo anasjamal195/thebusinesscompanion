@@ -112,7 +112,7 @@
               </p>
             </div>
             <div class="flex flex-wrap gap-4 pt-4">
-              <a href="{{ url('/companions') }}"
+              <a href="{{ route('onboarding.role') }}"
                 class="px-8 py-4 bg-primary hover:bg-primary-container text-white font-bold rounded-xl shadow-lg hover:shadow-primary/20 transition-all active:scale-95 text-lg flex items-center gap-2">
                 Hire my Companion <span class="material-symbols-outlined">arrow_forward</span>
               </a>

@@ -13,7 +13,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Cashier\Billable;
 
-#[Fillable(['name', 'email', 'password', 'role', 'character_type', 'onboarding_completed'])]
+#[Fillable(['name', 'email', 'password', 'role', 'character_type', 'companion_id', 'onboarding_completed'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
