@@ -100,7 +100,10 @@ class SyncRetellAgents extends Command
         $agentData = [
             'agent_name' => "Companion: " . $character->name,
             'voice_id' => $character->meta['voice_id'] ?? '11labs-Adrian',
-            'llm_id' => $llmId,
+            'response_engine' => [
+                'type' => 'retell-llm',
+                'llm_id' => $llmId,
+            ],
             'webhook_url' => route('retell.webhook'),
             'avatar_url' => $character->avatar_url,
         ];
