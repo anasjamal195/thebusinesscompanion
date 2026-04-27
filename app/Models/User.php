@@ -43,4 +43,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Project::class);
     }
+
+    public function companion(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(AiCharacter::class, 'companion_id');
+    }
+
+    public function calls(): HasMany
+    {
+        return $this->hasMany(Call::class);
+    }
 }

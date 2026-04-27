@@ -179,12 +179,19 @@ class OnboardingController extends Controller
         $method = $request->input('method');
 
         if ($method === 'call') {
-            // For now, call onboarding is just a concept, maybe redirect to a specialized landing
-            // But the user said "implement platform onboarding flow"
-            return redirect()->route('onboarding.details');
+            // Dispatch call initiation with 5 second delay
+            \App\Jobs\InitiateOnboardingCallJob::dispatch(Auth::id())->delay(now()->addSeconds(5));
+            return redirect()->route('onboarding.waiting_call');
         }
 
         return redirect()->route('onboarding.details');
+    }
+
+    public function waitingCall()
+    {
+        $user = Auth::user();
+        $companion = $user->companion;
+        return view('onboarding.waiting_call', compact('companion'));
     }
 
     // Step 7: Platform Onboarding Details (Auth)

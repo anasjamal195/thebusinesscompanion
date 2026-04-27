@@ -62,6 +62,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/onboarding/method', [OnboardingController::class, 'method'])->name('onboarding.method');
     Route::post('/onboarding/method', [OnboardingController::class, 'saveMethod'])->name('onboarding.method.save');
 
+    Route::get('/onboarding/waiting-call', [OnboardingController::class, 'waitingCall'])->name('onboarding.waiting_call');
+
     Route::get('/onboarding/details', [OnboardingController::class, 'details'])->name('onboarding.details');
     Route::post('/onboarding/details', [OnboardingController::class, 'saveDetails'])->name('onboarding.details.save');
 
@@ -85,3 +87,4 @@ Route::middleware('auth')->group(function () {
     Route::get('/reports/{report}/pdf', [ReportController::class, 'pdf'])->name('reports.pdf');
 });
 Route::post('/stripe/webhook', [App\Http\Controllers\StripeWebhookController::class, 'handleWebhook']);
+Route::post('/retell/webhook', [\App\Http\Controllers\RetellWebhookController::class, 'handle']);
