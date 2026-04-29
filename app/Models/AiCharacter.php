@@ -18,7 +18,7 @@ class AiCharacter extends Model
         'monthly_price',
         'is_premium',
         'stripe_price_id',
-        'retell_agent_id', 'retell_llm_id',
+        'vapi_assistant_id',
     ];
 
     protected $casts = [

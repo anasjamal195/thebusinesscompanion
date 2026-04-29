@@ -3,7 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\User;
-use App\Services\RetellService;
+use App\Services\VapiService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -27,11 +27,11 @@ class InitiateOnboardingCallJob implements ShouldQueue
     /**
      * Execute the job.
      */
-    public function handle(RetellService $retellService): void
+    public function handle(VapiService $vapiService): void
     {
         $user = User::find($this->userId);
         if ($user) {
-            $retellService->createCall($user);
+            $vapiService->createCall($user);
         }
     }
 }

@@ -53,10 +53,10 @@ return [
         'webhook_secret' => env('STRIPE_WEBHOOK_SECRET'),
     ],
 
-    'retell' => [
-        'api_key' => env('RETELL_API_KEY'),
-        'agent_id' => env('RETELL_AGENT_ID'),
-        'from_number' => env('RETELL_FROM_NUMBER'),
+    'vapi' => [
+        'private_key' => env('VAPI_PRIVATE_KEY'),
+        'public_key' => env('VAPI_PUBLIC_KEY'),
+        'phone_number_id' => env('VAPI_PHONE_NUMBER_ID', '4fdd69b3-a1c1-4b17-8a3e-156a02f0a454'),
     ],
 
 ];

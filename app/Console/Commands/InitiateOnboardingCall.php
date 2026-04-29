@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\User;
-use App\Services\RetellService;
+use App\Services\VapiService;
 use Illuminate\Console\Command;
 
 class InitiateOnboardingCall extends Command
@@ -20,12 +20,12 @@ class InitiateOnboardingCall extends Command
      *
      * @var string
      */
-    protected $description = 'Initiate an onboarding call for a specific user using Retell AI';
+    protected $description = 'Initiate an onboarding call for a specific user using Vapi AI';
 
     /**
      * Execute the console command.
      */
-    public function handle(RetellService $retellService)
+    public function handle(VapiService $vapiService)
     {
         $userId = $this->argument('user_id');
         $user = User::find($userId);
@@ -42,11 +42,11 @@ class InitiateOnboardingCall extends Command
 
         $this->info("Initiating onboarding call for {$user->name}...");
         
-        $result = $retellService->createCall($user);
+        $result = $vapiService->createCall($user);
 
         if ($result) {
             $this->info("Call successfully initiated!");
-            $this->line("Call ID: " . ($result['call_id'] ?? 'N/A'));
+            $this->line("Call ID: " . ($result['id'] ?? 'N/A'));
             return 0;
         }
 

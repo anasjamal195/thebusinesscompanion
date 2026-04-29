@@ -11,48 +11,46 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
-class RetellWebhookController extends Controller
+class VapiWebhookController extends Controller
 {
     /**
-     * Handle incoming webhooks from Retell AI.
+     * Handle incoming webhooks from Vapi AI.
      */
     public function handle(Request $request)
     {
         $payload = $request->all();
-        $event = $payload['event'] ?? '';
-        $callData = $payload['call'] ?? [];
-        $callId = $callData['call_id'] ?? null;
+        $message = $payload['message'] ?? [];
+        $type = $message['type'] ?? '';
+        $callData = $message['call'] ?? [];
+        $callId = $callData['id'] ?? null;
 
-        Log::info("Retell Webhook Received: {$event}", ['call_id' => $callId]);
+        Log::info("Vapi Webhook Received: {$type}", ['call_id' => $callId]);
 
         if (!$callId) {
-            return response()->json(['status' => 'error', 'message' => 'No call_id provided']);
+            return response()->json(['status' => 'error', 'message' => 'No call id provided']);
         }
 
         // Find the call in our database
         $call = Call::where('call_id', $callId)->first();
 
-        // If it's an inbound call we don't know about yet, we might need a different lookup logic
-        // But for this task, we focus on outbound onboarding calls.
-
-        switch ($event) {
-            case 'call_started':
+        switch ($type) {
+            case 'call-started':
                 if ($call) $call->update(['status' => 'in-progress']);
                 break;
 
-            case 'call_ended':
+            case 'call-ended':
                 if ($call) {
                     $call->update([
                         'status' => 'completed',
-                        'duration' => $callData['duration_ms'] / 1000,
+                        'duration' => ($callData['endedAt'] ?? 0) ? (strtotime($callData['endedAt']) - strtotime($callData['startedAt'])) : 0,
                         'transcript' => $callData['transcript'] ?? null,
-                        'recording_url' => $callData['recording_url'] ?? null,
+                        'recording_url' => $callData['recordingUrl'] ?? null,
                     ]);
                 }
                 break;
 
-            case 'call_analyzed':
-                $this->processCallAnalysis($callData, $call);
+            case 'end-of-call-report':
+                $this->processCallReport($message, $call);
                 break;
         }
 
@@ -60,24 +58,30 @@ class RetellWebhookController extends Controller
     }
 
     /**
-     * Process the analyzed call data and update the user's profile/projects.
+     * Process the end-of-call report and update user data.
      */
-    protected function processCallAnalysis(array $callData, ?Call $call)
+    protected function processCallReport(array $message, ?Call $call)
     {
-        $extractedData = $callData['retell_llm_extracted_variables'] ?? [];
+        $callData = $message['call'] ?? [];
+        $analysis = $message['analysis'] ?? [];
+        
+        // Vapi might store variables in assistantOverrides if updated via tools
+        // Or we might need to rely on the summary/transcript analysis.
+        // For now, let's look for variableValues in the message
+        $extractedData = $message['artifact']['variables'] ?? []; // Vapi structure for updated variables
         
         // Identify the user
-        $user = $call ? $call->user : $this->findUserByPhoneNumber($callData['to_number']);
+        $user = $call ? $call->user : $this->findUserByPhoneNumber($callData['customer']['number'] ?? '');
 
         if (!$user) {
-            Log::error("Retell Webhook: User not found for call analysis", ['call_id' => $callData['call_id']]);
+            Log::error("Vapi Webhook: User not found for call report", ['call_id' => $callData['id']]);
             return;
         }
 
-        DB::transaction(function() use ($user, $extractedData, $call) {
+        DB::transaction(function() use ($user, $extractedData, $call, $callData) {
             $profile = $user->profile;
 
-            // Update Profile
+            // Map Vapi variables to profile (assuming they match character prompts)
             $profile->update([
                 'business_type' => $extractedData['business_type'] ?? $profile->business_type,
                 'industry' => $extractedData['industry'] ?? $profile->industry,
@@ -87,16 +91,16 @@ class RetellWebhookController extends Controller
                 'urgent_tasks' => $extractedData['urgent_tasks'] ?? $profile->urgent_tasks,
             ]);
 
-            // Only create project if one doesn't exist for this name, or handle differently
             $projectName = $extractedData['project_name'] ?? 'Initial Project';
             
-            $project = Project::create([
-                'user_id' => $user->id,
-                'name' => $projectName,
-                'domain' => $extractedData['project_url'] ?? null,
-                'description' => $extractedData['project_description'] ?? 'Project created via onboarding call.',
-                'success_metric' => $extractedData['success_metric'] ?? null,
-            ]);
+            $project = Project::updateOrCreate(
+                ['user_id' => $user->id, 'name' => $projectName],
+                [
+                    'domain' => $extractedData['project_url'] ?? null,
+                    'description' => $extractedData['project_description'] ?? 'Project created via Vapi onboarding call.',
+                    'success_metric' => $extractedData['success_metric'] ?? null,
+                ]
+            );
 
             // Create Initial Task
             if (!empty($extractedData['current_problems']) || !empty($extractedData['urgent_tasks'])) {
@@ -115,10 +119,11 @@ class RetellWebhookController extends Controller
             // Mark onboarding as completed
             $user->update(['onboarding_completed' => true]);
             
-            // Update call metadata with extraction results
+            // Update call metadata
             if ($call) {
                 $meta = $call->metadata;
                 $meta['extracted_data'] = $extractedData;
+                $meta['summary'] = $message['analysis']['summary'] ?? null;
                 $call->update(['metadata' => $meta]);
             }
         });

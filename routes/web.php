@@ -87,4 +87,4 @@ Route::middleware('auth')->group(function () {
     Route::get('/reports/{report}/pdf', [ReportController::class, 'pdf'])->name('reports.pdf');
 });
 Route::post('/stripe/webhook', [App\Http\Controllers\StripeWebhookController::class, 'handleWebhook']);
-Route::post('/retell/webhook', [\App\Http\Controllers\RetellWebhookController::class, 'handle'])->name('retell.webhook');
+Route::post('/vapi/webhook', [\App\Http\Controllers\VapiWebhookController::class, 'handle'])->name('vapi.webhook');

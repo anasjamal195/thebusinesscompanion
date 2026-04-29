@@ -7,14 +7,14 @@ use App\Models\User;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
-class RetellService
+class VapiService
 {
     protected string $apiKey;
-    protected string $baseUrl = 'https://api.retellai.com';
+    protected string $baseUrl = 'https://api.vapi.ai';
 
     public function __construct()
     {
-        $this->apiKey = config('services.retell.api_key');
+        $this->apiKey = config('services.vapi.private_key');
     }
 
     /**
@@ -25,75 +25,75 @@ class RetellService
         $companion = $user->companion;
         $phoneNumber = $user->profile->phone_number;
 
-        if (!$companion || !$companion->retell_agent_id) {
-            Log::error("Cannot initiate Retell call: User {$user->id} companion has no Retell Agent ID.");
+        if (!$companion || !$companion->vapi_assistant_id) {
+            Log::error("Cannot initiate Vapi call: User {$user->id} companion has no Vapi Assistant ID.");
             return false;
         }
 
         if (!$phoneNumber) {
-            Log::error("Cannot initiate Retell call: User {$user->id} has no phone number.");
+            Log::error("Cannot initiate Vapi call: User {$user->id} has no phone number.");
             return false;
         }
 
-        // Prepare dynamic variables loosely coupled with the agent prompt
-        $dynamicVariables = $this->prepareDynamicVariables($user, $taskType);
+        // Prepare dynamic variables/assistant overrides
+        $assistantOverrides = $this->prepareAssistantOverrides($user, $taskType);
         
         // Merge with any extra metadata provided
-        $dynamicVariables = array_merge($dynamicVariables, $extraMetadata);
+        $assistantOverrides['variableValues'] = array_merge($assistantOverrides['variableValues'] ?? [], $extraMetadata);
 
         try {
             $response = Http::withToken($this->apiKey)
-                ->post("{$this->baseUrl}/v2/create-phone-call", [
-                    'from_number' => config('services.retell.from_number'),
-                    'to_number' => $phoneNumber,
-                    'override_agent_id' => $companion->retell_agent_id,
-                    'retell_llm_dynamic_variables' => $dynamicVariables,
+                ->post("{$this->baseUrl}/call", [
+                    'phoneNumberId' => config('services.vapi.phone_number_id'),
+                    'assistantId' => $companion->vapi_assistant_id,
+                    'customer' => [
+                        'number' => $phoneNumber,
+                        'name' => $user->name,
+                    ],
+                    'assistantOverrides' => $assistantOverrides,
                 ]);
 
             if ($response->successful()) {
-                $retellCall = $response->json();
+                $vapiCall = $response->json();
                 
                 // Persist the call in our database
                 Call::create([
-                    'call_id' => $retellCall['call_id'],
+                    'call_id' => $vapiCall['id'],
                     'user_id' => $user->id,
                     'ai_character_id' => $companion->id,
                     'status' => 'initiated',
                     'direction' => 'outbound',
-                    'metadata' => array_merge($dynamicVariables, [
+                    'metadata' => array_merge($assistantOverrides['variableValues'], [
                         'task_type' => $taskType,
-                        'retell_response' => $retellCall
+                        'vapi_response' => $vapiCall
                     ]),
                 ]);
 
-                Log::info("Retell call initiated for User {$user->id}", ['call_id' => $retellCall['call_id']]);
-                return $retellCall;
+                Log::info("Vapi call initiated for User {$user->id}", ['call_id' => $vapiCall['id']]);
+                return $vapiCall;
             }
 
-            Log::error("Retell API error: " . $response->body());
+            Log::error("Vapi API error: " . $response->body());
             return false;
         } catch (\Exception $e) {
-            Log::error("Retell Exception: " . $e->getMessage());
+            Log::error("Vapi Exception: " . $e->getMessage());
             return false;
         }
     }
 
     /**
-     * Prepare variables that match the placeholders in the Retell Agent prompt.
+     * Prepare overrides and variables for the Vapi Assistant.
      */
-    protected function prepareDynamicVariables(User $user, string $taskType): array
+    protected function prepareAssistantOverrides(User $user, string $taskType): array
     {
-        $variables = [
-            'user_name' => $user->name,
-            'user_role' => $user->role ?? 'Founder',
-            'dynamic_task_instructions' => $this->getTaskInstructions($taskType),
+        return [
+            'variableValues' => [
+                'user_name' => $user->name,
+                'user_role' => $user->role ?? 'Founder',
+                'dynamic_task_instructions' => $this->getTaskInstructions($taskType),
+                'onboarding_guide' => $taskType === 'onboarding' ? $this->getOnboardingGuide() : '',
+            ]
         ];
-
-        if ($taskType === 'onboarding') {
-            $variables['onboarding_guide'] = $this->getOnboardingGuide();
-        }
-
-        return $variables;
     }
 
     protected function getTaskInstructions(string $taskType): string
