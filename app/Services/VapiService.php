@@ -63,10 +63,11 @@ class VapiService
                     'ai_character_id' => $companion->id,
                     'status' => 'initiated',
                     'direction' => 'outbound',
-                    'metadata' => array_merge($assistantOverrides['variableValues'], [
+                    'metadata' => [
                         'task_type' => $taskType,
+                        'variable_values' => $assistantOverrides['variableValues'],
                         'vapi_response' => $vapiCall
-                    ]),
+                    ],
                 ]);
 
                 Log::info("Vapi call initiated for User {$user->id}", ['call_id' => $vapiCall['id']]);
@@ -86,12 +87,56 @@ class VapiService
      */
     protected function prepareAssistantOverrides(User $user, string $taskType): array
     {
+        $companion = $user->companion;
+        $characterName = $companion->name ?? 'Assistant';
+        $characterOccupation = $companion->occupation ?? 'Business Expert';
+
         return [
             'variableValues' => [
                 'user_name' => $user->name,
                 'user_role' => $user->role ?? 'Founder',
                 'dynamic_task_instructions' => $this->getTaskInstructions($taskType),
                 'onboarding_guide' => $taskType === 'onboarding' ? $this->getOnboardingGuide() : '',
+            ],
+            'model' => [
+                'messages' => [
+                    [
+                        'role' => 'system',
+                        'content' => "You are {$characterName}, an expert {$characterOccupation} and business companion. Your goal is to help the user onboard while maintaining your professional identity. " . 
+                                     "Use the 'report_onboarding_data' tool as soon as you collect any of the required information. " .
+                                     "DO NOT wait until the end of the call to report data. Report it as you get it."
+                    ]
+                ]
+            ],
+            'tools' => [
+                [
+                    'type' => 'function',
+                    'function' => [
+                        'name' => 'report_onboarding_data',
+                        'description' => 'Report gathered onboarding information live during the call.',
+                        'parameters' => [
+                            'type' => 'object',
+                            'properties' => [
+                                'field' => [
+                                    'type' => 'string',
+                                    'enum' => ['business_type', 'industry', 'target_audience', 'experience_level', 'project_name', 'project_description', 'first_task', 'call_followup_preference']
+                                ],
+                                'value' => ['type' => 'string']
+                            ],
+                            'required' => ['field', 'value']
+                        ]
+                    ],
+                    'server' => [
+                        'url' => route('vapi.webhook') // Ensure this route exists and is accessible
+                    ]
+                ],
+                [
+                    'type' => 'function',
+                    'function' => [
+                        'name' => 'endCall',
+                        'description' => 'Ends the call after onboarding is finished.'
+                    ]
+                ]
             ]
         ];
     }
@@ -99,22 +144,30 @@ class VapiService
     protected function getTaskInstructions(string $taskType): string
     {
         return match ($taskType) {
-            'onboarding' => "Your primary task is to onboard the user. Welcome them and collect their business details and initial project goals as per the guide.",
-            'follow_up' => "Follow up on the pending tasks we discussed. Ask if they need any help with the current project blockages.",
-            default => "Have a natural conversation and assist the user with their business needs.",
+            'onboarding' => "Welcome the user and collect their business details, first project name, and first task. " .
+                            "Finally, ask if they want to receive updates via call after task completion. " .
+                            "Once finished, use the 'endCall' tool to terminate the call.",
+            'follow_up' => "Follow up on the pending tasks. Ask if they need help.",
+            default => "Assist the user with their business needs.",
         };
     }
 
     protected function getOnboardingGuide(): string
     {
-        return "GOAL: Collect information for two sections:
-        1. Business Details: Business Type, Industry, Target Audience, and Experience Level.
-        2. Initial Project: Project Name, URL (optional), Description, Success Metric, Current Problems, and Urgent Tasks.
+        return "REQUIRED FIELDS TO COLLECT:
+        1. Business Type (e.g. SaaS, E-commerce, Agency)
+        2. Industry
+        3. Target Audience
+        4. Experience Level
+        5. First Project Name
+        6. First Project Description
+        7. First Task to execute
+        8. Call Follow-up Preference (Yes/No for receiving calls after task completion)
         
-        FLOW:
-        - Introduce yourself warmly.
+        INSTRUCTIONS:
+        - Be warm and professional.
         - Ask questions one by one.
-        - Confirm you've received everything.
-        - End with: \"I'll get to you once this is done\".";
+        - USE THE 'report_onboarding_data' tool immediately after the user provides an answer for any field.
+        - After all data is collected, use the 'endCall' tool to end the call.";
     }
 }

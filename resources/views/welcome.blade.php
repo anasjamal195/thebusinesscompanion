@@ -96,10 +96,10 @@
       <div class="flex items-center gap-8">
         <a href="#"
           class="hidden md:block text-[15px] font-semibold text-white/70 hover:text-white transition-colors">Sign in</a>
-        <button @click="waitlistModalOpen = true"
+        <a href="{{ route('onboarding.role') }}"
           class="px-6 py-2.5 bg-[#3E50F7] hover:bg-[#3E50F7]/90 text-white font-bold rounded-full transition-all text-sm shadow-lg shadow-[#3E50F7]/20">
-          Join Waitlist
-        </button>
+          Get started
+        </a>
       </div>
     </div>
   </nav>
@@ -650,10 +650,10 @@
 
         <!-- Buttons -->
         <div class="flex flex-col sm:flex-row items-center gap-4 pt-4">
-          <button @click="waitlistModalOpen = true"
+          <a href="{{ route('onboarding.role') }}"
             class="px-10 py-4 bg-[#3E50F7] hover:bg-[#3E50F7]/90 text-white font-bold rounded-xl transition-all text-base flex items-center justify-center gap-2 w-full sm:w-auto shadow-lg shadow-[#3E50F7]/25">
             Join Waitlist <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
-          </button>
+          </a>
           <button
             class="px-10 py-4 bg-white/5 border border-white/10 hover:bg-white/10 text-white font-bold rounded-xl transition-all text-base flex items-center justify-center gap-3 w-full sm:w-auto">
             <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center">
@@ -949,10 +949,10 @@
               future millionaires—because more success means Earth becomes a better place to live.
             </p>
           </div>
-          <button @click="waitlistModalOpen = true"
+          <a href="{{ route('onboarding.role') }}"
             class="px-8 py-4 bg-white text-[#25224A] font-black rounded-2xl hover:bg-opacity-90 transition-all shadow-xl whitespace-nowrap">
             Join the Mission
-          </button>
+          </a>
         </div>
       </div>
     </div>
@@ -1224,10 +1224,10 @@
         </div>
 
         <div class="pt-4">
-          <button @click="waitlistModalOpen = true"
+          <a href="{{ route('onboarding.role') }}"
             class="px-12 py-5 bg-[#3E50F7] text-white font-black rounded-2xl shadow-xl shadow-[#3E50F7]/20 hover:scale-105 transition-all text-base flex items-center gap-3 w-fit uppercase tracking-widest">
-            Find your identity <span class="material-symbols-outlined text-[20px]">person_search</span>
-          </button>
+            Find your Companion <span class="material-symbols-outlined text-[20px]">person_search</span>
+          </a>
         </div>
       </div>
 
@@ -1425,10 +1425,10 @@
       </div>
 
       <div class="text-center mt-12">
-        <button @click="waitlistModalOpen = true"
+        <a href="{{ route('onboarding.role') }}"
           class="px-8 py-3 bg-[#272459] text-white text-sm font-semibold rounded-lg hover:bg-black transition-colors">
           See all professions
-        </button>
+        </a>
       </div>
     </div>
   </section>
@@ -1442,10 +1442,10 @@
       <h2 class="text-2xl md:text-4xl font-bold text-[#25224A] mb-8 relative z-10 max-w-xl mx-auto leading-tight">
         Join 10,000+ professionals already augmenting their workflow.
       </h2>
-      <button @click="waitlistModalOpen = true"
-        class="relative z-10 px-8 py-4 bg-[#464154] hover:bg-[#25224A] text-white font-semibold rounded-lg transition-colors text-sm shadow-md">
+      <a href="{{ route('onboarding.role') }}"
+        class="relative z-10 px-8 py-4 bg-[#464154] hover:bg-[#25224A] text-white font-semibold rounded-lg transition-colors text-sm shadow-md inline-block">
         Get Started
-      </button>
+      </a>
     </div>
   </section>
 
@@ -1509,10 +1509,10 @@
               <p class="text-white/60 text-sm">Locked-in early adopter rates on all future usage costs.</p>
             </div>
           </div>
-          <button @click="waitlistModalOpen = true"
-            class="px-12 py-5 bg-white text-[#25224A] font-black rounded-2xl hover:scale-105 transition-transform shadow-2xl uppercase tracking-widest">
+          <a href="{{ route('onboarding.role') }}"
+            class="px-12 py-5 bg-white text-[#25224A] font-black rounded-2xl hover:scale-105 transition-transform shadow-2xl uppercase tracking-widest inline-block">
             Contribute Now
-          </button>
+          </a>
         </div>
       </div>
     </div>

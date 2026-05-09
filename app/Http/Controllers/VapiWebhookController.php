@@ -32,10 +32,17 @@ class VapiWebhookController extends Controller
 
         // Find the call in our database
         $call = Call::where('call_id', $callId)->first();
+        if (!$call) {
+            Log::warning("Vapi Webhook: Call record not found in DB", ['call_id' => $callId]);
+        }
 
         switch ($type) {
             case 'call-started':
                 if ($call) $call->update(['status' => 'in-progress']);
+                break;
+
+            case 'tool-calls':
+                $this->handleToolCalls($message, $call);
                 break;
 
             case 'call-ended':
@@ -46,11 +53,12 @@ class VapiWebhookController extends Controller
                         'transcript' => $callData['transcript'] ?? null,
                         'recording_url' => $callData['recordingUrl'] ?? null,
                     ]);
+                    
+                    // Fire final processing if it was an onboarding call
+                    if (($call->metadata['task_type'] ?? '') === 'onboarding') {
+                        $this->finalizeOnboardingFromTranscript($call);
+                    }
                 }
-                break;
-
-            case 'end-of-call-report':
-                $this->processCallReport($message, $call);
                 break;
         }
 
@@ -58,75 +66,103 @@ class VapiWebhookController extends Controller
     }
 
     /**
-     * Process the end-of-call report and update user data.
+     * Handle live tool calls from Vapi.
      */
-    protected function processCallReport(array $message, ?Call $call)
+    protected function handleToolCalls(array $message, ?Call $call)
     {
-        $callData = $message['call'] ?? [];
-        $analysis = $message['analysis'] ?? [];
-        
-        // Vapi might store variables in assistantOverrides if updated via tools
-        // Or we might need to rely on the summary/transcript analysis.
-        // For now, let's look for variableValues in the message
-        $extractedData = $message['artifact']['variables'] ?? []; // Vapi structure for updated variables
-        
-        // Identify the user
-        $user = $call ? $call->user : $this->findUserByPhoneNumber($callData['customer']['number'] ?? '');
+        $toolCalls = $message['toolCalls'] ?? [];
+        foreach ($toolCalls as $toolCall) {
+            if ($toolCall['function']['name'] === 'report_onboarding_data') {
+                $args = json_decode($toolCall['function']['arguments'], true);
+                $field = $args['field'] ?? null;
+                $value = $args['value'] ?? null;
 
-        if (!$user) {
-            Log::error("Vapi Webhook: User not found for call report", ['call_id' => $callData['id']]);
-            return;
+                if ($field && $call) {
+                    // Save to call metadata for tracking
+                    $meta = $call->metadata;
+                    $meta['live_extracted_data'][$field] = $value;
+                    $call->update(['metadata' => $meta]);
+
+                    // Broadcast live update
+                    broadcast(new \App\Events\CallProgressUpdated($call->user_id, $field, $value, 'in_progress'));
+                }
+            }
         }
+    }
 
-        DB::transaction(function() use ($user, $extractedData, $call, $callData) {
-            $profile = $user->profile;
+    /**
+     * Finalize onboarding by processing the full transcript with an LLM.
+     */
+    protected function finalizeOnboardingFromTranscript(Call $call)
+    {
+        $user = $call->user;
+        $transcript = $call->transcript;
 
-            // Map Vapi variables to profile (assuming they match character prompts)
-            $profile->update([
-                'business_type' => $extractedData['business_type'] ?? $profile->business_type,
-                'industry' => $extractedData['industry'] ?? $profile->industry,
-                'target_audience' => $extractedData['target_audience'] ?? $profile->target_audience,
-                'experience_level' => $extractedData['experience_level'] ?? $profile->experience_level,
-                'current_problems' => $extractedData['current_problems'] ?? $profile->current_problems,
-                'urgent_tasks' => $extractedData['urgent_tasks'] ?? $profile->urgent_tasks,
+        if (!$transcript || !$user) return;
+
+        // Use LLM to extract all fields from transcript
+        $prompt = "Extract the following onboarding information from the business companion call transcript below. " .
+                  "Fields to extract: business_type, industry, target_audience, experience_level, project_name, project_description, first_task, call_followup_preference. " .
+                  "Return ONLY a valid JSON object with these keys. If a field is missing, use null.\n\n" .
+                  "Transcript:\n" . $transcript;
+
+        $response = Http::withToken(config('services.openrouter.api_key'))
+            ->post(config('services.openrouter.base_url') . '/chat/completions', [
+                'model' => config('services.openrouter.model'),
+                'messages' => [
+                    ['role' => 'user', 'content' => $prompt]
+                ],
+                'response_format' => ['type' => 'json_object']
             ]);
 
-            $projectName = $extractedData['project_name'] ?? 'Initial Project';
+        if ($response->successful()) {
+            $extractedData = json_decode($response->json()['choices'][0]['message']['content'], true);
             
-            $project = Project::updateOrCreate(
-                ['user_id' => $user->id, 'name' => $projectName],
-                [
-                    'domain' => $extractedData['project_url'] ?? null,
-                    'description' => $extractedData['project_description'] ?? 'Project created via Vapi onboarding call.',
-                    'success_metric' => $extractedData['success_metric'] ?? null,
-                ]
-            );
+            DB::transaction(function() use ($user, $extractedData, $call) {
+                $profile = $user->profile;
 
-            // Create Initial Task
-            if (!empty($extractedData['current_problems']) || !empty($extractedData['urgent_tasks'])) {
-                $task = Task::create([
-                    'project_id' => $project->id,
-                    'user_id' => $user->id,
-                    'title' => 'Initial Assessment',
-                    'input_text' => "Current Problems: " . ($extractedData['current_problems'] ?? 'None') . "\nUrgent Tasks: " . ($extractedData['urgent_tasks'] ?? 'None'),
-                    'priority' => 'high',
-                    'status' => 'pending',
+                $profile->update([
+                    'business_type' => $extractedData['business_type'] ?? $profile->business_type,
+                    'industry' => $extractedData['industry'] ?? $profile->industry,
+                    'target_audience' => $extractedData['target_audience'] ?? $profile->target_audience,
+                    'experience_level' => $extractedData['experience_level'] ?? $profile->experience_level,
+                    'call_followup_preference' => $extractedData['call_followup_preference'] ?? null,
                 ]);
 
-                ProcessTaskJob::dispatch($task->id);
-            }
+                $project = Project::updateOrCreate(
+                    ['user_id' => $user->id, 'name' => $extractedData['project_name'] ?? 'Initial Project'],
+                    [
+                        'description' => $extractedData['project_description'] ?? 'Project created via voice onboarding.',
+                    ]
+                );
 
-            // Mark onboarding as completed
-            $user->update(['onboarding_completed' => true]);
-            
-            // Update call metadata
-            if ($call) {
-                $meta = $call->metadata;
-                $meta['extracted_data'] = $extractedData;
-                $meta['summary'] = $message['analysis']['summary'] ?? null;
-                $call->update(['metadata' => $meta]);
-            }
-        });
+                if (!empty($extractedData['first_task'])) {
+                    $task = Task::create([
+                        'project_id' => $project->id,
+                        'user_id' => $user->id,
+                        'title' => 'Initial Task',
+                        'input_text' => $extractedData['first_task'],
+                        'priority' => 'high',
+                        'status' => 'pending',
+                    ]);
+
+                    \App\Jobs\ProcessTaskJob::dispatch($task->id);
+                }
+
+                $user->update(['onboarding_completed' => true]);
+                
+                // Final broadcast to redirect user - Include task ID if created
+                $redirectUrl = $project->id . (isset($task) ? '?task=' . $task->id : '');
+                broadcast(new \App\Events\CallProgressUpdated($user->id, 'complete', $redirectUrl, 'completed'));
+            });
+        }
+    }
+
+    protected function findUserByPhoneNumber(string $phoneNumber): ?User
+    {
+        return User::whereHas('profile', function($query) use ($phoneNumber) {
+            $query->where('phone_number', 'LIKE', '%' . substr($phoneNumber, -10));
+        })->first();
     }
 
     protected function findUserByPhoneNumber(string $phoneNumber): ?User

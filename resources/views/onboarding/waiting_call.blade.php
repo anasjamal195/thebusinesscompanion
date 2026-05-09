@@ -54,29 +54,120 @@
     </div>
 
     <div class="flex flex-col items-center gap-6">
-        <div class="flex items-center gap-4 px-6 py-3 bg-slate-900 text-white rounded-full text-sm font-bold tracking-wide">
+        <div id="connection-status" class="flex items-center gap-4 px-6 py-3 bg-slate-900 text-white rounded-full text-sm font-bold tracking-wide">
             <span class="w-2 h-2 bg-green-400 rounded-full animate-ping"></span>
             WAITING FOR CONNECTION...
         </div>
-        
-        <p class="text-slate-400 text-sm italic">
-            "I'll get to you once this is done"
-        </p>
+    </div>
+
+    <!-- Live Progress Tracking -->
+    <div id="onboarding-progress" class="max-w-2xl mx-auto w-full bg-white rounded-[3rem] p-10 border border-slate-100 shadow-xl space-y-8 hidden">
+        <div class="flex items-center justify-between border-b border-slate-50 pb-6">
+            <h2 class="text-2xl font-black text-slate-900">Live Onboarding</h2>
+            <div class="px-4 py-1.5 bg-primary/10 text-primary text-xs font-black rounded-full uppercase tracking-widest animate-pulse">
+                In Progress
+            </div>
+        </div>
+
+        <div class="space-y-6">
+            @php
+                $steps = [
+                    'business_type' => ['label' => 'Business Type', 'icon' => 'business'],
+                    'industry' => ['label' => 'Industry', 'icon' => 'factory'],
+                    'target_audience' => ['label' => 'Target Audience', 'icon' => 'groups'],
+                    'experience_level' => ['label' => 'Experience Level', 'icon' => 'psychology'],
+                    'project_name' => ['label' => 'First Project Name', 'icon' => 'rocket_launch'],
+                    'project_description' => ['label' => 'Project Description', 'icon' => 'description'],
+                    'first_task' => ['label' => 'First Task', 'icon' => 'task_alt'],
+                    'call_followup_preference' => ['label' => 'Follow-up Choice', 'icon' => 'phone_callback'],
+                ];
+            @endphp
+
+            @foreach($steps as $key => $step)
+            <div id="step-{{ $key }}" class="flex items-center gap-6 group opacity-40 transition-all duration-500">
+                <div class="step-icon w-12 h-12 rounded-2xl bg-slate-50 flex items-center justify-center text-slate-400 group-[.active]:bg-primary/10 group-[.active]:text-primary group-[.completed]:bg-green-500 group-[.completed]:text-white transition-all duration-500">
+                    <span class="material-symbols-outlined text-2xl">{{ $step['icon'] }}</span>
+                </div>
+                <div class="flex-1">
+                    <div class="flex items-center justify-between">
+                        <h4 class="font-bold text-slate-400 group-[.active]:text-slate-900 group-[.completed]:text-slate-900 transition-colors">{{ $step['label'] }}</h4>
+                        <span class="step-status text-[10px] font-black uppercase tracking-tighter text-slate-300 group-[.active]:text-primary group-[.completed]:text-green-500">Pending</span>
+                    </div>
+                    <div class="step-value text-sm text-slate-400 mt-0.5 h-5 italic group-[.completed]:not-italic group-[.completed]:text-slate-600 transition-all">Waiting for answer...</div>
+                </div>
+            </div>
+            @endforeach
+        </div>
     </div>
 </div>
 
+<script src="https://js.pusher.com/8.0.1/pusher.min.js"></script>
 <script>
+    // Initialize countdown
     let seconds = 5;
     const countdownEl = document.getElementById('countdown');
     
     const interval = setInterval(() => {
         seconds--;
-        countdownEl.innerText = seconds;
+        if (countdownEl) countdownEl.innerText = seconds;
         
         if (seconds <= 0) {
             clearInterval(interval);
-            // Optionally redirect or show a "Connected" state
         }
     }, 1000);
+
+    // Initialize Echo for live updates
+    document.addEventListener('DOMContentLoaded', () => {
+        const userId = {{ auth()->id() }};
+        const statusEl = document.getElementById('connection-status');
+        const progressEl = document.getElementById('onboarding-progress');
+        
+        // We use Pusher directly or window.Echo if available from app.js
+        // Since app.js might not be fully initialized or custom, let's use a robust check
+        const pusher = new Pusher('{{ config('broadcasting.connections.pusher.key') }}', {
+            cluster: '{{ config('broadcasting.connections.pusher.options.cluster') }}',
+            wsHost: '{{ config('broadcasting.connections.pusher.options.host') }}',
+            wsPort: {{ config('broadcasting.connections.pusher.options.port') }},
+            wssPort: {{ config('broadcasting.connections.pusher.options.port') }},
+            forceTLS: {{ config('broadcasting.connections.pusher.options.useTLS') ? 'true' : 'false' }},
+            enabledTransports: ['ws', 'wss'],
+            userAuthentication: {
+                endpoint: "/broadcasting/auth",
+                headers: { "X-CSRF-Token": "{{ csrf_token() }}" }
+            }
+        });
+
+        const channel = pusher.subscribe('private-user.' + userId);
+
+        channel.bind('call.progress', (data) => {
+            console.log('Call Progress:', data);
+            
+            if (data.field === 'complete') {
+                // Redirect to project dashboard
+                window.location.href = '/projects/' + data.value;
+                return;
+            }
+
+            // Show progress container on first update
+            progressEl.classList.remove('hidden');
+            statusEl.innerHTML = '<span class="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></span> CALL IN PROGRESS';
+            statusEl.classList.replace('bg-slate-900', 'bg-blue-600');
+
+            const stepRow = document.getElementById('step-' + data.field);
+            if (stepRow) {
+                stepRow.classList.remove('opacity-40');
+                stepRow.classList.add('completed');
+                
+                const statusLabel = stepRow.querySelector('.step-status');
+                const valueLabel = stepRow.querySelector('.step-value');
+                
+                statusLabel.innerText = 'Captured';
+                valueLabel.innerText = data.value;
+
+                // Scroll into view if needed
+                stepRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        });
+    });
 </script>
 @endsection
