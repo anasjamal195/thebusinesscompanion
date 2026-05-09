@@ -8,3 +8,7 @@ Broadcast::channel('task.{taskId}', function ($user, int $taskId) {
     return $task && (int) $task->user_id === (int) $user->id;
 });
 
+Broadcast::channel('user.{userId}', function ($user, int $userId) {
+    return (int) $user->id === (int) $userId;
+});
+

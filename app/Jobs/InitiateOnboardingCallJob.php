@@ -29,9 +29,13 @@ class InitiateOnboardingCallJob implements ShouldQueue
      */
     public function handle(VapiService $vapiService): void
     {
+        \Illuminate\Support\Facades\Log::info("InitiateOnboardingCallJob: Processing for User {$this->userId}");
         $user = User::find($this->userId);
         if ($user) {
             $vapiService->createCall($user);
+            \Illuminate\Support\Facades\Log::info("InitiateOnboardingCallJob: CreateCall called for User {$this->userId}");
+        } else {
+            \Illuminate\Support\Facades\Log::error("InitiateOnboardingCallJob: User {$this->userId} not found");
         }
     }
 }

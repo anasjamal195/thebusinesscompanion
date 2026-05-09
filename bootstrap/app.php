@@ -14,6 +14,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->validateCsrfTokens(except: [
             'stripe/*',
             'retell/*',
+            'vapi/*',
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

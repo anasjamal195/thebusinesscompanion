@@ -127,11 +127,11 @@
         const pusher = new Pusher('{{ config('broadcasting.connections.pusher.key') }}', {
             cluster: '{{ config('broadcasting.connections.pusher.options.cluster') }}',
             wsHost: '{{ config('broadcasting.connections.pusher.options.host') }}',
-            wsPort: {{ config('broadcasting.connections.pusher.options.port') }},
-            wssPort: {{ config('broadcasting.connections.pusher.options.port') }},
+            wsPort: {{ config('broadcasting.connections.pusher.options.port', 80) }},
+            wssPort: {{ config('broadcasting.connections.pusher.options.port', 443) }},
             forceTLS: {{ config('broadcasting.connections.pusher.options.useTLS') ? 'true' : 'false' }},
             enabledTransports: ['ws', 'wss'],
-            userAuthentication: {
+            channelAuthorization: {
                 endpoint: "/broadcasting/auth",
                 headers: { "X-CSRF-Token": "{{ csrf_token() }}" }
             }

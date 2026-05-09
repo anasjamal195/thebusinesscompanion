@@ -38,6 +38,6 @@ class StripeWebhookController extends CashierController
             }
         }
 
-        return parent::handleCheckoutSessionCompleted($payload);
+        return $this->successMethod();
     }
 }
