@@ -123,43 +123,93 @@
             <svg class="w-full h-full" viewBox="0 0 1000 700" preserveAspectRatio="none">
               <style>
                 @keyframes heroPulse {
-                  from { stroke-dashoffset: 400; }
-                  to { stroke-dashoffset: 0; }
+                  from {
+                    stroke-dashoffset: 400;
+                  }
+
+                  to {
+                    stroke-dashoffset: 0;
+                  }
                 }
+
                 @keyframes heroPulseRev {
-                  from { stroke-dashoffset: -400; }
-                  to { stroke-dashoffset: 0; }
+                  from {
+                    stroke-dashoffset: -400;
+                  }
+
+                  to {
+                    stroke-dashoffset: 0;
+                  }
                 }
-                .hero-path-base { stroke: rgba(255,255,255,0.15); stroke-width: 2.5; fill: none; stroke-dasharray: 4 4; }
-                .hero-path-flow { stroke: #3E50F7; stroke-width: 4; fill: none; stroke-linecap: round; stroke-dasharray: 40 360; animation: heroPulse 3s linear infinite; }
-                .hero-path-flow-rev { stroke: #3E50F7; stroke-width: 4; fill: none; stroke-linecap: round; stroke-dasharray: 40 360; animation: heroPulseRev 3s linear infinite; }
-                .hero-node { fill: white; stroke: #3E50F7; stroke-width: 2; }
-                .hero-node-pulse { fill: #3E50F7; opacity: 0.4; }
+
+                .hero-path-base {
+                  stroke: rgba(255, 255, 255, 0.15);
+                  stroke-width: 2.5;
+                  fill: none;
+                  stroke-dasharray: 4 4;
+                }
+
+                .hero-path-flow {
+                  stroke: #3E50F7;
+                  stroke-width: 4;
+                  fill: none;
+                  stroke-linecap: round;
+                  stroke-dasharray: 40 360;
+                  animation: heroPulse 3s linear infinite;
+                }
+
+                .hero-path-flow-rev {
+                  stroke: #3E50F7;
+                  stroke-width: 4;
+                  fill: none;
+                  stroke-linecap: round;
+                  stroke-dasharray: 40 360;
+                  animation: heroPulseRev 3s linear infinite;
+                }
+
+                .hero-node {
+                  fill: white;
+                  stroke: #3E50F7;
+                  stroke-width: 2;
+                }
+
+                .hero-node-pulse {
+                  fill: #3E50F7;
+                  opacity: 0.4;
+                }
               </style>
-              
+
               <!-- Line 1: SaaS Right Top Slot -> Buyer Top Middle Slot -->
               <path class="hero-path-base" d="M 480 105 L 730 105 Q 750 105 750 125 L 750 255" />
               <path class="hero-path-flow" d="M 480 105 L 730 105 Q 750 105 750 125 L 750 255" />
-              
+
               <!-- Line 2: SaaS Bottom Middle Slot -> Buyer Left Bottom Slot -->
               <path class="hero-path-base" d="M 250 435 L 250 565 Q 250 585 270 585 L 520 585" />
               <path class="hero-path-flow-rev" d="M 250 435 L 250 565 Q 250 585 270 585 L 520 585" />
 
               <!-- Slot Nodes -->
               <g>
-                <circle class="hero-node-pulse" cx="480" cy="105" r="8"><animate attributeName="r" values="6;10;6" dur="2s" repeatCount="indefinite" /></circle>
+                <circle class="hero-node-pulse" cx="480" cy="105" r="8">
+                  <animate attributeName="r" values="6;10;6" dur="2s" repeatCount="indefinite" />
+                </circle>
                 <circle class="hero-node" cx="480" cy="105" r="4" />
               </g>
               <g>
-                <circle class="hero-node-pulse" cx="750" cy="255" r="8"><animate attributeName="r" values="6;10;6" dur="2s" repeatCount="indefinite" /></circle>
+                <circle class="hero-node-pulse" cx="750" cy="255" r="8">
+                  <animate attributeName="r" values="6;10;6" dur="2s" repeatCount="indefinite" />
+                </circle>
                 <circle class="hero-node" cx="750" cy="255" r="4" />
               </g>
               <g>
-                <circle class="hero-node-pulse" cx="250" cy="435" r="8"><animate attributeName="r" values="6;10;6" dur="2s" repeatCount="indefinite" /></circle>
+                <circle class="hero-node-pulse" cx="250" cy="435" r="8">
+                  <animate attributeName="r" values="6;10;6" dur="2s" repeatCount="indefinite" />
+                </circle>
                 <circle class="hero-node" cx="250" cy="435" r="4" />
               </g>
               <g>
-                <circle class="hero-node-pulse" cx="520" cy="585" r="8"><animate attributeName="r" values="6;10;6" dur="2s" repeatCount="indefinite" /></circle>
+                <circle class="hero-node-pulse" cx="520" cy="585" r="8">
+                  <animate attributeName="r" values="6;10;6" dur="2s" repeatCount="indefinite" />
+                </circle>
                 <circle class="hero-node" cx="520" cy="585" r="4" />
               </g>
             </svg>
@@ -552,15 +602,18 @@
                   <div class="space-y-4 bg-white/40 p-5 rounded-2xl border border-white/40">
                     <div class="flex items-center gap-3 text-sm font-bold">
                       <div class="w-6 h-6 rounded-full bg-[#22C55E]/10 flex items-center justify-center"><span
-                          class="material-symbols-outlined text-[14px] text-[#22C55E]">check</span></div>Isolated VM Environment
+                          class="material-symbols-outlined text-[14px] text-[#22C55E]">check</span></div>Isolated VM
+                      Environment
                     </div>
                     <div class="flex items-center gap-3 text-sm font-bold">
                       <div class="w-6 h-6 rounded-full bg-[#22C55E]/10 flex items-center justify-center"><span
-                          class="material-symbols-outlined text-[14px] text-[#22C55E]">check</span></div>Computer Navigation
+                          class="material-symbols-outlined text-[14px] text-[#22C55E]">check</span></div>Computer
+                      Navigation
                     </div>
                     <div class="flex items-center gap-3 text-sm font-bold">
                       <div class="w-6 h-6 rounded-full bg-[#22C55E]/10 flex items-center justify-center"><span
-                          class="material-symbols-outlined text-[14px] text-[#22C55E]">check</span></div>Persistent Memory
+                          class="material-symbols-outlined text-[14px] text-[#22C55E]">check</span></div>Persistent
+                      Memory
                     </div>
                   </div>
                   <div
@@ -582,15 +635,16 @@
           </div>
 
           <h1 class="text-4xl md:text-6xl lg:text-7xl font-extrabold text-white leading-[1] tracking-tight">
-            The Private<br>
-            Business OS<br>
-            <span class="text-[#AFBBE0]">powered by<br>Stride AI</span>
+            The smartest<br>
+            Business<br>
+            Companion<br>
+            <span class="text-[#AFBBE0]">for high<br>achievers</span>
           </h1>
         </div>
 
         <div class="space-y-6">
           <p class="text-white/90 text-xl font-semibold max-w-xl leading-relaxed">
-            A digital identity that lives in its own computer, capable of planning, analysis, and managing your business 24/7.
+            Overcome trust issues & procrastination in execution.
           </p>
         </div>
 
@@ -640,156 +694,173 @@
     </div>
   </section>
 
-  <!-- Steps Section -->
-  <section class="bg-[#F8FAFF] py-24 relative overflow-hidden">
-    <div class="max-w-[1200px] mx-auto px-6">
-      <div class="text-center mb-16">
-        <h2 class="text-3xl md:text-4xl font-bold text-[#25224A] max-w-2xl mx-auto leading-tight">Your intelligent
-          workflow, simplified</h2>
+  <!-- Section 2: Storytelling Workflow -->
+  <section class="bg-white py-24 relative overflow-hidden">
+    <div class="max-w-[1400px] mx-auto px-6 md:px-12">
+      <div class="text-center mb-20">
+        <h2 class="text-3xl md:text-5xl font-black text-[#25224A] tracking-tight mb-6">Built for <span
+            class="text-[#3E50F7]">Daily Life</span></h2>
+        <p class="text-[#7F798D] text-lg max-w-2xl mx-auto">See how The Business Companion handles the heavy lifting
+          while you focus on the vision.</p>
       </div>
 
-      <div class="relative w-full max-w-[1000px] mx-auto z-10">
-        <!-- SVG Connecting Lines Desktop -->
-        <svg class="hidden md:block absolute inset-0 w-full h-[380px] pointer-events-none -z-10" viewBox="0 0 1000 380"
-          preserveAspectRatio="none">
-          <style>
-            @keyframes flowLine {
-              to {
-                stroke-dashoffset: -440;
-              }
-            }
-
-            .path-base {
-              stroke: #CBD5E1;
-              stroke-width: 2;
-              stroke-dasharray: 4 4;
-              fill: none;
-            }
-
-            .path-flow {
-              stroke: #3E50F7;
-              stroke-width: 3;
-              fill: none;
-              stroke-linecap: round;
-              stroke-dasharray: 40 400;
-              animation: flowLine 3s linear infinite;
-            }
-          </style>
-          <!-- Left to Center Line Base -->
-          <path class="path-base" vector-effect="non-scaling-stroke"
-            d="M 300 150 L 315 150 Q 325 150 325 160 L 325 320 Q 325 330 335 330 L 490 330 Q 500 330 500 320 L 500 300" />
-          <!-- Left to Center Animated Line -->
-          <path class="path-flow" vector-effect="non-scaling-stroke"
-            d="M 300 150 L 315 150 Q 325 150 325 160 L 325 320 Q 325 330 335 330 L 490 330 Q 500 330 500 320 L 500 300" />
-
-          <!-- Center to Right Line Base -->
-          <path class="path-base" vector-effect="non-scaling-stroke"
-            d="M 500 300 L 500 320 Q 500 330 510 330 L 665 330 Q 675 330 675 320 L 675 160 Q 675 150 685 150 L 700 150" />
-          <!-- Center to Right Animated Line -->
-          <path class="path-flow" vector-effect="non-scaling-stroke" style="animation-delay: 1.5s;"
-            d="M 500 300 L 500 320 Q 500 330 510 330 L 665 330 Q 675 330 675 320 L 675 160 Q 675 150 685 150 L 700 150" />
-        </svg>
-
-        <div class="flex flex-col md:flex-row justify-between items-start gap-8 md:gap-0 relative">
-          <!-- Step 1 -->
-          <div class="w-full md:w-[30%] h-auto md:h-[300px] relative">
-            <div
-              class="h-full flex flex-col items-center p-6 bg-white rounded-2xl shadow-sm border border-[#DEE8FF] hover:-translate-y-1 transition-transform bg-opacity-95 backdrop-blur-sm z-10 relative">
-              <div class="w-full flex-1 flex flex-col gap-3 justify-center mb-4">
-                <div
-                  class="self-end bg-[#3E50F7] text-white p-3 rounded-2xl rounded-tr-sm max-w-[95%] text-[13px] shadow-md font-medium">
-                  "Audit our recent SaaS expenses and flag anomalies."
-                </div>
-                <div
-                  class="self-start bg-[#F8FAFF] border border-[#DEE8FF] text-[#464154] p-3 rounded-2xl rounded-tl-sm max-w-[95%] text-[13px] shadow-sm flex items-center gap-2 font-medium">
-                  <div class="w-1.5 h-1.5 bg-[#3E50F7] rounded-full animate-ping"></div>
-                  Analyzing 1,200 transactions...
-                </div>
-              </div>
-              <div class="mt-auto text-center w-full">
-                <h3 class="font-bold text-[#25224A] text-lg mb-1">1. Delegate Tasks</h3>
-                <p class="text-[13px] text-[#7F798D] leading-relaxed px-1">Assign operational tasks securely through
-                  text or voice.</p>
-              </div>
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 relative">
+        <!-- Step 1: The Problem -->
+        <div class="bg-[#F8FAFF] p-10 rounded-[3rem] border border-[#DEE8FF] relative group overflow-hidden">
+          <div class="relative z-10">
+            <div class="w-16 h-16 rounded-2xl bg-white shadow-sm flex items-center justify-center mb-8 text-[#3E50F7]">
+              <span class="material-symbols-outlined text-3xl">lightbulb</span>
             </div>
-            <!-- Node -->
-            <div
-              class="hidden md:block absolute top-[150px] -right-2.5 w-5 h-5 bg-white border-[3px] border-[#CBD5E1] rounded-full z-20 -translate-y-1/2">
+            <h3 class="text-2xl font-bold text-[#25224A] mb-4">The Idea</h3>
+            <p class="text-[#7F798D] leading-relaxed mb-8 italic">"I'm a SaaS founder. I need to finalize a monetization
+              strategy for my new tool, but I'm stuck on competitor research and pricing models."</p>
+
+            <!-- Thought Bubble UI -->
+            <div class="bg-white p-4 rounded-2xl shadow-md border border-[#EEF2FE] animate-float-1">
+              <div class="flex items-center gap-3 mb-2">
+                <div class="w-2 h-2 rounded-full bg-red-400"></div>
+                <div class="text-[10px] font-bold text-[#7F798D]">BLOCKER</div>
+              </div>
+              <div class="h-2 w-full bg-[#F8FAFF] rounded mb-1"></div>
+              <div class="h-2 w-2/3 bg-[#F8FAFF] rounded"></div>
             </div>
           </div>
-
-          <!-- Step 2 -->
-          <div class="w-full md:w-[30%] h-auto md:h-[300px] relative mt-10 md:mt-0">
-            <div
-              class="h-full flex flex-col items-center p-6 bg-white rounded-2xl shadow-xl shadow-[#3E50F7]/10 border border-[#3E50F7]/30 hover:-translate-y-1 transition-transform bg-opacity-95 backdrop-blur-sm z-10 relative">
-              <div class="w-full flex-1 flex flex-col gap-2.5 justify-center pt-2 mb-4">
-                <div class="flex items-center gap-3 bg-[#F8FAFF] p-3 rounded-xl border border-[#DEE8FF]">
-                  <span class="material-symbols-outlined text-[#3E50F7] text-[20px]">computer</span>
-                  <span class="text-[13px] font-bold text-[#25224A]">Isolated VM Computer</span>
-                </div>
-                <div class="flex items-center gap-3 bg-[#F8FAFF] p-3 rounded-xl border border-[#DEE8FF]">
-                  <span class="material-symbols-outlined text-green-600 text-[20px]">history</span>
-                  <span class="text-[13px] font-bold text-[#25224A]">Digital Identity & Memory</span>
-                </div>
-                <div class="flex items-center gap-3 bg-[#F8FAFF] p-3 rounded-xl border border-[#DEE8FF]">
-                  <span class="material-symbols-outlined text-[#F59E0B] text-[20px]">auto_mode</span>
-                  <span class="text-[13px] font-bold text-[#25224A]">Autonomous Planning</span>
-                </div>
-              </div>
-              <div class="mt-auto text-center w-full">
-                <h3 class="font-bold text-[#25224A] text-lg mb-1">2. Stride Engine</h3>
-                <p class="text-[13px] text-[#7F798D] leading-relaxed px-1">The AI uses its own digital identity to navigate apps and execute complex tasks.</p>
-              </div>
-            </div>
-            <!-- Node -->
-            <div
-              class="hidden md:block absolute top-[300px] left-1/2 w-5 h-5 bg-white border-[3px] border-[#CBD5E1] rounded-full z-20 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center">
-              <div class="w-1.5 h-1.5 bg-[#3E50F7] rounded-full animate-pulse"></div>
-            </div>
-          </div>
-
-          <!-- Step 3 -->
-          <div class="w-full md:w-[30%] h-auto md:h-[300px] relative mt-10 md:mt-0">
-            <div
-              class="h-full flex flex-col items-center p-6 bg-white rounded-2xl shadow-sm border border-[#DEE8FF] hover:-translate-y-1 transition-transform bg-opacity-95 backdrop-blur-sm z-10 relative">
-              <div class="w-full flex-1 flex flex-col gap-4 justify-center mb-4">
-                <div class="bg-white border border-[#DEE8FF] rounded-xl p-4 shadow-sm relative overflow-hidden w-full">
-                  <div class="absolute top-0 left-0 w-1 h-full bg-green-500"></div>
-                  <div class="flex justify-between items-center mb-3 pl-2">
-                    <span class="text-[11px] font-bold text-[#7F798D] uppercase tracking-wider">Final Report</span>
-                    <span
-                      class="text-[10px] text-green-600 font-bold bg-green-50 px-2 py-0.5 rounded border border-green-100">Completed</span>
-                  </div>
-                  <div class="pl-2 space-y-2">
-                    <div class="h-2 bg-[#EEF2FE] rounded w-full"></div>
-                    <div class="h-2 bg-[#EEF2FE] rounded w-4/5"></div>
-                    <div class="h-2 bg-[#EEF2FE] rounded w-5/6"></div>
-                  </div>
-                </div>
-                <div class="flex justify-center gap-3">
-                  <div
-                    class="text-[11px] bg-[#EEF2FE] text-[#3E50F7] px-3 py-1.5 rounded font-bold flex items-center gap-1.5">
-                    <span class="material-symbols-outlined text-[14px]">mail</span> Email
-                  </div>
-                  <div
-                    class="text-[11px] bg-[#EEF2FE] text-[#3E50F7] px-3 py-1.5 rounded font-bold flex items-center gap-1.5">
-                    <span class="material-symbols-outlined text-[14px]">call</span> Call
-                  </div>
-                </div>
-              </div>
-              <div class="mt-auto text-center w-full">
-                <h3 class="font-bold text-[#25224A] text-lg mb-1">3. Receive Updates</h3>
-                <p class="text-[13px] text-[#7F798D] leading-relaxed px-1">Review executive summaries or discuss
-                  results.</p>
-              </div>
-            </div>
-            <!-- Node -->
-            <div
-              class="hidden md:block absolute top-[150px] -left-2.5 w-5 h-5 bg-white border-[3px] border-[#CBD5E1] rounded-full z-20 -translate-y-1/2">
-            </div>
-          </div>
-
         </div>
+
+        <!-- Step 2: The Action -->
+        <div class="bg-[#25224A] p-10 rounded-[3rem] border border-white/5 relative group overflow-hidden shadow-2xl">
+          <div class="relative z-10">
+            <div class="w-16 h-16 rounded-2xl bg-[#3E50F7] shadow-lg flex items-center justify-center mb-8 text-white">
+              <span class="material-symbols-outlined text-3xl">call</span>
+            </div>
+            <h3 class="text-2xl font-bold text-white mb-4">The Discussion</h3>
+            <p class="text-white/60 leading-relaxed mb-8">Your companion gives you a call. You explain your vision,
+              goals, and constraints naturally, just like talking to a human co-founder.</p>
+
+            <!-- Call Interface UI -->
+            <div class="bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/10">
+              <div class="flex items-center gap-4">
+                <div class="relative">
+                  <div class="w-10 h-10 rounded-full bg-[#3E50F7] flex items-center justify-center">
+                    <span class="material-symbols-outlined text-white text-sm">person</span>
+                  </div>
+                  <div class="absolute inset-0 rounded-full border-2 border-[#3E50F7] animate-ping"></div>
+                </div>
+                <div class="flex-1">
+                  <div class="h-1.5 w-1/2 bg-white/20 rounded mb-1"></div>
+                  <div class="h-1 w-1/3 bg-white/10 rounded"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3: The Result -->
+        <div class="bg-[#F8FAFF] p-10 rounded-[3rem] border border-[#DEE8FF] relative group overflow-hidden">
+          <div class="relative z-10">
+            <div class="w-16 h-16 rounded-2xl bg-white shadow-sm flex items-center justify-center mb-8 text-[#22C55E]">
+              <span class="material-symbols-outlined text-3xl">task_alt</span>
+            </div>
+            <h3 class="text-2xl font-bold text-[#25224A] mb-4">The Execution</h3>
+            <p class="text-[#7F798D] leading-relaxed mb-8">Stride researches 10 competitors, analyzes market fit, and
+              delivers a comprehensive strategy document directly to your inbox.</p>
+
+            <!-- Document UI -->
+            <div class="bg-white p-5 rounded-2xl shadow-md border border-[#EEF2FE]">
+              <div class="flex items-center justify-between mb-4">
+                <div class="text-[10px] font-black text-[#3E50F7]">FINAL_STRATEGY.PDF</div>
+                <span class="material-symbols-outlined text-green-500 text-sm">download</span>
+              </div>
+              <div class="space-y-2">
+                <div class="h-1.5 w-full bg-[#F8FAFF] rounded"></div>
+                <div class="h-1.5 w-full bg-[#F8FAFF] rounded"></div>
+                <div class="h-1.5 w-4/5 bg-[#F8FAFF] rounded"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 3: Own Computer Concept -->
+  <section class="bg-[#F8FAFF] py-24 border-y border-[#DEE8FF]">
+    <div class="max-w-[1400px] mx-auto px-6 md:px-12 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      <div class="order-2 lg:order-1 relative">
+        <!-- VM Visualization -->
+        <div class="relative w-full aspect-square max-w-[500px] mx-auto">
+          <div class="absolute inset-0 bg-gradient-to-tr from-[#3E50F7]/20 to-[#2bd9ff]/20 rounded-[4rem] blur-3xl">
+          </div>
+          <div
+            class="relative bg-[#25224A] rounded-[3rem] p-8 h-full border border-white/10 shadow-2xl overflow-hidden">
+            <div class="flex items-center gap-2 mb-6">
+              <div class="w-3 h-3 rounded-full bg-red-500/50"></div>
+              <div class="w-3 h-3 rounded-full bg-yellow-500/50"></div>
+              <div class="w-3 h-3 rounded-full bg-green-500/50"></div>
+              <div class="ml-4 text-[10px] text-white/30 font-mono">ssh stride-vm-01 --secure</div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+              <div class="bg-white/5 rounded-2xl p-4 border border-white/10">
+                <span class="material-symbols-outlined text-white/40 mb-2">browser_updated</span>
+                <div class="h-1.5 w-full bg-white/10 rounded mb-1"></div>
+                <div class="h-1.5 w-2/3 bg-white/5 rounded"></div>
+              </div>
+              <div class="bg-white/5 rounded-2xl p-4 border border-white/10">
+                <span class="material-symbols-outlined text-white/40 mb-2">terminal</span>
+                <div class="h-1.5 w-full bg-white/10 rounded mb-1"></div>
+                <div class="h-1.5 w-1/2 bg-white/5 rounded"></div>
+              </div>
+              <div class="bg-[#3E50F7]/20 rounded-2xl p-4 border border-[#3E50F7]/30 col-span-2">
+                <div class="flex items-center gap-3">
+                  <span class="material-symbols-outlined text-[#3E50F7]">database</span>
+                  <div class="flex-1">
+                    <div class="h-1.5 w-1/2 bg-white/20 rounded mb-1"></div>
+                    <div class="h-1.5 w-1/3 bg-white/10 rounded"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Identity Card floating -->
+            <div
+              class="absolute bottom-8 right-8 bg-white rounded-2xl p-4 shadow-2xl w-[180px] animate-float-2 border border-[#DEE8FF]">
+              <div class="flex items-center gap-3 mb-3">
+                <div
+                  class="w-8 h-8 rounded-full bg-[#3E50F7] flex items-center justify-center text-white text-xs font-bold">
+                  S</div>
+                <div class="text-[10px] font-bold text-[#25224A]">Stride Identity</div>
+              </div>
+              <div class="text-[9px] text-[#7F798D] uppercase tracking-widest font-bold">Status: Online</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="order-1 lg:order-2 space-y-8">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#3E50F7]/10 border border-[#3E50F7]/20">
+          <span class="text-[10px] font-black text-[#3E50F7] uppercase tracking-widest">Isolated Technology</span>
+        </div>
+        <h2 class="text-3xl md:text-5xl font-black text-[#25224A] leading-tight">Every Agent has its<br><span
+            class="text-[#3E50F7]">Own Computer</span></h2>
+        <p class="text-[#7F798D] text-lg leading-relaxed">Unlike simple chatbots, Stride operates within a secure,
+          isolated Virtual Machine. It has its own browser, its own memory, and its own digital identity—allowing it to
+          navigate the web and use tools exactly like a human would.</p>
+
+        <ul class="space-y-4">
+          <li class="flex items-center gap-4 text-[#25224A] font-bold">
+            <span class="material-symbols-outlined text-[#3E50F7]">check_circle</span>
+            Private VMs for absolute data isolation
+          </li>
+          <li class="flex items-center gap-4 text-[#25224A] font-bold">
+            <span class="material-symbols-outlined text-[#3E50F7]">check_circle</span>
+            Autonomous web navigation & form filling
+          </li>
+          <li class="flex items-center gap-4 text-[#25224A] font-bold">
+            <span class="material-symbols-outlined text-[#3E50F7]">check_circle</span>
+            Persistent environment that never forgets
+          </li>
+        </ul>
       </div>
     </div>
   </section>
@@ -897,15 +968,19 @@
 
     <div class="max-w-[1400px] mx-auto px-6 md:px-12 relative z-10">
       <div class="text-center mb-20">
-        <h2 class="text-3xl md:text-5xl font-black text-white tracking-tight mb-6">The <span class="text-[#3E50F7]">Evolution</span> of Stride</h2>
-        <p class="text-white/60 text-lg max-w-2xl mx-auto">Early adopters aren't just buying a tool—they're hiring a digital identity that grows with their business.</p>
+        <h2 class="text-3xl md:text-5xl font-black text-white tracking-tight mb-6">The <span
+            class="text-[#3E50F7]">Evolution</span> of Stride</h2>
+        <p class="text-white/60 text-lg max-w-2xl mx-auto">Early adopters aren't just buying a tool—they're hiring a
+          digital identity that grows with their business.</p>
       </div>
 
       <div class="relative max-w-[1100px] mx-auto">
         <!-- Connecting Line -->
-        <svg class="hidden lg:block absolute top-[100px] left-0 w-full h-[100px] pointer-events-none" viewBox="0 0 1100 100" fill="none">
+        <svg class="hidden lg:block absolute top-[100px] left-0 w-full h-[100px] pointer-events-none"
+          viewBox="0 0 1100 100" fill="none">
           <path d="M 150 50 L 950 50" stroke="rgba(255,255,255,0.1)" stroke-width="2" stroke-dasharray="8 8" />
-          <path d="M 150 50 L 950 50" stroke="#3E50F7" stroke-width="3" stroke-dasharray="50 350" stroke-linecap="round">
+          <path d="M 150 50 L 950 50" stroke="#3E50F7" stroke-width="3" stroke-dasharray="50 350"
+            stroke-linecap="round">
             <animate attributeName="stroke-dashoffset" from="400" to="0" dur="3s" repeatCount="indefinite" />
           </path>
         </svg>
@@ -913,46 +988,61 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-12 relative">
           <!-- Stage 1 -->
           <div class="flex flex-col items-center text-center group">
-            <div class="w-24 h-24 rounded-3xl bg-white/5 border border-white/10 flex items-center justify-center mb-8 relative group-hover:scale-110 transition-transform duration-500 shadow-2xl">
+            <div
+              class="w-24 h-24 rounded-3xl bg-white/5 border border-white/10 flex items-center justify-center mb-8 relative group-hover:scale-110 transition-transform duration-500 shadow-2xl">
               <span class="material-symbols-outlined text-4xl text-[#3E50F7]">person_add</span>
-              <div class="absolute -top-3 -right-3 px-3 py-1 bg-[#3E50F7] text-white text-[10px] font-bold rounded-full uppercase tracking-tighter">Phase 01</div>
+              <div
+                class="absolute -top-3 -right-3 px-3 py-1 bg-[#3E50F7] text-white text-[10px] font-bold rounded-full uppercase tracking-tighter">
+                Phase 01</div>
             </div>
             <h3 class="text-2xl font-bold text-white mb-4">Adopt Your Identity</h3>
-            <p class="text-white/50 text-[15px] leading-relaxed">Choose your dedicated Business Companion today with a one-time adoption fee. They start working on your server-side tasks immediately.</p>
+            <p class="text-white/50 text-[15px] leading-relaxed">Choose your dedicated Business Companion today with a
+              one-time adoption fee. They start working on your server-side tasks immediately.</p>
           </div>
 
           <!-- Stage 2 -->
           <div class="flex flex-col items-center text-center group">
-            <div class="w-24 h-24 rounded-3xl bg-white/5 border border-white/10 flex items-center justify-center mb-8 relative group-hover:scale-110 transition-transform duration-500 shadow-2xl">
+            <div
+              class="w-24 h-24 rounded-3xl bg-white/5 border border-white/10 flex items-center justify-center mb-8 relative group-hover:scale-110 transition-transform duration-500 shadow-2xl">
               <span class="material-symbols-outlined text-4xl text-[#22C55E]">model_training</span>
-              <div class="absolute -top-3 -right-3 px-3 py-1 bg-[#22C55E] text-white text-[10px] font-bold rounded-full uppercase tracking-tighter">Phase 02</div>
+              <div
+                class="absolute -top-3 -right-3 px-3 py-1 bg-[#22C55E] text-white text-[10px] font-bold rounded-full uppercase tracking-tighter">
+                Phase 02</div>
             </div>
             <h3 class="text-2xl font-bold text-white mb-4">Train on Reality</h3>
-            <p class="text-white/50 text-[15px] leading-relaxed">As your companion handles calls and emails, they build a deep context of your business logic, preferences, and strategic goals.</p>
+            <p class="text-white/50 text-[15px] leading-relaxed">As your companion handles calls and emails, they build
+              a deep context of your business logic, preferences, and strategic goals.</p>
           </div>
 
           <!-- Stage 3 -->
           <div class="flex flex-col items-center text-center group">
-            <div class="w-24 h-24 rounded-3xl bg-[#3E50F7] border border-[#3E50F7] flex items-center justify-center mb-8 relative group-hover:scale-110 transition-transform duration-500 shadow-[0_0_40px_rgba(62,80,247,0.4)]">
+            <div
+              class="w-24 h-24 rounded-3xl bg-[#3E50F7] border border-[#3E50F7] flex items-center justify-center mb-8 relative group-hover:scale-110 transition-transform duration-500 shadow-[0_0_40px_rgba(62,80,247,0.4)]">
               <span class="material-symbols-outlined text-4xl text-white">rocket_launch</span>
-              <div class="absolute -top-3 -right-3 px-3 py-1 bg-white text-[#3E50F7] text-[10px] font-bold rounded-full uppercase tracking-tighter">The Flagship</div>
+              <div
+                class="absolute -top-3 -right-3 px-3 py-1 bg-white text-[#3E50F7] text-[10px] font-bold rounded-full uppercase tracking-tighter">
+                The Flagship</div>
             </div>
             <h3 class="text-2xl font-bold text-white mb-4">Ascend to Stride</h3>
-            <p class="text-white/50 text-[15px] leading-relaxed">Early adopters get exclusive Beta access to the Stride Desktop OS. Your already-trained companion carries forward into your full Business OS.</p>
+            <p class="text-white/50 text-[15px] leading-relaxed">Early adopters get exclusive Beta access to the Stride
+              Desktop OS. Your already-trained companion carries forward into your full Business OS.</p>
           </div>
         </div>
       </div>
 
       <!-- Beta Badge Callout -->
-      <div class="mt-24 max-w-4xl mx-auto p-1 bg-gradient-to-r from-transparent via-white/10 to-transparent rounded-full">
+      <div
+        class="mt-24 max-w-4xl mx-auto p-1 bg-gradient-to-r from-transparent via-white/10 to-transparent rounded-full">
         <div class="bg-[#1E204A] rounded-full py-4 px-8 flex flex-col md:flex-row items-center justify-between gap-4">
           <div class="flex items-center gap-4">
             <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center">
               <span class="material-symbols-outlined text-[#AFBBE0]">verified</span>
             </div>
-            <span class="text-white/80 font-medium italic">"Current companions are Stride-ready and will carry over all training data."</span>
+            <span class="text-white/80 font-medium italic">"Current companions are Stride-ready and will carry over all
+              training data."</span>
           </div>
-          <div class="text-[11px] font-bold text-[#3E50F7] uppercase tracking-widest bg-[#3E50F7]/10 px-4 py-2 rounded-full border border-[#3E50F7]/20">
+          <div
+            class="text-[11px] font-bold text-[#3E50F7] uppercase tracking-widest bg-[#3E50F7]/10 px-4 py-2 rounded-full border border-[#3E50F7]/20">
             Exclusive Beta Access Included
           </div>
         </div>
@@ -960,324 +1050,253 @@
     </div>
   </section>
 
-  <!-- Feature 1 (Choose Your Dedicated Companion) -->
-  <section id="concept" class="bg-white py-24 relative overflow-hidden">
-    <style>
-      @keyframes float-card {
+  <!-- Section 4: Flagship Calling Feature (Enhanced & Grand) -->
+  <section id="voice" class="bg-[#1E204A] py-32 border-y border-white/5 relative overflow-hidden">
+    <!-- Immersive Background Elements -->
+    <div class="absolute inset-0 pointer-events-none">
+      <div
+        class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#3E50F7]/10 rounded-full blur-[120px]">
+      </div>
+      <div
+        class="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10">
+      </div>
+    </div>
 
-        0%,
-        100% {
-          transform: translateY(0px);
-        }
+    <div class="max-w-[1400px] mx-auto px-6 relative z-10">
+      <div class="text-center mb-24">
+        <div
+          class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-[#3E50F7] text-xs font-bold uppercase tracking-widest mb-6 shadow-xl">
+          <span class="material-symbols-outlined text-[20px] animate-pulse">settings_input_antenna</span> The Gold
+          Standard
+        </div>
+        <h2
+          class="text-4xl md:text-6xl lg:text-7xl font-black text-white max-w-4xl mx-auto leading-[1.1] tracking-tight">
+          The Flagship<br><span class="text-[#3E50F7]">Calling System</span>
+        </h2>
+        <p class="text-xl text-white/50 max-w-2xl mx-auto mt-8 leading-relaxed">
+          The ultimate interface. No screens, no typing—just a proactive partner that calls you to discuss goals,
+          provide updates, and execute your vision.
+        </p>
+      </div>
 
-        50% {
-          transform: translateY(-15px);
-        }
-      }
+      <div class="relative w-full mx-auto">
+        <!-- SVG Connecting Lines (Immersive) -->
+        <svg class="hidden md:block absolute inset-0 w-full h-[450px] pointer-events-none -z-10" viewBox="0 0 1400 450"
+          preserveAspectRatio="none">
+          <style>
+            @keyframes flowLineNew {
+              to {
+                stroke-dashoffset: -440;
+              }
+            }
 
-      .animate-float-1 {
-        animation: float-card 6s ease-in-out infinite;
-      }
+            .path-base-new {
+              stroke: rgba(255, 255, 255, 0.05);
+              stroke-width: 2;
+              stroke-dasharray: 8 8;
+              fill: none;
+            }
 
-      .animate-float-2 {
-        animation: float-card 7s ease-in-out infinite 1.5s;
-      }
-    </style>
+            .path-flow-new {
+              stroke: #3E50F7;
+              stroke-width: 4;
+              fill: none;
+              stroke-linecap: round;
+              stroke-dasharray: 60 400;
+              animation: flowLineNew 3s linear infinite;
+              filter: drop-shadow(0 0 8px #3E50F7);
+            }
+          </style>
+          <path class="path-base-new" d="M 280 150 L 317 150 Q 327 150 327 160 L 327 300 Q 327 310 337 310 L 374 310" />
+          <path class="path-flow-new" d="M 280 150 L 317 150 Q 327 150 327 160 L 327 300 Q 327 310 337 310 L 374 310" />
+
+          <path class="path-base-new" d="M 653 310 L 690 310 Q 700 310 700 300 L 700 160 Q 700 150 710 150 L 747 150" />
+          <path class="path-flow-new" style="animation-delay: 1s;"
+            d="M 653 310 L 690 310 Q 700 310 700 300 L 700 160 Q 700 150 710 150 L 747 150" />
+
+          <path class="path-base-new"
+            d="M 1027 150 L 1064 150 Q 1074 150 1074 160 L 1074 300 Q 1074 310 1084 310 L 1121 310" />
+          <path class="path-flow-new" style="animation-delay: 2s;"
+            d="M 1027 150 L 1064 150 Q 1074 150 1074 160 L 1074 300 Q 1074 310 1084 310 L 1121 310" />
+        </svg>
+
+        <div class="flex flex-col md:flex-row justify-between items-start gap-8 md:gap-4 relative">
+          <!-- Step 1 -->
+          <div class="w-full md:w-[22%] h-auto relative group">
+            <div
+              class="h-full flex flex-col items-center p-8 bg-white/5 backdrop-blur-xl rounded-[2.5rem] border border-white/10 group-hover:border-[#3E50F7]/30 transition-all duration-500">
+              <div
+                class="w-20 h-20 bg-white/5 text-white/20 rounded-full flex items-center justify-center mb-6 group-hover:text-white group-hover:bg-[#3E50F7]/20 transition-all">
+                <span class="material-symbols-outlined text-4xl">hourglass_empty</span>
+              </div>
+              <h3 class="font-bold text-white text-center text-xl mb-3">Thinking Phase</h3>
+              <p class="text-sm text-white/40 text-center leading-relaxed">You have a complex business hurdle that needs
+                strategic execution.</p>
+            </div>
+          </div>
+
+          <!-- Step 2 (Active/Grand) -->
+          <div class="w-full md:w-[24%] h-auto relative md:mt-[150px] group">
+            <div
+              class="h-full flex flex-col items-center p-10 bg-gradient-to-br from-[#3E50F7] to-[#25224A] text-white rounded-[3rem] shadow-[0_0_60px_rgba(62,80,247,0.3)] border border-white/20 transform group-hover:scale-105 transition-all duration-500">
+              <div
+                class="w-24 h-24 bg-white text-[#3E50F7] rounded-full flex items-center justify-center mb-8 shadow-2xl relative">
+                <span class="material-symbols-outlined text-5xl">call</span>
+                <div class="absolute inset-0 rounded-full border-4 border-white/50 animate-ping"></div>
+              </div>
+              <h3 class="font-black text-center text-2xl mb-4 tracking-tight">The Discussion</h3>
+              <p class="text-sm text-white/80 text-center leading-relaxed font-medium">Talk naturally. Your companion
+                understands context, nuances, and specific goals without prompts.</p>
+            </div>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="w-full md:w-[22%] h-auto relative group">
+            <div
+              class="h-full flex flex-col items-center p-8 bg-white/5 backdrop-blur-xl rounded-[2.5rem] border border-white/10 group-hover:border-[#3E50F7]/30 transition-all duration-500">
+              <div
+                class="w-20 h-20 bg-white/5 text-white/20 rounded-full flex items-center justify-center mb-6 group-hover:text-[#22C55E] group-hover:bg-[#22C55E]/20 transition-all">
+                <span class="material-symbols-outlined text-4xl">cloud_sync</span>
+              </div>
+              <h3 class="font-bold text-white text-center text-xl mb-3">Auto-Execution</h3>
+              <p class="text-sm text-white/40 text-center leading-relaxed">The agent navigates the digital world to
+                finalize your request in the background.</p>
+            </div>
+          </div>
+
+          <!-- Step 4 -->
+          <div class="w-full md:w-[22%] h-auto relative md:mt-[150px] group">
+            <div
+              class="h-full flex flex-col items-center p-8 bg-white/5 backdrop-blur-xl rounded-[2.5rem] border border-white/10 group-hover:border-[#3E50F7]/30 transition-all duration-500">
+              <div
+                class="w-20 h-20 bg-white/5 text-white/20 rounded-full flex items-center justify-center mb-6 group-hover:text-[#AFBBE0] group-hover:bg-[#AFBBE0]/20 transition-all">
+                <span class="material-symbols-outlined text-4xl">task_alt</span>
+              </div>
+              <h3 class="font-bold text-white text-center text-xl mb-3">Outcome Delivered</h3>
+              <p class="text-sm text-white/40 text-center leading-relaxed">Get a final call or email with the completed
+                work, ready for your review.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 5: Choose Your Companion -->
+  <section id="concept" class="bg-white py-32 relative overflow-hidden">
     <div class="max-w-[1600px] mx-auto px-6 md:px-12 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
       <div class="space-y-8">
         <div>
-          <h2 class="text-3xl md:text-4xl lg:text-5xl font-black text-[#25224A] tracking-tight mb-4">Choose
-            Your<br><span class="text-[#3E50F7]">Dedicated Companion</span></h2>
+          <h2 class="text-4xl md:text-5xl lg:text-6xl font-black text-[#25224A] tracking-tight mb-6">Choose
+            Your<br><span class="text-[#3E50F7]">Dedicated Identity</span></h2>
+          <p class="text-[#7F798D] text-lg max-w-xl">Claim a companion that aligns with your industry. This identity
+            will grow with you and eventually transition into your Stride OS.</p>
         </div>
 
         <div class="space-y-6">
           <!-- Bullet 1 -->
           <div
-            class="flex items-center gap-6 bg-[#F8FAFF] p-5 rounded-3xl border border-[#DEE8FF] hover:border-[#3E50F7]/30 transition-colors shadow-sm">
+            class="flex items-center gap-6 bg-[#F8FAFF] p-6 rounded-[2.5rem] border border-[#DEE8FF] hover:border-[#3E50F7]/30 transition-all shadow-sm group">
             <div
-              class="w-16 h-16 rounded-full bg-white text-[#3E50F7] flex items-center justify-center shrink-0 shadow-[0_4px_20px_rgb(62,80,247,0.15)] border border-[#EEF2FE]">
-              <span class="material-symbols-outlined text-[32px]">verified_user</span>
+              class="w-16 h-16 rounded-full bg-white text-[#3E50F7] flex items-center justify-center shrink-0 shadow-lg group-hover:scale-110 transition-transform">
+              <span class="material-symbols-outlined text-[32px]">shield_person</span>
             </div>
             <div>
-              <h4 class="text-xl font-bold text-[#25224A] mb-1">Unwavering Trust & Focus</h4>
-              <p class="text-[15px] text-[#7F798D] leading-relaxed">Overcome execution anxiety with a reliable partner
-                who never sleeps.</p>
+              <h4 class="text-xl font-bold text-[#25224A] mb-1">Persistent Digital Twin</h4>
+              <p class="text-[14px] text-[#7F798D] leading-relaxed">An identity that knows your past, understands your
+                present, and plans for your future.</p>
             </div>
           </div>
 
           <!-- Bullet 2 -->
           <div
-            class="flex items-center gap-6 bg-[#F8FAFF] p-5 rounded-3xl border border-[#DEE8FF] hover:border-[#3E50F7]/30 transition-colors shadow-sm">
+            class="flex items-center gap-6 bg-[#F8FAFF] p-6 rounded-[2.5rem] border border-[#DEE8FF] hover:border-[#3E50F7]/30 transition-all shadow-sm group">
             <div
-              class="w-16 h-16 rounded-full bg-white text-[#3E50F7] flex items-center justify-center shrink-0 shadow-[0_4px_20px_rgb(62,80,247,0.15)] border border-[#EEF2FE]">
-              <span class="material-symbols-outlined text-[32px]">psychology</span>
+              class="w-16 h-16 rounded-full bg-white text-[#3E50F7] flex items-center justify-center shrink-0 shadow-lg group-hover:scale-110 transition-transform">
+              <span class="material-symbols-outlined text-[32px]">account_balance_wallet</span>
             </div>
             <div>
-              <h4 class="text-xl font-bold text-[#25224A] mb-1">Industry-Leading Intelligence</h4>
-              <p class="text-[15px] text-[#7F798D] leading-relaxed">Powered by top AI models best suited for your
-                specific industry tasks.</p>
-            </div>
-          </div>
-
-          <!-- Bullet 3 -->
-          <div
-            class="flex items-center gap-6 bg-[#F8FAFF] p-5 rounded-3xl border border-[#DEE8FF] hover:border-[#3E50F7]/30 transition-colors shadow-sm">
-            <div
-              class="w-16 h-16 rounded-full bg-white text-[#3E50F7] flex items-center justify-center shrink-0 shadow-[0_4px_20px_rgb(62,80,247,0.15)] border border-[#EEF2FE]">
-              <span class="material-symbols-outlined text-[32px]">tune</span>
-            </div>
-            <div>
-              <h4 class="text-xl font-bold text-[#25224A] mb-1">Complete Manual Control</h4>
-              <p class="text-[15px] text-[#7F798D] leading-relaxed">Manage everything manually through our intuitive
-                dashboard with full oversight.</p>
+              <h4 class="text-xl font-bold text-[#25224A] mb-1">One-Time Adoption</h4>
+              <p class="text-[14px] text-[#7F798D] leading-relaxed">Adopt your companion once. After that, you only pay
+                for the computing usage they consume.</p>
             </div>
           </div>
         </div>
 
-        <div class="pt-2">
+        <div class="pt-4">
           <button @click="waitlistModalOpen = true"
-            class="px-8 py-4 bg-[#3E50F7] hover:bg-[#0000EE] text-white font-bold rounded-2xl shadow-xl shadow-[#3E50F7]/20 transition-all active:scale-95 text-[15px] flex items-center gap-2 w-fit">
-            Find your companion <span class="material-symbols-outlined text-[20px]">person_search</span>
+            class="px-12 py-5 bg-[#3E50F7] text-white font-black rounded-2xl shadow-xl shadow-[#3E50F7]/20 hover:scale-105 transition-all text-base flex items-center gap-3 w-fit uppercase tracking-widest">
+            Find your identity <span class="material-symbols-outlined text-[20px]">person_search</span>
           </button>
         </div>
       </div>
 
       <!-- Right Side: 4 Companion Cards Grid -->
-      <div class="relative w-full h-[650px] flex items-center justify-center lg:justify-end pr-0 lg:pr-10">
-        <!-- Central decoration behind cards -->
-        <div class="absolute inset-0 flex items-center justify-center -z-10 pointer-events-none lg:translate-x-12">
-          <div class="w-[450px] h-[450px] bg-gradient-to-tr from-[#3E50F7]/10 to-[#2bd9ff]/10 rounded-full blur-3xl">
-          </div>
-        </div>
-
-        <div class="relative w-full max-w-[480px] grid grid-cols-2 gap-4 pb-8">
-
+      <div class="relative w-full h-[650px] flex items-center justify-center lg:justify-end">
+        <div class="relative w-full max-w-[480px] grid grid-cols-2 gap-4">
           <!-- Column 1 -->
           <div class="flex flex-col gap-4 animate-float-1">
-            <!-- Card 1 -->
             <div
               class="relative h-[270px] w-full rounded-[2.5rem] overflow-hidden group shadow-lg border-[3px] border-white">
               <img src="https://i.pravatar.cc/300?img=11" alt="James"
                 class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
               <div class="absolute inset-0 bg-gradient-to-t from-[#25224A] via-[#25224A]/40 to-transparent opacity-90">
               </div>
-              <div
-                class="absolute top-4 right-4 w-3 h-3 bg-green-500 rounded-full shadow-[0_0_10px_rgba(34,197,94,1)] animate-pulse">
-              </div>
-
               <div class="absolute bottom-0 left-0 w-full p-5 text-white">
-                <h3 class="text-xl font-black mb-0.5">James</h3>
-                <p class="text-[9px] font-bold text-[#2bd9ff] uppercase tracking-widest mb-2">Financial Analyst</p>
-                <div class="flex items-end justify-between border-t border-white/20 pt-3 mt-2">
-                  <span class="text-[11px] text-white/80 line-clamp-1 flex-1 pr-2">Forecasting, Audits</span>
-                  <div class="flex items-baseline gap-0.5 whitespace-nowrap">
-                    <span class="text-base font-black">$49</span><span class="text-[10px] text-white/60">/usage</span>
-                  </div>
+                <h3 class="text-xl font-black">James</h3>
+                <p class="text-[9px] font-bold text-[#2bd9ff] uppercase tracking-widest">Financial Analyst</p>
+                <div class="flex items-baseline gap-1 border-t border-white/20 pt-3 mt-2">
+                  <span class="text-lg font-black">$49</span><span class="text-[10px] text-white/60">/usage</span>
                 </div>
               </div>
             </div>
-
-            <!-- Card 2 -->
             <div
               class="relative h-[270px] w-full rounded-[2.5rem] overflow-hidden group shadow-lg border-[3px] border-white">
               <img src="https://i.pravatar.cc/300?img=47" alt="Sarah"
                 class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
               <div class="absolute inset-0 bg-gradient-to-t from-[#25224A] via-[#25224A]/40 to-transparent opacity-90">
               </div>
-
               <div class="absolute bottom-0 left-0 w-full p-5 text-white">
-                <h3 class="text-xl font-black mb-0.5">Sarah</h3>
-                <p class="text-[9px] font-bold text-[#2bd9ff] uppercase tracking-widest mb-2">Legal Advisor</p>
-                <div class="flex items-end justify-between border-t border-white/20 pt-3 mt-2">
-                  <span class="text-[11px] text-white/80 line-clamp-1 flex-1 pr-2">Contracts, Risk</span>
-                  <div class="flex items-baseline gap-0.5 whitespace-nowrap">
-                    <span class="text-base font-black">$79</span><span class="text-[10px] text-white/60">/usage</span>
-                  </div>
+                <h3 class="text-xl font-black">Sarah</h3>
+                <p class="text-[9px] font-bold text-[#2bd9ff] uppercase tracking-widest">Legal Advisor</p>
+                <div class="flex items-baseline gap-1 border-t border-white/20 pt-3 mt-2">
+                  <span class="text-lg font-black">$79</span><span class="text-[10px] text-white/60">/usage</span>
                 </div>
               </div>
             </div>
           </div>
-
-          <!-- Column 2 (Offset) -->
+          <!-- Column 2 -->
           <div class="flex flex-col gap-4 translate-y-12 animate-float-2">
-            <!-- Card 3 -->
             <div
               class="relative h-[270px] w-full rounded-[2.5rem] overflow-hidden group shadow-lg border-[3px] border-white">
               <img src="https://i.pravatar.cc/300?img=44" alt="Elena"
                 class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
               <div class="absolute inset-0 bg-gradient-to-t from-[#25224A] via-[#25224A]/40 to-transparent opacity-90">
               </div>
-
               <div class="absolute bottom-0 left-0 w-full p-5 text-white">
-                <h3 class="text-xl font-black mb-0.5">Elena</h3>
-                <p class="text-[9px] font-bold text-[#2bd9ff] uppercase tracking-widest mb-2">Growth Marketer</p>
-                <div class="flex items-end justify-between border-t border-white/20 pt-3 mt-2">
-                  <span class="text-[11px] text-white/80 line-clamp-1 flex-1 pr-2">SEO, Campaigns</span>
-                  <div class="flex items-baseline gap-0.5 whitespace-nowrap">
-                    <span class="text-base font-black">$59</span><span class="text-[10px] text-white/60">/usage</span>
-                  </div>
+                <h3 class="text-xl font-black">Elena</h3>
+                <p class="text-[9px] font-bold text-[#2bd9ff] uppercase tracking-widest">Growth Marketer</p>
+                <div class="flex items-baseline gap-1 border-t border-white/20 pt-3 mt-2">
+                  <span class="text-lg font-black">$59</span><span class="text-[10px] text-white/60">/usage</span>
                 </div>
               </div>
             </div>
-
-            <!-- Card 4 -->
             <div
               class="relative h-[270px] w-full rounded-[2.5rem] overflow-hidden group shadow-lg border-[3px] border-white">
               <img src="https://i.pravatar.cc/300?img=68" alt="David"
                 class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
               <div class="absolute inset-0 bg-gradient-to-t from-[#25224A] via-[#25224A]/40 to-transparent opacity-90">
               </div>
-
               <div class="absolute bottom-0 left-0 w-full p-5 text-white">
-                <h3 class="text-xl font-black mb-0.5">David</h3>
-                <p class="text-[9px] font-bold text-[#2bd9ff] uppercase tracking-widest mb-2">Lead Engineer</p>
-                <div class="flex items-end justify-between border-t border-white/20 pt-3 mt-2">
-                  <span class="text-[11px] text-white/80 line-clamp-1 flex-1 pr-2">Code, Servers</span>
-                  <div class="flex items-baseline gap-0.5 whitespace-nowrap">
-                    <span class="text-base font-black">$149</span><span class="text-[10px] text-white/60">/usage</span>
-                  </div>
+                <h3 class="text-xl font-black">David</h3>
+                <p class="text-[9px] font-bold text-[#2bd9ff] uppercase tracking-widest">Lead Engineer</p>
+                <div class="flex items-baseline gap-1 border-t border-white/20 pt-3 mt-2">
+                  <span class="text-lg font-black">$149</span><span class="text-[10px] text-white/60">/usage</span>
                 </div>
               </div>
             </div>
           </div>
-
         </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Feature 2 (Sell quickly -> Voice calls) -->
-  <section id="voice" class="bg-[#EEF2FE] py-24 border-y border-[#DEE8FF] relative overflow-hidden">
-    <div class="max-w-[1400px] mx-auto px-6">
-      <div class="text-center mb-16">
-        <div
-          class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white border border-[#DEE8FF] text-[#3E50F7] text-xs font-bold uppercase tracking-wider mb-4 shadow-sm">
-          <span class="material-symbols-outlined text-[18px]">record_voice_over</span> Voice Intelligence
-        </div>
-        <h2 class="text-3xl md:text-4xl lg:text-5xl font-black text-[#25224A] max-w-2xl mx-auto leading-tight">Our
-          Flagship <span class="text-[#3E50F7]">Calling System</span></h2>
-        <p class="text-[17px] text-[#5F5770] max-w-xl mx-auto mt-4 leading-relaxed">Experience seamless collaboration.
-          No dashboard required—just talk naturally and let the AI execute tasks on your behalf.</p>
-      </div>
-
-      <div class="relative w-full mx-auto z-10">
-        <!-- SVG Connecting Lines -->
-        <svg class="hidden md:block absolute inset-0 w-full h-[380px] pointer-events-none -z-10" viewBox="0 0 1400 380"
-          preserveAspectRatio="none">
-          <style>
-            @keyframes flowLine2 {
-              to {
-                stroke-dashoffset: -440;
-              }
-            }
-
-            .path-base2 {
-              stroke: #CBD5E1;
-              stroke-width: 2;
-              stroke-dasharray: 4 4;
-              fill: none;
-            }
-
-            .path-flow2 {
-              stroke: #3E50F7;
-              stroke-width: 3;
-              fill: none;
-              stroke-linecap: round;
-              stroke-dasharray: 40 400;
-              animation: flowLine2 3s linear infinite;
-            }
-          </style>
-          <!-- Step 1 to 2 (Down) -->
-          <path class="path-base2" d="M 280 120 L 317 120 Q 327 120 327 130 L 327 250 Q 327 260 337 260 L 374 260" />
-          <path class="path-flow2" d="M 280 120 L 317 120 Q 327 120 327 130 L 327 250 Q 327 260 337 260 L 374 260" />
-
-          <!-- Step 2 to 3 (Up) -->
-          <path class="path-base2" d="M 653 260 L 690 260 Q 700 260 700 250 L 700 130 Q 700 120 710 120 L 747 120" />
-          <path class="path-flow2" style="animation-delay: 1s;"
-            d="M 653 260 L 690 260 Q 700 260 700 250 L 700 130 Q 700 120 710 120 L 747 120" />
-
-          <!-- Step 3 to 4 (Down) -->
-          <path class="path-base2" d="M 1027 120 L 1064 120 Q 1074 120 1074 130 L 1074 250 Q 1074 260 1084 260 L 1121 260" />
-          <path class="path-flow2" style="animation-delay: 2s;"
-            d="M 1027 120 L 1064 120 Q 1074 120 1074 130 L 1074 250 Q 1074 260 1084 260 L 1121 260" />
-        </svg>
-
-        <div class="flex flex-col md:flex-row justify-between items-start gap-8 md:gap-4 relative">
-          <!-- Step 1 -->
-          <div class="w-full md:w-[20%] h-auto relative">
-            <div
-              class="h-full flex flex-col items-center p-7 bg-white rounded-[2rem] shadow-sm border border-[#DEE8FF] hover:-translate-y-1 transition-transform relative z-10">
-              <div class="w-16 h-16 bg-[#FFF5F5] text-red-500 rounded-full flex items-center justify-center mb-5">
-                <span class="material-symbols-outlined text-[32px]">pending_actions</span>
-              </div>
-              <h3 class="font-bold text-[#25224A] text-center text-lg mb-2">1. Procrastination</h3>
-              <p class="text-[13px] text-[#7F798D] text-center leading-relaxed">You're putting off a complex or tedious
-                task that needs to be done.</p>
-            </div>
-            <div
-              class="hidden md:block absolute top-[120px] -right-2.5 w-5 h-5 bg-[#EEF2FE] border-[4px] border-[#CBD5E1] rounded-full z-20 -translate-y-1/2">
-            </div>
-          </div>
-
-          <!-- Step 2 -->
-          <div class="w-full md:w-[20%] h-auto relative md:mt-[140px]">
-            <div
-              class="hidden md:block absolute top-[120px] -left-2.5 w-5 h-5 bg-[#EEF2FE] border-[4px] border-[#CBD5E1] rounded-full z-20 -translate-y-1/2">
-            </div>
-            <div
-              class="h-full flex flex-col items-center p-7 bg-[#25224A] text-white rounded-[2rem] shadow-xl shadow-[#3E50F7]/20 border border-[#3E50F7]/30 hover:-translate-y-1 transition-transform relative z-10">
-              <div
-                class="w-16 h-16 bg-gradient-to-br from-[#3E50F7] to-[#2bd9ff] text-white rounded-full flex items-center justify-center mb-5 shadow-[0_0_20px_rgba(62,80,247,0.4)] animate-[pulse_2s_ease-in-out_infinite]">
-                <span class="material-symbols-outlined text-[32px]">call</span>
-              </div>
-              <h3 class="font-bold text-white text-center text-lg mb-2">2. Ask Companion to call you.</h3>
-              <p class="text-[13px] text-[#AFBBE0] text-center leading-relaxed">Just call your companion and explain
-                what needs to be done naturally.</p>
-            </div>
-            <div
-              class="hidden md:block absolute top-[120px] -right-2.5 w-5 h-5 bg-[#EEF2FE] border-[4px] border-[#CBD5E1] rounded-full z-20 -translate-y-1/2 flex items-center justify-center">
-              <div class="w-1.5 h-1.5 bg-[#3E50F7] rounded-full animate-pulse"></div>
-            </div>
-          </div>
-
-          <!-- Step 3 -->
-          <div class="w-full md:w-[20%] h-auto relative">
-            <div
-              class="hidden md:block absolute top-[120px] -left-2.5 w-5 h-5 bg-[#EEF2FE] border-[4px] border-[#CBD5E1] rounded-full z-20 -translate-y-1/2">
-            </div>
-            <div
-              class="h-full flex flex-col items-center p-7 bg-white rounded-[2rem] shadow-sm border border-[#DEE8FF] hover:-translate-y-1 transition-transform relative z-10">
-              <div class="w-16 h-16 bg-[#F0FDF4] text-green-600 rounded-full flex items-center justify-center mb-5">
-                <span class="material-symbols-outlined text-[32px]">task_alt</span>
-              </div>
-              <h3 class="font-bold text-[#25224A] text-center text-lg mb-2">3. Auto Execution</h3>
-              <p class="text-[13px] text-[#7F798D] text-center leading-relaxed">The companion silently executes the
-                task in the
-                background using top models.</p>
-            </div>
-            <div
-              class="hidden md:block absolute top-[120px] -right-2.5 w-5 h-5 bg-[#EEF2FE] border-[4px] border-[#CBD5E1] rounded-full z-20 -translate-y-1/2">
-            </div>
-          </div>
-
-          <!-- Step 4 -->
-          <div class="w-full md:w-[20%] h-auto relative md:mt-[140px]">
-            <div
-              class="hidden md:block absolute top-[120px] -left-2.5 w-5 h-5 bg-[#EEF2FE] border-[4px] border-[#CBD5E1] rounded-full z-20 -translate-y-1/2">
-            </div>
-            <div
-              class="h-full flex flex-col items-center p-7 bg-white rounded-[2rem] shadow-sm border border-[#DEE8FF] hover:-translate-y-1 transition-transform relative z-10">
-              <div
-                class="w-16 h-16 bg-[#F8FAFF] text-[#3E50F7] border border-[#DEE8FF] rounded-full flex items-center justify-center mb-5">
-                <span class="material-symbols-outlined text-[32px]">notifications_active</span>
-              </div>
-              <h3 class="font-bold text-[#25224A] text-center text-lg mb-2">4. Receive Update</h3>
-              <p class="text-[13px] text-[#7F798D] text-center leading-relaxed">Get a proactive phone call or email once
-                your task is completed.</p>
-            </div>
-          </div>
-        </div>
-
       </div>
     </div>
   </section>
@@ -1427,6 +1446,177 @@
         class="relative z-10 px-8 py-4 bg-[#464154] hover:bg-[#25224A] text-white font-semibold rounded-lg transition-colors text-sm shadow-md">
         Get Started
       </button>
+    </div>
+  </section>
+
+  <!-- Section 6: The Big Picture (Stride vs Cursor) -->
+  <section id="big-picture" class="bg-[#25224A] py-24 relative overflow-hidden">
+    <div class="max-w-[1400px] mx-auto px-6 md:px-12 relative z-10 text-center">
+      <div
+        class="inline-flex items-center gap-3 px-4 py-2 rounded-2xl bg-white/5 border border-white/10 text-white text-sm font-bold mb-12">
+        <span class="material-symbols-outlined text-[#3E50F7]">auto_awesome</span>
+        Stride vs Cursor
+      </div>
+      <h2 class="text-4xl md:text-6xl font-black text-white tracking-tight mb-8">Stride is for <span
+          class="text-[#3E50F7]">Business</span><br>as Cursor is for development.</h2>
+      <p class="text-white/60 text-xl max-w-3xl mx-auto leading-relaxed mb-16">Just as Cursor revolutionized the way
+        engineers write code, Stride is here to revolutionize the way founders run businesses. It's not a tool; it's an
+        extension of your professional identity.</p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        <div class="bg-white/5 p-8 rounded-3xl border border-white/10 text-left">
+          <div class="text-[#3E50F7] font-black text-xl mb-4">Cursor</div>
+          <p class="text-white/40 text-sm">Automates syntax, logic, and debugging. Focus on building architecture.</p>
+        </div>
+        <div class="bg-[#3E50F7]/10 p-8 rounded-3xl border border-[#3E50F7]/20 text-left relative overflow-hidden">
+          <div class="absolute top-0 right-0 p-4 opacity-10">
+            <span class="material-symbols-outlined text-white text-6xl">rocket</span>
+          </div>
+          <div class="text-white font-black text-xl mb-4">Stride</div>
+          <p class="text-white/80 text-sm">Automates operations, research, and execution. Focus on high-level strategy.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 7: Perks & Early Contribution -->
+  <section id="perks" class="bg-white py-24 relative overflow-hidden">
+    <div class="max-w-[1400px] mx-auto px-6 md:px-12">
+      <div
+        class="bg-gradient-to-br from-[#25224A] to-[#3E50F7] rounded-[4rem] p-12 md:p-24 text-center relative shadow-2xl overflow-hidden">
+        <div
+          class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10">
+        </div>
+        <div class="relative z-10">
+          <h2 class="text-3xl md:text-5xl font-black text-white tracking-tight mb-8">Perks of being an <span
+              class="text-[#2bd9ff]">Early Contributor</span></h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16 text-left">
+            <div class="bg-white/10 backdrop-blur-md p-6 rounded-3xl border border-white/10">
+              <span class="material-symbols-outlined text-[#2bd9ff] text-3xl mb-4">verified</span>
+              <h4 class="text-white font-bold mb-2">Beta Access</h4>
+              <p class="text-white/60 text-sm">Priority access to Stride Desktop OS before the global release.</p>
+            </div>
+            <div class="bg-white/10 backdrop-blur-md p-6 rounded-3xl border border-white/10">
+              <span class="material-symbols-outlined text-[#2bd9ff] text-3xl mb-4">history</span>
+              <h4 class="text-white font-bold mb-2">Legacy Companion</h4>
+              <p class="text-white/60 text-sm">Your trained AI identity carries over to the flagship product forever.
+              </p>
+            </div>
+            <div class="bg-white/10 backdrop-blur-md p-6 rounded-3xl border border-white/10">
+              <span class="material-symbols-outlined text-[#2bd9ff] text-3xl mb-4">savings</span>
+              <h4 class="text-white font-bold mb-2">Founder Pricing</h4>
+              <p class="text-white/60 text-sm">Locked-in early adopter rates on all future usage costs.</p>
+            </div>
+          </div>
+          <button @click="waitlistModalOpen = true"
+            class="px-12 py-5 bg-white text-[#25224A] font-black rounded-2xl hover:scale-105 transition-transform shadow-2xl uppercase tracking-widest">
+            Contribute Now
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 8: FAQ Section -->
+  <section id="faq" class="bg-[#F8FAFF] py-24 relative overflow-hidden" x-data="{ activeFaq: null }">
+    <div class="max-w-4xl mx-auto px-6 md:px-12">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl md:text-5xl font-black text-[#25224A] tracking-tight">Everything you <span
+            class="text-[#3E50F7]">Need to Know</span></h2>
+      </div>
+
+      <div class="space-y-4">
+        <!-- FAQ Item 1 -->
+        <div class="bg-white rounded-3xl border border-[#DEE8FF] overflow-hidden transition-all shadow-sm">
+          <button @click="activeFaq === 1 ? activeFaq = null : activeFaq = 1"
+            class="w-full px-8 py-6 text-left flex items-center justify-between group">
+            <span class="text-lg md:text-xl font-bold text-[#25224A]">What is The Business Companion?</span>
+            <span class="material-symbols-outlined text-[#3E50F7] transition-transform duration-300"
+              :class="activeFaq === 1 ? 'rotate-45' : ''">add</span>
+          </button>
+          <div x-show="activeFaq === 1" x-collapse class="px-8 pb-6 text-[#7F798D] leading-relaxed">
+            The Business Companion is an AI-powered professional assistant that lives in its own secure, private
+            computer. Unlike standard chatbots, it has a persistent digital identity and can execute complex business
+            tasks autonomously, from research and analysis to planning and execution.
+          </div>
+        </div>
+
+        <!-- FAQ Item 2 -->
+        <div class="bg-white rounded-3xl border border-[#DEE8FF] overflow-hidden transition-all shadow-sm">
+          <button @click="activeFaq === 2 ? activeFaq = null : activeFaq = 2"
+            class="w-full px-8 py-6 text-left flex items-center justify-between group">
+            <span class="text-lg md:text-xl font-bold text-[#25224A]">What can it do?</span>
+            <span class="material-symbols-outlined text-[#3E50F7] transition-transform duration-300"
+              :class="activeFaq === 2 ? 'rotate-45' : ''">add</span>
+          </button>
+          <div x-show="activeFaq === 2" x-collapse class="px-8 pb-6 text-[#7F798D] leading-relaxed">
+            It can handle competitor research, monetization strategies, KPI reporting, legal document summarization,
+            voice-based task delegation, and autonomous web navigation. Essentially, anything a high-level executive
+            assistant can do, your companion can do 24/7.
+          </div>
+        </div>
+
+        <!-- FAQ Item 3 -->
+        <div class="bg-white rounded-3xl border border-[#DEE8FF] overflow-hidden transition-all shadow-sm">
+          <button @click="activeFaq === 3 ? activeFaq = null : activeFaq = 3"
+            class="w-full px-8 py-6 text-left flex items-center justify-between group">
+            <span class="text-lg md:text-xl font-bold text-[#25224A]">Does it keep running when I close the tab?</span>
+            <span class="material-symbols-outlined text-[#3E50F7] transition-transform duration-300"
+              :class="activeFaq === 3 ? 'rotate-45' : ''">add</span>
+          </button>
+          <div x-show="activeFaq === 3" x-collapse class="px-8 pb-6 text-[#7F798D] leading-relaxed">
+            Yes. Because every companion operates on its own dedicated Virtual Machine (VM), it doesn't depend on your
+            browser being open. You can delegate a task, close your laptop, and your companion will finish the work and
+            notify you via email or a proactive call.
+          </div>
+        </div>
+
+        <!-- FAQ Item 4 -->
+        <div class="bg-white rounded-3xl border border-[#DEE8FF] overflow-hidden transition-all shadow-sm">
+          <button @click="activeFaq === 4 ? activeFaq = null : activeFaq = 4"
+            class="w-full px-8 py-6 text-left flex items-center justify-between group">
+            <span class="text-lg md:text-xl font-bold text-[#25224A]">Does it remember me?</span>
+            <span class="material-symbols-outlined text-[#3E50F7] transition-transform duration-300"
+              :class="activeFaq === 4 ? 'rotate-45' : ''">add</span>
+          </button>
+          <div x-show="activeFaq === 4" x-collapse class="px-8 pb-6 text-[#7F798D] leading-relaxed">
+            Absolutely. It features persistent memory that stores your preferences, business context, and past
+            interactions. The more you work with your companion, the more it aligns with your strategic thinking and
+            operational style.
+          </div>
+        </div>
+
+        <!-- FAQ Item 5 -->
+        <div class="bg-white rounded-3xl border border-[#DEE8FF] overflow-hidden transition-all shadow-sm">
+          <button @click="activeFaq === 5 ? activeFaq = null : activeFaq = 5"
+            class="w-full px-8 py-6 text-left flex items-center justify-between group">
+            <span class="text-lg md:text-xl font-bold text-[#25224A]">What apps can it connect to?</span>
+            <span class="material-symbols-outlined text-[#3E50F7] transition-transform duration-300"
+              :class="activeFaq === 5 ? 'rotate-45' : ''">add</span>
+          </button>
+          <div x-show="activeFaq === 5" x-collapse class="px-8 pb-6 text-[#7F798D] leading-relaxed">
+            Stride can interact with any web-based application via its own browser. It natively integrates with popular
+            stacks like Gmail, Slack, Notion, Stripe, and LinkedIn, but its ability to navigate any URL means it can
+            work with virtually any digital tool you use.
+          </div>
+        </div>
+
+        <!-- FAQ Item 6 -->
+        <div class="bg-white rounded-3xl border border-[#DEE8FF] overflow-hidden transition-all shadow-sm">
+          <button @click="activeFaq === 6 ? activeFaq = null : activeFaq = 6"
+            class="w-full px-8 py-6 text-left flex items-center justify-between group">
+            <span class="text-lg md:text-xl font-bold text-[#25224A]">How much does it cost?</span>
+            <span class="material-symbols-outlined text-[#3E50F7] transition-transform duration-300"
+              :class="activeFaq === 6 ? 'rotate-45' : ''">add</span>
+          </button>
+          <div x-show="activeFaq === 6" x-collapse class="px-8 pb-6 text-[#7F798D] leading-relaxed">
+            Our model is simple: A one-time adoption fee to claim your dedicated companion, followed by a flexible usage
+            cost (weekly or monthly) based on the computing power and tasks performed. This ensures you only pay for the
+            value delivered.
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
