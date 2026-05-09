@@ -1188,7 +1188,7 @@
       <div class="space-y-8">
         <div>
           <h2 class="text-4xl md:text-5xl lg:text-6xl font-black text-[#25224A] tracking-tight mb-6">Choose
-            Your<br><span class="text-[#3E50F7]">Dedicated Identity</span></h2>
+            Your<br><span class="text-[#3E50F7]">Companion</span></h2>
           <p class="text-[#7F798D] text-lg max-w-xl">Claim a companion that aligns with your industry. This identity
             will grow with you and eventually transition into your Stride OS.</p>
         </div>
