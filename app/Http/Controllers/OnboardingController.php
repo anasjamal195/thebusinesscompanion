@@ -194,6 +194,12 @@ class OnboardingController extends Controller
         return view('onboarding.waiting_call', compact('companion'));
     }
 
+    public function retryCall()
+    {
+        \App\Jobs\InitiateOnboardingCallJob::dispatch(Auth::id());
+        return redirect()->back()->with('success', 'Call re-initiated. Please wait.');
+    }
+
     // Step 7: Platform Onboarding Details (Auth)
     public function details()
     {

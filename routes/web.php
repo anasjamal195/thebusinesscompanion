@@ -63,6 +63,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/onboarding/method', [OnboardingController::class, 'saveMethod'])->name('onboarding.method.save');
 
     Route::get('/onboarding/waiting-call', [OnboardingController::class, 'waitingCall'])->name('onboarding.waiting_call');
+    Route::post('/onboarding/retry-call', [OnboardingController::class, 'retryCall'])->name('onboarding.retry_call');
 
     Route::get('/onboarding/details', [OnboardingController::class, 'details'])->name('onboarding.details');
     Route::post('/onboarding/details', [OnboardingController::class, 'saveDetails'])->name('onboarding.details.save');

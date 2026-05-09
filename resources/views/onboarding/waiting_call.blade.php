@@ -58,6 +58,14 @@
             <span class="w-2 h-2 bg-green-400 rounded-full animate-ping"></span>
             WAITING FOR CONNECTION...
         </div>
+
+        <form action="{{ route('onboarding.retry_call') }}" method="POST">
+            @csrf
+            <button type="submit" class="text-slate-400 hover:text-primary transition-colors font-bold text-xs uppercase tracking-widest flex items-center gap-2 group">
+                <span class="material-symbols-outlined text-[18px] group-hover:rotate-180 transition-transform duration-500">refresh</span>
+                Didn't receive a call? Retry
+            </button>
+        </form>
     </div>
 
     <!-- Live Progress Tracking -->
