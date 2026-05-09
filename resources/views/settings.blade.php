@@ -84,6 +84,19 @@
                         <option value="expert" @selected(old('experience_level', $profile->experience_level) == 'expert')>Expert</option>
                     </select>
                 </div>
+
+                <div class="pt-6 border-t border-gray-100">
+                    <div class="flex items-center justify-between p-6 bg-gray-50 rounded-[2rem] border border-gray-200 transition-all hover:bg-white hover:shadow-xl hover:shadow-gray-200/50 group">
+                        <div class="space-y-1">
+                            <h4 class="font-black text-gray-900 group-hover:text-primary transition-colors">Enable Web Payment Links</h4>
+                            <p class="text-xs font-bold text-gray-500">Allow your digital employee to naturally include payment and upgrade links in conversations when appropriate.</p>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" name="web_links_enabled" value="1" {{ old('web_links_enabled', $profile->web_links_enabled) ? 'checked' : '' }} class="sr-only peer">
+                            <div class="w-14 h-8 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[4px] after:start-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-primary"></div>
+                        </label>
+                    </div>
+                </div>
             </div>
         </div>
 

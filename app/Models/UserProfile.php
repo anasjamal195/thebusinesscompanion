@@ -24,6 +24,7 @@ class UserProfile extends Model
         'business_description',
         'current_problems',
         'urgent_tasks',
+        'web_links_enabled',
     ];
 
     protected $casts = [

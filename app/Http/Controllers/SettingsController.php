@@ -33,6 +33,7 @@ class SettingsController extends Controller
             'companion_id' => 'required|exists:ai_characters,id',
             'current_problems' => 'nullable|string',
             'urgent_tasks' => 'nullable|string',
+            'web_links_enabled' => 'nullable|boolean',
         ]);
 
         $user->update([
@@ -51,6 +52,7 @@ class SettingsController extends Controller
                 'experience_level' => $validated['experience_level'],
                 'current_problems' => $validated['current_problems'],
                 'urgent_tasks' => $validated['urgent_tasks'],
+                'web_links_enabled' => $request->has('web_links_enabled'),
             ]
         );
 
