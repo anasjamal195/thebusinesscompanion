@@ -250,14 +250,15 @@ function initVapi() {
             if (seconds <= 0) {
                 clearInterval(interval);
                 if (callType === 'web' && vapiInstance) {
-                    const assistant = {
-                        id: assistantId,
+                    const overrides = {
                         model: {
+                            provider: 'openai',
+                            model: 'gpt-4o',
                             messages: [{ role: 'system', content: dynamicPrompt }]
                         }
                     };
-                    console.log('[Vapi Web] Starting with assistant object:', assistant);
-                    vapiInstance.start(assistant);
+                    console.log('[Vapi Web] Starting with ID and overrides:', assistantId, overrides);
+                    vapiInstance.start(assistantId, overrides);
                 }
             }
         }, 1000);
