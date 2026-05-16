@@ -201,10 +201,14 @@
      SCRIPTS
      ══════════════════════════════════════════ --}}
 {{-- Vapi Web SDK --}}
+<script>var exports = {};</script>
 <script src="https://unpkg.com/@vapi-ai/web@latest/dist/vapi.js"></script>
 <script src="https://js.pusher.com/8.0.1/pusher.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
+    // Vapi might be under exports or as a global depending on the bundle
+    const VapiConstructor = window.Vapi || (window.exports ? window.exports.Vapi : null);
+    
     const userId          = {{ auth()->id() }};
     const callType        = '{{ $type }}';
     const vapiPublicKey   = '{{ $vapiPublicKey }}';
@@ -216,8 +220,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const timerEl         = document.getElementById('call-timer');
 
     let vapi = null;
-    if (callType === 'web' && vapiPublicKey) {
-        vapi = new Vapi(vapiPublicKey);
+    if (callType === 'web' && vapiPublicKey && VapiConstructor) {
+        vapi = new VapiConstructor(vapiPublicKey);
         
         vapi.on('call-start', () => {
             console.log('[Vapi Web] Call started');
