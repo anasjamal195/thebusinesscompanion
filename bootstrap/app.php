@@ -15,6 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'stripe/*',
             'retell/*',
             'vapi/*',
+            'api/tasks/webhook-process',
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
