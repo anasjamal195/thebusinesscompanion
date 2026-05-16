@@ -51,7 +51,7 @@ class OnboardingController extends Controller
             $companions = AiCharacter::all();
         }
 
-        return view('onboarding.companion', compact('companions', 'selectedCompanionId'));
+        return view('onboarding.companion', compact('companions', 'selectedCompanionId', 'role'));
     }
 
     public function saveCompanion(Request $request)
