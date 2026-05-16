@@ -14,7 +14,11 @@ class VapiService
 
     public function __construct()
     {
-        $this->apiKey = config('services.vapi.private_key');
+        $this->apiKey = config('services.vapi.private_key') ?? '';
+        
+        if (empty($this->apiKey)) {
+            Log::error("VapiService: VAPI_PRIVATE_KEY is missing from configuration.");
+        }
     }
 
     /**
@@ -101,10 +105,6 @@ class VapiService
      */
     protected function prepareAssistantOverrides(User $user, string $taskType): array
     {
-        $companion = $user->companion;
-        $characterName = $companion->name ?? 'Assistant';
-        $characterOccupation = $companion->occupation ?? 'Business Expert';
-
         return [
             'variableValues' => [
                 'user_name' => $user->name,
@@ -112,46 +112,6 @@ class VapiService
                 'dynamic_task_instructions' => $this->getTaskInstructions($taskType),
                 'onboarding_guide' => $taskType === 'onboarding' ? $this->getOnboardingGuide() : '',
             ],
-            'model' => [
-                'messages' => [
-                    [
-                        'role' => 'system',
-                        'content' => "You are {$characterName}, an expert {$characterOccupation} and business companion. Your goal is to help the user onboard while maintaining your professional identity. " . 
-                                     "Use the 'report_onboarding_data' tool as soon as you collect any of the required information. " .
-                                     "DO NOT wait until the end of the call to report data. Report it as you get it."
-                    ]
-                ]
-            ],
-            'tools' => [
-                [
-                    'type' => 'function',
-                    'function' => [
-                        'name' => 'report_onboarding_data',
-                        'description' => 'Report gathered onboarding information live during the call.',
-                        'parameters' => [
-                            'type' => 'object',
-                            'properties' => [
-                                'field' => [
-                                    'type' => 'string',
-                                    'enum' => ['business_type', 'industry', 'target_audience', 'experience_level', 'project_name', 'project_description', 'first_task', 'call_followup_preference']
-                                ],
-                                'value' => ['type' => 'string']
-                            ],
-                            'required' => ['field', 'value']
-                        ]
-                    ],
-                    'server' => [
-                        'url' => route('vapi.webhook') // Ensure this route exists and is accessible
-                    ]
-                ],
-                [
-                    'type' => 'function',
-                    'function' => [
-                        'name' => 'endCall',
-                        'description' => 'Ends the call after onboarding is finished.'
-                    ]
-                ]
-            ]
         ];
     }
 

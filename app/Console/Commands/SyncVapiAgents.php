@@ -53,33 +53,64 @@ class SyncVapiAgents extends Command
         $prompt = $this->prepareAgentPrompt($character);
 
         $assistantData = [
-            'name' => "Companion: " . $character->name,
-            'firstMessage' => "Hi there, I'm {$character->name}. How can I help you today?",
-            'model' => [
-                'provider' => 'openai',
-                'model' => 'gpt-4o',
-                'messages' => [
+            'name'         => "Companion: " . $character->name,
+            'firstMessage' => "Hi there, I'm {$character->name}, your business companion. How can I help you today?",
+            'model'        => [
+                'provider'    => 'openai',
+                'model'       => 'gpt-4o',
+                'temperature' => 0.7,
+                'messages'    => [
                     [
-                        'role' => 'system',
+                        'role'    => 'system',
                         'content' => $prompt
                     ]
+                ],
+                'toolIds' => [], // We will define tools inline or use IDs if we had them
+                'tools'   => [
+                    [
+                        'type'     => 'function',
+                        'function' => [
+                            'name'        => 'report_onboarding_data',
+                            'description' => 'Report gathered onboarding information live during the call.',
+                            'parameters'  => [
+                                'type'       => 'object',
+                                'properties' => [
+                                    'field' => [
+                                        'type' => 'string',
+                                        'enum' => ['business_type', 'industry', 'target_audience', 'experience_level', 'project_name', 'project_description', 'first_task', 'call_followup_preference']
+                                    ],
+                                    'value' => ['type' => 'string']
+                                ],
+                                'required' => ['field', 'value']
+                            ]
+                        ],
+                        'server' => [
+                            'url' => route('vapi.webhook')
+                        ]
+                    ],
+                    [
+                        'type'     => 'function',
+                        'function' => [
+                            'name'        => 'endCall',
+                            'description' => 'Ends the call after onboarding is finished.'
+                        ]
+                    ]
                 ]
-
             ],
             'voice' => [
                 'provider' => '11labs',
-                'voiceId' => $character->meta['voice_id'] ?? '21m00Tcm4TlvDq8ikWAM', // Rachel
+                'voiceId'  => $character->meta['voice_id'] ?? '21m00Tcm4TlvDq8ikWAM', // Rachel
             ],
             'transcriber' => [
                 'provider' => 'deepgram',
-                'model' => 'nova-2',
+                'model'    => 'nova-2',
                 'language' => 'en',
             ],
-            'serverUrl' => 'https://crushly.co/api/vapi/webhook',
-            // Define which messages to receive on the webhook
-            'serverMessages' => ['end-of-call-report', 'status-update', 'hang', 'function-call'],
-            'artifactPlan' => [
-                'videoRecordingEnabled' => true,
+            'serverUrl'      => route('vapi.webhook'),
+            'serverMessages' => ['end-of-call-report', 'status-update', 'hang', 'function-call', 'tool-calls', 'call-started', 'call-ended'],
+            'artifactPlan'   => [
+                'recordingEnabled' => true,
+                'transcriptPlan'   => ['enabled' => true],
             ]
         ];
 
@@ -99,11 +130,11 @@ class SyncVapiAgents extends Command
                 if (!$character->vapi_assistant_id) {
                     $character->update(['vapi_assistant_id' => $assistantId]);
                 }
-                $this->info("Successfully synced assistant for {$character->name}");
+                $this->info("Successfully synced assistant for {$character->name} (ID: {$assistantId})");
                 return $assistantId;
             }
 
-            $this->error("Failed to sync assistant for {$character->name}: " . $response->body());
+            $this->error("Failed to sync assistant for {$character->name}: " . $response->status() . " - " . $response->body());
         } catch (\Exception $e) {
             $this->error("Error syncing assistant for {$character->name}: " . $e->getMessage());
         }
