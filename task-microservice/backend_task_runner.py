@@ -6,11 +6,26 @@ from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
+from urllib.parse import urlparse
+import urllib3
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
 def run_task(task_id, webhook_url):
     print(f"[{task_id}] Thread started. Calling webhook: {webhook_url}")
+    
+    parsed = urlparse(webhook_url)
+    host_header = parsed.hostname
+    local_url = webhook_url.replace(host_header, '127.0.0.1')
+
     while True:
         try:
-            response = requests.post(webhook_url, json={'task_id': task_id}, timeout=3600)
+            response = requests.post(
+                local_url, 
+                json={'task_id': task_id}, 
+                timeout=3600, 
+                headers={'Host': host_header}, 
+                verify=False
+            )
             if response.status_code == 200:
                 data = response.json()
                 status = data.get('status')
