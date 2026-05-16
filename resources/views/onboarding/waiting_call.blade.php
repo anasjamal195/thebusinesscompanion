@@ -250,14 +250,14 @@ function initVapi() {
             if (seconds <= 0) {
                 clearInterval(interval);
                 if (callType === 'web' && vapiInstance) {
-                    const overrides = {
+                    const assistant = {
+                        id: assistantId,
                         model: {
                             messages: [{ role: 'system', content: dynamicPrompt }]
                         }
                     };
-                    console.log('[Vapi Web] Assistant ID:', assistantId);
-                    console.log('[Vapi Web] Overrides:', overrides);
-                    vapiInstance.start(assistantId, overrides);
+                    console.log('[Vapi Web] Starting with assistant object:', assistant);
+                    vapiInstance.start(assistant);
                 }
             }
         }, 1000);
