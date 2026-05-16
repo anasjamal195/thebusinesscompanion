@@ -24,7 +24,7 @@
                 </h1>
                 <p class="text-lg text-slate-500 max-w-xl mx-auto font-medium">
                     @if($type === 'web')
-                        Starting your in-browser voice session in <span id="countdown" class="font-black text-primary">5</span> seconds.
+                        <span id="countdown-text">Preparing your secure voice connection...</span>
                     @else
                         Your phone will ring in a moment. Pick up to start setup.
                     @endif
@@ -34,10 +34,21 @@
 
         {{-- Status badge + retry --}}
         <div class="flex flex-col items-center gap-5">
-            <div id="badge-waiting" class="flex items-center gap-3 px-6 py-3 bg-slate-900 text-white rounded-full text-sm font-bold tracking-widest uppercase">
-                <span class="w-2 h-2 bg-amber-400 rounded-full animate-ping"></span>
-                Preparing Session…
-            </div>
+            @if($type === 'web')
+                <button id="btn-start-web-call" class="hidden px-10 h-16 bg-primary hover:bg-primary-dark text-white font-black rounded-2xl flex items-center gap-3 transition-all active:scale-95 shadow-xl shadow-primary/20 animate-in fade-in zoom-in duration-500">
+                    <span class="material-symbols-outlined text-2xl">call</span>
+                    Accept Call
+                </button>
+                <div id="badge-waiting" class="flex items-center gap-3 px-6 py-3 bg-slate-900 text-white rounded-full text-sm font-bold tracking-widest uppercase">
+                    <span class="w-2 h-2 bg-amber-400 rounded-full animate-ping"></span>
+                    Initializing…
+                </div>
+            @else
+                <div id="badge-waiting" class="flex items-center gap-3 px-6 py-3 bg-slate-900 text-white rounded-full text-sm font-bold tracking-widest uppercase">
+                    <span class="w-2 h-2 bg-amber-400 rounded-full animate-ping"></span>
+                    Preparing Session…
+                </div>
+            @endif
 
             <form action="{{ route('onboarding.retry_call') }}" method="POST">
                 @csrf
@@ -240,28 +251,35 @@ function initVapi() {
         }
     }
 
-    // ── Countdown ───────────────────────────────────────────
-    let seconds = 5;
-    const countdownEl = document.getElementById('countdown');
-    if (countdownEl) {
-        const interval = setInterval(() => {
-            seconds--;
-            countdownEl.innerText = seconds;
-            if (seconds <= 0) {
-                clearInterval(interval);
-                if (callType === 'web' && vapiInstance) {
-                    const overrides = {
-                        model: {
-                            provider: 'openai',
-                            model: 'gpt-4o',
-                            messages: [{ role: 'system', content: dynamicPrompt }]
-                        }
-                    };
-                    console.log('[Vapi Web] Starting with ID and overrides:', assistantId, overrides);
-                    vapiInstance.start(assistantId, overrides);
+    // ── Call Initiation ─────────────────────────────────────
+    const btnStart      = document.getElementById('btn-start-web-call');
+    const badgeWait     = document.getElementById('badge-waiting');
+    const countdownText = document.getElementById('countdown-text');
+
+    if (btnStart && callType === 'web') {
+        // Show button after a short "connecting" delay
+        setTimeout(() => {
+            if (badgeWait) badgeWait.classList.add('hidden');
+            btnStart.classList.remove('hidden');
+            if (countdownText) countdownText.innerText = '{{ $companion->name }} is ready to talk!';
+        }, 2000);
+
+        btnStart.addEventListener('click', () => {
+            console.log('[Vapi Web] User accepted call. Starting SDK...');
+            btnStart.disabled = true;
+            btnStart.innerHTML = '<span class="material-symbols-outlined text-2xl animate-spin">sync</span> Connecting...';
+            
+            const overrides = {
+                model: {
+                    provider: 'openai',
+                    model: 'gpt-4o',
+                    messages: [{ role: 'system', content: dynamicPrompt }]
                 }
-            }
-        }, 1000);
+            };
+            
+            console.log('[Vapi Web] Starting with ID and overrides:', assistantId, overrides);
+            vapiInstance.start(assistantId, overrides);
+        });
     }
 
     // ── Timer ───────────────────────────────────────────────
