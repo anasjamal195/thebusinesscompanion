@@ -10,7 +10,7 @@ class ProjectController extends Controller
     public function index(Request $request)
     {
         if (!$request->user()->onboarding_completed) {
-            return redirect()->route('onboarding.role');
+            return redirect(\App\Http\Controllers\OnboardingController::getNextOnboardingRoute($request->user()));
         }
 
         $projects = Project::query()

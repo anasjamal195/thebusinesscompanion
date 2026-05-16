@@ -19,7 +19,8 @@ class OnboardingController extends Controller
     // Step 1: Role Selection (Guest)
     public function role()
     {
-        return view('onboarding.role');
+        $role = Auth::check() ? Auth::user()->role : Session::get('onboarding.role');
+        return view('onboarding.role', compact('role'));
     }
 
     public function saveRole(Request $request)
@@ -28,6 +29,10 @@ class OnboardingController extends Controller
             'role' => ['required', 'string', 'max:255'],
         ]);
 
+        if (Auth::check()) {
+            Auth::user()->update(['role' => $validated['role']]);
+        }
+        
         Session::put('onboarding.role', $validated['role']);
 
         return redirect()->route('onboarding.companion');
@@ -36,15 +41,17 @@ class OnboardingController extends Controller
     // Step 2: Companion Selection (Guest)
     public function companion()
     {
-        $role = Session::get('onboarding.role', 'Founder');
+        $role = Auth::check() ? Auth::user()->role : Session::get('onboarding.role', 'Founder');
         $companions = AiCharacter::where('occupation', $role)->get();
+        
+        $selectedCompanionId = Auth::check() ? Auth::user()->companion_id : Session::get('onboarding.companion_id');
 
         // Fallback if no companions for role
         if ($companions->isEmpty()) {
             $companions = AiCharacter::all();
         }
 
-        return view('onboarding.companion', compact('companions'));
+        return view('onboarding.companion', compact('companions', 'selectedCompanionId'));
     }
 
     public function saveCompanion(Request $request)
@@ -53,7 +60,15 @@ class OnboardingController extends Controller
             'companion_id' => ['required', 'exists:ai_characters,id'],
         ]);
 
+        if (Auth::check()) {
+            Auth::user()->update(['companion_id' => $validated['companion_id']]);
+        }
+        
         Session::put('onboarding.companion_id', $validated['companion_id']);
+
+        if (Auth::check()) {
+            return redirect()->route('onboarding.business');
+        }
 
         return redirect()->route('onboarding.checkout');
     }
@@ -126,7 +141,9 @@ class OnboardingController extends Controller
     // Step 4: Business Information (Auth)
     public function business()
     {
-        return view('onboarding.business');
+        $user = Auth::user();
+        $profile = $user->profile;
+        return view('onboarding.business', compact('profile'));
     }
 
     public function saveBusiness(Request $request)
@@ -137,8 +154,9 @@ class OnboardingController extends Controller
             'business_description' => ['required', 'string'],
         ]);
 
-        UserProfile::updateOrCreate(
-            ['user_id' => Auth::id()],
+        $user = Auth::user();
+        $user->profile()->updateOrCreate(
+            ['user_id' => $user->id],
             $validated
         );
 
@@ -148,7 +166,8 @@ class OnboardingController extends Controller
     // Step 5: Calling Setup (Auth)
     public function calling()
     {
-        return view('onboarding.calling');
+        $profile = Auth::user()->profile;
+        return view('onboarding.calling', compact('profile'));
     }
 
     public function saveCalling(Request $request)
@@ -160,7 +179,7 @@ class OnboardingController extends Controller
             'daily_calling_limit' => ['required', 'integer', 'min:1', 'max:20'],
         ]);
 
-        UserProfile::updateOrCreate(
+        Auth::user()->profile()->updateOrCreate(
             ['user_id' => Auth::id()],
             $validated
         );
@@ -201,19 +220,28 @@ class OnboardingController extends Controller
         $vapiPublicKey = config('services.vapi.public_key');
         $callData = $vapiService->getWebCallData($user, 'onboarding');
         
-        // Create local call record
-        $localCall = \App\Models\Call::create([
-            'user_id' => $user->id,
-            'ai_character_id' => $companion->id,
-            'status' => 'initiated',
-            'direction' => 'outbound',
-        ]);
+        // Reuse existing initiated call if it exists (within last 30 mins) to prevent duplicates on refresh
+        $localCall = \App\Models\Call::where('user_id', $user->id)
+            ->where('ai_character_id', $companion->id)
+            ->where('status', 'initiated')
+            ->where('created_at', '>', now()->subMinutes(30))
+            ->first();
+
+        if (!$localCall) {
+            $localCall = \App\Models\Call::create([
+                'user_id' => $user->id,
+                'ai_character_id' => $companion->id,
+                'status' => 'initiated',
+                'direction' => 'outbound',
+            ]);
+        }
+        
+        $localCallId = $localCall->id;
         
         $assistantId = $callData['assistantId'];
         $systemPromptTemplate = $callData['systemPromptTemplate'];
         $fullSystemPrompt = $callData['fullSystemPrompt'];
         $firstMessage = $callData['firstMessage'];
-        $localCallId = $localCall->id;
 
         return view('onboarding.waiting_call', compact('companion', 'type', 'vapiPublicKey', 'assistantId', 'systemPromptTemplate', 'fullSystemPrompt', 'firstMessage', 'localCallId'));
     }
@@ -227,7 +255,8 @@ class OnboardingController extends Controller
     // Step 7: Platform Onboarding Details (Auth)
     public function details()
     {
-        return view('onboarding.details');
+        $profile = Auth::user()->profile;
+        return view('onboarding.details', compact('profile'));
     }
 
     public function saveDetails(Request $request)
@@ -239,7 +268,7 @@ class OnboardingController extends Controller
             'experience_level' => ['required', 'in:beginner,intermediate,expert'],
         ]);
 
-        UserProfile::updateOrCreate(
+        Auth::user()->profile()->updateOrCreate(
             ['user_id' => Auth::id()],
             $validated
         );
@@ -299,5 +328,37 @@ class OnboardingController extends Controller
 
             return redirect()->route('projects.show', $project);
         });
+    }
+    public static function getNextOnboardingRoute(User $user)
+    {
+        if ($user->onboarding_completed) {
+            return route('dashboard');
+        }
+
+        if (!$user->role) {
+            return route('onboarding.role');
+        }
+
+        if (!$user->companion_id) {
+            return route('onboarding.companion');
+        }
+
+        $profile = $user->profile;
+
+        if (!$profile || !$profile->business_name) {
+            return route('onboarding.business');
+        }
+
+        if (!$profile->phone_number) {
+            return route('onboarding.calling');
+        }
+
+        // If they have a phone number but haven't completed onboarding, 
+        // they probably need to do the call or finalize details.
+        if (!$profile->business_type || !$profile->industry) {
+            return route('onboarding.details');
+        }
+
+        return route('onboarding.task');
     }
 }

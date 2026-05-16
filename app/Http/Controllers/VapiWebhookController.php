@@ -188,13 +188,13 @@ class VapiWebhookController extends Controller
                         \App\Jobs\ProcessTaskJob::dispatch($task->id);
                     }
 
-                    $user->update(['onboarding_completed' => true]);
+                    // We don't set onboarding_completed = true here anymore.
+                    // Instead, we let the dashboard redirect the user to the next pending step (usually details or task).
                     
-                    // Final broadcast to redirect user - Include proofread flag
-                    $redirectUrl = route('dashboard', ['proofread' => 1]);
+                    $redirectUrl = route('dashboard');
                     broadcast(new \App\Events\CallProgressUpdated($user->id, 'complete', $redirectUrl, 'completed'));
                     
-                    Log::info("Onboarding finalized for User {$user->id}");
+                    Log::info("Onboarding data extracted for User {$user->id}");
                 } catch (\Exception $e) {
                     Log::error("Failed to finalize onboarding: " . $e->getMessage());
                 }

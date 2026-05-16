@@ -4,15 +4,15 @@
 <div class="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
     <div class="text-center space-y-4">
         <h1 class="text-4xl md:text-5xl font-black text-slate-900 tracking-tight">Hire your expert companion</h1>
-        <p class="text-lg text-slate-500 max-w-2xl mx-auto">Selected based on your role as a <span class="text-primary font-bold">{{ Session::get('onboarding.role') }}</span>. Each companion comes with a dedicated cloud environment.</p>
+        <p class="text-lg text-slate-500 max-w-2xl mx-auto">Selected based on your role as a <span class="text-primary font-bold">{{ $role }}</span>. Each companion comes with a dedicated cloud environment.</p>
     </div>
 
     <form action="{{ route('onboarding.companion.save') }}" method="POST">
         @csrf
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6" x-data="{ selected: '' }">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6" x-data="{ selected: '{{ $selectedCompanionId ?? '' }}' }">
             @foreach($companions as $companion)
             <label class="relative cursor-pointer group">
-                <input type="radio" name="companion_id" value="{{ $companion->id }}" class="peer sr-only" @click="selected = '{{ $companion->id }}'" required>
+                <input type="radio" name="companion_id" value="{{ $companion->id }}" class="peer sr-only" @click="selected = '{{ $companion->id }}'" required {{ (string)($selectedCompanionId ?? '') === (string)$companion->id ? 'checked' : '' }}>
                 <div class="h-full bg-white border-2 border-slate-100 rounded-[2.5rem] p-8 shadow-sm transition-all duration-300 group-hover:border-primary/30 group-hover:shadow-lg peer-checked:border-primary peer-checked:bg-primary/5 peer-checked:shadow-primary/10 flex flex-col gap-6">
                     <div class="relative w-24 h-24 mx-auto">
                         <img src="{{ $companion->avatar_url ?? 'https://i.pravatar.cc/150?u='.$companion->key }}" alt="{{ $companion->name }}" class="w-full h-full rounded-3xl object-cover border-4 border-white shadow-xl shadow-slate-200 group-hover:scale-105 transition-transform duration-500">

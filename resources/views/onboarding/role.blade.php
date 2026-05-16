@@ -9,7 +9,7 @@
 
     <form action="{{ route('onboarding.role.save') }}" method="POST">
         @csrf
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4" x-data="{ selected: '' }">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4" x-data="{ selected: '{{ $role ?? '' }}' }">
             @php
             $roles = [
                 ['name' => 'Founder', 'icon' => 'rocket_launch'],
@@ -31,14 +31,14 @@
             ];
             @endphp
 
-            @foreach($roles as $role)
+            @foreach($roles as $roleItem)
             <label class="relative cursor-pointer group">
-                <input type="radio" name="role" value="{{ $role['name'] }}" class="peer sr-only" @click="selected = '{{ $role['name'] }}'" required>
+                <input type="radio" name="role" value="{{ $roleItem['name'] }}" class="peer sr-only" @click="selected = '{{ $roleItem['name'] }}'" required {{ ($role ?? '') === $roleItem['name'] ? 'checked' : '' }}>
                 <div class="p-6 bg-white border-2 border-slate-100 rounded-3xl shadow-sm transition-all duration-300 group-hover:border-primary/30 group-hover:shadow-md peer-checked:border-primary peer-checked:bg-primary/5 peer-checked:shadow-primary/10 flex flex-col items-center text-center gap-3">
                     <div class="w-12 h-12 rounded-2xl bg-slate-50 flex items-center justify-center text-slate-600 transition-colors group-hover:bg-primary/10 group-hover:text-primary peer-checked:bg-primary peer-checked:text-white">
-                        <span class="material-symbols-outlined text-2xl">{{ $role['icon'] }}</span>
+                        <span class="material-symbols-outlined text-2xl">{{ $roleItem['icon'] }}</span>
                     </div>
-                    <span class="font-bold text-sm text-slate-900">{{ $role['name'] }}</span>
+                    <span class="font-bold text-sm text-slate-900">{{ $roleItem['name'] }}</span>
                 </div>
                 <div class="absolute -top-2 -right-2 w-6 h-6 bg-primary text-white rounded-full flex items-center justify-center scale-0 transition-transform duration-300 peer-checked:scale-100">
                     <span class="material-symbols-outlined text-[16px] font-bold">check</span>
