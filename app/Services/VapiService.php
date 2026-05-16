@@ -118,6 +118,13 @@ class VapiService
                 'onboarding_guide' => $taskType === 'onboarding' ? $this->getOnboardingGuide() : '',
             ],
             'model' => [
+                'model' => 'gpt-4o-mini',
+                'messages' => [
+                    [
+                        'role' => 'system',
+                        'content' => $systemPrompt,
+                    ]
+                ],
                 'systemPrompt' => $systemPrompt,
             ],
             'voice' => [

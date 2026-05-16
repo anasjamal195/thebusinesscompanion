@@ -103,12 +103,19 @@ class SyncVapiAgents extends Command
         $webhookUrl = str_replace('http://', 'https://', route('vapi.webhook'));
 
         $assistantData = [
-            'name'         => "Companion: " . $character->name,
+            'name'         => $character->name,
             'firstMessage' => "Hi there, I'm {$character->name}, your business companion. How can I help you today?",
             'model'        => [
                 'provider'    => 'openai',
-                'model'       => 'gpt-4o',
-                'temperature' => 0.8, // Slightly higher for more natural/varied speech
+                'model'       => 'gpt-4o-mini',
+                'temperature' => 0.8,
+                'maxTokens'   => 250,
+                'messages'    => [
+                    [
+                        'role'    => 'system',
+                        'content' => $prompt
+                    ]
+                ],
                 'systemPrompt' => $prompt,
                 'tools'   => [
                     [
@@ -168,7 +175,7 @@ class SyncVapiAgents extends Command
                 'transcript'
             ],
             'artifactPlan'   => [
-                'recordingEnabled' => true,
+                'recordingEnabled' => false,
                 'transcriptPlan'   => ['enabled' => true],
             ]
         ];

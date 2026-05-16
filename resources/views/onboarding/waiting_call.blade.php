@@ -283,7 +283,8 @@ function initVapi() {
                 firstMessage: firstMessage,
                 model: {
                     provider: 'openai',
-                    model: 'gpt-4o',
+                    model: 'gpt-4o-mini',
+                    messages: [{ role: 'system', content: dynamicPrompt }],
                     systemPrompt: dynamicPrompt
                 },
                 voice: {
