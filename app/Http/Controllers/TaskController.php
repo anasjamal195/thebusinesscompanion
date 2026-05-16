@@ -40,7 +40,7 @@ class TaskController extends Controller
             ]);
 
             try {
-                $phpBinary = '/opt/plesk/php/8.2/bin/php';
+                $phpBinary = '/opt/plesk/php/8.3/bin/php';
                 $logPath = storage_path('logs/task-' . $waitingTask->id . '.log');
                 \Symfony\Component\Process\Process::fromShellCommandline(escapeshellarg($phpBinary) . ' ' . escapeshellarg(base_path('artisan')) . ' task:process ' . $waitingTask->id . ' >> ' . escapeshellarg($logPath) . ' 2>&1 &')->run();
             } catch (\Exception $e) {
@@ -103,7 +103,7 @@ class TaskController extends Controller
 
         // Start multithreading via Artisan background command
         try {
-                $phpBinary = '/opt/plesk/php/8.2/bin/php';
+                $phpBinary = '/opt/plesk/php/8.3/bin/php';
             $logPath = storage_path('logs/task-' . $task->id . '.log');
             \Symfony\Component\Process\Process::fromShellCommandline(escapeshellarg($phpBinary) . ' ' . escapeshellarg(base_path('artisan')) . ' task:process ' . $task->id . ' > ' . escapeshellarg($logPath) . ' 2>&1 &')->run();
         } catch (\Exception $e) {
@@ -177,7 +177,7 @@ class TaskController extends Controller
 
             // Inform background runner to continue
             try {
-                    $phpBinary = '/opt/plesk/php/8.2/bin/php';
+                    $phpBinary = '/opt/plesk/php/8.3/bin/php';
                 $logPath = storage_path('logs/task-' . $task->id . '.log');
                 \Symfony\Component\Process\Process::fromShellCommandline(escapeshellarg($phpBinary) . ' ' . escapeshellarg(base_path('artisan')) . ' task:process ' . $task->id . ' >> ' . escapeshellarg($logPath) . ' 2>&1 &')->run();
             } catch (\Exception $e) {
