@@ -256,15 +256,13 @@ function initVapi() {
                             user_name: '{{ auth()->user()->name }}',
                             user_role: '{{ auth()->user()->role ?? "Founder" }}'
                         },
-                        assistantOverrides: {
-                            model: {
-                                messages: [
-                                    {
-                                        role: 'system',
-                                        content: dynamicPrompt
-                                    }
-                                ]
-                            }
+                        model: {
+                            messages: [
+                                {
+                                    role: 'system',
+                                    content: dynamicPrompt
+                                }
+                            ]
                         }
                     });
                 }
