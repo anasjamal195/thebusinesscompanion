@@ -123,7 +123,7 @@ class SyncVapiAgents extends Command
                 'voiceId'  => $character->meta['voice_id'] ?? '21m00Tcm4TlvDq8ikWAM', // Rachel
                 'stability' => 0.6,
                 'similarityBoost' => 0.8,
-                'speed' => 1.25, // Increased speed for more energetic, human flow
+                'speed' => 1.2, // Increased speed for more energetic, human flow
                 'style' => 0.15,
                 'useSpeakerBoost' => true,
             ],

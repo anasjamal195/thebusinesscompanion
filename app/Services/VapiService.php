@@ -126,7 +126,7 @@ class VapiService
                 ]
             ],
             'voice' => [
-                'speed' => 1.25,
+                'speed' => 1.2,
                 'stability' => 0.6,
                 'style' => 0.15,
             ]
