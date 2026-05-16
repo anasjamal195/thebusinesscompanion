@@ -14,14 +14,14 @@ class SyncVapiAgents extends Command
      *
      * @var string
      */
-    protected $signature = 'vapi:sync-agents';
+    protected $signature = 'vapi:sync-agents {--new-only : Only sync characters that do not have a vapi_assistant_id}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Sync AI Characters from database to Vapi Assistants';
+    protected $description = 'Sync AI Characters from database to Vapi Assistants with rate limiting';
 
     /**
      * Execute the console command.
@@ -36,12 +36,31 @@ class SyncVapiAgents extends Command
             return 1;
         }
 
-        $characters = AiCharacter::all();
+        $query = AiCharacter::query();
+        
+        if ($this->option('new-only')) {
+            $query->whereNull('vapi_assistant_id');
+        }
 
-        foreach ($characters as $character) {
-            $this->info("Processing character: {$character->name}");
+        $characters = $query->get();
+
+        if ($characters->isEmpty()) {
+            $this->info('No characters to sync.');
+            return 0;
+        }
+
+        $this->info("Found {$characters->count()} characters to process.");
+
+        foreach ($characters as $index => $character) {
+            $this->info("[" . ($index + 1) . "/{$characters->count()}] Processing character: {$character->name}");
 
             $this->syncVapiAssistant($character, $apiKey, $baseUrl);
+            
+            // Wait 2 seconds between requests to avoid rate limits
+            if ($index < $characters->count() - 1) {
+                $this->line("  Waiting 2 seconds for rate limit...");
+                sleep(2);
+            }
         }
 
         $this->info('Sync completed!');
