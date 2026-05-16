@@ -15,6 +15,7 @@
                 <div class="space-y-2">
                     <label for="project_name" class="block text-sm font-bold text-slate-700 ml-1">Project Name</label>
                     <input type="text" name="project_name" id="project_name" required placeholder="Name your first project (e.g. Acme Corp Launch)"
+                        value="{{ old('project_name', $project->name ?? '') }}"
                         class="w-full px-6 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all duration-300 font-medium">
                 </div>
 
@@ -22,6 +23,7 @@
                     <div class="space-y-2">
                         <label for="project_url" class="block text-sm font-bold text-slate-700 ml-1">Project URL (Optional)</label>
                         <input type="url" name="project_url" id="project_url" placeholder="https://example.com"
+                            value="{{ old('project_url', $project->domain ?? '') }}"
                             class="w-full px-6 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all duration-300 font-medium">
                     </div>
                 </div>
@@ -29,12 +31,13 @@
                 <div class="space-y-2">
                     <label for="project_description" class="block text-sm font-bold text-slate-700 ml-1">Project Objective / Description</label>
                     <textarea name="project_description" id="project_description" rows="2" placeholder="What are we trying to achieve with this project?"
-                        class="w-full px-6 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all duration-300 font-medium"></textarea>
+                        class="w-full px-6 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all duration-300 font-medium">{{ old('project_description', $project->description ?? '') }}</textarea>
                 </div>
 
                 <div class="space-y-2">
                     <label for="success_metric" class="block text-sm font-bold text-slate-700 ml-1">Success Metric (Optional)</label>
                     <input type="text" name="success_metric" id="success_metric" placeholder="What would make this project a success? (e.g. 10% increase in leads)"
+                        value="{{ old('success_metric', $project->success_metric ?? '') }}"
                         class="w-full px-6 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all duration-300 font-medium">
                 </div>
             </div>
@@ -43,13 +46,13 @@
                 <div class="space-y-2">
                     <label for="current_problems" class="block text-sm font-bold text-slate-700 ml-1">Current Challenges & Pain Points</label>
                     <textarea name="current_problems" id="current_problems" rows="2" placeholder="e.g. Sales plateaued, hiring is slow, scaling technical infrastructure..."
-                        class="w-full px-6 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all duration-300 font-medium"></textarea>
+                        class="w-full px-6 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all duration-300 font-medium">{{ old('current_problems', auth()->user()->profile->current_problems ?? '') }}</textarea>
                 </div>
 
                 <div class="space-y-2">
                     <label for="urgent_tasks" class="block text-sm font-bold text-slate-700 ml-1">Most Urgent Task</label>
                     <textarea name="urgent_tasks" id="urgent_tasks" rows="2" placeholder="e.g. Need a GTM strategy for our new feature launch by Friday..."
-                        class="w-full px-6 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all duration-300 font-medium"></textarea>
+                        class="w-full px-6 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all duration-300 font-medium">{{ old('urgent_tasks', auth()->user()->profile->urgent_tasks ?? '') }}</textarea>
                 </div>
             </div>
 

@@ -279,7 +279,11 @@ class OnboardingController extends Controller
     // Step 8: Optional Problem/Task (Auth)
     public function task()
     {
-        return view('onboarding.task');
+        $user = Auth::user();
+        $project = $user->projects()->latest()->first();
+        $task = $project ? $project->tasks()->latest()->first() : null;
+        
+        return view('onboarding.task', compact('project', 'task'));
     }
 
     public function complete(Request $request)
@@ -302,24 +306,29 @@ class OnboardingController extends Controller
                 'urgent_tasks' => $validated['urgent_tasks'],
             ]);
 
-            // Create initial project with the provided name and details
-            $project = Project::create([
-                'user_id' => $user->id,
-                'name' => $validated['project_name'],
-                'domain' => $validated['project_url'],
-                'description' => $validated['project_description'] ?? 'Initial project based on onboarding input.',
-                'success_metric' => $validated['success_metric'],
-            ]);
+            // Create or update initial project
+            $project = Project::updateOrCreate(
+                ['user_id' => $user->id, 'name' => $validated['project_name']],
+                [
+                    'domain' => $validated['project_url'],
+                    'description' => $validated['project_description'] ?? 'Initial project based on onboarding input.',
+                    'success_metric' => $validated['success_metric'],
+                ]
+            );
 
             if ($validated['current_problems'] || $validated['urgent_tasks']) {
-                $task = Task::create([
-                    'project_id' => $project->id,
-                    'user_id' => $user->id,
-                    'title' => 'Initial Assessment',
-                    'input_text' => "Current Problems: " . ($validated['current_problems'] ?? 'None') . "\nUrgent Tasks: " . ($validated['urgent_tasks'] ?? 'None'),
-                    'priority' => 'high',
-                    'status' => 'pending',
-                ]);
+                $task = Task::updateOrCreate(
+                    [
+                        'project_id' => $project->id,
+                        'user_id' => $user->id,
+                        'title' => 'Initial Assessment',
+                    ],
+                    [
+                        'input_text' => "Current Problems: " . ($validated['current_problems'] ?? 'None') . "\nUrgent Tasks: " . ($validated['urgent_tasks'] ?? 'None'),
+                        'priority' => 'high',
+                        'status' => 'pending',
+                    ]
+                );
 
                 ProcessTaskJob::dispatch($task->id);
             }
