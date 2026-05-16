@@ -313,6 +313,7 @@ function initVapi() {
     // Initial check
     setTimeout(checkMicPermission, 1000);
 
+    if (btnStart && callType === 'web') {
         btnStart.addEventListener('click', () => {
             console.log('[Vapi Web] User accepted call. Starting SDK...');
             btnStart.disabled = true;
