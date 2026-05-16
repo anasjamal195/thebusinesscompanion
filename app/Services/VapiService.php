@@ -114,6 +114,7 @@ class VapiService
             'variableValues' => [
                 'user_name' => $user->name,
                 'user_role' => $user->role ?? 'Founder',
+                'full_system_prompt' => $systemPrompt,
                 'dynamic_task_instructions' => $this->getTaskInstructions($taskType),
                 'onboarding_guide' => $taskType === 'onboarding' ? $this->getOnboardingGuide() : '',
             ],
@@ -142,7 +143,8 @@ class VapiService
     {
         return [
             'assistantId' => $user->companion->vapi_assistant_id,
-            'systemPrompt' => $this->prepareDynamicSystemPrompt($user, $taskType),
+            'systemPromptTemplate' => "{{full_system_prompt}}",
+            'fullSystemPrompt' => $this->prepareDynamicSystemPrompt($user, $taskType),
             'firstMessage' => $this->prepareFirstMessage($user, $taskType),
         ];
     }

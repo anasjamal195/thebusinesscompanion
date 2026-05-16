@@ -202,10 +202,11 @@ class OnboardingController extends Controller
         $callData = $vapiService->getWebCallData($user, 'onboarding');
         
         $assistantId = $callData['assistantId'];
-        $dynamicPrompt = $callData['systemPrompt'];
+        $systemPromptTemplate = $callData['systemPromptTemplate'];
+        $fullSystemPrompt = $callData['fullSystemPrompt'];
         $firstMessage = $callData['firstMessage'];
 
-        return view('onboarding.waiting_call', compact('companion', 'type', 'vapiPublicKey', 'assistantId', 'dynamicPrompt', 'firstMessage'));
+        return view('onboarding.waiting_call', compact('companion', 'type', 'vapiPublicKey', 'assistantId', 'systemPromptTemplate', 'fullSystemPrompt', 'firstMessage'));
     }
 
     public function retryCall()

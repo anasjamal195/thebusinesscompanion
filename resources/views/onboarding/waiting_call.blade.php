@@ -212,7 +212,8 @@ function initVapi() {
     const callType        = '{{ $type }}';
     const vapiPublicKey   = '{{ $vapiPublicKey }}';
     const assistantId     = '{{ $assistantId }}';
-    const dynamicPrompt   = {!! json_encode($dynamicPrompt) !!};
+    const systemPromptTemplate = {!! json_encode($systemPromptTemplate) !!};
+    const fullSystemPrompt = {!! json_encode($fullSystemPrompt) !!};
     const firstMessage    = {!! json_encode($firstMessage ?? '') !!};
     
     const phaseWaiting    = document.getElementById('phase-waiting');
@@ -281,11 +282,14 @@ function initVapi() {
             
             const overrides = {
                 firstMessage: firstMessage,
+                variableValues: {
+                    full_system_prompt: fullSystemPrompt
+                },
                 model: {
                     provider: 'openai',
                     model: 'gpt-4o-mini',
-                    messages: [{ role: 'system', content: dynamicPrompt }],
-                    systemPrompt: dynamicPrompt
+                    messages: [{ role: 'system', content: systemPromptTemplate }],
+                    systemPrompt: systemPromptTemplate
                 },
                 voice: {
                     speed: 1.2,

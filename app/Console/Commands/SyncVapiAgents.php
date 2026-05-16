@@ -68,10 +68,10 @@ class SyncVapiAgents extends Command
 
             $this->syncVapiAssistant($character, $apiKey, $baseUrl);
             
-            // Wait 2 seconds between requests to avoid rate limits
+            // Wait 5 seconds between requests to avoid rate limits
             if ($index < $characters->count() - 1) {
-                $this->line("  Waiting 2 seconds for rate limit...");
-                sleep(2);
+                $this->line("  Waiting 5 seconds for rate limit...");
+                sleep(5);
             }
         }
 
@@ -84,9 +84,9 @@ class SyncVapiAgents extends Command
         $this->line("  Deleting Vapi Assistant: {$character->vapi_assistant_id}");
         try {
             $response = Http::withToken($apiKey)->delete("{$baseUrl}/assistant/{$character->vapi_assistant_id}");
-            if ($response->successful()) {
+            if ($response->successful() || $response->status() === 404 || $response->status() === 400) {
                 $character->update(['vapi_assistant_id' => null]);
-                $this->info("  Deleted successfully.");
+                $this->info("  Deleted successfully (or already gone).");
             } else {
                 $this->error("  Failed to delete: " . $response->body());
             }
@@ -98,6 +98,7 @@ class SyncVapiAgents extends Command
     protected function syncVapiAssistant(AiCharacter $character, $apiKey, $baseUrl)
     {
         $prompt = $this->prepareAgentPrompt($character);
+        $voice = $this->getVoiceForCharacter($character);
         
         // Force HTTPS for Vapi webhooks as it is mandatory
         $webhookUrl = str_replace('http://', 'https://', route('vapi.webhook'));
@@ -148,15 +149,7 @@ class SyncVapiAgents extends Command
                     ]
                 ]
             ],
-            'voice' => [
-                'provider' => '11labs',
-                'voiceId'  => $character->meta['voice_id'] ?? '21m00Tcm4TlvDq8ikWAM', // Rachel
-                'stability' => 0.6,
-                'similarityBoost' => 0.8,
-                'speed' => 1.2, // Increased speed for more energetic, human flow
-                'style' => 0.15,
-                'useSpeakerBoost' => true,
-            ],
+            'voice' => $voice,
             'transcriber' => [
                 'provider' => 'deepgram',
                 'model'    => 'nova-2',
@@ -208,31 +201,30 @@ class SyncVapiAgents extends Command
         return null;
     }
 
+    protected function getVoiceForCharacter(AiCharacter $character): array
+    {
+        $name = strtolower($character->name);
+        $femaleNames = ['jessica', 'emily', 'nicole', 'bianca', 'isla', 'rozlyn', 'marceline', 'selene', 'nadia', 'lilith', 'vera', 'kira', 'monica', 'cassidy'];
+        
+        $isFemale = in_array($name, $femaleNames) || ($character->meta['gender'] ?? '') === 'female';
+
+        if ($isFemale) {
+            return [
+                'provider' => 'deepgram',
+                'voiceId'  => 'asteria',
+            ];
+        }
+
+        return [
+            'provider' => 'deepgram',
+            'voiceId'  => 'orion',
+        ];
+    }
+
     protected function prepareAgentPrompt(AiCharacter $character): string
     {
-        // Use the system prompt from the database, or fall back to a base template if empty
-        $basePrompt = $character->system_prompt ?: "You are a professional business assistant.";
-
-        return "TONE & STYLE:
-- BE EXTREMELY HUMAN. Never say 'As an AI' or 'I am a model'.
-- Use a casual, friendly, and high-energy tone.
-- Use natural filler words (like 'um', 'uh', 'gotcha', 'totally', 'cool') naturally.
-- Keep sentences short and punchy. Talk like a real person over the phone.
-- React naturally. If I say something cool, say 'That's awesome!'.
-
-IDENTITY:
-You are {$character->name}.
-Bio: {$character->bio}
-
-CORE PERSONALITY:
-{$basePrompt}
-
-FLOW CONTROL:
-- Stay in character.
-- Keep responses concise.
-- If this is an onboarding call, make sure to get the business details one by one.
-- IMPORTANT: When you have all the business info, mention that the user can fill in specific URLs later on the dashboard.
-- When finished, say a warm goodbye and use the 'endCall' tool immediately.";
+        return "{{full_system_prompt}}";
     }
 }
+
 
