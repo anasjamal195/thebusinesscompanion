@@ -159,20 +159,8 @@
                 @endforeach
             </div>
 
-            <div class="pt-6 flex items-center justify-center gap-4">
-                <button id="btn-mute" class="w-14 h-14 rounded-2xl bg-slate-100 text-slate-600 flex items-center justify-center hover:bg-slate-200 transition-all active:scale-90 group">
-                    <span class="material-symbols-outlined text-2xl group-[.is-muted]:hidden">mic</span>
-                    <span class="material-symbols-outlined text-2xl hidden group-[.is-muted]:block text-red-500">mic_off</span>
-                </button>
-                
-                <button id="btn-end-call" class="px-8 h-14 rounded-2xl bg-red-500 text-white font-black flex items-center justify-center gap-2 hover:bg-red-600 transition-all active:scale-90 shadow-lg shadow-red-500/20">
-                    <span class="material-symbols-outlined">call_end</span>
-                    End Call
-                </button>
-            </div>
-
-            <p class="text-center text-xs text-slate-400 pt-4">
-                URLs and links will be added during the review step.
+            <p class="text-center text-xs text-slate-400 pt-2">
+                Fields are captured automatically as you speak. Do not close this page.
             </p>
         </div>
 
@@ -310,37 +298,11 @@ function initVapi() {
                         variableValues: {
                             user_name: '{{ auth()->user()->name }}',
                             user_role: '{{ auth()->user()->role ?? "Founder" }}'
-                        },
-                        controlPanelConfig: {
-                            show: false
                         }
                     });
                 }
             });
         }
-    }
-
-    // ── Call Controls ───────────────────────────────────────
-    const btnMute = document.getElementById('btn-mute');
-    if (btnMute) {
-        btnMute.addEventListener('click', () => {
-            if (vapi) {
-                const isMuted = vapi.isMuted();
-                vapi.setMuted(!isMuted);
-                btnMute.classList.toggle('is-muted', !isMuted);
-            }
-        });
-    }
-
-    const btnEnd = document.getElementById('btn-end-call');
-    if (btnEnd) {
-        btnEnd.addEventListener('click', () => {
-            if (vapi) {
-                console.log('[Vapi Web] Manually ending call...');
-                vapi.stop();
-                showProcessing();
-            }
-        });
     }
 
     // ── Timer ───────────────────────────────────────────────

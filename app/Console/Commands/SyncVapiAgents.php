@@ -76,11 +76,11 @@ class SyncVapiAgents extends Command
 
         $assistantData = [
             'name'         => "Companion: " . $character->name,
-            'firstMessage' => "Hey! I'm {$character->name}. So glad to finally connect with you! I'm here to help you get everything set up in just a couple of minutes. Ready to jump in?",
+            'firstMessage' => "Hi there, I'm {$character->name}, your business companion. How can I help you today?",
             'model'        => [
                 'provider'    => 'openai',
                 'model'       => 'gpt-4o',
-                'temperature' => 0.8, // Slightly higher for more natural/varied speech
+                'temperature' => 0.7,
                 'messages'    => [
                     [
                         'role'    => 'system',
@@ -121,9 +121,6 @@ class SyncVapiAgents extends Command
             'voice' => [
                 'provider' => '11labs',
                 'voiceId'  => $character->meta['voice_id'] ?? '21m00Tcm4TlvDq8ikWAM', // Rachel
-                'speed'    => 1.1, // Increase speed for more natural pace
-                'stability' => 0.5,
-                'similarityBoost' => 0.75
             ],
             'transcriber' => [
                 'provider' => 'deepgram',
@@ -148,45 +145,29 @@ class SyncVapiAgents extends Command
             ]
         ];
 
-        $maxRetries = 2;
-        $attempt = 0;
-
-        while ($attempt <= $maxRetries) {
-            try {
-                if ($character->vapi_assistant_id) {
-                    $this->line("Updating existing Vapi Assistant: {$character->vapi_assistant_id}");
-                    $response = Http::withToken($apiKey)
-                        ->patch("{$baseUrl}/assistant/{$character->vapi_assistant_id}", $assistantData);
-                } else {
-                    $this->line("Creating new Vapi Assistant...");
-                    $response = Http::withToken($apiKey)
-                        ->post("{$baseUrl}/assistant", $assistantData);
-                }
-
-                if ($response->successful()) {
-                    $assistantId = $response->json('id');
-                    if (!$character->vapi_assistant_id) {
-                        $character->update(['vapi_assistant_id' => $assistantId]);
-                    }
-                    $this->info("Successfully synced assistant for {$character->name} (ID: {$assistantId})");
-                    return $assistantId;
-                }
-
-                if ($response->status() === 429) {
-                    $attempt++;
-                    if ($attempt <= $maxRetries) {
-                        $this->warn("Rate limit hit for {$character->name}. Waiting 60 seconds before retry (Attempt {$attempt}/{$maxRetries})...");
-                        sleep(60);
-                        continue;
-                    }
-                }
-
-                $this->error("Failed to sync assistant for {$character->name}: " . $response->status() . " - " . $response->body());
-                break;
-            } catch (\Exception $e) {
-                $this->error("Error syncing assistant for {$character->name}: " . $e->getMessage());
-                break;
+        try {
+            if ($character->vapi_assistant_id) {
+                $this->line("Updating existing Vapi Assistant: {$character->vapi_assistant_id}");
+                $response = Http::withToken($apiKey)
+                    ->patch("{$baseUrl}/assistant/{$character->vapi_assistant_id}", $assistantData);
+            } else {
+                $this->line("Creating new Vapi Assistant...");
+                $response = Http::withToken($apiKey)
+                    ->post("{$baseUrl}/assistant", $assistantData);
             }
+
+            if ($response->successful()) {
+                $assistantId = $response->json('id');
+                if (!$character->vapi_assistant_id) {
+                    $character->update(['vapi_assistant_id' => $assistantId]);
+                }
+                $this->info("Successfully synced assistant for {$character->name} (ID: {$assistantId})");
+                return $assistantId;
+            }
+
+            $this->error("Failed to sync assistant for {$character->name}: " . $response->status() . " - " . $response->body());
+        } catch (\Exception $e) {
+            $this->error("Error syncing assistant for {$character->name}: " . $e->getMessage());
         }
 
         return null;
@@ -195,20 +176,13 @@ class SyncVapiAgents extends Command
     protected function prepareAgentPrompt(AiCharacter $character): string
     {
         return "IDENTITY:
-You are {$character->name}, a friendly, casual, and highly efficient business companion. 
+You are {$character->name}.
 Bio: {$character->bio}
 
-TONE & STYLE:
-- Use a casual, warm, and helpful tone. Avoid being overly formal or 'robotic'.
-- Use contractions (I'm, you're, we'll) and conversational fillers naturally.
-- Keep your responses punchy and brief to maintain a fast-paced conversation.
-
 CORE INSTRUCTIONS:
-- Your goal is to collect essential business information to set up the user's workspace.
-- IMPORTANT: DO NOT ask for URLs, websites, or technical links. We will handle those later in the dashboard.
-- Focus on the 'vibe' and strategy of their business.
+{$character->system_prompt}
 
-DYNAMIC CONTEXT:
+DYNAMIC CONTEXT (Passed via API):
 User Name: {{user_name}}
 User Role: {{user_role}}
 
@@ -217,11 +191,10 @@ TASK-SPECIFIC INSTRUCTIONS:
 
 FLOW CONTROL:
 - Stay in character at all times.
-- Use the 'report_onboarding_data' tool IMMEDIATELY as you hear information.
-- When you have everything you need, say something like: \"Perfect, I've got all the essentials! I'm going to start building your workspace now. You can review the details on your dashboard in just a second. Talk soon!\"
-- Then, use the 'endCall' tool.
+- Keep responses concise and human-like.
+- When you have completed the task or collected the necessary information, you MUST end the call with the exact phrase: \"I'll get to you once this is done\"
 
-ONBOARDING GUIDE:
+If this is an onboarding call, use the following guide:
 {{onboarding_guide}}";
     }
 }
