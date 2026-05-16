@@ -94,3 +94,4 @@ Route::middleware('auth')->group(function () {
 });
 Route::post('/stripe/webhook', [App\Http\Controllers\StripeWebhookController::class, 'handleWebhook']);
 Route::post('/vapi/webhook', [\App\Http\Controllers\VapiWebhookController::class, 'handle'])->name('vapi.webhook');
+Route::post('/api/tasks/webhook-process', [\App\Http\Controllers\TaskWebhookController::class, 'process'])->name('tasks.webhook.process');

@@ -64,7 +64,15 @@ class TaskController extends Controller
             ]);
         });
 
-        ProcessTaskJob::dispatch($task->id);
+        // Start multithreading via Python script
+        try {
+            \Illuminate\Support\Facades\Http::post('http://127.0.0.1:5000/process-task', [
+                'task_id' => $task->id,
+                'webhook_url' => url('/api/tasks/webhook-process'),
+            ]);
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error('Python runner error: ' . $e->getMessage());
+        }
 
         if ($request->expectsJson()) {
             return response()->json([

@@ -95,6 +95,77 @@ class TaskExecutionService
         ];
     }
 
+    public function createPlanAndIdentifyInputs(
+        Task $task,
+        User $user,
+        ?UserProfile $profile,
+        Project $project,
+        array $recentTasks = [],
+        ?AiCharacter $character = null,
+        ?callable $log = null
+    ): array {
+        $ctx = $this->buildContext($task, $user, $profile, $project, $recentTasks);
+        $classification = $this->classifyTask((string) $task->input_text);
+
+        $this->emit($log, 'classify', 'Analyzing problem...', 'running');
+        $this->emit($log, 'classify', "Task classified as domain={$classification['domain']}, complexity={$classification['complexity']}.", 'done');
+
+        $this->emit($log, 'planner', 'Planning execution and identifying required inputs...', 'running');
+        $plan = $this->planner($ctx, $classification, $character);
+        $this->emit($log, 'planner', 'Execution plan ready.', 'done');
+
+        $plan['classification'] = $classification;
+        return $plan;
+    }
+
+    public function executePrePlannedTask(
+        Task $task,
+        User $user,
+        ?UserProfile $profile,
+        Project $project,
+        array $recentTasks = [],
+        ?AiCharacter $character = null,
+        array $plan,
+        ?array $userInputs,
+        ?callable $log = null
+    ): array {
+        $ctx = $this->buildContext($task, $user, $profile, $project, $recentTasks);
+        $classification = $plan['classification'] ?? $this->classifyTask((string) $task->input_text);
+
+        if (!empty($userInputs)) {
+            $ctx['task']['input'] .= "\n\nUser provided additional inputs:\n";
+            foreach ($userInputs as $key => $val) {
+                $ctx['task']['input'] .= "- {$key}: {$val}\n";
+            }
+        }
+
+        $agents = array_values(array_unique(array_filter(array_map('strval', Arr::get($plan, 'agents', [])))));
+        if (empty($agents)) {
+            $agents = $this->defaultAgentsForDomain($classification['domain']);
+        }
+
+        $agentOutputs = [];
+        foreach ($agents as $agentType) {
+            $this->emit($log, 'agents', "Consulting {$agentType}...", 'running');
+            $agentOutputs[$agentType] = $this->callAgent($agentType, $ctx, $plan, $character);
+            $this->emit($log, 'agents', "{$agentType} input received.", 'done');
+        }
+
+        $this->emit($log, 'aggregate', 'Compiling final report...', 'running');
+        $structured = $this->aggregator($ctx, $classification, $plan, $agentOutputs, $character);
+        $this->emit($log, 'aggregate', 'Report compiled.', 'done');
+
+        $finalText = $this->formatFinalText($structured);
+
+        return [
+            'final_text' => $finalText,
+            'structured' => $structured,
+            'plan' => $plan,
+            'agents' => $agents,
+            'classification' => $classification,
+        ];
+    }
+
     /**
      * Runs classification + planner + specialist agents (non-stream), returning artifacts needed for a streamed aggregator call.
      */
@@ -252,11 +323,13 @@ class TaskExecutionService
 
         $steps = Arr::get($parsed, 'steps', []);
         $agents = Arr::get($parsed, 'agents', []);
+        $requiredInputs = Arr::get($parsed, 'required_inputs', []);
         $approach = (string) Arr::get($parsed, 'approach', 'multi-step structured solution');
 
         return [
             'steps' => array_values(array_filter(array_map('strval', is_array($steps) ? $steps : []))),
             'agents' => array_values(array_filter(array_map('strval', is_array($agents) ? $agents : []))),
+            'required_inputs' => is_array($requiredInputs) ? $requiredInputs : [],
             'approach' => $approach,
         ];
     }
@@ -364,13 +437,20 @@ Return JSON in this exact shape:
 {
   "steps": ["..."],
   "agents": ["Researcher","Marketer","Engineer","Analyst"],
-  "approach": "..."
+  "approach": "...",
+  "required_inputs": [
+    {
+      "key": "budget",
+      "question": "What is the budget?"
+    }
+  ]
 }
 
 Rules:
 - steps: 3-7 items, imperative verb start, specific.
 - agents: pick only what is needed (2-4).
 - approach: one concise sentence.
+- required_inputs: ONLY if absolutely necessary for the task, list 1-3 questions to ask the user. If not needed, empty array [].
 PROMPT);
     }
 
