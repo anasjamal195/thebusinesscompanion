@@ -148,29 +148,45 @@ class SyncVapiAgents extends Command
             ]
         ];
 
-        try {
-            if ($character->vapi_assistant_id) {
-                $this->line("Updating existing Vapi Assistant: {$character->vapi_assistant_id}");
-                $response = Http::withToken($apiKey)
-                    ->patch("{$baseUrl}/assistant/{$character->vapi_assistant_id}", $assistantData);
-            } else {
-                $this->line("Creating new Vapi Assistant...");
-                $response = Http::withToken($apiKey)
-                    ->post("{$baseUrl}/assistant", $assistantData);
-            }
+        $maxRetries = 2;
+        $attempt = 0;
 
-            if ($response->successful()) {
-                $assistantId = $response->json('id');
-                if (!$character->vapi_assistant_id) {
-                    $character->update(['vapi_assistant_id' => $assistantId]);
+        while ($attempt <= $maxRetries) {
+            try {
+                if ($character->vapi_assistant_id) {
+                    $this->line("Updating existing Vapi Assistant: {$character->vapi_assistant_id}");
+                    $response = Http::withToken($apiKey)
+                        ->patch("{$baseUrl}/assistant/{$character->vapi_assistant_id}", $assistantData);
+                } else {
+                    $this->line("Creating new Vapi Assistant...");
+                    $response = Http::withToken($apiKey)
+                        ->post("{$baseUrl}/assistant", $assistantData);
                 }
-                $this->info("Successfully synced assistant for {$character->name} (ID: {$assistantId})");
-                return $assistantId;
-            }
 
-            $this->error("Failed to sync assistant for {$character->name}: " . $response->status() . " - " . $response->body());
-        } catch (\Exception $e) {
-            $this->error("Error syncing assistant for {$character->name}: " . $e->getMessage());
+                if ($response->successful()) {
+                    $assistantId = $response->json('id');
+                    if (!$character->vapi_assistant_id) {
+                        $character->update(['vapi_assistant_id' => $assistantId]);
+                    }
+                    $this->info("Successfully synced assistant for {$character->name} (ID: {$assistantId})");
+                    return $assistantId;
+                }
+
+                if ($response->status() === 429) {
+                    $attempt++;
+                    if ($attempt <= $maxRetries) {
+                        $this->warn("Rate limit hit for {$character->name}. Waiting 60 seconds before retry (Attempt {$attempt}/{$maxRetries})...");
+                        sleep(60);
+                        continue;
+                    }
+                }
+
+                $this->error("Failed to sync assistant for {$character->name}: " . $response->status() . " - " . $response->body());
+                break;
+            } catch (\Exception $e) {
+                $this->error("Error syncing assistant for {$character->name}: " . $e->getMessage());
+                break;
+            }
         }
 
         return null;

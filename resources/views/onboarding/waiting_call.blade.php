@@ -310,6 +310,9 @@ function initVapi() {
                         variableValues: {
                             user_name: '{{ auth()->user()->name }}',
                             user_role: '{{ auth()->user()->role ?? "Founder" }}'
+                        },
+                        controlPanelConfig: {
+                            show: false
                         }
                     });
                 }
