@@ -40,8 +40,9 @@ class TaskController extends Controller
             ]);
 
             try {
+                $phpBinary = (new \Symfony\Component\Process\PhpExecutableFinder())->find() ?: 'php';
                 $logPath = storage_path('logs/task-' . $waitingTask->id . '.log');
-                \Symfony\Component\Process\Process::fromShellCommandline('php ' . base_path('artisan') . ' task:process ' . $waitingTask->id . ' >> ' . escapeshellarg($logPath) . ' 2>&1 &')->run();
+                \Symfony\Component\Process\Process::fromShellCommandline(escapeshellarg($phpBinary) . ' ' . escapeshellarg(base_path('artisan')) . ' task:process ' . $waitingTask->id . ' >> ' . escapeshellarg($logPath) . ' 2>&1 &')->run();
             } catch (\Exception $e) {
                 \Illuminate\Support\Facades\Log::error('Background task error: ' . $e->getMessage());
             }
@@ -102,8 +103,9 @@ class TaskController extends Controller
 
         // Start multithreading via Artisan background command
         try {
+            $phpBinary = (new \Symfony\Component\Process\PhpExecutableFinder())->find() ?: 'php';
             $logPath = storage_path('logs/task-' . $task->id . '.log');
-            \Symfony\Component\Process\Process::fromShellCommandline('php ' . base_path('artisan') . ' task:process ' . $task->id . ' > ' . escapeshellarg($logPath) . ' 2>&1 &')->run();
+            \Symfony\Component\Process\Process::fromShellCommandline(escapeshellarg($phpBinary) . ' ' . escapeshellarg(base_path('artisan')) . ' task:process ' . $task->id . ' > ' . escapeshellarg($logPath) . ' 2>&1 &')->run();
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\Log::error('Background task error: ' . $e->getMessage());
         }
@@ -175,8 +177,9 @@ class TaskController extends Controller
 
             // Inform background runner to continue
             try {
+                $phpBinary = (new \Symfony\Component\Process\PhpExecutableFinder())->find() ?: 'php';
                 $logPath = storage_path('logs/task-' . $task->id . '.log');
-                \Symfony\Component\Process\Process::fromShellCommandline('php ' . base_path('artisan') . ' task:process ' . $task->id . ' >> ' . escapeshellarg($logPath) . ' 2>&1 &')->run();
+                \Symfony\Component\Process\Process::fromShellCommandline(escapeshellarg($phpBinary) . ' ' . escapeshellarg(base_path('artisan')) . ' task:process ' . $task->id . ' >> ' . escapeshellarg($logPath) . ' 2>&1 &')->run();
             } catch (\Exception $e) {
                 \Illuminate\Support\Facades\Log::error('Background task error: ' . $e->getMessage());
             }
