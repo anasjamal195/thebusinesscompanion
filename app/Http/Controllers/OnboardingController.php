@@ -179,19 +179,29 @@ class OnboardingController extends Controller
         $method = $request->input('method');
 
         if ($method === 'call') {
-            // Dispatch call initiation with 5 second delay
+            // Outbound phone call
             \App\Jobs\InitiateOnboardingCallJob::dispatch(Auth::id())->delay(now()->addSeconds(5));
-            return redirect()->route('onboarding.waiting_call');
+            return redirect()->route('onboarding.waiting_call', ['type' => 'phone']);
+        }
+
+        if ($method === 'web-call') {
+            // In-browser web call
+            return redirect()->route('onboarding.waiting_call', ['type' => 'web']);
         }
 
         return redirect()->route('onboarding.details');
     }
 
-    public function waitingCall()
+    public function waitingCall(Request $request)
     {
         $user = Auth::user();
         $companion = $user->companion;
-        return view('onboarding.waiting_call', compact('companion'));
+        $type = $request->query('type', 'phone');
+        
+        $vapiPublicKey = config('services.vapi.public_key');
+        $assistantId = $companion->vapi_assistant_id;
+
+        return view('onboarding.waiting_call', compact('companion', 'type', 'vapiPublicKey', 'assistantId'));
     }
 
     public function retryCall()

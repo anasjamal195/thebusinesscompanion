@@ -200,14 +200,69 @@
 {{-- ══════════════════════════════════════════
      SCRIPTS
      ══════════════════════════════════════════ --}}
+{{-- Vapi Web SDK --}}
+<script src="https://unpkg.com/@vapi-ai/web@latest/dist/vapi.js"></script>
 <script src="https://js.pusher.com/8.0.1/pusher.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-    const userId      = {{ auth()->id() }};
+    const userId          = {{ auth()->id() }};
+    const callType        = '{{ $type }}';
+    const vapiPublicKey   = '{{ $vapiPublicKey }}';
+    const assistantId     = '{{ $assistantId }}';
+    
     const phaseWaiting    = document.getElementById('phase-waiting');
     const phaseCalling    = document.getElementById('phase-calling');
     const phaseProcessing = document.getElementById('phase-processing');
     const timerEl         = document.getElementById('call-timer');
+
+    let vapi = null;
+    if (callType === 'web' && vapiPublicKey) {
+        vapi = new Vapi(vapiPublicKey);
+        
+        vapi.on('call-start', () => {
+            console.log('[Vapi Web] Call started');
+            showCalling();
+        });
+
+        vapi.on('call-end', () => {
+            console.log('[Vapi Web] Call ended');
+            showProcessing();
+        });
+
+        vapi.on('message', (message) => {
+            if (message.type === 'tool-calls') {
+                // We handle data capture via WebSockets from the backend for consistency
+                // but we could also handle it here if the tool was client-side.
+            }
+        });
+
+        vapi.on('error', (e) => {
+            console.error('[Vapi Web] Error:', e);
+            alert('Could not start web call. Please check your microphone permissions.');
+        });
+    }
+
+    // ── Countdown for auto-start ────────────────────────────
+    let seconds = 5;
+    const countdownEl = document.getElementById('countdown');
+    
+    const interval = setInterval(() => {
+        seconds--;
+        if (countdownEl) countdownEl.innerText = seconds;
+        
+        if (seconds <= 0) {
+            clearInterval(interval);
+            if (callType === 'web' && vapi) {
+                console.log('[Vapi Web] Auto-starting call...');
+                vapi.start(assistantId, {
+                    variableValues: {
+                        user_name: '{{ auth()->user()->name }}',
+                        user_role: '{{ auth()->user()->role ?? "Founder" }}'
+                    }
+                });
+            }
+        }
+    }, 1000);
 
     // ── Timer ───────────────────────────────────────────────
     let timerInterval = null;

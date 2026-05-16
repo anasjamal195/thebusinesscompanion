@@ -9,8 +9,26 @@
 
     <form action="{{ route('onboarding.method.save') }}" method="POST">
         @csrf
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <!-- Call Onboarding -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Web Call Onboarding -->
+            <label class="relative group cursor-pointer">
+                <input type="radio" name="method" value="web-call" class="peer sr-only">
+                <div class="h-full p-8 bg-white border-2 border-slate-100 rounded-[3rem] shadow-sm transition-all duration-300 group-hover:border-primary/30 group-hover:shadow-xl peer-checked:border-primary peer-checked:bg-primary/5 peer-checked:shadow-primary/10 flex flex-col gap-6">
+                    <div class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center text-primary transition-colors group-hover:bg-primary group-hover:text-white">
+                        <span class="material-symbols-outlined text-4xl">language</span>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="flex items-center gap-2">
+                            <h3 class="text-2xl font-black text-slate-900">In-Browser Web Call</h3>
+                        </div>
+                        <p class="text-slate-500 text-sm leading-relaxed">
+                            Start a voice call directly in your browser. No phone needed. Quick and seamless setup.
+                        </p>
+                    </div>
+                </div>
+            </label>
+
+            <!-- Phone Call Onboarding -->
             <label class="relative group cursor-pointer">
                 <input type="radio" name="method" value="call" class="peer sr-only">
                 <div class="h-full p-8 bg-white border-2 border-slate-100 rounded-[3rem] shadow-sm transition-all duration-300 group-hover:border-primary/30 group-hover:shadow-xl peer-checked:border-primary peer-checked:bg-primary/5 peer-checked:shadow-primary/10 flex flex-col gap-6">
@@ -19,10 +37,10 @@
                     </div>
                     <div class="space-y-2">
                         <div class="flex items-center gap-2">
-                            <h3 class="text-2xl font-black text-slate-900">Onboard through a call</h3>
+                            <h3 class="text-2xl font-black text-slate-900">Phone Call</h3>
                         </div>
                         <p class="text-slate-500 text-sm leading-relaxed">
-                            Jump on a 5-minute call with your companion. Speak naturally about your business, and they'll handle all the configuration for you.
+                            We'll call your mobile. Speak naturally about your business, and they'll handle all the configuration for you.
                         </p>
                     </div>
                 </div>
@@ -36,18 +54,10 @@
                         <span class="material-symbols-outlined text-4xl">dashboard_customize</span>
                     </div>
                     <div class="space-y-2">
-                        <h3 class="text-2xl font-black text-slate-900">Onboard through platform</h3>
+                        <h3 class="text-2xl font-black text-slate-900">Platform Flow</h3>
                         <p class="text-slate-500 text-sm leading-relaxed">
-                            Continue through our structured digital flow. Provide specific details about your industry, target audience, and current challenges.
+                            Continue through our structured digital flow. Provide specific details about your industry and target audience.
                         </p>
-                    </div>
-                    <div class="mt-auto pt-4 flex items-center gap-2 text-primary font-bold text-sm">
-                        <span>Recommended for accuracy</span>
-                        <span class="material-symbols-outlined text-[18px]">verified</span>
-                    </div>
-
-                    <div class="absolute -top-2 -right-2 w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center scale-0 transition-transform duration-300 peer-checked:scale-100 shadow-lg shadow-primary/20">
-                        <span class="material-symbols-outlined text-[20px] font-bold">check</span>
                     </div>
                 </div>
             </label>

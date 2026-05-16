@@ -8,6 +8,31 @@
 
 @section('content')
 <div class="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+    
+    @if(request()->query('proofread'))
+    <div class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm animate-in fade-in duration-300">
+        <div class="bg-white rounded-[3rem] p-8 md:p-12 shadow-2xl max-w-lg w-full text-center space-y-6 animate-in zoom-in-95 slide-in-from-bottom-8 duration-500 delay-150">
+            <div class="w-20 h-20 bg-primary/10 text-primary rounded-3xl flex items-center justify-center mx-auto mb-4">
+                <span class="material-symbols-outlined text-5xl">spellcheck</span>
+            </div>
+            <div class="space-y-2">
+                <h2 class="text-3xl font-black text-slate-900">Ready to Proofread?</h2>
+                <p class="text-slate-500 font-medium leading-relaxed">
+                    Great job on the call! Your companion has extracted your business details. Please take a moment to review and refine them.
+                </p>
+            </div>
+            <div class="flex flex-col gap-3">
+                <a href="{{ route('onboarding.details') }}" class="w-full py-4 bg-primary hover:bg-primary-container text-white font-black rounded-2xl shadow-xl shadow-primary/20 transition-all active:scale-95 flex items-center justify-center gap-2">
+                    Review Information
+                    <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+                </a>
+                <button onclick="this.closest('.fixed').remove()" class="w-full py-4 text-slate-400 font-bold hover:text-slate-600 transition-colors">
+                    I'll do it later
+                </button>
+            </div>
+        </div>
+    </div>
+    @endif
     <!-- Welcome Header -->
     <div class="relative overflow-hidden bg-white rounded-[3rem] p-8 md:p-12 shadow-xl shadow-gray-200/50 border border-gray-100 group">
         <div class="absolute -right-20 -top-20 w-80 h-80 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/10 transition-colors duration-700"></div>
