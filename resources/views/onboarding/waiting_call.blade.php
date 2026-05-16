@@ -201,13 +201,16 @@
      SCRIPTS
      ══════════════════════════════════════════ --}}
 {{-- Vapi Web SDK --}}
-<script>var exports = {};</script>
-<script src="https://unpkg.com/@vapi-ai/web@latest/dist/vapi.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@vapi-ai/web@latest/dist/vapi.js"></script>
 <script src="https://js.pusher.com/8.0.1/pusher.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-    // Vapi might be under exports or as a global depending on the bundle
-    const VapiConstructor = window.Vapi || (window.exports ? window.exports.Vapi : null);
+    // Check if Vapi is available globally from the JSDelivr bundle
+    const VapiConstructor = window.Vapi;
+    
+    if (!VapiConstructor) {
+        console.error('Vapi SDK failed to load. Please check the network tab.');
+    }
     
     const userId          = {{ auth()->id() }};
     const callType        = '{{ $type }}';
