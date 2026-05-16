@@ -152,9 +152,20 @@ class VapiWebhookController extends Controller
         broadcast(new \App\Events\CallProgressUpdated($user->id, 'processing_start', 'Processing your conversation...', 'processing'));
 
         // Use OpenRouter (DeepSeek) to extract structured data from the transcript
-        $prompt = "Extract the following business details from this onboarding transcript. Respond ONLY with a JSON object.
-        Fields: business_type, industry, target_audience, experience_level, project_name, project_description, current_problems, urgent_tasks, call_followup_preference (yes/no).
-        
+        $prompt = "Extract the following business details from this onboarding transcript. 
+        Respond ONLY with a JSON object containing these keys:
+        - business_type: (e.g. SaaS, Agency, E-commerce, Local Business, Freelancer, Enterprise)
+        - industry: (e.g. Fintech, Healthcare, etc.)
+        - target_audience: (Brief description of ideal customers)
+        - experience_level: (beginner, intermediate, or expert)
+        - project_name: (A concise name for the user's current project)
+        - project_url: (The website domain if mentioned, or null)
+        - project_description: (A 1-2 sentence objective for the project)
+        - success_metric: (How the user defines success for this project, or null)
+        - current_problems: (Specific challenges or pain points mentioned)
+        - urgent_tasks: (The most immediate task the user needs help with)
+        - call_followup_preference: (yes/no)
+
         Transcript:
         {$transcript}";
 
@@ -190,7 +201,9 @@ class VapiWebhookController extends Controller
                     $project = Project::updateOrCreate(
                         ['user_id' => $user->id, 'name' => $extractedData['project_name'] ?? 'Initial Project'],
                         [
+                            'domain' => $extractedData['project_url'] ?? null,
                             'description' => $extractedData['project_description'] ?? 'Project created via voice onboarding.',
+                            'success_metric' => $extractedData['success_metric'] ?? null,
                         ]
                     );
 
