@@ -298,10 +298,40 @@ function initVapi() {
     let vapi = null;
     let isUserEnding = false;
 
-    if (callType === 'web' && vapiPublicKey && window.Vapi) {
-        vapi = new window.Vapi(vapiPublicKey);
-        window.vapiInstance = vapi;
+    function startVapiCall() {
+        if (!window.Vapi) {
+            console.error('[Vapi Web] Vapi SDK not loaded yet.');
+            return;
+        }
+
+        if (!vapi) {
+            console.log('[Vapi Web] Initializing Vapi instance...');
+            vapi = new window.Vapi(vapiPublicKey);
+            window.vapiInstance = vapi;
+            setupVapiEvents();
+        }
         
+        // Prepare summary of what we already know
+        const knownData = Object.entries(capturedData)
+            .filter(([k, v]) => v)
+            .map(([k, v]) => `${k.replace('_', ' ')}: ${v}`)
+            .join(', ');
+
+        vapi.start(assistantId, {
+            variableValues: {
+                user_name: '{{ auth()->user()->name }}',
+                user_role: '{{ auth()->user()->role ?? "Founder" }}',
+                previously_collected_data: knownData || 'None yet'
+            },
+            controlPanelConfig: {
+                show: false
+            }
+        });
+    }
+
+    function setupVapiEvents() {
+        if (!vapi) return;
+
         vapi.on('call-start', () => {
             console.log('[Vapi Web] Call started');
             isUserEnding = false;
@@ -337,25 +367,10 @@ function initVapi() {
         });
     }
 
-    function startVapiCall() {
-        if (!vapi) return;
-        
-        // Prepare summary of what we already know
-        const knownData = Object.entries(capturedData)
-            .filter(([k, v]) => v)
-            .map(([k, v]) => `${k.replace('_', ' ')}: ${v}`)
-            .join(', ');
-
-        vapi.start(assistantId, {
-            variableValues: {
-                user_name: '{{ auth()->user()->name }}',
-                user_role: '{{ auth()->user()->role ?? "Founder" }}',
-                previously_collected_data: knownData || 'None yet'
-            },
-            controlPanelConfig: {
-                show: false
-            }
-        });
+    if (callType === 'web' && vapiPublicKey && window.Vapi) {
+        vapi = new window.Vapi(vapiPublicKey);
+        window.vapiInstance = vapi;
+        setupVapiEvents();
     }
 
     // ── Call Controls ───────────────────────────────────────
