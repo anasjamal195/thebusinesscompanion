@@ -41,7 +41,18 @@ class VapiService
         // Merge with any extra metadata provided
         $assistantOverrides['variableValues'] = array_merge($assistantOverrides['variableValues'] ?? [], $extraMetadata);
 
+        // Clean phone number (ensure it starts with +)
+        if (!str_starts_with($phoneNumber, '+')) {
+            $phoneNumber = '+' . ltrim($phoneNumber, '0');
+        }
+
         try {
+            Log::info("VapiService: Posting to Vapi", [
+                'url' => "{$this->baseUrl}/call",
+                'phone' => $phoneNumber,
+                'assistantId' => $companion->vapi_assistant_id
+            ]);
+
             $response = Http::withToken($this->apiKey)
                 ->post("{$this->baseUrl}/call", [
                     'phoneNumberId' => config('services.vapi.phone_number_id'),
@@ -74,10 +85,13 @@ class VapiService
                 return $vapiCall;
             }
 
-            Log::error("Vapi API error: " . $response->body());
+            Log::error("Vapi API error: " . $response->status() . " - " . $response->body());
             return false;
         } catch (\Exception $e) {
-            Log::error("Vapi Exception: " . $e->getMessage());
+            Log::error("Vapi Exception: " . $e->getMessage(), [
+                'file' => $e->getFile(),
+                'line' => $e->getLine()
+            ]);
             return false;
         }
     }

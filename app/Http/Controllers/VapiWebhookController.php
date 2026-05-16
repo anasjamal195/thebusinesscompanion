@@ -9,6 +9,7 @@ use App\Models\Task;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 class VapiWebhookController extends Controller
@@ -38,7 +39,13 @@ class VapiWebhookController extends Controller
 
         switch ($type) {
             case 'call-started':
-                if ($call) $call->update(['status' => 'in-progress']);
+                if ($call) {
+                    $call->update(['status' => 'in-progress']);
+                    // Tell the browser the call is now live → activate the calling overlay
+                    broadcast(new \App\Events\CallProgressUpdated(
+                        $call->user_id, 'call_started', 'live', 'in_progress'
+                    ));
+                }
                 break;
 
             case 'tool-calls':
@@ -47,17 +54,32 @@ class VapiWebhookController extends Controller
 
             case 'call-ended':
                 if ($call) {
+                    // Vapi sends transcript in message.artifact.transcript (text)
+                    $artifact      = $message['artifact'] ?? [];
+                    $transcriptText = $artifact['transcript'] ?? ($callData['transcript'] ?? null);
+                    $recordingUrl  = $artifact['recordingUrl'] ?? ($callData['recordingUrl'] ?? null);
+
+                    $duration = 0;
+                    if (!empty($callData['startedAt']) && !empty($callData['endedAt'])) {
+                        $duration = strtotime($callData['endedAt']) - strtotime($callData['startedAt']);
+                    }
+
                     $call->update([
-                        'status' => 'completed',
-                        'duration' => ($callData['endedAt'] ?? 0) ? (strtotime($callData['endedAt']) - strtotime($callData['startedAt'])) : 0,
-                        'transcript' => $callData['transcript'] ?? null,
-                        'recording_url' => $callData['recordingUrl'] ?? null,
+                        'status'        => 'completed',
+                        'duration'      => $duration,
+                        'transcript'    => $transcriptText,
+                        'recording_url' => $recordingUrl,
                     ]);
-                    
+
                     // Fire final processing if it was an onboarding call
                     if (($call->metadata['task_type'] ?? '') === 'onboarding') {
                         $this->finalizeOnboardingFromTranscript($call);
                     }
+
+                    // Broadcast call-ended event so the dashboard overlay dismisses
+                    broadcast(new \App\Events\CallProgressUpdated(
+                        $call->user_id, 'call_ended', 'ended', 'ended'
+                    ));
                 }
                 break;
         }
@@ -160,14 +182,7 @@ class VapiWebhookController extends Controller
 
     protected function findUserByPhoneNumber(string $phoneNumber): ?User
     {
-        return User::whereHas('profile', function($query) use ($phoneNumber) {
-            $query->where('phone_number', 'LIKE', '%' . substr($phoneNumber, -10));
-        })->first();
-    }
-
-    protected function findUserByPhoneNumber(string $phoneNumber): ?User
-    {
-        return User::whereHas('profile', function($query) use ($phoneNumber) {
+        return User::whereHas('profile', function ($query) use ($phoneNumber) {
             $query->where('phone_number', 'LIKE', '%' . substr($phoneNumber, -10));
         })->first();
     }

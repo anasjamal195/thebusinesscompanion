@@ -51,7 +51,7 @@ class SyncVapiAgents extends Command
     protected function syncVapiAssistant(AiCharacter $character, $apiKey, $baseUrl)
     {
         $prompt = $this->prepareAgentPrompt($character);
-        
+
         $assistantData = [
             'name' => "Companion: " . $character->name,
             'firstMessage' => "Hi there, I'm {$character->name}. How can I help you today?",
@@ -64,6 +64,7 @@ class SyncVapiAgents extends Command
                         'content' => $prompt
                     ]
                 ]
+
             ],
             'voice' => [
                 'provider' => '11labs',
@@ -74,7 +75,9 @@ class SyncVapiAgents extends Command
                 'model' => 'nova-2',
                 'language' => 'en',
             ],
-            'serverUrl' => route('vapi.webhook'),
+            'serverUrl' => 'https://crushly.co/api/vapi/webhook',
+            // Define which messages to receive on the webhook
+            'serverMessages' => ['end-of-call-report', 'status-update', 'hang', 'function-call'],
             'artifactPlan' => [
                 'videoRecordingEnabled' => true,
             ]
