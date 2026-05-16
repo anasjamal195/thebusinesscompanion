@@ -35,6 +35,10 @@
         {{-- Status badge + retry --}}
         <div class="flex flex-col items-center gap-5">
             @if($type === 'web')
+                <button id="btn-request-mic" class="hidden px-10 h-16 bg-slate-900 hover:bg-slate-800 text-white font-black rounded-2xl flex items-center gap-3 transition-all active:scale-95 shadow-xl shadow-slate-900/20 animate-in fade-in zoom-in duration-500">
+                    <span class="material-symbols-outlined text-2xl">mic</span>
+                    Enable Microphone
+                </button>
                 <button id="btn-start-web-call" class="hidden px-10 h-16 bg-primary hover:bg-primary-dark text-white font-black rounded-2xl flex items-center gap-3 transition-all active:scale-95 shadow-xl shadow-primary/20 animate-in fade-in zoom-in duration-500">
                     <span class="material-symbols-outlined text-2xl">call</span>
                     Accept Call
@@ -262,18 +266,52 @@ function initVapi() {
         }
     }
 
-    // ── Call Initiation ─────────────────────────────────────
+    // ── Mic Permission & Initiation ─────────────────────────────
+    const btnMic        = document.getElementById('btn-request-mic');
     const btnStart      = document.getElementById('btn-start-web-call');
     const badgeWait     = document.getElementById('badge-waiting');
     const countdownText = document.getElementById('countdown-text');
 
-    if (btnStart && callType === 'web') {
-        // Show button after a short "connecting" delay
-        setTimeout(() => {
+    async function checkMicPermission() {
+        if (callType !== 'web') return;
+        
+        try {
+            const result = await navigator.permissions.query({ name: 'microphone' });
+            if (result.state === 'granted') {
+                showAcceptButton();
+            } else {
+                if (badgeWait) badgeWait.classList.add('hidden');
+                if (btnMic) btnMic.classList.remove('hidden');
+                if (countdownText) countdownText.innerText = 'We need your microphone to talk.';
+            }
+        } catch (e) {
+            // Fallback for browsers that don't support permissions.query for mic
             if (badgeWait) badgeWait.classList.add('hidden');
-            btnStart.classList.remove('hidden');
-            if (countdownText) countdownText.innerText = '{{ $companion->name }} is ready to talk!';
-        }, 2000);
+            if (btnMic) btnMic.classList.remove('hidden');
+        }
+    }
+
+    function showAcceptButton() {
+        if (badgeWait) badgeWait.classList.add('hidden');
+        if (btnMic) btnMic.classList.add('hidden');
+        if (btnStart) btnStart.classList.remove('hidden');
+        if (countdownText) countdownText.innerText = '{{ $companion->name }} is ready to talk!';
+    }
+
+    if (btnMic) {
+        btnMic.addEventListener('click', async () => {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                stream.getTracks().forEach(track => track.stop());
+                showAcceptButton();
+            } catch (e) {
+                alert('Microphone access denied. Please enable it in your browser settings to continue.');
+            }
+        });
+    }
+
+    // Initial check
+    setTimeout(checkMicPermission, 1000);
 
         btnStart.addEventListener('click', () => {
             console.log('[Vapi Web] User accepted call. Starting SDK...');
