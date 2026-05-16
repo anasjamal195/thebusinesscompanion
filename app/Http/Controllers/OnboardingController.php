@@ -201,12 +201,21 @@ class OnboardingController extends Controller
         $vapiPublicKey = config('services.vapi.public_key');
         $callData = $vapiService->getWebCallData($user, 'onboarding');
         
+        // Create local call record
+        $localCall = \App\Models\Call::create([
+            'user_id' => $user->id,
+            'ai_character_id' => $companion->id,
+            'status' => 'initiated',
+            'direction' => 'outbound',
+        ]);
+        
         $assistantId = $callData['assistantId'];
         $systemPromptTemplate = $callData['systemPromptTemplate'];
         $fullSystemPrompt = $callData['fullSystemPrompt'];
         $firstMessage = $callData['firstMessage'];
+        $localCallId = $localCall->id;
 
-        return view('onboarding.waiting_call', compact('companion', 'type', 'vapiPublicKey', 'assistantId', 'systemPromptTemplate', 'fullSystemPrompt', 'firstMessage'));
+        return view('onboarding.waiting_call', compact('companion', 'type', 'vapiPublicKey', 'assistantId', 'systemPromptTemplate', 'fullSystemPrompt', 'firstMessage', 'localCallId'));
     }
 
     public function retryCall()

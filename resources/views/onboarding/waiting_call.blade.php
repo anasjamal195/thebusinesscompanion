@@ -226,6 +226,7 @@ function initVapi() {
     const systemPromptTemplate = {!! json_encode($systemPromptTemplate) !!};
     const fullSystemPrompt = {!! json_encode($fullSystemPrompt) !!};
     const firstMessage    = {!! json_encode($firstMessage ?? '') !!};
+    const localCallId     = '{{ $localCallId ?? '' }}';
     
     const phaseWaiting    = document.getElementById('phase-waiting');
     const phaseCalling    = document.getElementById('phase-calling');
@@ -336,6 +337,9 @@ function initVapi() {
                     model: 'gpt-4o-mini',
                     messages: [{ role: 'system', content: systemPromptTemplate }],
                     systemPrompt: systemPromptTemplate
+                },
+                metadata: {
+                    local_call_id: localCallId
                 }
             };
             

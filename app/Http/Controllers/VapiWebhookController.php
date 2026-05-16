@@ -22,10 +22,19 @@ class VapiWebhookController extends Controller
         $payload = $request->all();
         $type = $payload['message']['type'] ?? null;
         $callId = $payload['message']['call']['id'] ?? null;
+        $metadata = $payload['message']['call']['metadata'] ?? [];
+        $localCallId = $metadata['local_call_id'] ?? null;
 
-        Log::info("Vapi Webhook Received: {$type}", ['call_id' => $callId]);
+        Log::info("Vapi Webhook Received: {$type}", ['call_id' => $callId, 'local_call_id' => $localCallId]);
 
-        $call = Call::where('call_id', $callId)->first();
+        $call = null;
+        if ($localCallId) {
+            $call = Call::find($localCallId);
+        }
+        
+        if (!$call && $callId) {
+            $call = Call::where('call_id', $callId)->first();
+        }
         
         if (!$call && $callId) {
             // Fallback: try to find by phone number if outbound
@@ -36,11 +45,17 @@ class VapiWebhookController extends Controller
                     $call = Call::create([
                         'call_id' => $callId,
                         'user_id' => $user->id,
+                        'ai_character_id' => $user->companion_id ?? 1, // Fallback
                         'status' => 'initiated',
                         'direction' => 'inbound'
                     ]);
                 }
             }
+        }
+
+        // Always update call_id if we have it and it's missing locally
+        if ($call && $callId && !$call->call_id) {
+            $call->update(['call_id' => $callId]);
         }
 
         switch ($type) {

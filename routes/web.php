@@ -32,15 +32,16 @@ Route::post('/waitlist', function (Illuminate\Http\Request $request) {
 Route::get('/companions', [CompanionController::class, 'index'])->name('companions.index');
 Route::get('/companions/{id}', [CompanionController::class, 'show'])->name('companions.show');
 
+Route::get('/onboarding/role', [OnboardingController::class, 'role'])->name('onboarding.role');
+Route::post('/onboarding/role', [OnboardingController::class, 'saveRole'])->name('onboarding.role.save');
+
+Route::get('/onboarding/companion', [OnboardingController::class, 'companion'])->name('onboarding.companion');
+Route::post('/onboarding/companion', [OnboardingController::class, 'saveCompanion'])->name('onboarding.companion.save');
+
+Route::get('/onboarding/checkout', [OnboardingController::class, 'checkout'])->name('onboarding.checkout');
+Route::post('/onboarding/checkout', [OnboardingController::class, 'processCheckout'])->name('onboarding.processCheckout');
+
 Route::middleware('guest')->group(function () {
-    Route::get('/onboarding/role', [OnboardingController::class, 'role'])->name('onboarding.role');
-    Route::post('/onboarding/role', [OnboardingController::class, 'saveRole'])->name('onboarding.role.save');
-    
-    Route::get('/onboarding/companion', [OnboardingController::class, 'companion'])->name('onboarding.companion');
-    Route::post('/onboarding/companion', [OnboardingController::class, 'saveCompanion'])->name('onboarding.companion.save');
-    
-    Route::get('/onboarding/checkout', [OnboardingController::class, 'checkout'])->name('onboarding.checkout');
-    Route::post('/onboarding/checkout', [OnboardingController::class, 'processCheckout'])->name('onboarding.processCheckout');
 
     Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
     Route::post('/login', [AuthenticatedSessionController::class, 'store'])->name('login.store');
