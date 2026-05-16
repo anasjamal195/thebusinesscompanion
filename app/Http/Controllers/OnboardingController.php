@@ -321,7 +321,7 @@ class OnboardingController extends Controller
                     [
                         'project_id' => $project->id,
                         'user_id' => $user->id,
-                        'title' => 'Initial Assessment',
+                        'title' => 'Initial Task',
                     ],
                     [
                         'input_text' => "Current Problems: " . ($validated['current_problems'] ?? 'None') . "\nUrgent Tasks: " . ($validated['urgent_tasks'] ?? 'None'),
