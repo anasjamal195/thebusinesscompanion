@@ -398,7 +398,7 @@ function initVapi() {
                 });
                 // Small delay so user sees the ✓ before redirect
                 setTimeout(() => {
-                    window.location.href = '/projects/' + data.value;
+                    window.location.href = data.value;
                 }, 1800);
                 break;
         }
@@ -412,7 +412,7 @@ function initVapi() {
             badge.innerHTML = '<span class="w-2 h-2 bg-green-400 rounded-full animate-ping"></span> WAITING FOR CALL…';
         }
     });
-});
+}
 </script>
 
 <style>
