@@ -153,7 +153,7 @@ class VapiWebhookController extends Controller
 
         // Use OpenRouter (DeepSeek) to extract structured data from the transcript
         $prompt = "Extract the following business details from this onboarding transcript. Respond ONLY with a JSON object.
-        Fields: business_type, industry, target_audience, experience_level, project_name, project_description, first_task, call_followup_preference (yes/no).
+        Fields: business_type, industry, target_audience, experience_level, project_name, project_description, current_problems, urgent_tasks, call_followup_preference (yes/no).
         
         Transcript:
         {$transcript}";
@@ -182,6 +182,8 @@ class VapiWebhookController extends Controller
                         'industry' => $extractedData['industry'] ?? $profile->industry,
                         'target_audience' => $extractedData['target_audience'] ?? $profile->target_audience,
                         'experience_level' => $extractedData['experience_level'] ?? $profile->experience_level,
+                        'current_problems' => $extractedData['current_problems'] ?? $profile->current_problems,
+                        'urgent_tasks' => $extractedData['urgent_tasks'] ?? $profile->urgent_tasks,
                         'call_followup_preference' => (isset($extractedData['call_followup_preference']) && strtolower($extractedData['call_followup_preference']) === 'yes'),
                     ]);
 
@@ -192,12 +194,12 @@ class VapiWebhookController extends Controller
                         ]
                     );
 
-                    if (!empty($extractedData['first_task'])) {
+                    if (!empty($extractedData['urgent_tasks'])) {
                         $task = Task::create([
                             'project_id' => $project->id,
                             'user_id' => $user->id,
                             'title' => 'Initial Task',
-                            'input_text' => $extractedData['first_task'],
+                            'input_text' => $extractedData['urgent_tasks'],
                             'priority' => 'high',
                             'status' => 'pending',
                         ]);
