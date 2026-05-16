@@ -360,7 +360,7 @@ class TaskExecutionService
     private function normalizeStructured(array $data): array
     {
         $pickText = fn (string $k) => trim((string) Arr::get($data, $k, ''));
-        $pickArr = function (string $k): array {
+        $pickArr = function (string $k) use ($data): array {
             $v = Arr::get($data, $k, []);
             if (is_string($v) && trim($v) !== '') {
                 return [trim($v)];
