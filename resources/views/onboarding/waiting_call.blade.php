@@ -284,7 +284,7 @@ function initVapi() {
                 model: {
                     provider: 'openai',
                     model: 'gpt-4o',
-                    messages: [{ role: 'system', content: dynamicPrompt }]
+                    systemPrompt: dynamicPrompt
                 },
                 voice: {
                     speed: 1.2,

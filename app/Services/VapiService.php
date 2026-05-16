@@ -118,12 +118,7 @@ class VapiService
                 'onboarding_guide' => $taskType === 'onboarding' ? $this->getOnboardingGuide() : '',
             ],
             'model' => [
-                'messages' => [
-                    [
-                        'role' => 'system',
-                        'content' => $systemPrompt,
-                    ]
-                ]
+                'systemPrompt' => $systemPrompt,
             ],
             'voice' => [
                 'speed' => 1.2,
@@ -150,17 +145,17 @@ class VapiService
         $companion = $user->companion;
         $basePrompt = $companion->system_prompt ?: "You are a professional business assistant.";
         
-        $prompt = "IDENTITY:
-You are {$companion->name}.
-Bio: {$companion->bio}
-
-TONE & STYLE:
+        $prompt = "TONE & STYLE:
 - BE EXTREMELY HUMAN. Never say 'As an AI' or 'I am a model'.
 - Use a casual, friendly, and energetic tone.
 - Use natural filler words (like 'um', 'uh', 'gotcha', 'totally', 'cool') naturally.
 - Keep your sentences short and punchy.
 - React naturally to what the user says.
 - Treat the user like a friend you're helping out.
+
+IDENTITY:
+You are {$companion->name}.
+Bio: {$companion->bio}
 
 CORE PERSONALITY:
 {$basePrompt}

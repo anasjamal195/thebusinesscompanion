@@ -109,12 +109,7 @@ class SyncVapiAgents extends Command
                 'provider'    => 'openai',
                 'model'       => 'gpt-4o',
                 'temperature' => 0.8, // Slightly higher for more natural/varied speech
-                'messages'    => [
-                    [
-                        'role'    => 'system',
-                        'content' => $prompt
-                    ]
-                ],
+                'systemPrompt' => $prompt,
                 'tools'   => [
                     [
                         'type'     => 'function',
@@ -211,16 +206,16 @@ class SyncVapiAgents extends Command
         // Use the system prompt from the database, or fall back to a base template if empty
         $basePrompt = $character->system_prompt ?: "You are a professional business assistant.";
 
-        return "IDENTITY:
-You are {$character->name}.
-Bio: {$character->bio}
-
-TONE & STYLE:
+        return "TONE & STYLE:
 - BE EXTREMELY HUMAN. Never say 'As an AI' or 'I am a model'.
 - Use a casual, friendly, and high-energy tone.
 - Use natural filler words (like 'um', 'uh', 'gotcha', 'totally', 'cool') naturally.
 - Keep sentences short and punchy. Talk like a real person over the phone.
 - React naturally. If I say something cool, say 'That's awesome!'.
+
+IDENTITY:
+You are {$character->name}.
+Bio: {$character->bio}
 
 CORE PERSONALITY:
 {$basePrompt}
