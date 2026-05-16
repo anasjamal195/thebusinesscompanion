@@ -196,13 +196,12 @@ class OnboardingController extends Controller
     {
         $user = Auth::user();
         $companion = $user->companion;
-        $profile = $user->profile;
         $type = $request->query('type', 'phone');
         
         $vapiPublicKey = config('services.vapi.public_key');
         $assistantId = $companion->vapi_assistant_id;
 
-        return view('onboarding.waiting_call', compact('companion', 'type', 'vapiPublicKey', 'assistantId', 'profile'));
+        return view('onboarding.waiting_call', compact('companion', 'type', 'vapiPublicKey', 'assistantId'));
     }
 
     public function retryCall()

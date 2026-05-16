@@ -184,34 +184,7 @@
 
 
 {{-- ══════════════════════════════════════════
-     PHASE 2.5 — CALL PAUSED / ENDED EARLY
-     ══════════════════════════════════════════ --}}
-<div id="phase-paused" class="hidden fixed inset-0 z-[60] flex items-center justify-center bg-slate-950/90 backdrop-blur-xl animate-in fade-in duration-300">
-    <div class="max-w-md w-full mx-4 bg-white rounded-[3rem] p-10 shadow-2xl text-center space-y-8 animate-in zoom-in-95 duration-500">
-        <div class="w-20 h-20 bg-amber-100 text-amber-600 rounded-3xl flex items-center justify-center mx-auto">
-            <span class="material-symbols-outlined text-5xl">pause_circle</span>
-        </div>
-        
-        <div class="space-y-2">
-            <h2 class="text-3xl font-black text-slate-900">Call Paused</h2>
-            <p class="text-slate-500 font-medium">You ended the call early. Would you like to continue talking or finish setting up your workspace with the info we have?</p>
-        </div>
-
-        <div class="flex flex-col gap-3">
-            <button id="btn-resume-call" class="w-full py-5 bg-primary hover:bg-primary-container text-white font-black rounded-2xl shadow-xl shadow-primary/20 transition-all active:scale-95 flex items-center justify-center gap-2">
-                <span class="material-symbols-outlined">play_circle</span>
-                Resume Conversation
-            </button>
-            <button id="btn-finish-early" class="w-full py-5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-black rounded-2xl transition-all active:scale-95 flex items-center justify-center gap-2">
-                <span class="material-symbols-outlined">check_circle</span>
-                Finish & Build Now
-            </button>
-        </div>
-    </div>
-</div>
-
-{{-- ══════════════════════════════════════════
-     PHASE 3 — PROCESSING (call ended)
+     PHASE 3 — PROCESSING OVERLAY (after call ends)
      ══════════════════════════════════════════ --}}
 <div id="phase-processing"
      class="hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md">
@@ -283,81 +256,28 @@ function initVapi() {
     
     const phaseWaiting    = document.getElementById('phase-waiting');
     const phaseCalling    = document.getElementById('phase-calling');
-    const phasePaused     = document.getElementById('phase-paused');
     const phaseProcessing = document.getElementById('phase-processing');
     const timerEl         = document.getElementById('call-timer');
 
-    // Track captured data for resuming
-    let capturedData = {
-        business_type: '{{ $profile->business_type ?? "" }}',
-        industry: '{{ $profile->industry ?? "" }}',
-        target_audience: '{{ $profile->target_audience ?? "" }}',
-        experience_level: '{{ $profile->experience_level ?? "" }}',
-    };
-
     let vapi = null;
-    let isUserEnding = false;
-
-    function startVapiCall() {
-        if (!window.Vapi) {
-            console.error('[Vapi Web] Vapi SDK not loaded yet.');
-            return;
-        }
-
-        if (!vapi) {
-            console.log('[Vapi Web] Initializing Vapi instance...');
-            vapi = new window.Vapi(vapiPublicKey);
-            window.vapiInstance = vapi;
-            setupVapiEvents();
-        }
+    if (callType === 'web' && vapiPublicKey && window.Vapi) {
+        vapi = new window.Vapi(vapiPublicKey);
+        window.vapiInstance = vapi;
         
-        // Prepare summary of what we already know
-        const knownData = Object.entries(capturedData)
-            .filter(([k, v]) => v)
-            .map(([k, v]) => `${k.replace('_', ' ')}: ${v}`)
-            .join(', ');
-
-        vapi.start(assistantId, {
-            variableValues: {
-                user_name: '{{ auth()->user()->name }}',
-                user_role: '{{ auth()->user()->role ?? "Founder" }}',
-                previously_collected_data: knownData || 'None yet'
-            },
-            controlPanelConfig: {
-                show: false
-            }
-        });
-    }
-
-    function setupVapiEvents() {
-        if (!vapi) return;
-
         vapi.on('call-start', () => {
             console.log('[Vapi Web] Call started');
-            isUserEnding = false;
-            phasePaused.classList.add('hidden');
             showCalling();
         });
 
         vapi.on('call-end', () => {
             console.log('[Vapi Web] Call ended');
-            stopTimer();
-            if (isUserEnding) {
-                showPaused();
-            } else {
-                showProcessing();
-            }
+            showProcessing();
         });
 
         vapi.on('message', (message) => {
             if (message.type === 'tool-calls') {
-                const toolCall = message.toolCalls[0];
-                if (toolCall.function.name === 'report_onboarding_data') {
-                    const args = toolCall.function.arguments;
-                    if (args.field && args.value) {
-                        capturedData[args.field] = args.value;
-                    }
-                }
+                // We handle data capture via WebSockets from the backend for consistency
+                // but we could also handle it here if the tool was client-side.
             }
         });
 
@@ -367,13 +287,7 @@ function initVapi() {
         });
     }
 
-    if (callType === 'web' && vapiPublicKey && window.Vapi) {
-        vapi = new window.Vapi(vapiPublicKey);
-        window.vapiInstance = vapi;
-        setupVapiEvents();
-    }
-
-    // ── Call Controls ───────────────────────────────────────
+    // ── Countdown for auto-start (PHONE ONLY) ────────────────────────────
     if (callType === 'phone') {
         let seconds = 5;
         const countdownEl = document.getElementById('countdown');
@@ -383,37 +297,30 @@ function initVapi() {
             if (seconds <= 0) clearInterval(interval);
         }, 1000);
     } else {
+        // WEB CALL: Wait for user click
         const btnStart = document.getElementById('btn-start-web-call');
         if (btnStart) {
             btnStart.addEventListener('click', () => {
-                btnStart.disabled = true;
-                btnStart.innerHTML = '<span class="material-symbols-outlined animate-spin">sync</span> Connecting...';
-                startVapiCall();
+                if (vapi) {
+                    console.log('[Vapi Web] Starting call via user gesture...');
+                    btnStart.disabled = true;
+                    btnStart.innerHTML = '<span class="material-symbols-outlined animate-spin">sync</span> Connecting...';
+                    
+                    vapi.start(assistantId, {
+                        variableValues: {
+                            user_name: '{{ auth()->user()->name }}',
+                            user_role: '{{ auth()->user()->role ?? "Founder" }}'
+                        },
+                        controlPanelConfig: {
+                            show: false
+                        }
+                    });
+                }
             });
         }
     }
 
-    const btnResume = document.getElementById('btn-resume-call');
-    if (btnResume) {
-        btnResume.addEventListener('click', () => {
-            btnResume.disabled = true;
-            btnResume.innerHTML = '<span class="material-symbols-outlined animate-spin">sync</span> Resuming...';
-            startVapiCall();
-            setTimeout(() => {
-                btnResume.disabled = false;
-                btnResume.innerHTML = '<span class="material-symbols-outlined">play_circle</span> Resume Conversation';
-            }, 2000);
-        });
-    }
-
-    const btnFinishEarly = document.getElementById('btn-finish-early');
-    if (btnFinishEarly) {
-        btnFinishEarly.addEventListener('click', () => {
-            phasePaused.classList.add('hidden');
-            showProcessing();
-        });
-    }
-
+    // ── Call Controls ───────────────────────────────────────
     const btnMute = document.getElementById('btn-mute');
     if (btnMute) {
         btnMute.addEventListener('click', () => {
@@ -429,9 +336,9 @@ function initVapi() {
     if (btnEnd) {
         btnEnd.addEventListener('click', () => {
             if (vapi) {
-                console.log('[Vapi Web] User manually ending call...');
-                isUserEnding = true;
+                console.log('[Vapi Web] Manually ending call...');
                 vapi.stop();
+                showProcessing();
             }
         });
     }
@@ -457,10 +364,6 @@ function initVapi() {
         phaseWaiting.classList.add('hidden');
         phaseCalling.classList.remove('hidden');
         startTimer();
-    }
-    function showPaused() {
-        phaseCalling.classList.add('hidden');
-        phasePaused.classList.remove('hidden');
     }
     function showProcessing() {
         stopTimer();
@@ -521,10 +424,12 @@ function initVapi() {
         console.log('[Vapi WS]', data);
 
         switch (data.field) {
+            // ── Vapi confirmed call is ringing ──
             case 'call_started':
                 showCalling();
                 break;
 
+            // ── A data field was captured live ──
             case 'business_type':
             case 'industry':
             case 'target_audience':
@@ -534,9 +439,9 @@ function initVapi() {
             case 'first_task':
             case 'call_followup_preference':
                 updateLiveField(data.field, data.value);
-                capturedData[data.field] = data.value; // Keep local data synced
                 break;
 
+            // ── Call ended → processing started ──
             case 'call_ended':
                 showProcessing();
                 break;
