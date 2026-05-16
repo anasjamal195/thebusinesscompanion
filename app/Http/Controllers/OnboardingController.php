@@ -200,8 +200,9 @@ class OnboardingController extends Controller
         
         $vapiPublicKey = config('services.vapi.public_key');
         $assistantId = $companion->vapi_assistant_id;
+        $dynamicPrompt = $companion->system_prompt;
 
-        return view('onboarding.waiting_call', compact('companion', 'type', 'vapiPublicKey', 'assistantId'));
+        return view('onboarding.waiting_call', compact('companion', 'type', 'vapiPublicKey', 'assistantId', 'dynamicPrompt'));
     }
 
     public function retryCall()
