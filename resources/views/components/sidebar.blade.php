@@ -23,6 +23,7 @@
                 $navItems = [
                     ['key' => 'dashboard', 'label' => 'Dashboard', 'icon' => 'grid_view', 'href' => url('/dashboard')],
                     ['key' => 'projects', 'label' => 'Projects', 'icon' => 'folder', 'href' => route('projects.index')],
+                    ['key' => 'calls', 'label' => 'Call Logs', 'icon' => 'history', 'href' => route('calls.index')],
                     ['key' => 'reports', 'label' => 'Reports', 'icon' => 'analytics', 'href' => '#'],
                 ];
             @endphp

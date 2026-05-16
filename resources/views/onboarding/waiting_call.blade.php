@@ -90,6 +90,13 @@
                     <p class="text-white/60 text-sm font-medium">On call with you</p>
                 </div>
 
+                <div class="flex items-center justify-center gap-2 mb-2">
+                    <div class="flex items-center gap-2 px-3 py-1 bg-red-500/20 border border-red-500/30 rounded-full">
+                        <span class="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
+                        <span class="text-[10px] font-black text-red-500 uppercase tracking-widest">Recording Active</span>
+                    </div>
+                </div>
+
                 <div class="text-5xl font-black text-white tracking-widest font-mono" id="call-timer">0:00</div>
 
                 <div class="flex items-center justify-center gap-4 pt-4">

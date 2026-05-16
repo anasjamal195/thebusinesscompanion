@@ -168,7 +168,7 @@ class SyncVapiAgents extends Command
                 'transcript'
             ],
             'artifactPlan'   => [
-                'recordingEnabled' => false,
+                'recordingEnabled' => true,
                 'transcriptPlan'   => ['enabled' => true],
             ]
         ];

@@ -10,6 +10,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\CompanionController;
+use App\Http\Controllers\CallController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -86,6 +87,9 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/reports/{report}', [ReportController::class, 'show'])->name('reports.show');
     Route::get('/reports/{report}/pdf', [ReportController::class, 'pdf'])->name('reports.pdf');
+
+    Route::get('/calls', [CallController::class, 'index'])->name('calls.index');
+    Route::get('/calls/{call}', [CallController::class, 'show'])->name('calls.show');
 });
 Route::post('/stripe/webhook', [App\Http\Controllers\StripeWebhookController::class, 'handleWebhook']);
 Route::post('/vapi/webhook', [\App\Http\Controllers\VapiWebhookController::class, 'handle'])->name('vapi.webhook');
