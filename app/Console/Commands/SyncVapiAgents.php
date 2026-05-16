@@ -212,14 +212,12 @@ class SyncVapiAgents extends Command
             return [
                 'provider' => 'deepgram',
                 'voiceId'  => 'asteria',
-                'speed'    => 1.2,
             ];
         }
 
         return [
             'provider' => 'deepgram',
             'voiceId'  => 'orion',
-            'speed'    => 1.2,
         ];
     }
 
