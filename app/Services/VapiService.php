@@ -105,6 +105,8 @@ class VapiService
      */
     protected function prepareAssistantOverrides(User $user, string $taskType): array
     {
+        $companion = $user->companion;
+
         return [
             'variableValues' => [
                 'user_name' => $user->name,
@@ -112,6 +114,14 @@ class VapiService
                 'dynamic_task_instructions' => $this->getTaskInstructions($taskType),
                 'onboarding_guide' => $taskType === 'onboarding' ? $this->getOnboardingGuide() : '',
             ],
+            'model' => [
+                'messages' => [
+                    [
+                        'role' => 'system',
+                        'content' => $companion->system_prompt,
+                    ]
+                ]
+            ]
         ];
     }
 

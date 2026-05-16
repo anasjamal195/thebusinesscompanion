@@ -180,6 +180,9 @@ class SyncVapiAgents extends Command
 
     protected function prepareAgentPrompt(AiCharacter $character): string
     {
+        // Use the system prompt from the database, or fall back to a base template if empty
+        $basePrompt = $character->system_prompt ?: "You are a professional business assistant.";
+
         return "IDENTITY:
 You are {$character->name}.
 Bio: {$character->bio}
@@ -191,7 +194,7 @@ TONE & PERSONALITY:
 - Don't be overly formal; treat the user as a partner.
 
 CORE INSTRUCTIONS:
-{$character->system_prompt}
+{$basePrompt}
 
 DYNAMIC CONTEXT:
 User Name: {{user_name}}
