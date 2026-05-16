@@ -129,9 +129,6 @@ class VapiService
                 ],
                 'systemPrompt' => $systemPrompt,
             ],
-            'voice' => [
-                'speed' => 1.2,
-            ]
         ];
     }
 

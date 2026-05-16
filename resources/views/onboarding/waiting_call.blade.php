@@ -329,9 +329,6 @@ function initVapi() {
                     model: 'gpt-4o-mini',
                     messages: [{ role: 'system', content: systemPromptTemplate }],
                     systemPrompt: systemPromptTemplate
-                },
-                voice: {
-                    speed: 1.2
                 }
             };
             
