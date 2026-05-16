@@ -66,7 +66,7 @@ class TaskController extends Controller
 
         // Start multithreading via Python script
         try {
-            \Illuminate\Support\Facades\Http::post('http://127.0.0.1:5000/process-task', [
+            \Illuminate\Support\Facades\Http::post('http://127.0.0.1:5002/process-task', [
                 'task_id' => $task->id,
                 'webhook_url' => url('/api/tasks/webhook-process'),
             ]);
