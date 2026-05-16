@@ -192,17 +192,20 @@ class OnboardingController extends Controller
         return redirect()->route('onboarding.details');
     }
 
-    public function waitingCall(Request $request)
+    public function waitingCall(Request $request, \App\Services\VapiService $vapiService)
     {
         $user = Auth::user();
         $companion = $user->companion;
         $type = $request->query('type', 'phone');
         
         $vapiPublicKey = config('services.vapi.public_key');
-        $assistantId = $companion->vapi_assistant_id;
-        $dynamicPrompt = $companion->system_prompt;
+        $callData = $vapiService->getWebCallData($user, 'onboarding');
+        
+        $assistantId = $callData['assistantId'];
+        $dynamicPrompt = $callData['systemPrompt'];
+        $firstMessage = $callData['firstMessage'];
 
-        return view('onboarding.waiting_call', compact('companion', 'type', 'vapiPublicKey', 'assistantId', 'dynamicPrompt'));
+        return view('onboarding.waiting_call', compact('companion', 'type', 'vapiPublicKey', 'assistantId', 'dynamicPrompt', 'firstMessage'));
     }
 
     public function retryCall()

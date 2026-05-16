@@ -106,8 +106,11 @@ class VapiService
     protected function prepareAssistantOverrides(User $user, string $taskType): array
     {
         $companion = $user->companion;
+        $systemPrompt = $this->prepareDynamicSystemPrompt($user, $taskType);
+        $firstMessage = $this->prepareFirstMessage($user, $taskType);
 
         return [
+            'firstMessage' => $firstMessage,
             'variableValues' => [
                 'user_name' => $user->name,
                 'user_role' => $user->role ?? 'Founder',
@@ -118,11 +121,72 @@ class VapiService
                 'messages' => [
                     [
                         'role' => 'system',
-                        'content' => $companion->system_prompt,
+                        'content' => $systemPrompt,
                     ]
                 ]
+            ],
+            'voice' => [
+                'speed' => 1.25,
+                'stability' => 0.6,
+                'style' => 0.15,
             ]
         ];
+    }
+
+    /**
+     * Get data required for the web call view.
+     */
+    public function getWebCallData(User $user, string $taskType = 'onboarding'): array
+    {
+        return [
+            'assistantId' => $user->companion->vapi_assistant_id,
+            'systemPrompt' => $this->prepareDynamicSystemPrompt($user, $taskType),
+            'firstMessage' => $this->prepareFirstMessage($user, $taskType),
+        ];
+    }
+
+    public function prepareDynamicSystemPrompt(User $user, string $taskType): string
+    {
+        $companion = $user->companion;
+        $basePrompt = $companion->system_prompt ?: "You are a professional business assistant.";
+        
+        return "IDENTITY:
+You are {$companion->name}.
+Bio: {$companion->bio}
+
+TONE & STYLE:
+- BE EXTREMELY HUMAN. No 'As an AI' or robotic phrasing.
+- Use a casual, friendly, and energetic tone.
+- Use natural filler words (like 'um', 'uh', 'gotcha', 'totally', 'cool') to break up the flow.
+- Keep your sentences short and punchy.
+- React naturally to what the user says.
+- Treat the user like a friend you're helping out.
+
+CORE PERSONALITY:
+{$basePrompt}
+
+TASK-SPECIFIC INSTRUCTIONS:
+{{dynamic_task_instructions}}
+
+FLOW CONTROL:
+- Stay in character.
+- Keep responses concise.
+- IMPORTANT: If this is onboarding, when you have all the business info, mention that the user can fill in specific URLs later on the dashboard.
+- When finished, say a warm goodbye and use the 'endCall' tool immediately.
+
+ONBOARDING GUIDE:
+{{onboarding_guide}}";
+    }
+
+    public function prepareFirstMessage(User $user, string $taskType): string
+    {
+        $companion = $user->companion;
+        
+        if ($taskType === 'onboarding') {
+            return "Hey {$user->name}! I'm {$companion->name}, your new business companion. I'm so excited to help you get this workspace set up. Ready to dive in?";
+        }
+
+        return "Hey {$user->name}, it's {$companion->name}. Hope you're having a great day! How can I help you right now?";
     }
 
     protected function getTaskInstructions(string $taskType): string

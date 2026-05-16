@@ -180,6 +180,15 @@
                 <span class="text-sm font-bold">Generating action items</span>
             </div>
         </div>
+
+        {{-- Fallback Proceed Button (hidden by default) --}}
+        <div id="processing-fallback" class="hidden pt-4 animate-in fade-in slide-in-from-bottom-4 duration-1000">
+            <p class="text-xs text-slate-400 mb-4">Taking longer than expected? You can head to your dashboard and I'll finish up there.</p>
+            <a href="{{ route('dashboard') }}" class="inline-flex items-center gap-2 px-6 py-3 bg-slate-900 hover:bg-slate-800 text-white text-xs font-black uppercase tracking-widest rounded-xl transition-all active:scale-95">
+                Go to Dashboard
+                <span class="material-symbols-outlined text-sm">arrow_forward</span>
+            </a>
+        </div>
     </div>
 </div>
 
@@ -204,6 +213,7 @@ function initVapi() {
     const vapiPublicKey   = '{{ $vapiPublicKey }}';
     const assistantId     = '{{ $assistantId }}';
     const dynamicPrompt   = {!! json_encode($dynamicPrompt) !!};
+    const firstMessage    = {!! json_encode($firstMessage ?? '') !!};
     
     const phaseWaiting    = document.getElementById('phase-waiting');
     const phaseCalling    = document.getElementById('phase-calling');
@@ -270,10 +280,16 @@ function initVapi() {
             btnStart.innerHTML = '<span class="material-symbols-outlined text-2xl animate-spin">sync</span> Connecting...';
             
             const overrides = {
+                firstMessage: firstMessage,
                 model: {
                     provider: 'openai',
                     model: 'gpt-4o',
                     messages: [{ role: 'system', content: dynamicPrompt }]
+                },
+                voice: {
+                    speed: 1.25,
+                    stability: 0.6,
+                    style: 0.15
                 }
             };
             
@@ -310,6 +326,12 @@ function initVapi() {
         setTimeout(() => animateStep('process-step-extract', 'autorenew'), 1500);
         setTimeout(() => animateStep('process-step-project', 'pending'),   4000);
         setTimeout(() => animateStep('process-step-task',    'pending'),   7000);
+        
+        // Show fallback button after 25 seconds if still processing
+        setTimeout(() => {
+            const fallback = document.getElementById('processing-fallback');
+            if (fallback) fallback.classList.remove('hidden');
+        }, 25000);
     }
 
     function animateStep(id, icon) {
