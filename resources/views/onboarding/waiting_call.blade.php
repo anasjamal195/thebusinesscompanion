@@ -192,7 +192,7 @@ function initVapi() {
     const callType        = '{{ $type }}';
     const vapiPublicKey   = '{{ $vapiPublicKey }}';
     const assistantId     = '{{ $assistantId }}';
-    const dynamicPrompt   = `{!! addslashes($dynamicPrompt) !!}`;
+    const dynamicPrompt   = {!! json_encode($dynamicPrompt) !!};
     
     const phaseWaiting    = document.getElementById('phase-waiting');
     const phaseCalling    = document.getElementById('phase-calling');
@@ -250,21 +250,14 @@ function initVapi() {
             if (seconds <= 0) {
                 clearInterval(interval);
                 if (callType === 'web' && vapiInstance) {
-                    console.log('[Vapi Web] Starting with dynamic prompt...');
-                    vapiInstance.start(assistantId, {
-                        variableValues: {
-                            user_name: '{{ auth()->user()->name }}',
-                            user_role: '{{ auth()->user()->role ?? "Founder" }}'
-                        },
+                    const overrides = {
                         model: {
-                            messages: [
-                                {
-                                    role: 'system',
-                                    content: dynamicPrompt
-                                }
-                            ]
+                            messages: [{ role: 'system', content: dynamicPrompt }]
                         }
-                    });
+                    };
+                    console.log('[Vapi Web] Assistant ID:', assistantId);
+                    console.log('[Vapi Web] Overrides:', overrides);
+                    vapiInstance.start(assistantId, overrides);
                 }
             }
         }, 1000);
