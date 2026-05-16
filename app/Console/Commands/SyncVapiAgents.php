@@ -105,7 +105,7 @@ class SyncVapiAgents extends Command
 
         $assistantData = [
             'name'         => $character->name,
-            'firstMessage' => "Hi there, I'm {$character->name}, your business companion. How can I help you today?",
+            'firstMessage' => "{{first_message}}",
             'model'        => [
                 'provider'    => 'openai',
                 'model'       => 'gpt-4o-mini',

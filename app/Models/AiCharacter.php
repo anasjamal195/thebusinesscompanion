@@ -12,6 +12,7 @@ class AiCharacter extends Model
         'name',
         'tagline',
         'bio',
+        'first_message',
         'system_prompt',
         'avatar_url',
         'meta',

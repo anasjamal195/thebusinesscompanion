@@ -114,6 +114,7 @@ class VapiService
             'variableValues' => [
                 'user_name' => $user->name,
                 'user_role' => $user->role ?? 'Founder',
+                'first_message' => $firstMessage,
                 'full_system_prompt' => $systemPrompt,
                 'dynamic_task_instructions' => $this->getTaskInstructions($taskType),
                 'onboarding_guide' => $taskType === 'onboarding' ? $this->getOnboardingGuide() : '',
@@ -191,12 +192,8 @@ User Role: " . ($user->role ?? 'Founder');
     public function prepareFirstMessage(User $user, string $taskType): string
     {
         $companion = $user->companion;
-        
-        if ($taskType === 'onboarding') {
-            return "Hey {$user->name}! I'm {$companion->name}, your new business companion. I'm so excited to help you get this workspace set up. Ready to dive in?";
-        }
-
-        return "Hey {$user->name}, it's {$companion->name}. Hope you're having a great day! How can I help you right now?";
+        $message = $companion->first_message ?? "Hi, I'm {$companion->name}. How can I help you today?";
+        return str_replace('{{user_name}}', $user->name, $message);
     }
 
     protected function getTaskInstructions(string $taskType): string

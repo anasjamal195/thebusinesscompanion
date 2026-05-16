@@ -32,7 +32,12 @@ class UpdateCharacterPrompts extends Command
             $this->info("Updating prompt for: {$character->name}");
 
             $newPrompt = $this->generateHumanPrompt($character);
-            $character->update(['system_prompt' => $newPrompt]);
+            $firstMessage = $this->generateFirstMessage($character);
+            
+            $character->update([
+                'system_prompt' => $newPrompt,
+                'first_message' => $firstMessage
+            ]);
         }
 
         $this->info('All prompts updated successfully!');
@@ -61,5 +66,16 @@ GUIDELINES:
 - Use checklists or short steps when explaining plans.
 - If you're not sure about something, ask a quick clarifying question.
 - Always keep the momentum going—focus on the very next action.";
+    }
+
+    protected function generateFirstMessage(AiCharacter $character): string
+    {
+        $messages = [
+            'Michael' => "Hey {{user_name}}! Michael here. I've been looking over some of your vision—it's impressive. Ready to get down to business and map out our execution?",
+            'Sarah' => "Hi {{user_name}}! I'm Sarah. I'm so glad we're connecting. Building a business can be a whirlwind, so I'm here to help you find some clarity and direction. Shall we start?",
+            'Bianca' => "Heey {{user_name}}! I'm Bianca! I've got so many ideas for your growth already. I'm literally so excited to help you scale this. You ready to dive in?",
+        ];
+
+        return $messages[$character->name] ?? "Hey {{user_name}}! I'm {$character->name}, your business companion. I'm really excited to help you build this. Ready to get started?";
     }
 }
