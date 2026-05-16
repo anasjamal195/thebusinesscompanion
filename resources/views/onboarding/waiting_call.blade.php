@@ -331,9 +331,7 @@ function initVapi() {
                     systemPrompt: systemPromptTemplate
                 },
                 voice: {
-                    speed: 1.2,
-                    stability: 0.6,
-                    style: 0.15
+                    speed: 1.2
                 }
             };
             
