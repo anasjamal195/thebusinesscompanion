@@ -227,6 +227,7 @@ function initVapi() {
     const fullSystemPrompt = {!! json_encode($fullSystemPrompt) !!};
     const firstMessage    = {!! json_encode($firstMessage ?? '') !!};
     const localCallId     = '{{ $localCallId ?? '' }}';
+    const userName        = '{{ auth()->user()->name }}';
     
     const phaseWaiting    = document.getElementById('phase-waiting');
     const phaseCalling    = document.getElementById('phase-calling');
@@ -330,7 +331,9 @@ function initVapi() {
             const overrides = {
                 firstMessage: firstMessage,
                 variableValues: {
-                    full_system_prompt: fullSystemPrompt
+                    full_system_prompt: fullSystemPrompt,
+                    user_name: userName,
+                    local_call_id: localCallId
                 },
                 model: {
                     provider: 'openai',

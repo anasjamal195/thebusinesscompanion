@@ -22,10 +22,19 @@ class VapiWebhookController extends Controller
         $payload = $request->all();
         $type = $payload['message']['type'] ?? null;
         $callId = $payload['message']['call']['id'] ?? null;
-        $metadata = $payload['message']['call']['metadata'] ?? [];
-        $localCallId = $metadata['local_call_id'] ?? null;
+        
+        // Find local_call_id in various possible locations in Vapi payload
+        $localCallId = $payload['message']['call']['metadata']['local_call_id'] 
+            ?? $payload['message']['metadata']['local_call_id']
+            ?? $payload['message']['call']['assistantOverrides']['metadata']['local_call_id']
+            ?? $payload['message']['call']['assistantOverrides']['variableValues']['local_call_id']
+            ?? null;
 
-        Log::info("Vapi Webhook Received: {$type}", ['call_id' => $callId, 'local_call_id' => $localCallId]);
+        if (!$localCallId) {
+            Log::warning("Vapi Webhook: local_call_id not found in payload.", ['payload' => $payload]);
+        } else {
+            Log::info("Vapi Webhook Received: {$type}", ['call_id' => $callId, 'local_call_id' => $localCallId]);
+        }
 
         $call = null;
         if ($localCallId) {
@@ -63,7 +72,6 @@ class VapiWebhookController extends Controller
             case 'call-started':
                 if ($call) {
                     $call->update(['status' => 'in-progress']);
-                    // Tell the browser the call is now live → activate the calling overlay
                     broadcast(new \App\Events\CallProgressUpdated(
                         $call->user_id, 'call_started', 'live', 'in_progress'
                     ));
@@ -71,8 +79,10 @@ class VapiWebhookController extends Controller
                 break;
 
             case 'tool-calls':
-                $this->handleToolCall($payload, $call);
-                break;
+                $results = $this->handleToolCall($payload, $call);
+                return response()->json([
+                    'results' => $results
+                ]);
 
             case 'end-of-call-report':
             case 'call-ended':
@@ -84,7 +94,6 @@ class VapiWebhookController extends Controller
                         'recording_url' => $payload['message']['artifact']['recordingUrl'] ?? null,
                     ]);
 
-                    // Start background processing of the transcript
                     $this->finalizeOnboardingFromTranscript($call);
                 }
                 break;
@@ -102,26 +111,34 @@ class VapiWebhookController extends Controller
     protected function handleToolCall($payload, $call)
     {
         $toolCalls = $payload['message']['toolCalls'] ?? [];
+        $results = [];
         
         foreach ($toolCalls as $toolCall) {
+            $result = [
+                'toolCallId' => $toolCall['id'],
+                'result' => 'success'
+            ];
+
             if ($toolCall['function']['name'] === 'report_onboarding_data') {
                 $args = $toolCall['function']['arguments'] ?? [];
                 $field = $args['field'] ?? null;
                 $value = $args['value'] ?? null;
 
                 if ($call && $field && $value) {
-                    // Save field to call metadata for intermediate tracking
                     $metadata = $call->metadata ?? [];
                     $metadata['extracted_fields'][$field] = $value;
                     $call->update(['metadata' => $metadata]);
 
-                    // Broadcast live update to the frontend
                     broadcast(new \App\Events\CallProgressUpdated(
                         $call->user_id, $field, $value, 'in_progress'
                     ));
                 }
             }
+
+            $results[] = $result;
         }
+
+        return $results;
     }
 
     protected function finalizeOnboardingFromTranscript($call)
