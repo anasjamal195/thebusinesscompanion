@@ -2,36 +2,24 @@
 
 namespace App\Console\Commands;
 
-use App\Events\TaskCompleted;
-use App\Models\Task;
-use App\Services\ReportService;
-use App\Services\TaskExecutionService;
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
-#[Signature('task:process {task_id}')]
-#[Description('Process a task via CLI to bypass HTTP timeouts')]
+#[Signature('task:process {taskId}')]
+#[Description('Process a task asynchronously')]
 class ProcessTaskCommand extends Command
 {
     /**
      * Execute the console command.
      */
-    public function handle(TaskExecutionService $executor, ReportService $reportService)
+    public function handle(\App\Services\TaskExecutionService $executor, \App\Services\ReportService $reportService)
     {
-        $taskId = $this->argument('task_id');
-        $task = Task::with(['user.profile', 'project', 'output', 'report'])->findOrFail($taskId);
+        $taskId = $this->argument('taskId');
+        $task = \App\Models\Task::with(['user.profile', 'project', 'output', 'report'])->findOrFail($taskId);
 
         if ($task->status === 'completed' || $task->status === 'error') {
-            $this->info("Task is already {$task->status}.");
-            return 0;
-        }
-
-        if ($task->status === 'waiting_input') {
-            $this->info("Task is waiting for input.");
-            return 0;
+            return;
         }
 
         try {
@@ -40,7 +28,7 @@ class ProcessTaskCommand extends Command
                 $character = \App\Models\AiCharacter::query()->where('key', $task->user->character_type)->first();
             }
 
-            $recentTasks = Task::query()
+            $recentTasks = \App\Models\Task::query()
                 ->where('project_id', $task->project_id)
                 ->where('id', '!=', $task->id)
                 ->with('output')
@@ -58,9 +46,9 @@ class ProcessTaskCommand extends Command
                 $executor->persistLog($task, $step, $message, $status);
             };
 
-            // Phase 1: Planning
+            // If we don't have a plan yet, generate one
             if (empty($task->plan_data)) {
-                DB::transaction(function () use ($task) {
+                \Illuminate\Support\Facades\DB::transaction(function () use ($task) {
                     $task->update(['status' => 'processing']);
                 });
                 
@@ -78,13 +66,12 @@ class ProcessTaskCommand extends Command
 
                 if (!empty($plan['required_inputs']) && empty($task->user_inputs)) {
                     $task->update(['status' => 'waiting_input']);
-                    broadcast(new \App\Events\TaskStatusUpdated($task));
-                    $this->info("Task needs user input.");
-                    return 0;
+                    broadcast(new \App\Events\TaskStatusUpdated($task))->toOthers();
+                    return;
                 }
             }
 
-            // Phase 2: Execution
+            // Execute the plan
             $result = $executor->executePrePlannedTask(
                 $task,
                 $task->user,
@@ -100,7 +87,7 @@ class ProcessTaskCommand extends Command
             $outputText = $result['final_text'];
             $structured = $result['structured'];
 
-            DB::transaction(function () use ($task, $outputText, $structured, $reportService) {
+            \Illuminate\Support\Facades\DB::transaction(function () use ($task, $outputText, $structured, $reportService) {
                 $task->output()->updateOrCreate(
                     ['task_id' => $task->id],
                     ['output_text' => $outputText, 'structured_data' => $structured]
@@ -112,33 +99,27 @@ class ProcessTaskCommand extends Command
 
             $fresh = $task->fresh(['report']);
             try {
-                broadcast(new TaskCompleted(
+                broadcast(new \App\Events\TaskCompleted(
                     $fresh,
                     $outputText,
                     $structured,
                     $fresh->report?->id
                 ));
-                broadcast(new \App\Events\TaskStatusUpdated($fresh));
+                broadcast(new \App\Events\TaskStatusUpdated($fresh))->toOthers();
             } catch (\Throwable $e) {
                 // ignore
             }
 
-            $this->info("Task completed successfully.");
-            return 0;
-
         } catch (\Throwable $e) {
-            Log::error('ProcessTaskCommand failed.', [
+            \Illuminate\Support\Facades\Log::error('ProcessTaskCommand failed.', [
                 'task_id' => $task->id,
                 'error' => $e->getMessage(),
             ]);
 
-            DB::transaction(function () use ($task) {
+            \Illuminate\Support\Facades\DB::transaction(function () use ($task) {
                 $task->update(['status' => 'error']);
             });
-            broadcast(new \App\Events\TaskStatusUpdated($task->fresh()));
-
-            $this->error("Task failed: " . $e->getMessage());
-            return 1;
+            broadcast(new \App\Events\TaskStatusUpdated($task->fresh()))->toOthers();
         }
     }
 }

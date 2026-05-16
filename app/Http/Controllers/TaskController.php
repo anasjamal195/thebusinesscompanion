@@ -40,12 +40,9 @@ class TaskController extends Controller
             ]);
 
             try {
-                \Illuminate\Support\Facades\Http::post('http://127.0.0.1:5002/process-task', [
-                    'task_id' => $waitingTask->id,
-                    'webhook_url' => url('/api/tasks/webhook-process'),
-                ]);
+                \Symfony\Component\Process\Process::fromShellCommandline('php ' . base_path('artisan') . ' task:process ' . $waitingTask->id . ' > /dev/null 2>&1 &')->run();
             } catch (\Exception $e) {
-                \Illuminate\Support\Facades\Log::error('Python runner error: ' . $e->getMessage());
+                \Illuminate\Support\Facades\Log::error('Background task error: ' . $e->getMessage());
             }
 
             if ($request->expectsJson()) {
@@ -102,14 +99,11 @@ class TaskController extends Controller
             ]);
         });
 
-        // Start multithreading via Python script
+        // Start multithreading via Artisan background command
         try {
-            \Illuminate\Support\Facades\Http::post('http://127.0.0.1:5002/process-task', [
-                'task_id' => $task->id,
-                'webhook_url' => url('/api/tasks/webhook-process'),
-            ]);
+            \Symfony\Component\Process\Process::fromShellCommandline('php ' . base_path('artisan') . ' task:process ' . $task->id . ' > /dev/null 2>&1 &')->run();
         } catch (\Exception $e) {
-            \Illuminate\Support\Facades\Log::error('Python runner error: ' . $e->getMessage());
+            \Illuminate\Support\Facades\Log::error('Background task error: ' . $e->getMessage());
         }
 
         if ($request->expectsJson()) {
@@ -177,14 +171,11 @@ class TaskController extends Controller
                 'status' => 'processing',
             ]);
 
-            // Inform Python runner to continue
+            // Inform background runner to continue
             try {
-                \Illuminate\Support\Facades\Http::post('http://127.0.0.1:5002/process-task', [
-                    'task_id' => $task->id,
-                    'webhook_url' => url('/api/tasks/webhook-process'),
-                ]);
+                \Symfony\Component\Process\Process::fromShellCommandline('php ' . base_path('artisan') . ' task:process ' . $task->id . ' > /dev/null 2>&1 &')->run();
             } catch (\Exception $e) {
-                \Illuminate\Support\Facades\Log::error('Python runner error: ' . $e->getMessage());
+                \Illuminate\Support\Facades\Log::error('Background task error: ' . $e->getMessage());
             }
 
             return response()->json(['status' => 'processing']);
