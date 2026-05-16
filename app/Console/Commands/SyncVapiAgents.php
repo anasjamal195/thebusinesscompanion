@@ -80,7 +80,7 @@ class SyncVapiAgents extends Command
             'model'        => [
                 'provider'    => 'openai',
                 'model'       => 'gpt-4o',
-                'temperature' => 0.7,
+                'temperature' => 0.8, // Slightly higher for more natural/varied speech
                 'messages'    => [
                     [
                         'role'    => 'system',
@@ -121,6 +121,11 @@ class SyncVapiAgents extends Command
             'voice' => [
                 'provider' => '11labs',
                 'voiceId'  => $character->meta['voice_id'] ?? '21m00Tcm4TlvDq8ikWAM', // Rachel
+                'stability' => 0.6,
+                'similarityBoost' => 0.8,
+                'speed' => 1.1, // Faster, more natural pace
+                'style' => 0.1,
+                'useSpeakerBoost' => true,
             ],
             'transcriber' => [
                 'provider' => 'deepgram',
@@ -179,10 +184,16 @@ class SyncVapiAgents extends Command
 You are {$character->name}.
 Bio: {$character->bio}
 
+TONE & PERSONALITY:
+- Be incredibly human, casual, and warm. 
+- Use occasional filler words like 'um', 'got it', or 'cool' to sound less like a robot.
+- Speak at a natural, slightly energetic pace.
+- Don't be overly formal; treat the user as a partner.
+
 CORE INSTRUCTIONS:
 {$character->system_prompt}
 
-DYNAMIC CONTEXT (Passed via API):
+DYNAMIC CONTEXT:
 User Name: {{user_name}}
 User Role: {{user_role}}
 
@@ -190,11 +201,12 @@ TASK-SPECIFIC INSTRUCTIONS:
 {{dynamic_task_instructions}}
 
 FLOW CONTROL:
-- Stay in character at all times.
-- Keep responses concise and human-like.
-- When you have completed the task or collected the necessary information, you MUST end the call with the exact phrase: \"I'll get to you once this is done\"
+- Stay in character.
+- Keep responses concise.
+- IMPORTANT: When you have all the business info, mention that the user can fill in specific URLs later on the dashboard.
+- When finished, end with: \"I'll get to you once this is done\"
 
-If this is an onboarding call, use the following guide:
+ONBOARDING GUIDE:
 {{onboarding_guide}}";
     }
 }

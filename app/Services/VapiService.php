@@ -118,30 +118,31 @@ class VapiService
     protected function getTaskInstructions(string $taskType): string
     {
         return match ($taskType) {
-            'onboarding' => "Welcome the user and collect their business details, first project name, and first task. " .
-                            "Finally, ask if they want to receive updates via call after task completion. " .
-                            "Once finished, use the 'endCall' tool to terminate the call.",
-            'follow_up' => "Follow up on the pending tasks. Ask if they need help.",
-            default => "Assist the user with their business needs.",
+            'onboarding' => "Hey! Welcome the user and get some quick details about their business, what they're working on, and their first big task. " .
+                            "Mention that they can skip the URLs for now—they can add those on the dashboard later. " .
+                            "Once you've got the gist of it, use the 'endCall' tool to wrap things up.",
+            'follow_up' => "Catch up with the user on their tasks. See if they've got any blockers.",
+            default => "Help the user out with whatever business needs they've got.",
         };
     }
 
     protected function getOnboardingGuide(): string
     {
-        return "REQUIRED FIELDS TO COLLECT:
-        1. Business Type (e.g. SaaS, E-commerce, Agency)
+        return "STUFF TO CHAT ABOUT:
+        1. Business Type (SaaS, Agency, etc.)
         2. Industry
-        3. Target Audience
-        4. Experience Level
+        3. Who are they targeting?
+        4. Experience level
         5. First Project Name
-        6. First Project Description
-        7. First Task to execute
-        8. Call Follow-up Preference (Yes/No for receiving calls after task completion)
+        6. What's the project about? (Description)
+        7. First Task to get started on
+        8. Should we call them after tasks are done?
         
-        INSTRUCTIONS:
-        - Be warm and professional.
-        - Ask questions one by one.
-        - USE THE 'report_onboarding_data' tool immediately after the user provides an answer for any field.
-        - After all data is collected, use the 'endCall' tool to end the call.";
+        VIBE CHECK:
+        - Keep it light and friendly.
+        - One question at a time, don't grill them.
+        - Skip any URL requests—tell them the dashboard will handle that.
+        - Use 'report_onboarding_data' as soon as they give you an answer.
+        - Wrap up with 'endCall' when done.";
     }
 }

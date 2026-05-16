@@ -101,6 +101,17 @@
 
             {{-- Live timer --}}
             <div class="mt-4 text-4xl font-black text-white tracking-widest font-mono" id="call-timer">0:00</div>
+
+            {{-- Call Controls --}}
+            <div class="flex items-center justify-center gap-4 mt-8">
+                <button id="btn-mute" class="w-14 h-14 bg-white/10 hover:bg-white/20 text-white rounded-2xl flex items-center justify-center transition-all active:scale-90 border border-white/10 backdrop-blur-md" title="Mute/Unmute">
+                    <span class="material-symbols-outlined text-2xl">mic</span>
+                </button>
+                <button id="btn-end-call" class="px-8 h-14 bg-red-500 hover:bg-red-600 text-white font-black rounded-2xl flex items-center gap-2 transition-all active:scale-95 shadow-xl shadow-red-500/30" title="End Call">
+                    <span class="material-symbols-outlined">call_end</span>
+                    End Call
+                </button>
+            </div>
         </div>
 
         {{-- Live data capture --}}
@@ -257,6 +268,29 @@ function initVapi() {
             console.error('[Vapi Web] Error:', e);
             alert('Could not start web call. Please check your microphone permissions.');
         });
+
+        // ── Button Handlers ─────────────────────────────────────
+        const btnMute = document.getElementById('btn-mute');
+        const btnEnd  = document.getElementById('btn-end-call');
+        let isMuted   = false;
+
+        if (btnMute) {
+            btnMute.addEventListener('click', () => {
+                isMuted = !isMuted;
+                vapi.setMuted(isMuted);
+                btnMute.querySelector('.material-symbols-outlined').textContent = isMuted ? 'mic_off' : 'mic';
+                btnMute.classList.toggle('bg-red-500/20', isMuted);
+                btnMute.classList.toggle('text-red-500', isMuted);
+            });
+        }
+
+        if (btnEnd) {
+            btnEnd.addEventListener('click', () => {
+                console.log('[Vapi Web] Manual end call');
+                vapi.stop();
+                showProcessing();
+            });
+        }
     }
 
     // ── Countdown for auto-start ────────────────────────────

@@ -7,11 +7,33 @@
         <p class="text-lg text-slate-500 max-w-2xl mx-auto">Let's refine your companion's industry-specific knowledge to provide more accurate assistance.</p>
     </div>
 
-    <div class="bg-white rounded-[3rem] p-8 md:p-12 shadow-xl shadow-slate-200/50 border border-slate-100">
+    <div class="bg-white rounded-[3rem] p-8 md:p-12 shadow-xl shadow-slate-200/50 border border-slate-100 space-y-8">
+        <div class="p-6 bg-primary/5 border border-primary/10 rounded-2xl flex items-start gap-4">
+            <span class="material-symbols-outlined text-primary mt-0.5">info</span>
+            <div class="space-y-1">
+                <p class="text-sm font-black text-slate-900 uppercase tracking-widest">Proofreading Step</p>
+                <p class="text-slate-600 text-sm font-medium">Please review the details captured during your call. This is also the perfect time to add your business URL and any other specifics your companion might have missed.</p>
+            </div>
+        </div>
+
         <form action="{{ route('onboarding.details.save') }}" method="POST" class="space-y-8">
             @csrf
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="space-y-2">
+                    <label for="business_name" class="block text-sm font-bold text-slate-700 ml-1">Business Name</label>
+                    <input type="text" name="business_name" id="business_name" required placeholder="e.g. Acme Corp"
+                        value="{{ auth()->user()->profile->business_name ?? '' }}"
+                        class="w-full px-6 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all duration-300">
+                </div>
+
+                <div class="space-y-2">
+                    <label for="business_url" class="block text-sm font-bold text-slate-700 ml-1">Business URL (Website)</label>
+                    <input type="url" name="business_url" id="business_url" placeholder="https://example.com"
+                        value="{{ auth()->user()->profile->business_url ?? '' }}"
+                        class="w-full px-6 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all duration-300">
+                </div>
+            </div>
                 <div class="space-y-2">
                     <label for="business_type" class="block text-sm font-bold text-slate-700 ml-1">Business Type</label>
                     <select name="business_type" id="business_type" required
