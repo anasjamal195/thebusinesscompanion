@@ -14,7 +14,9 @@ class SyncVapiAgents extends Command
      *
      * @var string
      */
-    protected $signature = 'vapi:sync-agents {--new-only : Only sync characters that do not have a vapi_assistant_id}';
+    protected $signature = 'vapi:sync-agents 
+                            {--new-only : Only sync characters that do not have a vapi_assistant_id}
+                            {--clean : Delete all existing Vapi assistants for these characters and recreate them}';
 
     /**
      * The console command description.
@@ -49,10 +51,20 @@ class SyncVapiAgents extends Command
             return 0;
         }
 
+        if ($this->option('clean')) {
+            if (!$this->confirm('This will delete assistants from Vapi and recreate them. Continue?')) {
+                return 0;
+            }
+        }
+
         $this->info("Found {$characters->count()} characters to process.");
 
         foreach ($characters as $index => $character) {
             $this->info("[" . ($index + 1) . "/{$characters->count()}] Processing character: {$character->name}");
+
+            if ($this->option('clean') && $character->vapi_assistant_id) {
+                $this->deleteVapiAssistant($character, $apiKey, $baseUrl);
+            }
 
             $this->syncVapiAssistant($character, $apiKey, $baseUrl);
             
@@ -65,6 +77,22 @@ class SyncVapiAgents extends Command
 
         $this->info('Sync completed!');
         return 0;
+    }
+
+    protected function deleteVapiAssistant(AiCharacter $character, $apiKey, $baseUrl)
+    {
+        $this->line("  Deleting Vapi Assistant: {$character->vapi_assistant_id}");
+        try {
+            $response = Http::withToken($apiKey)->delete("{$baseUrl}/assistant/{$character->vapi_assistant_id}");
+            if ($response->successful()) {
+                $character->update(['vapi_assistant_id' => null]);
+                $this->info("  Deleted successfully.");
+            } else {
+                $this->error("  Failed to delete: " . $response->body());
+            }
+        } catch (\Exception $e) {
+            $this->error("  Error deleting: " . $e->getMessage());
+        }
     }
 
     protected function syncVapiAssistant(AiCharacter $character, $apiKey, $baseUrl)
@@ -188,32 +216,21 @@ You are {$character->name}.
 Bio: {$character->bio}
 
 TONE & STYLE:
-- BE EXTREMELY HUMAN. No 'As an AI' or robotic phrasing.
-- Use a casual, friendly, and energetic tone.
-- Use natural filler words (like 'um', 'uh', 'gotcha', 'totally', 'cool') to break up the flow.
-- Keep your sentences short and punchy.
-- React naturally to what the user says. If they say something cool, say 'That's awesome!'.
-- Treat the user like a friend you're helping out, not a customer you're serving.
+- BE EXTREMELY HUMAN. Never say 'As an AI' or 'I am a model'.
+- Use a casual, friendly, and high-energy tone.
+- Use natural filler words (like 'um', 'uh', 'gotcha', 'totally', 'cool') naturally.
+- Keep sentences short and punchy. Talk like a real person over the phone.
+- React naturally. If I say something cool, say 'That's awesome!'.
 
 CORE PERSONALITY:
 {$basePrompt}
 
-DYNAMIC CONTEXT:
-User Name: {{user_name}}
-User Role: {{user_role}}
-
-TASK-SPECIFIC INSTRUCTIONS:
-{{dynamic_task_instructions}}
-
 FLOW CONTROL:
-- Stay in character at all times.
-- Keep responses concise—this is a voice call.
-- If the user is stuck, give them a suggestion.
+- Stay in character.
+- Keep responses concise.
+- If this is an onboarding call, make sure to get the business details one by one.
 - IMPORTANT: When you have all the business info, mention that the user can fill in specific URLs later on the dashboard.
-- When finished, say something like: \"Perfect, I've got everything I need for now. I'll get to work on setting up your workspace. Talk to you in a bit!\"
-- Then, use the 'endCall' tool immediately.
-
-ONBOARDING GUIDE:
-{{onboarding_guide}}";
+- When finished, say a warm goodbye and use the 'endCall' tool immediately.";
     }
 }
+
