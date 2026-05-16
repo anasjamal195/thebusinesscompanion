@@ -24,6 +24,44 @@ class TaskController extends Controller
 
         $user = $request->user()->loadMissing('profile');
 
+        // Check if there is a task waiting for input
+        $waitingTask = Task::where('project_id', $project->id)
+            ->where('status', 'waiting_input')
+            ->where('user_id', $user->id)
+            ->first();
+
+        if ($waitingTask) {
+            $inputs = $waitingTask->user_inputs ?? [];
+            $inputs['user_reply_' . time()] = $validated['input_text'];
+            
+            $waitingTask->update([
+                'user_inputs' => $inputs,
+                'status' => 'processing',
+            ]);
+
+            try {
+                \Illuminate\Support\Facades\Http::post('http://127.0.0.1:5002/process-task', [
+                    'task_id' => $waitingTask->id,
+                    'webhook_url' => url('/api/tasks/webhook-process'),
+                ]);
+            } catch (\Exception $e) {
+                \Illuminate\Support\Facades\Log::error('Python runner error: ' . $e->getMessage());
+            }
+
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'task' => [
+                        'id' => $waitingTask->id,
+                        'title' => $waitingTask->title,
+                        'input_text' => $waitingTask->input_text,
+                        'priority' => $waitingTask->priority,
+                        'status' => $waitingTask->status,
+                    ],
+                ]);
+            }
+            return back();
+        }
+
         $context = [
             'user' => [
                 'role' => $user->role,
@@ -120,5 +158,38 @@ class TaskController extends Controller
                 ];
             })->all(),
         ]);
+    }
+
+    public function provideInput(Request $request, Task $task)
+    {
+        abort_unless($task->user_id === $request->user()->id, 404);
+
+        $validated = $request->validate([
+            'message' => ['required', 'string'],
+        ]);
+
+        if ($task->status === 'waiting_input') {
+            $inputs = $task->user_inputs ?? [];
+            $inputs['user_reply_' . time()] = $validated['message'];
+            
+            $task->update([
+                'user_inputs' => $inputs,
+                'status' => 'processing',
+            ]);
+
+            // Inform Python runner to continue
+            try {
+                \Illuminate\Support\Facades\Http::post('http://127.0.0.1:5002/process-task', [
+                    'task_id' => $task->id,
+                    'webhook_url' => url('/api/tasks/webhook-process'),
+                ]);
+            } catch (\Exception $e) {
+                \Illuminate\Support\Facades\Log::error('Python runner error: ' . $e->getMessage());
+            }
+
+            return response()->json(['status' => 'processing']);
+        }
+
+        return response()->json(['status' => 'error', 'message' => 'Task is not waiting for input.'], 400);
     }
 }

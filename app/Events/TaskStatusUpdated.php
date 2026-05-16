@@ -33,8 +33,13 @@ class TaskStatusUpdated implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel('project.' . $this->task->project_id),
+            new PrivateChannel('task.' . $this->task->id),
         ];
+    }
+
+    public function broadcastAs(): string
+    {
+        return 'task.status_updated';
     }
 
     public function broadcastWith(): array

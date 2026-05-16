@@ -85,6 +85,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/projects/{project}/tasks', [TaskController::class, 'getByProject'])->name('projects.tasks');
     Route::post('/tasks', [TaskController::class, 'store'])->name('tasks.store');
+    Route::post('/tasks/{task}/input', [TaskController::class, 'provideInput'])->name('tasks.input');
 
     Route::get('/reports/{report}', [ReportController::class, 'show'])->name('reports.show');
     Route::get('/reports/{report}/pdf', [ReportController::class, 'pdf'])->name('reports.pdf');

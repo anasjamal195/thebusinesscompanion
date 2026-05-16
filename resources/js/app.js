@@ -192,6 +192,26 @@ async function initProjectChat() {
                 addLogRow(payload?.message || '', payload?.status || 'info');
             });
 
+            privateChannel.listen('.task.status_updated', (payload) => {
+                if (payload?.status === 'waiting_input') {
+                    addLogRow('Waiting for your input to continue...', 'running');
+                    const reqInputs = payload?.plan_data?.required_inputs || [];
+                    if (reqInputs.length > 0) {
+                        let text = "I need some more information to proceed:\n\n";
+                        reqInputs.forEach(i => {
+                            text += `- **${i.key || 'Question'}**: ${i.question}\n`;
+                        });
+                        text += "\nPlease reply below.";
+                        
+                        const assistant = appendAssistantBubble(container);
+                        assistant.bubble.dataset.raw = text;
+                        renderMarkdownInto(assistant.bubble, text);
+                    }
+                } else if (payload?.status === 'processing') {
+                    addLogRow('Processing resumed...', 'running');
+                }
+            });
+
             privateChannel.listen('.task.completed', (payload) => {
                 addLogRow('Done.', 'done');
 

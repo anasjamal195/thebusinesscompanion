@@ -17,10 +17,14 @@ class Task extends Model
         'priority',
         'status',
         'context_snapshot',
+        'plan_data',
+        'user_inputs',
     ];
 
     protected $casts = [
         'context_snapshot' => 'array',
+        'plan_data' => 'array',
+        'user_inputs' => 'array',
     ];
 
     public function user(): BelongsTo
