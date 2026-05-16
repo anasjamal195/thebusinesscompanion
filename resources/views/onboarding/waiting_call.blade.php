@@ -201,16 +201,25 @@
      SCRIPTS
      ══════════════════════════════════════════ --}}
 {{-- Vapi Web SDK --}}
-<script src="https://cdn.jsdelivr.net/npm/@vapi-ai/web@latest/dist/vapi.js"></script>
+<script type="module">
+    import Vapi from 'https://esm.sh/@vapi-ai/web@latest';
+    window.Vapi = Vapi;
+    window.dispatchEvent(new Event('vapi-ready'));
+</script>
 <script src="https://js.pusher.com/8.0.1/pusher.min.js"></script>
 <script>
+document.addEventListener('vapi-ready', () => {
+    initVapi();
+});
+
 document.addEventListener('DOMContentLoaded', () => {
-    // Check if Vapi is available globally from the JSDelivr bundle
-    const VapiConstructor = window.Vapi;
-    
-    if (!VapiConstructor) {
-        console.error('Vapi SDK failed to load. Please check the network tab.');
+    if (window.Vapi) {
+        initVapi();
     }
+});
+
+function initVapi() {
+    if (window.vapiInstance) return; // Prevent double init
     
     const userId          = {{ auth()->id() }};
     const callType        = '{{ $type }}';
@@ -223,8 +232,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const timerEl         = document.getElementById('call-timer');
 
     let vapi = null;
-    if (callType === 'web' && vapiPublicKey && VapiConstructor) {
-        vapi = new VapiConstructor(vapiPublicKey);
+    if (callType === 'web' && vapiPublicKey && window.Vapi) {
+        vapi = new window.Vapi(vapiPublicKey);
+        window.vapiInstance = vapi;
         
         vapi.on('call-start', () => {
             console.log('[Vapi Web] Call started');
