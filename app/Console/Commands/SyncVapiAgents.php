@@ -51,6 +51,9 @@ class SyncVapiAgents extends Command
     protected function syncVapiAssistant(AiCharacter $character, $apiKey, $baseUrl)
     {
         $prompt = $this->prepareAgentPrompt($character);
+        
+        // Force HTTPS for Vapi webhooks as it is mandatory
+        $webhookUrl = str_replace('http://', 'https://', route('vapi.webhook'));
 
         $assistantData = [
             'name'         => "Companion: " . $character->name,
@@ -65,7 +68,6 @@ class SyncVapiAgents extends Command
                         'content' => $prompt
                     ]
                 ],
-                'toolIds' => [], // We will define tools inline or use IDs if we had them
                 'tools'   => [
                     [
                         'type'     => 'function',
@@ -85,7 +87,7 @@ class SyncVapiAgents extends Command
                             ]
                         ],
                         'server' => [
-                            'url' => route('vapi.webhook')
+                            'url' => $webhookUrl
                         ]
                     ],
                     [
@@ -106,8 +108,18 @@ class SyncVapiAgents extends Command
                 'model'    => 'nova-2',
                 'language' => 'en',
             ],
-            'serverUrl'      => route('vapi.webhook'),
-            'serverMessages' => ['end-of-call-report', 'status-update', 'hang', 'function-call', 'tool-calls', 'call-started', 'call-ended'],
+            'serverUrl'      => $webhookUrl,
+            // Only use supported message types listed by Vapi
+            'serverMessages' => [
+                'end-of-call-report', 
+                'status-update', 
+                'hang', 
+                'function-call', 
+                'tool-calls', 
+                'assistant.started',
+                'speech-update',
+                'transcript'
+            ],
             'artifactPlan'   => [
                 'recordingEnabled' => true,
                 'transcriptPlan'   => ['enabled' => true],

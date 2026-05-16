@@ -38,6 +38,7 @@ class VapiWebhookController extends Controller
         }
 
         switch ($type) {
+            case 'assistant.started':
             case 'call-started':
                 if ($call) {
                     $call->update(['status' => 'in-progress']);
