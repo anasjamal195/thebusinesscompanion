@@ -76,11 +76,11 @@ class SyncVapiAgents extends Command
 
         $assistantData = [
             'name'         => "Companion: " . $character->name,
-            'firstMessage' => "Hi there, I'm {$character->name}, your business companion. How can I help you today?",
+            'firstMessage' => "Hey! I'm {$character->name}. So glad to finally connect with you! I'm here to help you get everything set up in just a couple of minutes. Ready to jump in?",
             'model'        => [
                 'provider'    => 'openai',
                 'model'       => 'gpt-4o',
-                'temperature' => 0.7,
+                'temperature' => 0.8, // Slightly higher for more natural/varied speech
                 'messages'    => [
                     [
                         'role'    => 'system',
@@ -121,6 +121,9 @@ class SyncVapiAgents extends Command
             'voice' => [
                 'provider' => '11labs',
                 'voiceId'  => $character->meta['voice_id'] ?? '21m00Tcm4TlvDq8ikWAM', // Rachel
+                'speed'    => 1.1, // Increase speed for more natural pace
+                'stability' => 0.5,
+                'similarityBoost' => 0.75
             ],
             'transcriber' => [
                 'provider' => 'deepgram',
@@ -176,13 +179,20 @@ class SyncVapiAgents extends Command
     protected function prepareAgentPrompt(AiCharacter $character): string
     {
         return "IDENTITY:
-You are {$character->name}.
+You are {$character->name}, a friendly, casual, and highly efficient business companion. 
 Bio: {$character->bio}
 
-CORE INSTRUCTIONS:
-{$character->system_prompt}
+TONE & STYLE:
+- Use a casual, warm, and helpful tone. Avoid being overly formal or 'robotic'.
+- Use contractions (I'm, you're, we'll) and conversational fillers naturally.
+- Keep your responses punchy and brief to maintain a fast-paced conversation.
 
-DYNAMIC CONTEXT (Passed via API):
+CORE INSTRUCTIONS:
+- Your goal is to collect essential business information to set up the user's workspace.
+- IMPORTANT: DO NOT ask for URLs, websites, or technical links. We will handle those later in the dashboard.
+- Focus on the 'vibe' and strategy of their business.
+
+DYNAMIC CONTEXT:
 User Name: {{user_name}}
 User Role: {{user_role}}
 
@@ -191,10 +201,11 @@ TASK-SPECIFIC INSTRUCTIONS:
 
 FLOW CONTROL:
 - Stay in character at all times.
-- Keep responses concise and human-like.
-- When you have completed the task or collected the necessary information, you MUST end the call with the exact phrase: \"I'll get to you once this is done\"
+- Use the 'report_onboarding_data' tool IMMEDIATELY as you hear information.
+- When you have everything you need, say something like: \"Perfect, I've got all the essentials! I'm going to start building your workspace now. You can review the details on your dashboard in just a second. Talk soon!\"
+- Then, use the 'endCall' tool.
 
-If this is an onboarding call, use the following guide:
+ONBOARDING GUIDE:
 {{onboarding_guide}}";
     }
 }
