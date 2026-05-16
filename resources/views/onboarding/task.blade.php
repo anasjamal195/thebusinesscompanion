@@ -52,7 +52,7 @@
                 <div class="space-y-2">
                     <label for="urgent_tasks" class="block text-sm font-bold text-slate-700 ml-1">Most Urgent Task</label>
                     <textarea name="urgent_tasks" id="urgent_tasks" rows="2" placeholder="e.g. Need a GTM strategy for our new feature launch by Friday..."
-                        class="w-full px-6 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all duration-300 font-medium">{{ old('urgent_tasks', auth()->user()->profile->urgent_tasks ?? '') }}</textarea>
+                        class="w-full px-6 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all duration-300 font-medium">{{ old('urgent_tasks', $task->input_text ?? auth()->user()->profile->urgent_tasks ?? '') }}</textarea>
                 </div>
             </div>
 
