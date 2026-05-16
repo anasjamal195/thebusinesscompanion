@@ -287,8 +287,12 @@ function initVapi() {
         if (btnEnd) {
             btnEnd.addEventListener('click', () => {
                 console.log('[Vapi Web] Manual end call');
-                vapi.stop();
                 showProcessing();
+                try {
+                    vapi.stop();
+                } catch (e) {
+                    console.error('[Vapi Web] Error stopping call:', e);
+                }
             });
         }
     }
@@ -337,7 +341,12 @@ function initVapi() {
         phaseCalling.classList.remove('hidden');
         startTimer();
     }
+    let isProcessingShown = false;
     function showProcessing() {
+        if (isProcessingShown) return;
+        isProcessingShown = true;
+        
+        console.log('[UI] Showing processing overlay...');
         stopTimer();
         phaseCalling.classList.add('hidden');
         phaseProcessing.classList.remove('hidden');
