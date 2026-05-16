@@ -49,35 +49,19 @@
 
     {{-- Status badge + retry --}}
     <div class="flex flex-col items-center gap-5">
-        @if($type === 'web')
-            <div id="badge-waiting" class="flex flex-col items-center gap-6">
-                <div class="flex items-center gap-3 px-6 py-3 bg-slate-900 text-white rounded-full text-sm font-bold tracking-widest">
-                    <span class="w-2 h-2 bg-green-400 rounded-full animate-ping"></span>
-                    READY TO CONNECT
-                </div>
-                
-                <button id="btn-start-web-call" 
-                        class="group px-12 py-6 bg-primary hover:bg-primary-container text-white font-black text-2xl rounded-[2.5rem] shadow-2xl shadow-primary/30 transition-all active:scale-95 flex items-center gap-4 animate-bounce">
-                    <span class="material-symbols-outlined text-3xl">call</span>
-                    Start Conversation
-                </button>
-                <p class="text-slate-400 text-sm font-medium">Click above to start your voice conversation with {{ $companion->name }}</p>
-            </div>
-        @else
-            <div id="badge-waiting" class="flex items-center gap-3 px-6 py-3 bg-slate-900 text-white rounded-full text-sm font-bold tracking-widest">
-                <span class="w-2 h-2 bg-amber-400 rounded-full animate-ping"></span>
-                PREPARING YOUR CALL…
-            </div>
+        <div id="badge-waiting" class="flex items-center gap-3 px-6 py-3 bg-slate-900 text-white rounded-full text-sm font-bold tracking-widest">
+            <span class="w-2 h-2 bg-amber-400 rounded-full animate-ping"></span>
+            PREPARING YOUR CALL…
+        </div>
 
-            <form action="{{ route('onboarding.retry_call') }}" method="POST">
-                @csrf
-                <button type="submit"
-                        class="text-slate-400 hover:text-primary transition-colors font-bold text-xs uppercase tracking-widest flex items-center gap-2 group">
-                    <span class="material-symbols-outlined text-[18px] group-hover:rotate-180 transition-transform duration-500">refresh</span>
-                    Didn't receive a call? Retry
-                </button>
-            </form>
-        @endif
+        <form action="{{ route('onboarding.retry_call') }}" method="POST">
+            @csrf
+            <button type="submit"
+                    class="text-slate-400 hover:text-primary transition-colors font-bold text-xs uppercase tracking-widest flex items-center gap-2 group">
+                <span class="material-symbols-outlined text-[18px] group-hover:rotate-180 transition-transform duration-500">refresh</span>
+                Didn't receive a call? Retry
+            </button>
+        </form>
     </div>
 </div>
 
@@ -275,35 +259,27 @@ function initVapi() {
         });
     }
 
-    // ── Countdown for auto-start (PHONE ONLY) ────────────────────────────
-    if (callType === 'phone') {
-        let seconds = 5;
-        const countdownEl = document.getElementById('countdown');
-        const interval = setInterval(() => {
-            seconds--;
-            if (countdownEl) countdownEl.innerText = seconds;
-            if (seconds <= 0) clearInterval(interval);
-        }, 1000);
-    } else {
-        // WEB CALL: Wait for user click
-        const btnStart = document.getElementById('btn-start-web-call');
-        if (btnStart) {
-            btnStart.addEventListener('click', () => {
-                if (vapi) {
-                    console.log('[Vapi Web] Starting call via user gesture...');
-                    btnStart.disabled = true;
-                    btnStart.innerHTML = '<span class="material-symbols-outlined animate-spin">sync</span> Connecting...';
-                    
-                    vapi.start(assistantId, {
-                        variableValues: {
-                            user_name: '{{ auth()->user()->name }}',
-                            user_role: '{{ auth()->user()->role ?? "Founder" }}'
-                        }
-                    });
-                }
-            });
+    // ── Countdown for auto-start ────────────────────────────
+    let seconds = 5;
+    const countdownEl = document.getElementById('countdown');
+    
+    const interval = setInterval(() => {
+        seconds--;
+        if (countdownEl) countdownEl.innerText = seconds;
+        
+        if (seconds <= 0) {
+            clearInterval(interval);
+            if (callType === 'web' && vapi) {
+                console.log('[Vapi Web] Auto-starting call...');
+                vapi.start(assistantId, {
+                    variableValues: {
+                        user_name: '{{ auth()->user()->name }}',
+                        user_role: '{{ auth()->user()->role ?? "Founder" }}'
+                    }
+                });
+            }
         }
-    }
+    }, 1000);
 
     // ── Timer ───────────────────────────────────────────────
     let timerInterval = null;
