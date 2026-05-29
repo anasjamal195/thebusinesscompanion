@@ -58,7 +58,18 @@ class VapiService
             $phoneNumber = '+' . ltrim($phoneNumber, '0');
         }
 
-        $assistant = $this->buildEphemeralAssistant($user, $callType, $tasks);
+        // 1. Create local call record first to get a local_call_id
+        $call = Call::create([
+            'user_id'   => $user->id,
+            'status'    => 'initiating',
+            'direction' => 'outbound',
+            'metadata'  => [
+                'call_type' => $callType,
+                'task_ids'  => $tasks?->pluck('id')->toArray() ?? [],
+            ],
+        ]);
+
+        $assistant = $this->buildEphemeralAssistant($user, $callType, $tasks, $call->id);
 
         try {
             $payload = [
@@ -68,6 +79,10 @@ class VapiService
                     'name'   => $user->name,
                 ],
                 'assistant' => $assistant,
+                'serverUrl' => $this->getWebhookUrl(),
+                'metadata'  => [
+                    'local_call_id' => (string) $call->id,
+                ],
             ];
 
             Log::info("VapiService: Initiating {$callType} call for User {$user->id}", [
@@ -81,25 +96,23 @@ class VapiService
             if ($response->successful()) {
                 $vapiCall = $response->json();
 
-                Call::create([
-                    'call_id'   => $vapiCall['id'],
-                    'user_id'   => $user->id,
-                    'status'    => 'initiated',
-                    'direction' => 'outbound',
-                    'metadata'  => [
-                        'call_type' => $callType,
-                        'task_ids'  => $tasks?->pluck('id')->toArray() ?? [],
-                    ],
+                $call->update([
+                    'call_id' => $vapiCall['id'],
+                    'status'  => 'initiated',
                 ]);
 
                 Log::info("VapiService: Call initiated for User {$user->id}", ['call_id' => $vapiCall['id']]);
                 return $vapiCall;
             }
 
+            $call->update(['status' => 'failed']);
             Log::error("VapiService: Vapi API error {$response->status()}", ['body' => $response->body()]);
             return false;
 
         } catch (\Exception $e) {
+            if (isset($call)) {
+                $call->update(['status' => 'failed']);
+            }
             Log::error("VapiService: Exception — " . $e->getMessage(), [
                 'file' => $e->getFile(),
                 'line' => $e->getLine(),
@@ -125,7 +138,7 @@ class VapiService
      * Build the full inline (ephemeral) assistant object.
      * This is NEVER stored in Vapi — it only lives for the duration of the call.
      */
-    protected function buildEphemeralAssistant(User $user, string $callType, ?Collection $tasks): array
+    protected function buildEphemeralAssistant(User $user, string $callType, ?Collection $tasks, ?int $localCallId = null): array
     {
         $voiceId   = $user->voice_id ?? self::DEFAULT_VOICE_ID;
         $voiceName = self::VOICES[$voiceId]['name'] ?? 'Jessica';
@@ -133,10 +146,11 @@ class VapiService
         $systemPrompt = $this->buildSystemPrompt($user, $callType, $tasks, $voiceName);
         $firstMessage = $this->buildFirstMessage($user, $callType, $voiceName);
 
-        return [
+        $assistant = [
             // No "name" or "id" — this stays fully ephemeral
             'firstMessage'       => $firstMessage,
             'firstMessageMode'   => 'assistant-speaks-first',
+            'serverUrl'          => $this->getWebhookUrl(),
             'model'              => [
                 'provider' => 'openai',
                 'model'    => 'gpt-4o',
@@ -166,6 +180,14 @@ class VapiService
             'maxDurationSeconds'        => 600,
             'backgroundDenoisingEnabled'=> true,
         ];
+
+        if ($localCallId) {
+            $assistant['metadata'] = [
+                'local_call_id' => (string) $localCallId,
+            ];
+        }
+
+        return $assistant;
     }
 
     /**
@@ -311,5 +333,28 @@ INSTRUCTIONS;
             'voiceId'    => $user->voice_id ?? self::DEFAULT_VOICE_ID,
             'voiceName'  => self::VOICES[$user->voice_id ?? self::DEFAULT_VOICE_ID]['name'] ?? 'Jessica',
         ];
+    }
+
+    /**
+     * Get the webhook URL for Vapi calls.
+     */
+    public function getWebhookUrl(): string
+    {
+        $url = config('app.url') ?: 'https://thebusinesscompanion.app';
+        $parsed = parse_url($url);
+        $host = $parsed['host'] ?? 'thebusinesscompanion.app';
+        $scheme = $parsed['scheme'] ?? 'https';
+
+        if ($host === 'localhost' || $host === '127.0.0.1' || empty($host)) {
+            $host = 'thebusinesscompanion.app';
+            $scheme = 'https';
+        }
+
+        $baseUrl = "{$scheme}://{$host}";
+        if (isset($parsed['port']) && $parsed['host'] !== 'localhost' && $parsed['host'] !== '127.0.0.1') {
+            $baseUrl .= ":" . $parsed['port'];
+        }
+
+        return $baseUrl . '/vapi/webhook';
     }
 }
