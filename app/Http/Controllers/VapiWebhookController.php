@@ -264,29 +264,55 @@ class VapiWebhookController extends Controller
 
         $callType = $call->metadata['call_type'] ?? 'morning';
 
-        $existingContext = '';
-        if ($existingTasks->isNotEmpty()) {
+        $noTasks = $existingTasks->isEmpty();
+        $existingLines = '';
+        if (!$noTasks) {
             $existingLines = $existingTasks->map(fn ($t) => "- Task #{$t->id}: \"{$t->title}\" (status: {$t->status})")->implode("\n");
-            $existingContext = "\n\nEXISTING TASKS FOR TODAY:\n{$existingLines}";
         }
+        $existingPlaceholder = $noTasks ? '(none — this is a morning call, so all tasks mentioned go in new_tasks)' : '';
 
-        $prompt = "You are an AI assistant analyzing a call transcript between a user and their daily planner AI.
-        This was a {$callType} call (morning = first planning session, followup = checking in on existing tasks).
-        Your job is to identify what changed with the user's tasks during this call.
-        Respond ONLY with a JSON object containing these optional arrays:
+        $prompt = <<<PROMPT
+You are an AI assistant analyzing a call transcript between a user and their daily planner AI.
+This was a {$callType} call.
 
-        'completed_tasks' — tasks the user said they FINISHED. Each object: {title, existing_task_id (numeric ID only)}
-        'updated_tasks' — tasks where the user gave new details, time estimates, or priority. Each object: {title, existing_task_id (numeric ID only), details, estimated_minutes, priority}
-        'new_tasks' — brand new tasks the user wants to add. Each object: {title, details, estimated_minutes, priority}
-        {$existingContext}
+Extract ALL tasks the user discussed during the call.
+Respond ONLY with this exact JSON structure (always include all 3 keys):
 
-        CRITICAL RULES:
-        - existing_task_id MUST be the NUMERIC ID from the EXISTING TASKS list (e.g., 1, 2, 3). Do NOT use the task title.
-        - If a task does NOT appear in the EXISTING TASKS list, put it in 'new_tasks' — do NOT add an existing_task_id.
-        - For morning calls with no existing tasks, ALL tasks go in 'new_tasks'.
+{
+  "completed_tasks": [],
+  "updated_tasks": [],
+  "new_tasks": []
+}
 
-        Transcript:
-        {$transcript}";
+SCHEMA:
+- completed_tasks[]: tasks the user said they FINISHED. {"title": string, "existing_task_id": int|null}
+- updated_tasks[]: tasks where user gave new details/estimate/priority. {"title": string, "existing_task_id": int|null, "details": string, "estimated_minutes": int, "priority": "high"|"medium"|"low"}
+- new_tasks[]: brand new tasks. {"title": string, "details": string, "estimated_minutes": int, "priority": "high"|"medium"|"low"}
+
+EXISTING TASKS FOR TODAY:
+{$existingPlaceholder}
+{$existingLines}
+
+CRITICAL RULES:
+- existing_task_id MUST be the NUMERIC ID from the EXISTING TASKS list (e.g. 1, 2, 3). Never use a string.
+- If a task is NOT in the EXISTING TASKS list, put it in new_tasks with NO existing_task_id.
+- On morning calls with no existing tasks, EVERY task goes in new_tasks.
+- ALWAYS extract tasks even if the conversation was messy. Use reasonable defaults: estimated_minutes=120, priority=medium if unsure.
+- Never return an empty object — always populate at least new_tasks[] if the user mentioned any tasks at all.
+
+EXAMPLE response for a morning call with 2 new tasks:
+{
+  "completed_tasks": [],
+  "updated_tasks": [],
+  "new_tasks": [
+    {"title": "fix laptop", "details": "repair screen and keyboard", "estimated_minutes": 120, "priority": "high"},
+    {"title": "run ad campaign", "details": "facebook ads for car", "estimated_minutes": 120, "priority": "medium"}
+  ]
+}
+
+Transcript:
+{$transcript}
+PROMPT;
 
         Log::info("VapiWebhook: Sending transcript to OpenRouter for Call {$call->id}");
 
