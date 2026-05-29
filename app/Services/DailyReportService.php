@@ -97,9 +97,9 @@ class DailyReportService
                 ")\n";
         }
 
-        $completed = array_filter($tasksData, fn ($t) => $t['status'] === 'completed');
-        $pending = array_filter($tasksData, fn ($t) => $t['status'] === 'pending');
-        $discarded = array_filter($tasksData, fn ($t) => $t['status'] === 'discarded');
+        $completedCount = count(array_filter($tasksData, fn ($t) => $t['status'] === 'completed'));
+        $pendingCount = count(array_filter($tasksData, fn ($t) => $t['status'] === 'pending'));
+        $discardedCount = count(array_filter($tasksData, fn ($t) => $t['status'] === 'discarded'));
 
         $prompt = <<<PROMPT
 You are a friendly productivity assistant summarizing a user's day.
@@ -109,8 +109,8 @@ Below is the user's task list for today.
 {$taskLines}
 
 Write a warm, concise daily summary (2-4 sentences) that:
-- Celebrates what they accomplished ({count($completed)} completed)
-- Acknowledges what's still pending ({count($pending)} pending) or was skipped ({count($discarded)} discarded)
+- Celebrates what they accomplished ({$completedCount} completed)
+- Acknowledges what's still pending ({$pendingCount} pending) or was skipped ({$discardedCount} discarded)
 - Encourages them for tomorrow
 - Sounds natural and human — like a friend reviewing their day
 
@@ -146,12 +146,12 @@ PROMPT;
         }
 
         // Fallback summary if AI fails
-        $summary = "Today you completed {$this->countLabel(count($completed), 'task')}";
-        if (!empty($pending)) {
-            $summary .= ", with {$this->countLabel(count($pending), 'task')} still pending";
+        $summary = "Today you completed {$this->countLabel($completedCount, 'task')}";
+        if ($pendingCount > 0) {
+            $summary .= ", with {$this->countLabel($pendingCount, 'task')} still pending";
         }
-        if (!empty($discarded)) {
-            $summary .= " and {$this->countLabel(count($discarded), 'task')} skipped";
+        if ($discardedCount > 0) {
+            $summary .= " and {$this->countLabel($discardedCount, 'task')} skipped";
         }
         $summary .= ". Keep up the great work!";
 
