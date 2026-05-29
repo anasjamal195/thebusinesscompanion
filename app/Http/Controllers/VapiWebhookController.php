@@ -245,15 +245,31 @@ class VapiWebhookController extends Controller
             return;
         }
 
+        // Fetch existing pending tasks for the user today to help the AI match them
+        $todayStr = now()->setTimezone($user->timezone)->toDateString();
+        $existingTasks = Task::where('user_id', $user->id)
+            ->whereDate('date', $todayStr)
+            ->get(['id', 'title', 'status']);
+
+        $existingContext = '';
+        if ($existingTasks->isNotEmpty()) {
+            $existingLines = $existingTasks->map(fn ($t) => "- Task #{$t->id}: \"{$t->title}\" (status: {$t->status})")->implode("\n");
+            $existingContext = "\n\nEXISTING TASKS FOR TODAY:\n{$existingLines}";
+        }
+
         $prompt = "You are an AI assistant analyzing a call transcript between a user and their daily planner AI.
-        Extract tasks in the user's own words — as if the user is telling you what to do.
-        Respond ONLY with a JSON object containing a 'tasks' array.
-        Each task object should have:
-        - title: (Brief, action-oriented task name in user's voice. e.g. 'Fix laptop', 'Research ad campaigns', 'Call client')
-        - details: (Any specific instructions or context the user mentioned, in user's own words)
-        - estimated_minutes: (Integer. Estimated duration in minutes. If the user didn't specify, estimate a reasonable duration based on the task type)
-        - priority: (String: 'high', 'medium', or 'low'. Infer from user's tone/urgency. Default 'medium')
-        - status: (pending or completed. Use 'completed' only if they explicitly say they already did it)
+        Your job is to identify what changed with the user's tasks during this call.
+        Respond ONLY with a JSON object containing these optional arrays:
+
+        'completed_tasks' — tasks the user said they FINISHED. Each object: {title, existing_task_id}
+        'updated_tasks' — tasks where the user gave new details, time estimates, or priority. Each object: {title, existing_task_id, details, estimated_minutes, priority}
+        'new_tasks' — brand new tasks the user wants to add. Each object: {title, details, estimated_minutes, priority}
+        {$existingContext}
+
+        IMPORTANT:
+        - If a task already exists (listed above), INCLUDE its existing_task_id so we UPDATE it instead of creating a duplicate.
+        - Use existing_task_id whenever you can match a task from the transcript to an existing task by title.
+        - Only put tasks in 'new_tasks' if they are TRULY new — not mentioned in existing tasks at all.
 
         Transcript:
         {$transcript}";
@@ -286,33 +302,83 @@ class VapiWebhookController extends Controller
         ]);
 
         $extractedData = json_decode($content, true);
-        $tasks = $extractedData['tasks'] ?? [];
+        $completedTasks = $extractedData['completed_tasks'] ?? [];
+        $updatedTasks = $extractedData['updated_tasks'] ?? [];
+        $newTasks = $extractedData['new_tasks'] ?? [];
 
-        Log::info("VapiWebhook: Extracted " . count($tasks) . " task(s) from transcript for Call {$call->id}");
+        Log::info("VapiWebhook: Extracted data for Call {$call->id}", [
+            'completed' => count($completedTasks),
+            'updated'   => count($updatedTasks),
+            'new'       => count($newTasks),
+        ]);
 
-        if (empty($tasks)) {
-            Log::warning("VapiWebhook: No tasks found in transcript for Call {$call->id}");
+        if (empty($completedTasks) && empty($updatedTasks) && empty($newTasks)) {
+            Log::warning("VapiWebhook: No task changes found in transcript for Call {$call->id}");
             return;
         }
 
-        DB::transaction(function() use ($user, $tasks, $call) {
+        DB::transaction(function() use ($user, $completedTasks, $updatedTasks, $newTasks) {
             try {
                 $userDate = now()->setTimezone($user->timezone)->toDateString();
-                foreach ($tasks as $taskData) {
-                    $estimatedMins = (int)($taskData['estimated_minutes'] ?? 60);
 
-                    $validPriorities = ['high', 'medium', 'low'];
-                    $priority = $taskData['priority'] ?? 'medium';
-                    if (!in_array($priority, $validPriorities)) {
-                        $priority = 'medium';
+                // ── Mark completed tasks ──
+                foreach ($completedTasks as $taskData) {
+                    $query = Task::where('user_id', $user->id)->whereDate('date', $userDate);
+
+                    if (!empty($taskData['existing_task_id'])) {
+                        $query->where('id', $taskData['existing_task_id']);
+                    } else {
+                        $query->where('title', $taskData['title'] ?? '');
                     }
+
+                    $matched = $query->where('status', 'pending')->first();
+                    if ($matched) {
+                        $matched->update(['status' => 'completed']);
+                        Log::info("VapiWebhook: Completed task {$matched->id} for User {$user->id}", ['title' => $matched->title]);
+                    }
+                }
+
+                // ── Update existing tasks ──
+                foreach ($updatedTasks as $taskData) {
+                    $query = Task::where('user_id', $user->id)->whereDate('date', $userDate);
+
+                    if (!empty($taskData['existing_task_id'])) {
+                        $query->where('id', $taskData['existing_task_id']);
+                    } else {
+                        $query->where('title', $taskData['title'] ?? '');
+                    }
+
+                    $matched = $query->first();
+                    if ($matched) {
+                        $update = [];
+                        if (isset($taskData['details'])) $update['input_text'] = $taskData['details'];
+                        if (isset($taskData['estimated_minutes'])) {
+                            $update['estimated_minutes'] = (int) $taskData['estimated_minutes'];
+                            $update['scheduled_followup_time'] = now()->addMinutes((int) $taskData['estimated_minutes']);
+                        }
+                        if (isset($taskData['priority'])) {
+                            $p = $taskData['priority'];
+                            $update['priority'] = in_array($p, ['high','medium','low']) ? $p : 'medium';
+                        }
+                        if (!empty($update)) {
+                            $matched->update($update);
+                            Log::info("VapiWebhook: Updated task {$matched->id} for User {$user->id}", $update);
+                        }
+                    }
+                }
+
+                // ── Create new tasks ──
+                foreach ($newTasks as $taskData) {
+                    $estimatedMins = (int)($taskData['estimated_minutes'] ?? 60);
+                    $priority = $taskData['priority'] ?? 'medium';
+                    if (!in_array($priority, ['high','medium','low'])) $priority = 'medium';
 
                     $task = Task::create([
                         'user_id'                 => $user->id,
                         'title'                   => $taskData['title'] ?? 'Extracted Task',
                         'input_text'              => $taskData['details'] ?? '',
                         'priority'                => $priority,
-                        'status'                  => $taskData['status'] ?? 'pending',
+                        'status'                  => 'pending',
                         'date'                    => $userDate,
                         'estimated_minutes'       => $estimatedMins,
                         'scheduled_followup_time' => now()->addMinutes($estimatedMins),
@@ -324,7 +390,7 @@ class VapiWebhookController extends Controller
                     ]);
                 }
             } catch (\Exception $e) {
-                Log::error("VapiWebhook: Failed to save tasks for Call {$call->id}: " . $e->getMessage(), [
+                Log::error("VapiWebhook: Failed to process tasks: " . $e->getMessage(), [
                     'file' => $e->getFile(),
                     'line' => $e->getLine(),
                 ]);

@@ -154,12 +154,23 @@
                                         @endif
                                     </div>
                                     <p class="text-sm text-gray-500 mt-1">{{ $task->input_text }}</p>
-                                    @if($task->estimated_minutes)
-                                    <div class="flex items-center gap-1 mt-2 text-xs font-bold text-primary bg-primary/10 px-2 py-1 rounded w-fit">
-                                        <span class="material-symbols-outlined text-[14px]">timer</span>
-                                        {{ $task->estimated_minutes }} mins
+                                    <div class="flex flex-wrap items-center gap-2 mt-2">
+                                        @if($task->estimated_minutes)
+                                        <div class="flex items-center gap-1 text-xs font-bold text-primary bg-primary/10 px-2 py-1 rounded w-fit">
+                                            <span class="material-symbols-outlined text-[14px]">timer</span>
+                                            {{ $task->estimated_minutes }} mins
+                                        </div>
+                                        @endif
+                                        @if($task->scheduled_followup_time && $task->status === 'pending')
+                                        @php
+                                            $nextCheck = \Carbon\Carbon::parse($task->scheduled_followup_time, 'UTC')->setTimezone($user->timezone);
+                                        @endphp
+                                        <div class="flex items-center gap-1 text-xs font-bold text-purple-600 bg-purple-100 px-2 py-1 rounded w-fit">
+                                            <span class="material-symbols-outlined text-[14px]">schedule</span>
+                                            Follow-up @ {{ $nextCheck->format('g:i A') }}
+                                        </div>
+                                        @endif
                                     </div>
-                                    @endif
                                 </div>
                             </div>
                         </div>
