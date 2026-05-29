@@ -252,7 +252,7 @@ class VapiService
         if ($tasks && $tasks->isNotEmpty()) {
             $taskLines = $tasks->map(function (Task $task, int $i) {
                 $est = $task->estimated_minutes ? "{$task->estimated_minutes} min" : 'no estimate yet';
-                return ($i + 1) . ". {$task->title}" . ($task->input_text ? " — {$task->input_text}" : '') . " ($est)";
+                return ($i + 1) . ". [ID:{$task->id}] {$task->title}" . ($task->input_text ? " — {$task->input_text}" : '') . " ($est)";
             })->implode("\n");
 
             $taskContext = "\n\nUSER'S TASKS FOR TODAY:\n{$taskLines}";
@@ -336,15 +336,15 @@ This is a FOLLOW-UP check-in call.
 
 YOUR GOAL:
 1. Say a casual, upbeat hello — like checking in on a friend.
-2. The "USER'S TASKS FOR TODAY" section above shows ALL tasks. You need to go through EACH ONE that is still pending (not yet completed).
+2. The "USER'S TASKS FOR TODAY" section above shows ALL tasks with their [ID:N] numbers. You need to go through EACH ONE that is still pending (not yet completed).
 3. For each pending task, ask how it's going. If they completed it, celebrate and use report_onboarding_data with field='task_completed' and value='{task title}' to mark it done.
-4. After handling a task, if it's still pending, ask: "When would you like me to check back in on this?" If they give a time, use report_onboarding_data with field='reschedule_followup' and value='{taskId}:{minutes}' to set the next follow-up time. If they're unsure, don't worry about it.
+4. After handling a task, if it's still pending, ask: "When would you like me to check back in on this?" If they give a time, use report_onboarding_data with field='reschedule_followup' and value='{taskId}:{minutes}' (where taskId is the numeric ID from [ID:N], e.g., '3:45' means check back on task ID 3 in 45 minutes) to set the next follow-up time. If they're unsure, just note it and move on — the system will schedule a default follow-up.
 5. If they're stuck on something, be supportive and ask what's blocking them.
-6. Ask if there are any new tasks to add.
+6. After checking on all existing tasks, ask if there are any new tasks to add.
 7. WHEN ALL TASKS ARE DONE: Congratulate them warmly, tell them a full daily report will be emailed to them and is also available on their dashboard. Ask if they have any other tasks to add, or if they'd like to call the day off.
 8. IF USER WANTS TO END THE DAY but there are still pending tasks: Remind them about the remaining tasks. If they still want to end, ask if they'd like to carry the remaining tasks forward to tomorrow, or discard them. Use the carry_forward_tasks or discard_tasks tool accordingly.
 
-IMPORTANT: Handle ALL pending tasks in this single call — one at a time. Don't end the call until you've checked in on every task. Keep the conversation natural and don't sound like you're reading a list.
+IMPORTANT: Handle ALL pending tasks in this single call — one at a time. Don't end the call until you've checked in on every task. Differentiate clearly between tasks the user has completed (mark via report_onboarding_data), tasks they're still working on (optionally reschedule follow-up), and new tasks. Keep the conversation natural and don't sound like you're reading a list.
 INSTRUCTIONS;
     }
 

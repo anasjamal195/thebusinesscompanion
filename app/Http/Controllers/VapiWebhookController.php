@@ -147,13 +147,24 @@ class VapiWebhookController extends Controller
 
                     // If field is 'task_completed', mark the task as done
                     if ($field === 'task_completed' && $call->user_id) {
-                        Task::where('user_id', $call->user_id)
-                            ->where('title', $value)
-                            ->where('status', 'pending')
-                            ->whereDate('date', now()->setTimezone(
-                                optional($call->user)->timezone ?? 'UTC'
-                            )->toDateString())
-                            ->update(['status' => 'completed']);
+                        $baseQuery = Task::where('user_id', $call->user_id)->where('status', 'pending');
+                        $matched = null;
+
+                        if (is_numeric($value)) {
+                            $matched = (clone $baseQuery)->where('id', (int) $value)->first();
+                        }
+                        if (!$matched) {
+                            $matched = (clone $baseQuery)
+                                ->whereDate('date', now()->setTimezone(
+                                    optional($call->user)->timezone ?? 'UTC'
+                                )->toDateString())
+                                ->where('title', $value)
+                                ->first();
+                        }
+                        if ($matched) {
+                            $matched->update(['status' => 'completed']);
+                            Log::info("VapiWebhook: Tool completed task {$matched->id} for User {$call->user_id}", ['title' => $matched->title]);
+                        }
                     }
 
                     // If field is 'reschedule_followup', update the task's follow-up time
@@ -251,6 +262,8 @@ class VapiWebhookController extends Controller
             ->whereDate('date', $todayStr)
             ->get(['id', 'title', 'status']);
 
+        $callType = $call->metadata['call_type'] ?? 'morning';
+
         $existingContext = '';
         if ($existingTasks->isNotEmpty()) {
             $existingLines = $existingTasks->map(fn ($t) => "- Task #{$t->id}: \"{$t->title}\" (status: {$t->status})")->implode("\n");
@@ -258,18 +271,19 @@ class VapiWebhookController extends Controller
         }
 
         $prompt = "You are an AI assistant analyzing a call transcript between a user and their daily planner AI.
+        This was a {$callType} call (morning = first planning session, followup = checking in on existing tasks).
         Your job is to identify what changed with the user's tasks during this call.
         Respond ONLY with a JSON object containing these optional arrays:
 
-        'completed_tasks' — tasks the user said they FINISHED. Each object: {title, existing_task_id}
-        'updated_tasks' — tasks where the user gave new details, time estimates, or priority. Each object: {title, existing_task_id, details, estimated_minutes, priority}
+        'completed_tasks' — tasks the user said they FINISHED. Each object: {title, existing_task_id (numeric ID only)}
+        'updated_tasks' — tasks where the user gave new details, time estimates, or priority. Each object: {title, existing_task_id (numeric ID only), details, estimated_minutes, priority}
         'new_tasks' — brand new tasks the user wants to add. Each object: {title, details, estimated_minutes, priority}
         {$existingContext}
 
-        IMPORTANT:
-        - If a task already exists (listed above), INCLUDE its existing_task_id so we UPDATE it instead of creating a duplicate.
-        - Use existing_task_id whenever you can match a task from the transcript to an existing task by title.
-        - Only put tasks in 'new_tasks' if they are TRULY new — not mentioned in existing tasks at all.
+        CRITICAL RULES:
+        - existing_task_id MUST be the NUMERIC ID from the EXISTING TASKS list (e.g., 1, 2, 3). Do NOT use the task title.
+        - If a task does NOT appear in the EXISTING TASKS list, put it in 'new_tasks' — do NOT add an existing_task_id.
+        - For morning calls with no existing tasks, ALL tasks go in 'new_tasks'.
 
         Transcript:
         {$transcript}";
@@ -323,15 +337,24 @@ class VapiWebhookController extends Controller
 
                 // ── Mark completed tasks ──
                 foreach ($completedTasks as $taskData) {
-                    $query = Task::where('user_id', $user->id)->whereDate('date', $userDate);
+                    $matched = null;
 
-                    if (!empty($taskData['existing_task_id'])) {
-                        $query->where('id', $taskData['existing_task_id']);
-                    } else {
-                        $query->where('title', $taskData['title'] ?? '');
+                    $existingId = $taskData['existing_task_id'] ?? null;
+                    if ($existingId && is_numeric($existingId)) {
+                        $matched = Task::where('user_id', $user->id)
+                            ->where('id', (int) $existingId)
+                            ->where('status', 'pending')
+                            ->first();
                     }
 
-                    $matched = $query->where('status', 'pending')->first();
+                    if (!$matched && !empty($taskData['title'])) {
+                        $matched = Task::where('user_id', $user->id)
+                            ->whereDate('date', $userDate)
+                            ->where('title', $taskData['title'])
+                            ->where('status', 'pending')
+                            ->first();
+                    }
+
                     if ($matched) {
                         $matched->update(['status' => 'completed']);
                         Log::info("VapiWebhook: Completed task {$matched->id} for User {$user->id}", ['title' => $matched->title]);
@@ -340,15 +363,22 @@ class VapiWebhookController extends Controller
 
                 // ── Update existing tasks ──
                 foreach ($updatedTasks as $taskData) {
-                    $query = Task::where('user_id', $user->id)->whereDate('date', $userDate);
+                    $matched = null;
 
-                    if (!empty($taskData['existing_task_id'])) {
-                        $query->where('id', $taskData['existing_task_id']);
-                    } else {
-                        $query->where('title', $taskData['title'] ?? '');
+                    $existingId = $taskData['existing_task_id'] ?? null;
+                    if ($existingId && is_numeric($existingId)) {
+                        $matched = Task::where('user_id', $user->id)
+                            ->where('id', (int) $existingId)
+                            ->first();
                     }
 
-                    $matched = $query->first();
+                    if (!$matched && !empty($taskData['title'])) {
+                        $matched = Task::where('user_id', $user->id)
+                            ->whereDate('date', $userDate)
+                            ->where('title', $taskData['title'])
+                            ->first();
+                    }
+
                     if ($matched) {
                         $update = [];
                         if (isset($taskData['details'])) $update['input_text'] = $taskData['details'];
@@ -364,6 +394,27 @@ class VapiWebhookController extends Controller
                             $matched->update($update);
                             Log::info("VapiWebhook: Updated task {$matched->id} for User {$user->id}", $update);
                         }
+                    } else {
+                        // No existing match — create as a new task
+                        $estimatedMins = (int)($taskData['estimated_minutes'] ?? 60);
+                        $priority = $taskData['priority'] ?? 'medium';
+                        if (!in_array($priority, ['high','medium','low'])) $priority = 'medium';
+
+                        $task = Task::create([
+                            'user_id'                 => $user->id,
+                            'title'                   => $taskData['title'] ?? 'Extracted Task',
+                            'input_text'              => $taskData['details'] ?? '',
+                            'priority'                => $priority,
+                            'status'                  => 'pending',
+                            'date'                    => $userDate,
+                            'estimated_minutes'       => $estimatedMins,
+                            'scheduled_followup_time' => now()->addMinutes($estimatedMins),
+                        ]);
+
+                        Log::info("VapiWebhook: Created task {$task->id} from unmatched updated_tasks for User {$user->id}", [
+                            'title' => $task->title,
+                            'date'  => $task->date,
+                        ]);
                     }
                 }
 
