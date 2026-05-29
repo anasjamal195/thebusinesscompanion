@@ -1,13 +1,41 @@
 @php
+    use App\Models\Call;
+    use Carbon\Carbon;
+
     $title = 'Dashboard';
     $pageTitle = 'Today\'s Tasks';
     $activeNav = 'dashboard';
+
+    $user = auth()->user();
+    $today = now()->setTimezone($user->timezone)->toDateString();
+
+    $morningTimeFormatted = $user->morning_call_time
+        ? Carbon::createFromFormat('H:i:s', $user->morning_call_time)->format('g:i A')
+        : 'Not set';
+
+    $todayCalls = Call::where('user_id', $user->id)
+        ->whereDate('created_at', $today)
+        ->orderBy('created_at', 'desc')
+        ->get();
+
+    $morningCallDone = $todayCalls->contains(fn ($c) => ($c->metadata['call_type'] ?? '') === 'morning');
+    $lastCall = $todayCalls->first();
+    $followUpCount = $todayCalls->filter(fn ($c) => ($c->metadata['call_type'] ?? '') === 'followup')->count();
 
     $priorityColors = [
         'high' => ['bg' => 'bg-red-100', 'text' => 'text-red-700', 'dot' => 'bg-red-500'],
         'medium' => ['bg' => 'bg-yellow-100', 'text' => 'text-yellow-700', 'dot' => 'bg-yellow-500'],
         'low' => ['bg' => 'bg-green-100', 'text' => 'text-green-700', 'dot' => 'bg-green-500'],
     ];
+
+    $callStatusBadge = function ($status) {
+        return match ($status) {
+            'completed' => 'bg-green-100 text-green-700',
+            'in-progress', 'initiated', 'initiating' => 'bg-blue-100 text-blue-700',
+            'failed' => 'bg-red-100 text-red-700',
+            default => 'bg-gray-100 text-gray-600',
+        };
+    };
 @endphp
 
 @extends('layouts.app')
@@ -22,10 +50,10 @@
             <div class="space-y-4">
                 <div class="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 text-primary rounded-full text-xs font-black uppercase tracking-wider">
                     <span class="material-symbols-outlined text-[16px]">schedule</span>
-                    <span>Scheduled for {{ auth()->user()->morning_call_time }}</span>
+                    <span>Scheduled for {{ $morningTimeFormatted }}</span>
                 </div>
                 <h2 class="text-4xl md:text-5xl font-black text-gray-900 tracking-tight">
-                    Hello, <span class="text-primary">{{ explode(' ', auth()->user()->name)[0] }}</span>.
+                    Hello, <span class="text-primary">{{ explode(' ', $user->name)[0] }}</span>.
                 </h2>
                 <p class="text-lg text-gray-500 max-w-xl font-medium">
                     You have <span class="text-gray-900 font-bold">{{ $pendingCount }}</span> pending tasks for today.
@@ -38,6 +66,36 @@
                 </button>
             </div>
         </div>
+    </div>
+
+    <!-- Call Status Strip -->
+    <div class="bg-white rounded-[2rem] p-5 shadow-lg shadow-gray-200/30 border border-gray-50 flex flex-wrap items-center gap-4 text-sm">
+        <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-[20px] text-gray-400">phone_in_talk</span>
+            <span class="font-bold text-gray-700">Calls Today:</span>
+        </div>
+
+        <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full {{ $morningCallDone ? 'bg-green-500' : 'bg-yellow-500' }}"></span>
+            <span class="font-medium text-gray-600">Morning: {{ $morningCallDone ? 'Done' : 'Pending' }}</span>
+        </div>
+
+        <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-[18px] text-gray-400">repeat</span>
+            <span class="font-medium text-gray-600">{{ $followUpCount }} follow-up(s)</span>
+        </div>
+
+        @if($lastCall)
+            <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-[18px] text-gray-400">history</span>
+                <span class="font-medium text-gray-600">Last: {{ $lastCall->created_at->setTimezone($user->timezone)->format('g:i A') }}</span>
+            </div>
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider {{ $callStatusBadge($lastCall->status) }}">
+                {{ $lastCall->status }}
+            </span>
+        @else
+            <span class="text-gray-400 font-medium">No calls yet today</span>
+        @endif
     </div>
 
     <!-- Main Grid -->
