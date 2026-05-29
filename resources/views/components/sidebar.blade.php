@@ -12,8 +12,8 @@
                     <span class="material-symbols-outlined text-[24px]">smart_toy</span>
                 </span>
                 <div class="leading-tight">
-                    <div class="text-[17px] font-black text-gray-900 tracking-tight">The Business</div>
-                    <div class="text-[11px] font-bold text-primary uppercase tracking-widest">Companion</div>
+                    <div class="text-[17px] font-black text-gray-900 tracking-tight">Dialer</div>
+                    <div class="text-[11px] font-bold text-primary uppercase tracking-widest">.Best</div>
                 </div>
             </a>
         </div>
