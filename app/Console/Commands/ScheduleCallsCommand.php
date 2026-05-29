@@ -45,38 +45,35 @@ class ScheduleCallsCommand extends Command
     {
         $now         = now()->setTimezone($user->timezone);
         $morningTime = Carbon::createFromFormat('H:i:s', $user->morning_call_time, $user->timezone);
+        $todayStr    = $now->toDateString();
 
-        // ── 1. MORNING CALL ───────────────────────────────────────────────
-        $alreadyHasTasks = Task::where('user_id', $user->id)
-            ->whereDate('date', $now->toDateString())
-            ->exists();
+        // ── 1. MORNING CALL (only when no morning call yet, time is right, and no tasks exist) ──
+        $needsMorningCall = $user->last_morning_call_date !== $todayStr;
 
-        if ($user->last_morning_call_date !== $now->toDateString()) {
-            if ($now->greaterThanOrEqualTo($morningTime) && !$alreadyHasTasks) {
-                $todayTasks = $this->getTodayPendingTasks($user);
+        if ($needsMorningCall && $now->greaterThanOrEqualTo($morningTime)) {
+            $todayTasks = $this->getTodayPendingTasks($user);
 
+            if ($todayTasks->isEmpty()) {
                 $this->info("Triggering morning call for User {$user->id} ({$user->name})");
                 $result = $this->vapi->createCall($user, 'morning', $todayTasks);
 
                 if ($result) {
                     $user->update([
-                        'last_morning_call_date' => $now->toDateString(),
+                        'last_morning_call_date' => $todayStr,
                         'last_call_time'         => now('UTC')->toDateTimeString(),
                     ]);
                 }
 
-                return; // No follow-ups until morning call is done
+                return; // Wait for morning call to complete
             }
-
-            // Morning time hasn't arrived yet or tasks already exist — nothing to do
-            return;
+            // Tasks already exist — skip morning call, fall through to follow-up
         }
 
         // ── 2. FOLLOW-UP CALLS ────────────────────────────────────────────
         $pendingTasks = $this->getTodayPendingTasks($user);
 
         if ($pendingTasks->isEmpty()) {
-            return; // All done for today 🎉
+            return; // All done for today
         }
 
         $shouldCall = false;
