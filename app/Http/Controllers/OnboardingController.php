@@ -32,9 +32,14 @@ class OnboardingController extends Controller
         ]);
 
         if ($request->filled('phone_number')) {
+            $profile = $user->profile;
             $user->profile()->updateOrCreate(
                 ['user_id' => $user->id],
-                ['phone_number' => $validated['phone_number']]
+                [
+                    'phone_number'  => $validated['phone_number'],
+                    'business_name' => $profile ? $profile->business_name : ($user->name . "'s Business"),
+                    'business_type' => $profile ? $profile->business_type : 'Agency',
+                ]
             );
         }
 
