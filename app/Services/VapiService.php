@@ -150,7 +150,6 @@ class VapiService
             'firstMessage'       => $firstMessage,
             'firstMessageMode'   => 'assistant-speaks-first',
             'serverUrl'          => $this->getWebhookUrl(),
-            'serverUrlAfterStopped' => $this->getWebhookUrl(),
             'model'              => [
                 'provider' => 'openai',
                 'model'    => 'gpt-4o',
@@ -161,6 +160,57 @@ class VapiService
                     ],
                 ],
                 'temperature' => 0.8,
+                'tools' => [
+                    [
+                        'type' => 'function',
+                        'function' => [
+                            'name' => 'report_onboarding_data',
+                            'description' => 'Report a key-value data point extracted from the conversation.',
+                            'parameters' => [
+                                'type' => 'object',
+                                'properties' => [
+                                    'field' => ['type' => 'string', 'description' => 'Field name (e.g., task_completed, task_title).'],
+                                    'value' => ['type' => 'string', 'description' => 'Value for the field.'],
+                                ],
+                                'required' => ['field', 'value'],
+                            ],
+                        ],
+                    ],
+                    [
+                        'type' => 'function',
+                        'function' => [
+                            'name' => 'carry_forward_tasks',
+                            'description' => 'Carry forward pending tasks to the next day.',
+                            'parameters' => [
+                                'type' => 'object',
+                                'properties' => [
+                                    'task_ids' => [
+                                        'type' => 'array',
+                                        'items' => ['type' => 'integer'],
+                                        'description' => 'Task IDs to carry forward. Omit to carry all pending.',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                    [
+                        'type' => 'function',
+                        'function' => [
+                            'name' => 'discard_tasks',
+                            'description' => 'Discard pending tasks.',
+                            'parameters' => [
+                                'type' => 'object',
+                                'properties' => [
+                                    'task_ids' => [
+                                        'type' => 'array',
+                                        'items' => ['type' => 'integer'],
+                                        'description' => 'Task IDs to discard. Omit to discard all pending.',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
             ],
             'voice' => [
                 'provider' => '11labs',
@@ -179,63 +229,6 @@ class VapiService
             'silenceTimeoutSeconds'     => 30,
             'maxDurationSeconds'        => 600,
             'backgroundDenoisingEnabled'=> true,
-            'tools' => [
-                [
-                    'type'       => 'function',
-                    'function'   => [
-                        'name'        => 'report_onboarding_data',
-                        'description' => 'Report a key-value data point extracted from the conversation (e.g., task title, time estimate, completion status).',
-                        'parameters'  => [
-                            'type'       => 'object',
-                            'properties' => [
-                                'field' => [
-                                    'type'        => 'string',
-                                    'description' => 'The field name (e.g. task_completed, task_title, time_estimate).',
-                                ],
-                                'value' => [
-                                    'type'        => 'string',
-                                    'description' => 'The value for the field.',
-                                ],
-                            ],
-                            'required'   => ['field', 'value'],
-                        ],
-                    ],
-                ],
-                [
-                    'type'       => 'function',
-                    'function'   => [
-                        'name'        => 'carry_forward_tasks',
-                        'description' => 'Carry forward pending tasks to tomorrow. Called when the user wants to end the day but has unfinished tasks they want to reschedule.',
-                        'parameters'  => [
-                            'type'       => 'object',
-                            'properties' => [
-                                'task_ids' => [
-                                    'type'        => 'array',
-                                    'items'       => ['type' => 'integer'],
-                                    'description' => 'Array of task IDs to carry forward. Omit to carry forward all pending tasks.',
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-                [
-                    'type'       => 'function',
-                    'function'   => [
-                        'name'        => 'discard_tasks',
-                        'description' => 'Discard/stale pending tasks. Called when the user wants to end the day and discard unfinished tasks instead of rescheduling them.',
-                        'parameters'  => [
-                            'type'       => 'object',
-                            'properties' => [
-                                'task_ids' => [
-                                    'type'        => 'array',
-                                    'items'       => ['type' => 'integer'],
-                                    'description' => 'Array of task IDs to discard. Omit to discard all pending tasks.',
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ],
         ];
 
         if ($localCallId) {
