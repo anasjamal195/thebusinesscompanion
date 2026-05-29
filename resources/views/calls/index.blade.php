@@ -121,8 +121,8 @@
                                     <div class="text-sm font-black text-slate-900">No calls found</div>
                                     <p class="text-xs text-slate-500 mt-1">Talk to your companion to see your conversation logs here.</p>
                                 </div>
-                                <a href="{{ route('companions.index') }}" class="mt-4 px-6 py-2.5 bg-primary text-white text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-primary-dark transition-all shadow-lg shadow-primary/20">
-                                    Find a Companion
+                                <a href="{{ route('onboarding.schedule') }}" class="mt-4 px-6 py-2.5 bg-primary text-white text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-primary-dark transition-all shadow-lg shadow-primary/20">
+                                    Set Up Companion
                                 </a>
                             </div>
                         </td>
