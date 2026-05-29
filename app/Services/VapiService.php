@@ -320,7 +320,7 @@ INSTRUCTIONS;
     public function getWebCallData(User $user, string $callType = 'morning'): array
     {
         $tasks = Task::where('user_id', $user->id)
-            ->where('date', today())
+            ->where('date', now()->setTimezone($user->timezone)->toDateString())
             ->where('status', 'pending')
             ->get();
 

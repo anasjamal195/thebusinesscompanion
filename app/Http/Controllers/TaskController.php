@@ -21,7 +21,7 @@ class TaskController extends Controller
             'input_text' => $validated['input_text'],
             'priority' => 'medium',
             'status' => 'pending',
-            'date' => today(),
+            'date' => now()->setTimezone($request->user()->timezone)->toDateString(),
             'estimated_minutes' => $validated['estimated_minutes'],
             'scheduled_followup_time' => now()->addMinutes($validated['estimated_minutes']),
         ]);

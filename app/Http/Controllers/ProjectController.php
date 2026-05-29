@@ -15,7 +15,7 @@ class ProjectController extends Controller
 
         $tasks = Task::query()
             ->where('user_id', $request->user()->id)
-            ->whereDate('date', today())
+            ->whereDate('date', now()->setTimezone($request->user()->timezone)->toDateString())
             ->orderBy('status', 'desc') // Pending first, then completed
             ->latest('id')
             ->get();

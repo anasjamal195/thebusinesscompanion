@@ -184,7 +184,7 @@ class VapiWebhookController extends Controller
                             'input_text' => $taskData['details'] ?? '',
                             'priority' => 'medium',
                             'status' => $taskData['status'] ?? 'pending',
-                            'date' => today(),
+                            'date' => now()->setTimezone($user->timezone)->toDateString(),
                             'estimated_minutes' => $estimatedMins,
                             'scheduled_followup_time' => now()->addMinutes($estimatedMins),
                         ]);
