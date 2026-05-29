@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-  <title>dialer.best - Your AI Todo Assistant</title>
+  <title>Dialer.best - Your AI Todo Assistant</title>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900&display=swap"
     rel="stylesheet" />
@@ -84,7 +84,7 @@
               stroke-linejoin="round" />
             <path d="M12 10L6.5 21H17.5L12 10Z" fill="#3E50F7" />
           </svg>
-          <span class="text-xl font-extrabold tracking-tight">dialer.best</span>
+          <span class="text-xl font-extrabold tracking-tight">Dialer.best</span>
         </div>
         <div class="hidden lg:flex items-center space-x-10 text-[15px] font-semibold text-white/70">
           <a class="hover:text-white transition-colors" href="#how-it-works">How It Works</a>
