@@ -156,6 +156,19 @@ class VapiWebhookController extends Controller
                             ->update(['status' => 'completed']);
                     }
 
+                    // If field is 'reschedule_followup', update the task's follow-up time
+                    // value format: "{taskId}:{minutes}" e.g. "4:30"
+                    if ($field === 'reschedule_followup' && $call->user_id && str_contains($value, ':')) {
+                        $parts = explode(':', $value, 2);
+                        $taskId = (int) trim($parts[0]);
+                        $minutes = (int) trim($parts[1]);
+                        if ($taskId && $minutes > 0) {
+                            Task::where('id', $taskId)
+                                ->where('user_id', $call->user_id)
+                                ->update(['scheduled_followup_time' => now()->addMinutes($minutes)]);
+                        }
+                    }
+
                     broadcast(new \App\Events\CallProgressUpdated(
                         $call->user_id, $field, $value, 'in_progress'
                     ));

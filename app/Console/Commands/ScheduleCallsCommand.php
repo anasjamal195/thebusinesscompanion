@@ -89,41 +89,38 @@ class ScheduleCallsCommand extends Command
             return;
         }
 
-        $shouldCall = false;
+        // Always check AI-estimated mode first: any task's scheduled_followup_time elapsed?
+        $dueTasks = $pendingTasks->filter(function (Task $t) use ($user) {
+                $isDue = $t->scheduled_followup_time
+                    && Carbon::parse($t->scheduled_followup_time, 'UTC')->lessThanOrEqualTo(now('UTC'));
+                $this->line("[User {$user->id}]   task #{$t->id} '{$t->title}' sft={$t->scheduled_followup_time} isDue=".($isDue?'true':'false'));
+                return $isDue;
+            });
 
-        if ($user->default_delay_minutes) {
-            // Fixed interval mode: calls come every N minutes starting from morning call
-            $lastCall    = $user->last_call_time ? Carbon::parse($user->last_call_time, 'UTC') : now('UTC')->startOfDay();
-            $nextCallAt  = $lastCall->copy()->addMinutes($user->default_delay_minutes);
+        $this->line("[User {$user->id}] AI-estimated: due_tasks=".$dueTasks->count());
 
-            $this->line("[User {$user->id}] fixed-interval mode: last_call={$lastCall->format('Y-m-d H:i:s')} next_at={$nextCallAt->format('Y-m-d H:i:s')} now_utc=".now('UTC')->format('Y-m-d H:i:s'));
+        $shouldCall = $dueTasks->isNotEmpty();
 
-            if (now('UTC')->greaterThanOrEqualTo($nextCallAt)) {
-                $shouldCall = true;
-            }
-        } else {
-            // AI-estimated mode: call when any task's scheduled_followup_time has elapsed
-            $dueTasks = $pendingTasks->filter(function (Task $t) use ($user) {
-                    $isDue = $t->scheduled_followup_time
-                        && Carbon::parse($t->scheduled_followup_time, 'UTC')->lessThanOrEqualTo(now('UTC'));
-                    $this->line("[User {$user->id}]   task #{$t->id} '{$t->title}' sft={$t->scheduled_followup_time} isDue=".($isDue?'true':'false'));
-                    return $isDue;
-                });
+        // If default_delay_minutes is set, enforce it as a minimum gap since last call
+        if ($shouldCall && $user->default_delay_minutes) {
+            $lastCall   = $user->last_call_time ? Carbon::parse($user->last_call_time, 'UTC') : now('UTC')->startOfDay();
+            $nextCallAt = $lastCall->copy()->addMinutes($user->default_delay_minutes);
 
-            $this->line("[User {$user->id}] AI-estimated mode: due_tasks=".$dueTasks->count());
+            $this->line("[User {$user->id}] min-gap={$user->default_delay_minutes}min: last_call={$lastCall->format('Y-m-d H:i:s')} next_allowed={$nextCallAt->format('Y-m-d H:i:s')} now_utc=".now('UTC')->format('Y-m-d H:i:s'));
 
-            if ($dueTasks->isNotEmpty()) {
-                $shouldCall = true;
-
-                // Push those tasks' follow-up times ahead to avoid re-triggering before next call
-                foreach ($dueTasks as $task) {
-                    $task->update(['scheduled_followup_time' => now()->addMinutes(60)]);
-                    $this->line("[User {$user->id}]   pushed task #{$task->id} followup to +60min");
-                }
+            if (now('UTC')->lessThan($nextCallAt)) {
+                $this->line("[User {$user->id}] blocked by min-gap — {$nextCallAt->format('H:i')} not reached yet");
+                $shouldCall = false;
             }
         }
 
         if ($shouldCall) {
+            // Push due tasks' follow-up times ahead to avoid re-triggering before next call
+            foreach ($dueTasks as $task) {
+                $task->update(['scheduled_followup_time' => now()->addMinutes(60)]);
+                $this->line("[User {$user->id}]   pushed task #{$task->id} followup to +60min");
+            }
+
             $this->info("Triggering follow-up call for User {$user->id} ({$user->name})");
             $this->vapi->createCall($user, 'followup', $pendingTasks);
             $user->update(['last_call_time' => now('UTC')->toDateTimeString()]);
