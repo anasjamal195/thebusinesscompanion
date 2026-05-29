@@ -14,7 +14,7 @@ return new class extends Migration
         if (!Schema::hasTable('reports')) {
             Schema::create('reports', function (Blueprint $table) {
                 $table->id();
-                $table->foreignId('task_id')->constrained()->cascadeOnDelete();
+                $table->foreignId('task_id');
                 $table->text('summary')->nullable();
                 $table->text('insights')->nullable();
                 $table->text('recommendations')->nullable();
@@ -27,7 +27,7 @@ return new class extends Migration
 
         Schema::table('reports', function (Blueprint $table) {
             if (!Schema::hasColumn('reports', 'task_id')) {
-                $table->foreignId('task_id')->constrained()->cascadeOnDelete();
+                $table->foreignId('task_id');
             }
             if (!Schema::hasColumn('reports', 'summary')) {
                 $table->text('summary')->nullable();
