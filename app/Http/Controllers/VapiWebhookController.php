@@ -83,14 +83,32 @@ class VapiWebhookController extends Controller
 
             case 'end-of-call-report':
             case 'call-ended':
+                // Log the full payload for debugging
+                Log::info("VapiWebhook: {$type} received", [
+                    'call_id'     => $callId,
+                    'has_artifact'=> isset($payload['message']['artifact']),
+                    'artifact_keys' => array_keys($payload['message']['artifact'] ?? []),
+                    'has_transcript' => !empty($payload['message']['artifact']['transcript']),
+                    'duration'    => $payload['message']['call']['duration'] ?? $payload['message']['durationSeconds'] ?? null,
+                ]);
+
                 if ($call) {
+                    // Handle both end-of-call-report (artifact is inside message) and call-ended
+                    $artifact = $payload['message']['artifact'] ?? [];
+                    $transcript = $artifact['transcript'] ?? null;
+                    $recordingUrl = $artifact['recordingUrl'] ?? null;
+                    $duration = $payload['message']['call']['duration']
+                        ?? $payload['message']['durationSeconds']
+                        ?? 0;
+
                     $call->update([
-                        'status' => 'completed',
-                        'duration' => $payload['message']['call']['duration'] ?? 0,
-                        'transcript' => $payload['message']['artifact']['transcript'] ?? null,
-                        'recording_url' => $payload['message']['artifact']['recordingUrl'] ?? null,
+                        'status'        => 'completed',
+                        'duration'      => $duration,
+                        'transcript'    => $transcript,
+                        'recording_url' => $recordingUrl,
                     ]);
 
+                    // Only process transcript for morning/followup call types
                     $this->processCallTranscript($call);
                 }
                 break;
