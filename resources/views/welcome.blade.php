@@ -654,7 +654,7 @@
           </div>
 
           <h1 class="text-3xl md:text-5xl lg:text-6xl font-extrabold text-white leading-[1] tracking-tight">
-            Plan your day<br>
+            Plan your day
             with a<br>
             <span class="text-[#AFBBE0]">morning call</span>
           </h1>
