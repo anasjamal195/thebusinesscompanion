@@ -21,10 +21,8 @@
         <nav class="mt-10 px-4 space-y-1">
             @php
                 $navItems = [
-                    ['key' => 'dashboard', 'label' => 'Dashboard', 'icon' => 'grid_view', 'href' => url('/dashboard')],
-                    ['key' => 'projects', 'label' => 'Projects', 'icon' => 'folder', 'href' => route('projects.index')],
+                    ['key' => 'dashboard', 'label' => 'Dashboard', 'icon' => 'grid_view', 'href' => route('dashboard')],
                     ['key' => 'calls', 'label' => 'Call Logs', 'icon' => 'history', 'href' => route('calls.index')],
-                    ['key' => 'reports', 'label' => 'Reports', 'icon' => 'analytics', 'href' => '#'],
                 ];
             @endphp
 
@@ -39,75 +37,6 @@
                 </a>
             @endforeach
         </nav>
-
-        <div class="mt-8 px-6">
-            <div class="flex items-center justify-between mb-4">
-                <span class="text-[11px] font-black uppercase tracking-widest text-gray-400">Your Projects</span>
-                <a href="{{ route('projects.index') }}" class="text-primary hover:text-primary-container transition-colors">
-                    <span class="material-symbols-outlined text-[20px]">add_circle</span>
-                </a>
-            </div>
-
-            @auth
-                <div class="space-y-2" x-data="{ expandedProject: {{ $activeProjectId ?? 'null' }} }">
-                    @php
-                        $projects = auth()->user()
-                            ->projects()
-                            ->latest('id')
-                            ->get(['id', 'name']);
-                    @endphp
-
-                    @foreach ($projects as $project)
-                        @php $isCurrent = (string) $activeProjectId === (string) $project->id; @endphp
-                        <div class="space-y-1">
-                            <button 
-                                @click="expandedProject = (expandedProject === {{ $project->id }} ? null : {{ $project->id }})"
-                                class="w-full flex items-center justify-between rounded-2xl px-4 py-2.5 text-sm font-bold transition-all duration-200 {{ $isCurrent ? 'bg-gray-50 text-gray-900' : 'text-gray-500 hover:bg-gray-50' }}"
-                            >
-                                <div class="flex items-center gap-3 truncate">
-                                    <span class="w-2 h-2 rounded-full {{ $isCurrent ? 'bg-primary' : 'bg-gray-300' }}"></span>
-                                    <span class="truncate">{{ $project->name }}</span>
-                                </div>
-                                <span class="material-symbols-outlined text-[18px] transition-transform duration-300" :class="{ 'rotate-180': expandedProject === {{ $project->id }} }">expand_more</span>
-                            </button>
-
-                            <div 
-                                x-show="expandedProject === {{ $project->id }}" 
-                                x-transition:enter="transition ease-out duration-200"
-                                x-transition:enter-start="opacity-0 -translate-y-2"
-                                x-transition:enter-end="opacity-100 translate-y-0"
-                                class="pl-9 pr-2 py-1 space-y-1"
-                                x-cloak
-                            >
-                                @php
-                                    $tasks = \App\Models\Task::where('project_id', $project->id)->latest('id')->limit(5)->get();
-                                @endphp
-                                @foreach($tasks as $task)
-                                    <a 
-                                        href="{{ route('projects.show', $project) }}?task={{ $task->id }}" 
-                                        class="block py-1 text-xs font-medium text-gray-500 hover:text-primary truncate transition-colors"
-                                        title="{{ $task->title }}"
-                                    >
-                                        {{ $task->title }}
-                                    </a>
-                                @endforeach
-                                @if($tasks->isEmpty())
-                                    <span class="block py-1 text-[10px] text-gray-400 italic">No tasks yet</span>
-                                @endif
-                                <a href="{{ route('projects.show', $project) }}" class="block py-1 text-[10px] font-bold text-primary hover:underline">+ New Task</a>
-                            </div>
-                        </div>
-                    @endforeach
-                    
-                    @if ($projects->isEmpty())
-                        <div class="rounded-2xl bg-gray-50 px-4 py-8 text-center">
-                            <p class="text-xs font-medium text-gray-400">No active projects</p>
-                            <a href="{{ route('projects.index') }}" class="mt-2 inline-block text-xs font-bold text-primary hover:underline">Start a project</a>
-                        </div>
-                    @endif
-                </div>
-            @endauth
-        </div>
 
         <div class="mt-auto p-4">
             <div class="bg-gray-50 rounded-[2rem] p-4 border border-gray-100">

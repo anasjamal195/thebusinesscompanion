@@ -7,8 +7,8 @@ dialer.best has completed the task **"{{ $task->title }}"**.
 
 We have attached the comprehensive report to this email. You can also view your task online by visiting your dashboard.
 
-<x-mail::button :url="route('projects.show', $task->project_id)">
-View Project Details
+<x-mail::button :url="route('dashboard')">
+View Dashboard
 </x-mail::button>
 
 Thanks,<br>

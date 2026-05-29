@@ -9,7 +9,7 @@
 @section('content')
     <div class="mx-auto max-w-3xl">
         <div class="mb-4 flex items-center justify-end">
-            <x-button variant="outline" href="{{ route('projects.show', $project) }}">Back to project</x-button>
+            <x-button variant="outline" href="{{ route('dashboard') }}">Back to Dashboard</x-button>
             <x-button class="ml-2" href="{{ route('reports.pdf', $report) }}">Download PDF</x-button>
         </div>
 
