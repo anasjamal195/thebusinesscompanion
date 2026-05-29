@@ -79,7 +79,6 @@ class VapiService
                     'name'   => $user->name,
                 ],
                 'assistant' => $assistant,
-                'serverUrl' => $this->getWebhookUrl(),
                 'metadata'  => [
                     'local_call_id' => (string) $call->id,
                 ],
@@ -343,11 +342,12 @@ INSTRUCTIONS;
         $url = config('app.url') ?: 'https://thebusinesscompanion.app';
         $parsed = parse_url($url);
         $host = $parsed['host'] ?? 'thebusinesscompanion.app';
-        $scheme = $parsed['scheme'] ?? 'https';
+        
+        // Vapi requires https:// for webhooks, so we force the scheme to https
+        $scheme = 'https';
 
         if ($host === 'localhost' || $host === '127.0.0.1' || empty($host)) {
             $host = 'thebusinesscompanion.app';
-            $scheme = 'https';
         }
 
         $baseUrl = "{$scheme}://{$host}";
