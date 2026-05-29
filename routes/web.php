@@ -7,46 +7,32 @@ use App\Http\Controllers\OnboardingController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\ReportController;
-use App\Http\Controllers\ChatController;
 use App\Http\Controllers\SettingsController;
-use App\Http\Controllers\CompanionController;
 use App\Http\Controllers\CallController;
+
+// ── Public ────────────────────────────────────────────────────────────────────
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::post('/waitlist', function (Illuminate\Http\Request $request) {
+Route::post('/waitlist', function (\Illuminate\Http\Request $request) {
     $request->validate([
         'email' => 'required|email|unique:waitlist_entries,email'
     ]);
 
-    App\Models\WaitlistEntry::create([
-        'email' => $request->email
-    ]);
+    \App\Models\WaitlistEntry::create(['email' => $request->email]);
 
     return response()->json(['message' => 'Success']);
 })->name('waitlist.store');
 
-
-Route::get('/companions', [CompanionController::class, 'index'])->name('companions.index');
-Route::get('/companions/{id}', [CompanionController::class, 'show'])->name('companions.show');
-
-Route::get('/onboarding/role', [OnboardingController::class, 'role'])->name('onboarding.role');
-Route::post('/onboarding/role', [OnboardingController::class, 'saveRole'])->name('onboarding.role.save');
-
-Route::get('/onboarding/companion', [OnboardingController::class, 'companion'])->name('onboarding.companion');
-Route::post('/onboarding/companion', [OnboardingController::class, 'saveCompanion'])->name('onboarding.companion.save');
-
-Route::get('/onboarding/checkout', [OnboardingController::class, 'checkout'])->name('onboarding.checkout');
-Route::post('/onboarding/checkout', [OnboardingController::class, 'processCheckout'])->name('onboarding.processCheckout');
+// ── Guest ─────────────────────────────────────────────────────────────────────
 
 Route::middleware('guest')->group(function () {
+    Route::get('/login',    [AuthenticatedSessionController::class, 'create'])->name('login');
+    Route::post('/login',   [AuthenticatedSessionController::class, 'store'])->name('login.store');
 
-    Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
-    Route::post('/login', [AuthenticatedSessionController::class, 'store'])->name('login.store');
-
-    Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
+    Route::get('/register',  [RegisteredUserController::class, 'create'])->name('register');
     Route::post('/register', [RegisteredUserController::class, 'store'])->name('register.store');
 });
 
@@ -54,45 +40,35 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
     ->middleware('auth')
     ->name('logout');
 
+// ── Authenticated ─────────────────────────────────────────────────────────────
+
 Route::middleware('auth')->group(function () {
-    Route::get('/onboarding/business', [OnboardingController::class, 'business'])->name('onboarding.business');
-    Route::post('/onboarding/business', [OnboardingController::class, 'saveBusiness'])->name('onboarding.business.save');
 
-    Route::get('/onboarding/calling', [OnboardingController::class, 'calling'])->name('onboarding.calling');
-    Route::post('/onboarding/calling', [OnboardingController::class, 'saveCalling'])->name('onboarding.calling.save');
+    // Onboarding
+    Route::get('/onboarding/schedule',  [OnboardingController::class, 'schedule'])->name('onboarding.schedule');
+    Route::post('/onboarding/schedule', [OnboardingController::class, 'saveSchedule'])->name('onboarding.schedule.save');
 
-    Route::get('/onboarding/method', [OnboardingController::class, 'method'])->name('onboarding.method');
-    Route::post('/onboarding/method', [OnboardingController::class, 'saveMethod'])->name('onboarding.method.save');
-
-    Route::get('/onboarding/waiting-call', [OnboardingController::class, 'waitingCall'])->name('onboarding.waiting_call');
-    Route::post('/onboarding/retry-call', [OnboardingController::class, 'retryCall'])->name('onboarding.retry_call');
-
-    Route::get('/onboarding/details', [OnboardingController::class, 'details'])->name('onboarding.details');
-    Route::post('/onboarding/details', [OnboardingController::class, 'saveDetails'])->name('onboarding.details.save');
-
-    Route::get('/onboarding/task', [OnboardingController::class, 'task'])->name('onboarding.task');
-    Route::post('/onboarding/complete', [OnboardingController::class, 'complete'])->name('onboarding.complete');
-
+    // Dashboard
     Route::get('/dashboard', [ProjectController::class, 'index'])->name('dashboard');
 
-    Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
+    // Settings
+    Route::get('/settings',  [SettingsController::class, 'index'])->name('settings.index');
     Route::post('/settings', [SettingsController::class, 'update'])->name('settings.update');
 
-    Route::get('/projects', [ProjectController::class, 'index'])->name('projects.index');
-    Route::post('/projects', [ProjectController::class, 'store'])->name('projects.store');
-    Route::get('/projects/{project}', [ProjectController::class, 'show'])->name('projects.show');
-    Route::post('/projects/{project}/chat/stream', [ChatController::class, 'stream'])->name('projects.chat.stream');
+    // Tasks
+    Route::post('/tasks',                  [TaskController::class, 'store'])->name('tasks.store');
+    Route::put('/tasks/{task}',            [TaskController::class, 'update'])->name('tasks.update');
+    Route::post('/tasks/{task}/complete',  [TaskController::class, 'complete'])->name('tasks.complete');
 
-    Route::get('/projects/{project}/tasks', [TaskController::class, 'getByProject'])->name('projects.tasks');
-    Route::post('/tasks', [TaskController::class, 'store'])->name('tasks.store');
-    Route::post('/tasks/{task}/input', [TaskController::class, 'provideInput'])->name('tasks.input');
+    // Calls
+    Route::get('/calls',         [CallController::class, 'index'])->name('calls.index');
+    Route::get('/calls/{call}',  [CallController::class, 'show'])->name('calls.show');
 
-    Route::get('/reports/{report}', [ReportController::class, 'show'])->name('reports.show');
-    Route::get('/reports/{report}/pdf', [ReportController::class, 'pdf'])->name('reports.pdf');
-
-    Route::get('/calls', [CallController::class, 'index'])->name('calls.index');
-    Route::get('/calls/{call}', [CallController::class, 'show'])->name('calls.show');
+    // Reports
+    Route::get('/reports/{report}',      [ReportController::class, 'show'])->name('reports.show');
+    Route::get('/reports/{report}/pdf',  [ReportController::class, 'pdf'])->name('reports.pdf');
 });
-Route::post('/stripe/webhook', [App\Http\Controllers\StripeWebhookController::class, 'handleWebhook']);
+
+// ── Webhooks (unauthenticated, verified by signature) ─────────────────────────
+
 Route::post('/vapi/webhook', [\App\Http\Controllers\VapiWebhookController::class, 'handle'])->name('vapi.webhook');
-Route::post('/api/tasks/webhook-process', [\App\Http\Controllers\TaskWebhookController::class, 'process'])->name('tasks.webhook.process');

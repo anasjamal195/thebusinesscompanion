@@ -1,6 +1,6 @@
 @php
     $title = 'Dashboard';
-    $pageTitle = 'Dashboard';
+    $pageTitle = 'Today\'s Tasks';
     $activeNav = 'dashboard';
 @endphp
 
@@ -9,173 +9,102 @@
 @section('content')
 <div class="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
     
-    @if(request()->query('proofread'))
-    <div class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm animate-in fade-in duration-300">
-        <div class="bg-white rounded-[3rem] p-8 md:p-12 shadow-2xl max-w-lg w-full text-center space-y-6 animate-in zoom-in-95 slide-in-from-bottom-8 duration-500 delay-150">
-            <div class="w-20 h-20 bg-primary/10 text-primary rounded-3xl flex items-center justify-center mx-auto mb-4">
-                <span class="material-symbols-outlined text-5xl">spellcheck</span>
-            </div>
-            <div class="space-y-2">
-                <h2 class="text-3xl font-black text-slate-900">Ready to Proofread?</h2>
-                <p class="text-slate-500 font-medium leading-relaxed">
-                    Great job on the call! Your companion has extracted your business details. Please take a moment to review and refine them.
-                </p>
-            </div>
-            <div class="flex flex-col gap-3">
-                <a href="{{ route('onboarding.details') }}" class="w-full py-4 bg-primary hover:bg-primary-container text-white font-black rounded-2xl shadow-xl shadow-primary/20 transition-all active:scale-95 flex items-center justify-center gap-2">
-                    Review Information
-                    <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
-                </a>
-                <button onclick="this.closest('.fixed').remove()" class="w-full py-4 text-slate-400 font-bold hover:text-slate-600 transition-colors">
-                    I'll do it later
-                </button>
-            </div>
-        </div>
-    </div>
-    @endif
     <!-- Welcome Header -->
     <div class="relative overflow-hidden bg-white rounded-[3rem] p-8 md:p-12 shadow-xl shadow-gray-200/50 border border-gray-100 group">
         <div class="absolute -right-20 -top-20 w-80 h-80 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/10 transition-colors duration-700"></div>
         <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-8">
             <div class="space-y-4">
                 <div class="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 text-primary rounded-full text-xs font-black uppercase tracking-wider">
-                    <span class="material-symbols-outlined text-[16px]">verified</span>
-                    <span>Workspace Active</span>
+                    <span class="material-symbols-outlined text-[16px]">schedule</span>
+                    <span>Scheduled for {{ auth()->user()->morning_call_time }}</span>
                 </div>
                 <h2 class="text-4xl md:text-5xl font-black text-gray-900 tracking-tight">
-                    Welcome back, <span class="text-primary">{{ explode(' ', auth()->user()->name)[0] }}</span>.
+                    Hello, <span class="text-primary">{{ explode(' ', auth()->user()->name)[0] }}</span>.
                 </h2>
                 <p class="text-lg text-gray-500 max-w-xl font-medium">
-                    Your companion has processed <span class="text-gray-900 font-bold">12 tasks</span> this week. Everything is looking good.
+                    You have <span class="text-gray-900 font-bold">{{ $tasks->where('status', 'pending')->count() }}</span> pending tasks for today.
                 </p>
             </div>
             <div class="flex gap-4">
-                <a href="{{ route('projects.index') }}" class="px-8 py-4 bg-primary hover:bg-primary-container text-white font-bold rounded-2xl shadow-xl shadow-primary/20 transition-all active:scale-95 flex items-center gap-3">
+                <button onclick="document.getElementById('newTaskModal').classList.remove('hidden')" class="px-8 py-4 bg-primary hover:bg-primary-container text-white font-bold rounded-2xl shadow-xl shadow-primary/20 transition-all active:scale-95 flex items-center gap-3">
                     <span class="material-symbols-outlined">add</span>
-                    New Project
-                </a>
+                    Add Task
+                </button>
             </div>
         </div>
     </div>
 
     <!-- Main Grid -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <!-- Left Column: Active Projects -->
+        <!-- Left Column: Tasks -->
         <div class="lg:col-span-2 space-y-8">
             <div class="bg-white rounded-[2.5rem] p-8 shadow-lg shadow-gray-200/30 border border-gray-50">
                 <div class="flex items-center justify-between mb-8">
                     <div>
-                        <h3 class="text-2xl font-black text-gray-900 tracking-tight">Active Projects</h3>
-                        <p class="text-sm text-gray-500 font-medium">Quick overview of your current focuses.</p>
-                    </div>
-                    <a href="{{ route('projects.index') }}" class="text-sm font-bold text-primary hover:underline">View All</a>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    @foreach (($projects ?? collect()) as $p)
-                        <a href="{{ route('projects.show', $p) }}" class="group relative overflow-hidden bg-gray-50/50 hover:bg-white rounded-3xl p-6 border border-transparent hover:border-primary/20 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300">
-                            <div class="flex items-start justify-between gap-4 relative z-10">
-                                <div class="space-y-1">
-                                    <h4 class="font-black text-gray-900 group-hover:text-primary transition-colors">{{ $p['name'] }}</h4>
-                                    <p class="text-xs text-gray-500 font-bold uppercase tracking-wider">{{ $p['domain'] ?? 'General' }}</p>
-                                </div>
-                                <span class="material-symbols-outlined text-primary opacity-0 group-hover:opacity-100 transition-all group-hover:translate-x-1">arrow_forward</span>
-                            </div>
-                            <div class="mt-6 flex items-center gap-4">
-                                <div class="flex-grow h-1.5 bg-gray-200 rounded-full overflow-hidden">
-                                    <div class="h-full bg-primary rounded-full transition-all duration-1000" style="width: 65%"></div>
-                                </div>
-                                <span class="text-[10px] font-black text-gray-400">65%</span>
-                            </div>
-                        </a>
-                    @endforeach
-
-                    @if (($projects ?? collect())->isEmpty())
-                        <div class="md:col-span-2 p-12 text-center bg-gray-50 rounded-3xl border-2 border-dashed border-gray-200">
-                            <span class="material-symbols-outlined text-4xl text-gray-300 mb-4">folder_off</span>
-                            <p class="text-gray-500 font-medium mb-4">No active projects yet.</p>
-                            <a href="{{ route('projects.index') }}" class="text-primary font-bold hover:underline">Create your first project</a>
-                        </div>
-                    @endif
-                </div>
-            </div>
-
-            <!-- Recent Activity -->
-            <div class="bg-white rounded-[2.5rem] p-8 shadow-lg shadow-gray-200/30 border border-gray-50">
-                <div class="flex items-center justify-between mb-8">
-                    <div>
-                        <h3 class="text-2xl font-black text-gray-900 tracking-tight">Recent Tasks</h3>
-                        <p class="text-sm text-gray-500 font-medium">Updates from your digital employee.</p>
+                        <h3 class="text-2xl font-black text-gray-900 tracking-tight">Today's Agenda</h3>
+                        <p class="text-sm text-gray-500 font-medium">Tasks extracted from your morning call.</p>
                     </div>
                 </div>
 
                 <div class="space-y-4">
-                    <div class="flex items-center justify-center p-12 bg-gray-50/50 rounded-3xl border border-gray-100">
-                        <div class="text-center">
-                            <span class="material-symbols-outlined text-4xl text-gray-200 mb-2">pending_actions</span>
-                            <p class="text-gray-400 text-sm font-medium">Recent tasks will appear as your companion works.</p>
+                    @forelse ($tasks as $task)
+                        <div class="flex items-center justify-between p-5 bg-gray-50/50 hover:bg-white rounded-2xl border border-gray-100 hover:border-primary/20 hover:shadow-lg transition-all duration-300">
+                            <div class="flex items-start gap-4">
+                                <form action="{{ route('tasks.complete', $task) }}" method="POST" class="mt-1">
+                                    @csrf
+                                    <button type="submit" class="w-6 h-6 rounded border {{ $task->status === 'completed' ? 'bg-primary border-primary text-white' : 'border-gray-300 bg-white hover:border-primary' }} flex items-center justify-center transition-colors">
+                                        @if($task->status === 'completed')
+                                            <span class="material-symbols-outlined text-[16px] font-bold">check</span>
+                                        @endif
+                                    </button>
+                                </form>
+                                <div>
+                                    <h4 class="font-bold text-gray-900 {{ $task->status === 'completed' ? 'line-through text-gray-400' : '' }}">{{ $task->title }}</h4>
+                                    <p class="text-sm text-gray-500 mt-1">{{ $task->input_text }}</p>
+                                    @if($task->estimated_minutes)
+                                    <div class="flex items-center gap-1 mt-2 text-xs font-bold text-primary bg-primary/10 px-2 py-1 rounded w-fit">
+                                        <span class="material-symbols-outlined text-[14px]">timer</span>
+                                        {{ $task->estimated_minutes }} mins
+                                    </div>
+                                    @endif
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    @empty
+                        <div class="text-center py-12">
+                            <span class="material-symbols-outlined text-5xl text-gray-300 mb-4">task</span>
+                            <p class="text-gray-500 font-medium">No tasks yet for today. Wait for your morning call or add one manually!</p>
+                        </div>
+                    @endforelse
                 </div>
             </div>
         </div>
+    </div>
+</div>
 
-        <!-- Right Column: AI Insights & Status -->
-        <div class="space-y-8">
-            <div class="bg-gray-900 rounded-[2.5rem] p-8 text-white relative overflow-hidden shadow-xl shadow-gray-900/20">
-                <div class="absolute -right-10 -top-10 w-40 h-40 bg-primary/20 rounded-full blur-3xl"></div>
-                <h3 class="text-xl font-black mb-6 flex items-center gap-2 relative z-10">
-                    <span class="material-symbols-outlined text-primary">auto_awesome</span>
-                    Daily Insights
-                </h3>
-                
-                <div class="space-y-4 relative z-10">
-                    <div class="bg-white/5 rounded-2xl p-5 border border-white/10 hover:bg-white/10 transition-colors">
-                        <p class="text-xs font-bold text-primary uppercase tracking-widest mb-1 leading-none">Recommendation</p>
-                        <p class="text-sm font-medium text-gray-300">Check the market analysis for Acme. I've found 3 new competitors.</p>
-                    </div>
-                    <div class="bg-white/5 rounded-2xl p-5 border border-white/10 hover:bg-white/10 transition-colors">
-                        <p class="text-xs font-bold text-green-400 uppercase tracking-widest mb-1 leading-none">Status</p>
-                        <p class="text-sm font-medium text-gray-300">GTM Strategy for Project Northstar is 80% complete.</p>
-                    </div>
-                </div>
-
-                <div class="mt-8 pt-6 border-t border-white/10">
-                    <button class="w-full py-4 bg-white text-gray-900 font-bold rounded-2xl hover:bg-gray-100 transition-all active:scale-95 flex items-center justify-center gap-2 text-sm shadow-xl shadow-black/20">
-                        <span class="material-symbols-outlined text-[18px]">chat</span>
-                        Ask your Companion
-                    </button>
-                </div>
+<!-- New Task Modal (Simplified for manual entry if needed) -->
+<div id="newTaskModal" class="hidden fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm">
+    <div class="bg-white rounded-[2rem] p-8 max-w-md w-full shadow-2xl relative">
+        <button onclick="document.getElementById('newTaskModal').classList.add('hidden')" class="absolute top-6 right-6 text-gray-400 hover:text-gray-600">
+            <span class="material-symbols-outlined">close</span>
+        </button>
+        <h3 class="text-2xl font-black mb-6">Add New Task</h3>
+        <form action="{{ route('tasks.store') }}" method="POST" class="space-y-4">
+            @csrf
+            <div>
+                <label class="block text-sm font-bold text-gray-700 mb-1">Title</label>
+                <input type="text" name="title" required class="w-full rounded-xl border-gray-200 focus:border-primary focus:ring focus:ring-primary/20">
             </div>
-
-            <!-- Subscription Status -->
-            <div class="bg-white rounded-[2.5rem] p-8 shadow-lg shadow-gray-200/30 border border-gray-50 overflow-hidden relative group">
-                <div class="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 transition-transform group-hover:scale-150 duration-700"></div>
-                <h3 class="text-lg font-black text-gray-900 mb-6">Plan Status</h3>
-                
-                <div class="flex items-center gap-4 mb-6">
-                    <div class="h-12 w-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center">
-                        <span class="material-symbols-outlined text-[24px]">workspace_premium</span>
-                    </div>
-                    <div>
-                        <p class="text-sm font-black text-gray-900">Business Pro</p>
-                        <p class="text-xs text-gray-500 font-medium">Renews in 12 days</p>
-                    </div>
-                </div>
-
-                <div class="space-y-4">
-                    <div class="flex justify-between text-xs font-bold">
-                        <span class="text-gray-500 uppercase tracking-widest">Task Credits</span>
-                        <span class="text-gray-900 underline">84 / 100</span>
-                    </div>
-                    <div class="h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                        <div class="h-full bg-primary rounded-full scale-x-75 origin-left"></div>
-                    </div>
-                </div>
-
-                <a href="{{ route('onboarding.business') }}" class="mt-8 block w-full text-center py-3 rounded-xl border border-gray-200 text-xs font-bold text-gray-600 hover:bg-gray-50 hover:border-gray-300 transition-all active:scale-95">Manage Subscription</a>
+            <div>
+                <label class="block text-sm font-bold text-gray-700 mb-1">Details</label>
+                <textarea name="input_text" rows="3" required class="w-full rounded-xl border-gray-200 focus:border-primary focus:ring focus:ring-primary/20"></textarea>
             </div>
-        </div>
+            <div>
+                <label class="block text-sm font-bold text-gray-700 mb-1">Estimated Minutes</label>
+                <input type="number" name="estimated_minutes" value="30" min="1" required class="w-full rounded-xl border-gray-200 focus:border-primary focus:ring focus:ring-primary/20">
+            </div>
+            <button type="submit" class="w-full py-3 bg-primary text-white font-bold rounded-xl shadow-lg shadow-primary/20 hover:bg-primary-container">Save Task</button>
+        </form>
     </div>
 </div>
 @endsection

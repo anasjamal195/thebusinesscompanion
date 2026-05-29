@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Jobs\ProcessTaskJob;
 use App\Models\Call;
-use App\Models\Project;
 use App\Models\Task;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -54,7 +52,6 @@ class VapiWebhookController extends Controller
                     $call = Call::create([
                         'call_id' => $callId,
                         'user_id' => $user->id,
-                        'ai_character_id' => $user->companion_id ?? 1, // Fallback
                         'status' => 'initiated',
                         'direction' => 'inbound'
                     ]);
@@ -94,7 +91,7 @@ class VapiWebhookController extends Controller
                         'recording_url' => $payload['message']['artifact']['recordingUrl'] ?? null,
                     ]);
 
-                    $this->finalizeOnboardingFromTranscript($call);
+                    $this->processCallTranscript($call);
                 }
                 break;
 
@@ -141,30 +138,21 @@ class VapiWebhookController extends Controller
         return $results;
     }
 
-    protected function finalizeOnboardingFromTranscript($call)
+    protected function processCallTranscript($call)
     {
         $user = $call->user;
         $transcript = $call->transcript;
 
         if (!$transcript) return;
 
-        // Tell the UI we are now processing the data
-        broadcast(new \App\Events\CallProgressUpdated($user->id, 'processing_start', 'Processing your conversation...', 'processing'));
-
-        // Use OpenRouter (DeepSeek) to extract structured data from the transcript
-        $prompt = "Extract the following business details from this onboarding transcript. 
-        Respond ONLY with a JSON object containing these keys:
-        - business_type: (e.g. SaaS, Agency, E-commerce, Local Business, Freelancer, Enterprise)
-        - industry: (e.g. Fintech, Healthcare, etc.)
-        - target_audience: (Brief description of ideal customers)
-        - experience_level: (beginner, intermediate, or expert)
-        - project_name: (A concise name for the user's current project)
-        - project_url: (The website domain if mentioned, or null)
-        - project_description: (A 1-2 sentence objective for the project)
-        - success_metric: (How the user defines success for this project, or null)
-        - current_problems: (Specific challenges or pain points mentioned)
-        - urgent_tasks: (The most immediate task the user needs help with)
-        - call_followup_preference: (yes/no)
+        $prompt = "You are an AI assistant analyzing a call transcript between a user and their daily planner AI.
+        Extract any tasks discussed.
+        Respond ONLY with a JSON object containing a 'tasks' array.
+        Each task object should have:
+        - title: (Brief task name)
+        - details: (Any specific instructions mentioned)
+        - estimated_minutes: (Integer. Estimated duration in minutes. Default to 60 if not specified)
+        - status: (pending or completed. Usually pending for new tasks, or completed if they say they already did it)
 
         Transcript:
         {$transcript}";
@@ -183,52 +171,27 @@ class VapiWebhookController extends Controller
         if ($response->successful()) {
             $content = $response->json()['choices'][0]['message']['content'];
             $extractedData = json_decode($content, true);
+            $tasks = $extractedData['tasks'] ?? [];
             
-            DB::transaction(function() use ($user, $extractedData) {
+            DB::transaction(function() use ($user, $tasks) {
                 try {
-                    $profile = $user->profile;
-
-                    $profile->update([
-                        'business_type' => $extractedData['business_type'] ?? $profile->business_type,
-                        'industry' => $extractedData['industry'] ?? $profile->industry,
-                        'target_audience' => $extractedData['target_audience'] ?? $profile->target_audience,
-                        'experience_level' => $extractedData['experience_level'] ?? $profile->experience_level,
-                        'current_problems' => $extractedData['current_problems'] ?? $profile->current_problems,
-                        'urgent_tasks' => $extractedData['urgent_tasks'] ?? $profile->urgent_tasks,
-                        'call_followup_preference' => (isset($extractedData['call_followup_preference']) && strtolower($extractedData['call_followup_preference']) === 'yes'),
-                    ]);
-
-                    $project = Project::updateOrCreate(
-                        ['user_id' => $user->id, 'name' => $extractedData['project_name'] ?? 'Initial Project'],
-                        [
-                            'domain' => $extractedData['project_url'] ?? null,
-                            'description' => $extractedData['project_description'] ?? 'Project created via voice onboarding.',
-                            'success_metric' => $extractedData['success_metric'] ?? null,
-                        ]
-                    );
-
-                    if (!empty($extractedData['urgent_tasks'])) {
-                        $task = Task::create([
-                            'project_id' => $project->id,
+                    foreach ($tasks as $taskData) {
+                        $estimatedMins = (int)($taskData['estimated_minutes'] ?? 60);
+                        
+                        Task::create([
                             'user_id' => $user->id,
-                            'title' => 'Initial Task',
-                            'input_text' => $extractedData['urgent_tasks'],
-                            'priority' => 'high',
-                            'status' => 'pending',
+                            'title' => $taskData['title'] ?? 'Extracted Task',
+                            'input_text' => $taskData['details'] ?? '',
+                            'priority' => 'medium',
+                            'status' => $taskData['status'] ?? 'pending',
+                            'date' => today(),
+                            'estimated_minutes' => $estimatedMins,
+                            'scheduled_followup_time' => now()->addMinutes($estimatedMins),
                         ]);
-
-                        \App\Jobs\ProcessTaskJob::dispatch($task->id);
                     }
-
-                    // We don't set onboarding_completed = true here anymore.
-                    // Instead, we let the dashboard redirect the user to the next pending step (usually details or task).
-                    
-                    $redirectUrl = route('dashboard');
-                    broadcast(new \App\Events\CallProgressUpdated($user->id, 'complete', $redirectUrl, 'completed'));
-                    
-                    Log::info("Onboarding data extracted for User {$user->id}");
+                    Log::info("Extracted " . count($tasks) . " tasks for User {$user->id}");
                 } catch (\Exception $e) {
-                    Log::error("Failed to finalize onboarding: " . $e->getMessage());
+                    Log::error("Failed to process tasks: " . $e->getMessage());
                 }
             });
         }

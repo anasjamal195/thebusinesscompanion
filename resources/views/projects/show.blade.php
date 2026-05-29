@@ -53,7 +53,7 @@
                     <input
                         name="message"
                         type="text"
-                        placeholder="Message The Business Companion AI..."
+                        placeholder="Message dialer.best..."
                         class="h-10 flex-1 rounded-xl border border-gray-200 px-4 text-sm focus:border-blue-500 focus:ring-blue-500"
                         autocomplete="off"
                         required

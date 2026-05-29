@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-  <title>The Business Companion - Engineered for Excellence</title>
+  <title>dialer.best - Engineered for Excellence</title>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900&display=swap"
     rel="stylesheet" />
@@ -84,7 +84,7 @@
               stroke-linejoin="round" />
             <path d="M12 10L6.5 21H17.5L12 10Z" fill="#3E50F7" />
           </svg>
-          <span class="text-xl font-extrabold tracking-tight">The Business Companion</span>
+          <span class="text-xl font-extrabold tracking-tight">dialer.best</span>
         </div>
         <div class="hidden lg:flex items-center space-x-10 text-[15px] font-semibold text-white/70">
           <a class="hover:text-white transition-colors" href="#evolution">The Big Picture</a>
@@ -700,7 +700,7 @@
       <div class="text-center mb-20">
         <h2 class="text-3xl md:text-5xl font-black text-[#25224A] tracking-tight mb-6">Built for <span
             class="text-[#3E50F7]">Daily Life</span></h2>
-        <p class="text-[#7F798D] text-lg max-w-2xl mx-auto">See how The Business Companion handles the heavy lifting
+        <p class="text-[#7F798D] text-lg max-w-2xl mx-auto">See how dialer.best handles the heavy lifting
           while you focus on the vision.</p>
       </div>
 
@@ -1531,12 +1531,12 @@
         <div class="bg-white rounded-3xl border border-[#DEE8FF] overflow-hidden transition-all shadow-sm">
           <button @click="activeFaq === 1 ? activeFaq = null : activeFaq = 1"
             class="w-full px-8 py-6 text-left flex items-center justify-between group">
-            <span class="text-lg md:text-xl font-bold text-[#25224A]">What is The Business Companion?</span>
+            <span class="text-lg md:text-xl font-bold text-[#25224A]">What is dialer.best?</span>
             <span class="material-symbols-outlined text-[#3E50F7] transition-transform duration-300"
               :class="activeFaq === 1 ? 'rotate-45' : ''">add</span>
           </button>
           <div x-show="activeFaq === 1" x-collapse class="px-8 pb-6 text-[#7F798D] leading-relaxed">
-            The Business Companion is an AI-powered professional assistant that lives in its own secure, private
+            dialer.best is an AI-powered professional assistant that lives in its own secure, private
             computer. Unlike standard chatbots, it has a persistent digital identity and can execute complex business
             tasks autonomously, from research and analysis to planning and execution.
           </div>
@@ -1628,7 +1628,7 @@
         <div class="col-span-2 md:col-span-2 space-y-6">
           <div class="font-black tracking-tighter text-[#25224A] flex items-baseline">
             <span class="material-symbols-outlined text-[#3E50F7] mr-2">change_history</span>
-            <span class="text-xl">The Business Companion</span>
+            <span class="text-xl">dialer.best</span>
           </div>
           <p class="text-sm text-[#7F798D] max-w-xs leading-relaxed">
             Revolutionizing professional productivity through autonomous cloud computers, contextual intelligence, and
@@ -1668,7 +1668,7 @@
       </div>
       <div
         class="border-t border-[#DEE8FF] pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-[#7F798D]">
-        <p>© {{ date('Y') }} The Business Companion. All rights reserved.</p>
+        <p>© {{ date('Y') }} dialer.best. All rights reserved.</p>
         <p>Engineered for Excellence.</p>
       </div>
     </div>

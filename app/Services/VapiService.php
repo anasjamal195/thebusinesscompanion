@@ -3,7 +3,9 @@
 namespace App\Services;
 
 use App\Models\Call;
+use App\Models\Task;
 use App\Models\User;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
@@ -12,213 +14,302 @@ class VapiService
     protected string $apiKey;
     protected string $baseUrl = 'https://api.vapi.ai';
 
+    // Available 11labs voice IDs — mirrors the onboarding voice picker
+    const VOICES = [
+        'cgSgspJ2msm6clMCkdW9' => ['name' => 'Jessica', 'provider' => 'elevenlabs'],
+        'TX3LPaxmHKxFdv7VOQHJ' => ['name' => 'Liam',    'provider' => 'elevenlabs'],
+        'EXAVITQu4vr4xnSDxMaL' => ['name' => 'Sarah',   'provider' => 'elevenlabs'],
+        'bIHbv24MWmeRgasZH58o' => ['name' => 'Will',    'provider' => 'elevenlabs'],
+        'XB0fDUnXU5powFXDhCwa' => ['name' => 'Charlotte','provider' => 'elevenlabs'],
+        'nPczCjzI2devNBz1zQrb' => ['name' => 'Brian',   'provider' => 'elevenlabs'],
+    ];
+
+    // Fallback voice if user hasn't picked one
+    const DEFAULT_VOICE_ID = 'cgSgspJ2msm6clMCkdW9';
+
     public function __construct()
     {
         $this->apiKey = config('services.vapi.private_key') ?? '';
-        
+
         if (empty($this->apiKey)) {
-            Log::error("VapiService: VAPI_PRIVATE_KEY is missing from configuration.");
+            Log::error('VapiService: VAPI_PRIVATE_KEY is missing from configuration.');
         }
     }
 
     /**
-     * Create an outbound call for a user.
+     * Initiate an outbound phone call with a fully ephemeral (inline) assistant.
+     * No pre-built agent ID is ever used.
+     *
+     * @param  User            $user
+     * @param  string          $callType  'morning' | 'followup'
+     * @param  Collection|null $tasks     Today's pending tasks to inject into the prompt
      */
-    public function createCall(User $user, string $taskType = 'onboarding', array $extraMetadata = [])
+    public function createCall(User $user, string $callType = 'morning', ?Collection $tasks = null)
     {
-        $companion = $user->companion;
-        $phoneNumber = $user->profile->phone_number;
-
-        if (!$companion || !$companion->vapi_assistant_id) {
-            Log::error("Cannot initiate Vapi call: User {$user->id} companion has no Vapi Assistant ID.");
-            return false;
-        }
+        $phoneNumber = optional($user->profile)->phone_number;
 
         if (!$phoneNumber) {
-            Log::error("Cannot initiate Vapi call: User {$user->id} has no phone number.");
+            Log::warning("VapiService: User {$user->id} has no phone number — skipping outbound call.");
             return false;
         }
 
-        // Prepare dynamic variables/assistant overrides
-        $assistantOverrides = $this->prepareAssistantOverrides($user, $taskType);
-        
-        // Merge with any extra metadata provided
-        $assistantOverrides['variableValues'] = array_merge($assistantOverrides['variableValues'] ?? [], $extraMetadata);
-
-        // Clean phone number (ensure it starts with +)
+        // Ensure phone number starts with +
         if (!str_starts_with($phoneNumber, '+')) {
             $phoneNumber = '+' . ltrim($phoneNumber, '0');
         }
 
+        $assistant = $this->buildEphemeralAssistant($user, $callType, $tasks);
+
         try {
-            Log::info("VapiService: Posting to Vapi", [
-                'url' => "{$this->baseUrl}/call",
-                'phone' => $phoneNumber,
-                'assistantId' => $companion->vapi_assistant_id
+            $payload = [
+                'phoneNumberId' => config('services.vapi.phone_number_id'),
+                'customer'      => [
+                    'number' => $phoneNumber,
+                    'name'   => $user->name,
+                ],
+                'assistant' => $assistant,
+            ];
+
+            Log::info("VapiService: Initiating {$callType} call for User {$user->id}", [
+                'phone'     => $phoneNumber,
+                'voice_id'  => $user->voice_id ?? self::DEFAULT_VOICE_ID,
+                'call_type' => $callType,
             ]);
 
-            $response = Http::withToken($this->apiKey)
-                ->post("{$this->baseUrl}/call", [
-                    'phoneNumberId' => config('services.vapi.phone_number_id'),
-                    'assistantId' => $companion->vapi_assistant_id,
-                    'customer' => [
-                        'number' => $phoneNumber,
-                        'name' => $user->name,
-                    ],
-                    'assistantOverrides' => $assistantOverrides,
-                ]);
+            $response = Http::withToken($this->apiKey)->post("{$this->baseUrl}/call", $payload);
 
             if ($response->successful()) {
                 $vapiCall = $response->json();
-                
-                // Persist the call in our database
+
                 Call::create([
-                    'call_id' => $vapiCall['id'],
-                    'user_id' => $user->id,
-                    'ai_character_id' => $companion->id,
-                    'status' => 'initiated',
+                    'call_id'   => $vapiCall['id'],
+                    'user_id'   => $user->id,
+                    'status'    => 'initiated',
                     'direction' => 'outbound',
-                    'metadata' => [
-                        'task_type' => $taskType,
-                        'variable_values' => $assistantOverrides['variableValues'],
-                        'vapi_response' => $vapiCall
+                    'metadata'  => [
+                        'call_type' => $callType,
+                        'task_ids'  => $tasks?->pluck('id')->toArray() ?? [],
                     ],
                 ]);
 
-                Log::info("Vapi call initiated for User {$user->id}", ['call_id' => $vapiCall['id']]);
+                Log::info("VapiService: Call initiated for User {$user->id}", ['call_id' => $vapiCall['id']]);
                 return $vapiCall;
             }
 
-            Log::error("Vapi API error: " . $response->status() . " - " . $response->body());
+            Log::error("VapiService: Vapi API error {$response->status()}", ['body' => $response->body()]);
             return false;
+
         } catch (\Exception $e) {
-            Log::error("Vapi Exception: " . $e->getMessage(), [
+            Log::error("VapiService: Exception — " . $e->getMessage(), [
                 'file' => $e->getFile(),
-                'line' => $e->getLine()
+                'line' => $e->getLine(),
             ]);
             return false;
         }
     }
 
     /**
-     * Prepare overrides and variables for the Vapi Assistant.
+     * Return the assistant configuration object for a web call (no phone number needed).
+     * The frontend SDK passes this directly to Vapi.
+     *
+     * @param  User            $user
+     * @param  string          $callType
+     * @param  Collection|null $tasks
      */
-    protected function prepareAssistantOverrides(User $user, string $taskType): array
+    public function getWebCallAssistant(User $user, string $callType = 'morning', ?Collection $tasks = null): array
     {
-        $companion = $user->companion;
-        $systemPrompt = $this->prepareDynamicSystemPrompt($user, $taskType);
-        $firstMessage = $this->prepareFirstMessage($user, $taskType);
+        return $this->buildEphemeralAssistant($user, $callType, $tasks);
+    }
+
+    /**
+     * Build the full inline (ephemeral) assistant object.
+     * This is NEVER stored in Vapi — it only lives for the duration of the call.
+     */
+    protected function buildEphemeralAssistant(User $user, string $callType, ?Collection $tasks): array
+    {
+        $voiceId   = $user->voice_id ?? self::DEFAULT_VOICE_ID;
+        $voiceName = self::VOICES[$voiceId]['name'] ?? 'Jessica';
+
+        $systemPrompt = $this->buildSystemPrompt($user, $callType, $tasks, $voiceName);
+        $firstMessage = $this->buildFirstMessage($user, $callType, $voiceName);
 
         return [
-            'firstMessage' => $firstMessage,
-            'variableValues' => [
-                'user_name' => $user->name,
-                'user_role' => $user->role ?? 'Founder',
-                'first_message' => $firstMessage,
-                'full_system_prompt' => $systemPrompt,
-                'dynamic_task_instructions' => $this->getTaskInstructions($taskType),
-                'onboarding_guide' => $taskType === 'onboarding' ? $this->getOnboardingGuide() : '',
-            ],
-            'model' => [
-                'model' => 'gpt-4o-mini',
+            // No "name" or "id" — this stays fully ephemeral
+            'firstMessage'       => $firstMessage,
+            'firstMessageMode'   => 'assistant-speaks-first',
+            'model'              => [
+                'provider' => 'openai',
+                'model'    => 'gpt-4o',
                 'messages' => [
                     [
-                        'role' => 'system',
+                        'role'    => 'system',
                         'content' => $systemPrompt,
-                    ]
+                    ],
                 ],
-                'systemPrompt' => $systemPrompt,
+                'temperature' => 0.8,
             ],
+            'voice' => [
+                'provider' => 'elevenlabs',
+                'voiceId'  => $voiceId,
+                'stability'        => 0.5,
+                'similarityBoost'  => 0.75,
+                'style'            => 0.35,
+                'useSpeakerBoost'  => true,
+            ],
+            'transcriber' => [
+                'provider' => 'deepgram',
+                'model'    => 'nova-2',
+                'language' => 'en',
+            ],
+            'endCallFunctionEnabled'    => true,
+            'silenceTimeoutSeconds'     => 30,
+            'maxDurationSeconds'        => 600,
+            'backgroundDenoisingEnabled'=> true,
         ];
     }
 
     /**
-     * Get data required for the web call view.
+     * Build the fully personalized system prompt.
      */
-    public function getWebCallData(User $user, string $taskType = 'onboarding'): array
+    protected function buildSystemPrompt(User $user, string $callType, ?Collection $tasks, string $voiceName): string
     {
-        return [
-            'assistantId' => $user->companion->vapi_assistant_id,
-            'systemPromptTemplate' => "{{full_system_prompt}}",
-            'fullSystemPrompt' => $this->prepareDynamicSystemPrompt($user, $taskType),
-            'firstMessage' => $this->prepareFirstMessage($user, $taskType),
-        ];
+        $firstName = explode(' ', $user->name)[0];
+
+        // Build task context
+        $taskContext = '';
+        if ($tasks && $tasks->isNotEmpty()) {
+            $taskLines = $tasks->map(function (Task $task, int $i) {
+                $est = $task->estimated_minutes ? "{$task->estimated_minutes} min" : 'no estimate yet';
+                return ($i + 1) . ". {$task->title}" . ($task->input_text ? " — {$task->input_text}" : '') . " ($est)";
+            })->implode("\n");
+
+            $taskContext = "\n\nUSER'S TASKS FOR TODAY:\n{$taskLines}";
+        }
+
+        $callInstructions = match ($callType) {
+            'morning' => $this->morningCallInstructions($firstName, empty($taskContext)),
+            'followup' => $this->followupCallInstructions($firstName),
+            default   => $this->morningCallInstructions($firstName, empty($taskContext)),
+        };
+
+        return <<<PROMPT
+# WHO YOU ARE
+You are {$voiceName}, a friendly and energetic daily planner AI from dialer.best.
+You're like that one friend who's always hyped about helping you crush your day.
+You call {$firstName} every morning to plan their day, and check back in throughout the day to keep them on track.
+
+# YOUR VIBE
+- Casual, warm, and genuinely encouraging — never robotic or corporate.
+- Short sentences. High energy. Real talk.
+- Use natural speech patterns: "Okay so...", "Alright!", "That's awesome!", "Love that!", "No worries!"
+- React to what they say — be present, not scripted.
+- ONE question at a time. Don't dump a list on them.
+- NEVER say "As an AI", "I'm a language model", or anything like that.
+- If they seem stressed, be extra supportive and help them prioritize.
+
+# YOUR NAME
+You are {$voiceName}. If they ask who you are, say you're their dialer.best assistant.
+
+# USER INFO
+Name: {$firstName}
+{$taskContext}
+
+# WHAT TO DO ON THIS CALL
+{$callInstructions}
+
+# ENDING THE CALL
+When you've got everything you need, say a warm and energetic goodbye, wish them luck on their tasks, and use the endCall tool immediately after.
+PROMPT;
     }
 
-    public function prepareDynamicSystemPrompt(User $user, string $taskType): string
+    protected function morningCallInstructions(string $firstName, bool $noTasksYet): string
     {
-        $companion = $user->companion;
-        $basePrompt = $companion->system_prompt ?: "You are a professional business assistant.";
-        
-        $prompt = "TONE & STYLE:
-- BE EXTREMELY HUMAN. Never say 'As an AI' or 'I am a model'.
-- Use a casual, friendly, and energetic tone.
-- Use natural filler words (like 'um', 'uh', 'gotcha', 'totally', 'cool') naturally.
-- Keep your sentences short and punchy.
-- React naturally to what the user says.
-- Treat the user like a friend you're helping out.
+        if ($noTasksYet) {
+            return <<<INSTRUCTIONS
+This is the MORNING CHECK-IN call. {$firstName} hasn't set any tasks yet today.
 
-IDENTITY:
-You are {$companion->name}.
-Bio: {$companion->bio}
+YOUR GOAL:
+1. Say a warm, energetic good morning.
+2. Ask how they're doing — keep it quick.
+3. Ask what's on their plate today. Get each task one at a time.
+4. For each task, ask roughly how long they think it'll take.
+5. Keep going until they say they're done adding tasks, or naturally wrap up.
+6. Give them a quick motivational send-off and end the call.
 
-CORE PERSONALITY:
-{$basePrompt}
+IMPORTANT: Be encouraging! Starting the day right matters. Keep the energy up.
+INSTRUCTIONS;
+        }
 
-TASK-SPECIFIC INSTRUCTIONS:
-" . $this->getTaskInstructions($taskType) . "
+        return <<<INSTRUCTIONS
+This is the MORNING CHECK-IN call. {$firstName} already has some tasks logged from before.
 
-FLOW CONTROL:
-- Stay in character at all times.
-- Keep responses concise.
-- IMPORTANT: If this is onboarding, when you have all the business info, mention that the user can fill in specific URLs later on the dashboard.
-- When finished, say a warm goodbye and use the 'endCall' tool immediately.
+YOUR GOAL:
+1. Say good morning and mention you can see they've already got some things lined up — that's great!
+2. Quickly run through the existing tasks with them.
+3. Ask if there's anything new to add for today.
+4. Ask for time estimates on any tasks that don't have one yet.
+5. Pump them up and end the call.
 
-ONBOARDING GUIDE:
-" . ($taskType === 'onboarding' ? $this->getOnboardingGuide() : "N/A") . "
-
-USER CONTEXT:
-User Name: {$user->name}
-User Role: " . ($user->role ?? 'Founder');
-
-        return $prompt;
+IMPORTANT: Don't re-ask about tasks they've clearly already defined well. Just confirm and add anything new.
+INSTRUCTIONS;
     }
 
-    public function prepareFirstMessage(User $user, string $taskType): string
+    protected function followupCallInstructions(string $firstName): string
     {
-        $companion = $user->companion;
-        $message = $companion->first_message ?? "Hi, I'm {$companion->name}. How can I help you today?";
-        return str_replace('{{user_name}}', $user->name, $message);
+        return <<<INSTRUCTIONS
+This is a FOLLOW-UP check-in call during the day.
+
+YOUR GOAL:
+1. Say a casual, upbeat hello — like checking in on a friend.
+2. Ask how it's going with their tasks today.
+3. If they completed something, celebrate it! ("That's awesome, nice work!")
+4. If they're stuck on something, be supportive and ask what's blocking them.
+5. Ask if there are any new tasks to add.
+6. Wrap up with energy and encouragement.
+
+IMPORTANT: Keep this call SHORT and punchy. It's a check-in, not a planning session.
+Don't re-list all their tasks unless they ask. Just vibe with them and get the update.
+INSTRUCTIONS;
     }
 
-    protected function getTaskInstructions(string $taskType): string
+    /**
+     * Build a natural, context-aware opening message.
+     */
+    protected function buildFirstMessage(User $user, string $callType, string $voiceName): string
     {
-        return match ($taskType) {
-            'onboarding' => "Hey! Welcome the user and get some quick details about their business, what they're working on, and their first big task. " .
-                            "Mention that they can skip the URLs for now—they can add those on the dashboard later. " .
-                            "Once you've got the gist of it, use the 'endCall' tool to wrap things up.",
-            'follow_up' => "Catch up with the user on their tasks. See if they've got any blockers.",
-            default => "Help the user out with whatever business needs they've got.",
+        $firstName = explode(' ', $user->name)[0];
+        $hour = now()->setTimezone($user->timezone)->hour;
+
+        $greeting = match (true) {
+            $hour < 12 => 'Good morning',
+            $hour < 17 => 'Hey',
+            default    => 'Hey',
+        };
+
+        return match ($callType) {
+            'morning' => "{$greeting}, {$firstName}! It's {$voiceName} from dialer.best. Ready to plan out your day?",
+            'followup' => "Hey {$firstName}! It's {$voiceName} — just checking in. How are the tasks going so far?",
+            default   => "{$greeting}, {$firstName}! It's {$voiceName}. Got a minute?",
         };
     }
 
-    protected function getOnboardingGuide(): string
+    /**
+     * Prepare data for the web call widget on the frontend.
+     */
+    public function getWebCallData(User $user, string $callType = 'morning'): array
     {
-        return "STUFF TO CHAT ABOUT:
-        1. Business Type (SaaS, Agency, etc.)
-        2. Industry
-        3. Who are they targeting?
-        4. Experience level
-        5. First Project Name
-        6. What's the project about? (Description)
-        7. First Task to get started on
-        8. Should we call them after tasks are done?
-        
-        VIBE CHECK:
-        - Keep it light and friendly.
-        - One question at a time, don't grill them.
-        - Skip any URL requests—tell them the dashboard will handle that.
-        - Use 'report_onboarding_data' as soon as they give you an answer.
-        - Wrap up with 'endCall' when done.";
+        $tasks = Task::where('user_id', $user->id)
+            ->where('date', today())
+            ->where('status', 'pending')
+            ->get();
+
+        $assistant = $this->getWebCallAssistant($user, $callType, $tasks);
+
+        return [
+            'assistant'  => $assistant,
+            'callType'   => $callType,
+            'voiceId'    => $user->voice_id ?? self::DEFAULT_VOICE_ID,
+            'voiceName'  => self::VOICES[$user->voice_id ?? self::DEFAULT_VOICE_ID]['name'] ?? 'Jessica',
+        ];
     }
 }

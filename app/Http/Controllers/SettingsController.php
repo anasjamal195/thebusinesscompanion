@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AiCharacter;
 use App\Models\UserProfile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,9 +12,8 @@ class SettingsController extends Controller
     {
         $user = Auth::user();
         $profile = $user->profile ?? new UserProfile();
-        $companions = AiCharacter::all();
         
-        return view('settings', compact('user', 'profile', 'companions'));
+        return view('settings', compact('user', 'profile'));
     }
 
     public function update(Request $request)
@@ -30,7 +28,7 @@ class SettingsController extends Controller
             'business_description' => 'required|string',
             'industry' => 'required|string|max:255',
             'experience_level' => 'required|in:beginner,intermediate,expert',
-            'companion_id' => 'required|exists:ai_characters,id',
+            'voice_id' => 'required|string',
             'current_problems' => 'nullable|string',
             'urgent_tasks' => 'nullable|string',
             'web_links_enabled' => 'nullable|boolean',
@@ -39,7 +37,7 @@ class SettingsController extends Controller
         $user->update([
             'name' => $validated['name'],
             'email' => $validated['email'],
-            'companion_id' => $validated['companion_id'],
+            'voice_id' => $validated['voice_id'],
         ]);
 
         $user->profile()->updateOrCreate(

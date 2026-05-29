@@ -2,191 +2,59 @@
 
 namespace App\Http\Controllers;
 
-use App\Jobs\ProcessTaskJob;
-use App\Models\Project;
 use App\Models\Task;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class TaskController extends Controller
 {
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'project_id' => ['required', 'integer', 'exists:projects,id'],
             'title' => ['required', 'string', 'max:255'],
             'input_text' => ['required', 'string'],
-            'priority' => ['required', 'in:low,medium,high'],
+            'estimated_minutes' => ['required', 'integer', 'min:1'],
         ]);
 
-        $project = Project::query()->findOrFail($validated['project_id']);
-        abort_unless($project->user_id === $request->user()->id, 404);
+        $task = Task::create([
+            'user_id' => $request->user()->id,
+            'title' => $validated['title'],
+            'input_text' => $validated['input_text'],
+            'priority' => 'medium',
+            'status' => 'pending',
+            'date' => today(),
+            'estimated_minutes' => $validated['estimated_minutes'],
+            'scheduled_followup_time' => now()->addMinutes($validated['estimated_minutes']),
+        ]);
 
-        $user = $request->user()->loadMissing('profile');
+        return back()->with('success', 'Task added successfully.');
+    }
 
-        // Check if there is a task waiting for input
-        $waitingTask = Task::where('project_id', $project->id)
-            ->where('status', 'waiting_input')
-            ->where('user_id', $user->id)
-            ->first();
+    public function complete(Request $request, Task $task)
+    {
+        abort_unless($task->user_id === $request->user()->id, 404);
 
-        if ($waitingTask) {
-            $inputs = $waitingTask->user_inputs ?? [];
-            $inputs['user_reply_' . time()] = $validated['input_text'];
-            
-            $waitingTask->update([
-                'user_inputs' => $inputs,
-                'status' => 'processing',
-            ]);
-
-            try {
-                $phpBinary = '/opt/plesk/php/8.3/bin/php';
-                $logPath = storage_path('logs/task-' . $waitingTask->id . '.log');
-                \Symfony\Component\Process\Process::fromShellCommandline(escapeshellarg($phpBinary) . ' ' . escapeshellarg(base_path('artisan')) . ' task:process ' . $waitingTask->id . ' >> ' . escapeshellarg($logPath) . ' 2>&1 &')->run();
-            } catch (\Exception $e) {
-                \Illuminate\Support\Facades\Log::error('Background task error: ' . $e->getMessage());
-            }
-
-            if ($request->expectsJson()) {
-                return response()->json([
-                    'task' => [
-                        'id' => $waitingTask->id,
-                        'title' => $waitingTask->title,
-                        'input_text' => $waitingTask->input_text,
-                        'priority' => $waitingTask->priority,
-                        'status' => $waitingTask->status,
-                    ],
-                ]);
-            }
-            return back();
-        }
-
-        $context = [
-            'user' => [
-                'role' => $user->role,
-                'character_type' => $user->character_type,
-            ],
-            'business' => $user->profile ? [
-                'business_name' => $user->profile->business_name,
-                'business_type' => $user->profile->business_type,
-                'industry' => $user->profile->industry,
-                'target_audience' => $user->profile->target_audience,
-                'goals' => $user->profile->goals,
-                'challenges' => $user->profile->challenges,
-                'experience_level' => $user->profile->experience_level,
-            ] : null,
-            'project' => [
-                'name' => $project->name,
-                'description' => $project->description,
-                'domain' => $project->domain,
-                'objective' => $project->objective,
-                'success_metric' => $project->success_metric,
-            ],
-            'task' => [
-                'title' => $validated['title'],
-                'input_text' => $validated['input_text'],
-                'priority' => $validated['priority'],
-            ],
-        ];
-
-        $task = DB::transaction(function () use ($validated, $request, $project, $context) {
-            return Task::create([
-                'project_id' => $project->id,
-                'user_id' => $request->user()->id,
-                'title' => $validated['title'],
-                'input_text' => $validated['input_text'],
-                'priority' => $validated['priority'],
-                'status' => 'pending',
-                'context_snapshot' => $context,
-            ]);
-        });
-
-        // Start multithreading via Artisan background command
-        try {
-                $phpBinary = '/opt/plesk/php/8.3/bin/php';
-            $logPath = storage_path('logs/task-' . $task->id . '.log');
-            \Symfony\Component\Process\Process::fromShellCommandline(escapeshellarg($phpBinary) . ' ' . escapeshellarg(base_path('artisan')) . ' task:process ' . $task->id . ' > ' . escapeshellarg($logPath) . ' 2>&1 &')->run();
-        } catch (\Exception $e) {
-            \Illuminate\Support\Facades\Log::error('Background task error: ' . $e->getMessage());
-        }
-
-        if ($request->expectsJson()) {
-            return response()->json([
-                'task' => [
-                    'id' => $task->id,
-                    'title' => $task->title,
-                    'input_text' => $task->input_text,
-                    'priority' => $task->priority,
-                    'status' => $task->status,
-                ],
-            ]);
-        }
+        $task->update([
+            'status' => $task->status === 'completed' ? 'pending' : 'completed',
+        ]);
 
         return back();
     }
 
-    public function getByProject(Request $request, Project $project)
-    {
-        abort_unless($project->user_id === $request->user()->id, 404);
-
-        $tasks = $project->tasks()
-            ->with(['output', 'report'])
-            ->latest('id')
-            ->limit(30)
-            ->get()
-            ->reverse()
-            ->values();
-
-        return response()->json([
-            'tasks' => $tasks->map(function (Task $task) {
-                return [
-                    'id' => $task->id,
-                    'title' => $task->title,
-                    'input_text' => $task->input_text,
-                    'priority' => $task->priority,
-                    'status' => $task->status,
-                    'output' => $task->output ? [
-                        'output_text' => $task->output->output_text,
-                    ] : null,
-                    'report' => $task->report ? [
-                        'id' => $task->report->id,
-                        'summary' => $task->report->summary,
-                    ] : null,
-                    'created_at' => $task->created_at?->toISOString(),
-                ];
-            })->all(),
-        ]);
-    }
-
-    public function provideInput(Request $request, Task $task)
+    public function update(Request $request, Task $task)
     {
         abort_unless($task->user_id === $request->user()->id, 404);
 
         $validated = $request->validate([
-            'message' => ['required', 'string'],
+            'title' => ['required', 'string', 'max:255'],
+            'input_text' => ['required', 'string'],
+            'estimated_minutes' => ['required', 'integer', 'min:1'],
         ]);
 
-        if ($task->status === 'waiting_input') {
-            $inputs = $task->user_inputs ?? [];
-            $inputs['user_reply_' . time()] = $validated['message'];
-            
-            $task->update([
-                'user_inputs' => $inputs,
-                'status' => 'processing',
-            ]);
+        $task->update([
+            ...$validated,
+            'scheduled_followup_time' => now()->addMinutes($validated['estimated_minutes']),
+        ]);
 
-            // Inform background runner to continue
-            try {
-                    $phpBinary = '/opt/plesk/php/8.3/bin/php';
-                $logPath = storage_path('logs/task-' . $task->id . '.log');
-                \Symfony\Component\Process\Process::fromShellCommandline(escapeshellarg($phpBinary) . ' ' . escapeshellarg(base_path('artisan')) . ' task:process ' . $task->id . ' >> ' . escapeshellarg($logPath) . ' 2>&1 &')->run();
-            } catch (\Exception $e) {
-                \Illuminate\Support\Facades\Log::error('Background task error: ' . $e->getMessage());
-            }
-
-            return response()->json(['status' => 'processing']);
-        }
-
-        return response()->json(['status' => 'error', 'message' => 'Task is not waiting for input.'], 400);
+        return back();
     }
 }

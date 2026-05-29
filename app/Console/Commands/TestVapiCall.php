@@ -13,7 +13,7 @@ class TestVapiCall extends Command
      *
      * @var string
      */
-    protected $signature = 'test:vapi-call {user_id} {--phone=} {--companion_id=}';
+    protected $signature = 'test:vapi-call {user_id} {--phone=} {--voice_id=}';
 
     /**
      * The console command description.
@@ -40,13 +40,13 @@ class TestVapiCall extends Command
             $this->info("Updated phone number to: " . $this->option('phone'));
         }
 
-        if ($this->option('companion_id')) {
-            $user->update(['companion_id' => $this->option('companion_id')]);
-            $this->info("Updated companion_id to: " . $this->option('companion_id'));
+        if ($this->option('voice_id')) {
+            $user->update(['voice_id' => $this->option('voice_id')]);
+            $this->info("Updated voice_id to: " . $this->option('voice_id'));
         }
 
-        if (!$user->companion_id) {
-            $this->error("User has no companion_id. Use --companion_id=X");
+        if (!$user->voice_id) {
+            $this->error("User has no voice_id. Use --voice_id=X");
             return;
         }
 

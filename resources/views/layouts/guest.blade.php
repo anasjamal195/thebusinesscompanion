@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>{{ $title ?? config('app.name', 'The Business Companion') }}</title>
+    <title>{{ $title ?? config('app.name', 'dialer.best') }}</title>
     
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -90,13 +90,13 @@
     <footer class="full-width py-12 bg-slate-50 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 mt-auto">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 px-6 md:px-12 max-w-7xl mx-auto font-inter">
             <div class="space-y-4">
-                <div class="font-bold text-slate-900 dark:text-white text-lg">The Business Companion AI</div>
+                <div class="font-bold text-slate-900 dark:text-white text-lg">dialer.best</div>
                 <p class="text-sm text-slate-500 dark:text-slate-400 max-w-xs">
                     Revolutionizing professional productivity through contextual intelligence and voice-first interaction.
                 </p>
             </div>
             <div class="flex flex-col md:flex-row justify-between items-center gap-4 pt-8 mt-8 border-t border-slate-200 dark:border-slate-800 md:col-span-2">
-                <div class="text-sm text-slate-500 dark:text-slate-400">© {{ date('Y') }} The Business Companion AI. Engineered for Excellence.</div>
+                <div class="text-sm text-slate-500 dark:text-slate-400">© {{ date('Y') }} dialer.best. Engineered for Excellence.</div>
             </div>
         </div>
     </footer>

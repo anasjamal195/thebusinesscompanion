@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'The Business Companion') }} - Onboarding</title>
+    <title>{{ config('app.name', 'dialer.best') }} - Onboarding</title>
 
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -54,7 +54,7 @@
             <div class="max-w-7xl mx-auto flex justify-between items-center">
                 <div class="flex items-center gap-2">
                     <div class="font-black tracking-tighter text-slate-900 flex items-baseline">
-                        <span class="text-xs font-bold opacity-40 uppercase mr-0.5">The</span><span class="text-primary text-xl">Business</span><span class="text-slate-900 text-xl">Companion</span>
+                        <span class="text-primary text-xl">dialer</span><span class="text-slate-900 text-xl">.best</span>
                     </div>
                 </div>
                 <div class="hidden md:flex items-center gap-4 text-sm font-medium text-slate-400">
@@ -70,7 +70,7 @@
         </main>
 
         <footer class="py-8 px-6 text-center text-sm text-slate-400 border-t border-slate-100 bg-white">
-            <p>&copy; {{ date('Y') }} The Business Companion AI. All rights reserved.</p>
+            <p>&copy; {{ date('Y') }} dialer.best. All rights reserved.</p>
         </footer>
     </div>
 </body>

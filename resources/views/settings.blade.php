@@ -22,10 +22,10 @@
     <div class="flex p-1.5 bg-gray-100 rounded-2xl w-fit">
         <button @click="tab = 'general'" :class="tab === 'general' ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500 hover:text-gray-700'" class="px-6 py-2 rounded-xl text-sm font-bold transition-all">General</button>
         <button @click="tab = 'business'" :class="tab === 'business' ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500 hover:text-gray-700'" class="px-6 py-2 rounded-xl text-sm font-bold transition-all">Business</button>
-        <button @click="tab = 'companion'" :class="tab === 'companion' ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500 hover:text-gray-700'" class="px-6 py-2 rounded-xl text-sm font-bold transition-all">Companion</button>
+        <button @click="tab = 'companion'" :class="tab === 'companion' ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500 hover:text-gray-700'" class="px-6 py-2 rounded-xl text-sm font-bold transition-all">AI Voice</button>
         <button @click="tab = 'subscription'" :class="tab === 'subscription' ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500 hover:text-gray-700'" class="px-6 py-2 rounded-xl text-sm font-bold transition-all">Plan & Billing</button>
     </div>
-
+ 
     <form action="{{ route('settings.update') }}" method="POST" class="space-y-8">
         @csrf
         
@@ -43,7 +43,7 @@
                 </div>
             </div>
         </div>
-
+ 
         <!-- Business Settings -->
         <div x-show="tab === 'business'" class="bg-white rounded-[2.5rem] p-8 md:p-12 shadow-xl shadow-gray-200/50 border border-gray-100 space-y-6" x-cloak>
             <h3 class="text-xl font-black text-gray-900 mb-6">Business Details</h3>
@@ -84,7 +84,7 @@
                         <option value="expert" @selected(old('experience_level', $profile->experience_level) == 'expert')>Expert</option>
                     </select>
                 </div>
-
+ 
                 <div class="pt-6 border-t border-gray-100">
                     <div class="flex items-center justify-between p-6 bg-gray-50 rounded-[2rem] border border-gray-200 transition-all hover:bg-white hover:shadow-xl hover:shadow-gray-200/50 group">
                         <div class="space-y-1">
@@ -99,23 +99,37 @@
                 </div>
             </div>
         </div>
-
+ 
         <!-- Companion Settings -->
         <div x-show="tab === 'companion'" class="bg-white rounded-[2.5rem] p-8 md:p-12 shadow-xl shadow-gray-200/50 border border-gray-100 space-y-6" x-cloak>
-            <h3 class="text-xl font-black text-gray-900 mb-6">Digital Employee</h3>
+            <h3 class="text-xl font-black text-gray-900 mb-2">AI Voice Settings</h3>
+            <p class="text-sm text-gray-500 font-medium mb-6">Choose the voice for your daily interactive calls. Your companion's character is fully dynamic and personalized on the fly.</p>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                @foreach($companions as $companion)
+                @php
+                $voices = [
+                    ['id' => 'cgSgspJ2msm6clMCkdW9', 'name' => 'Jessica', 'description' => 'Warm & Friendly Female', 'emoji' => '😊', 'accent' => 'American'],
+                    ['id' => 'TX3LPaxmHKxFdv7VOQHJ', 'name' => 'Liam', 'description' => 'Casual & Motivating Male', 'emoji' => '💪', 'accent' => 'American'],
+                    ['id' => 'EXAVITQu4vr4xnSDxMaL', 'name' => 'Sarah', 'description' => 'Professional & Clear Female', 'emoji' => '🎯', 'accent' => 'American'],
+                    ['id' => 'bIHbv24MWmeRgasZH58o', 'name' => 'Will', 'description' => 'Energetic & Upbeat Male', 'emoji' => '⚡', 'accent' => 'American'],
+                    ['id' => 'XB0fDUnXU5powFXDhCwa', 'name' => 'Charlotte', 'description' => 'Calm & Focused Female', 'emoji' => '🧘', 'accent' => 'British'],
+                    ['id' => 'nPczCjzI2devNBz1zQrb', 'name' => 'Brian', 'description' => 'Deep & Authoritative Male', 'emoji' => '🦁', 'accent' => 'American'],
+                ];
+                @endphp
+
+                @foreach($voices as $voice)
                 <label class="relative block group cursor-pointer">
-                    <input type="radio" name="companion_id" value="{{ $companion->id }}" @checked(old('companion_id', $user->companion_id) == $companion->id) class="peer sr-only">
+                    <input type="radio" name="voice_id" value="{{ $voice['id'] }}" @checked(old('voice_id', $user->voice_id) == $voice['id']) class="peer sr-only">
                     <div class="h-full bg-gray-50 border-2 border-transparent peer-checked:border-primary peer-checked:bg-white rounded-[2rem] p-6 transition-all duration-300 hover:shadow-lg">
-                        <div class="flex items-center gap-4 mb-4">
-                            <img src="{{ $companion->avatar_url }}" class="w-16 h-16 rounded-2xl object-cover grayscale group-hover:grayscale-0 transition-all peer-checked:grayscale-0">
+                        <div class="flex items-center gap-4 mb-3">
+                            <div class="text-3xl w-14 h-14 flex items-center justify-center rounded-2xl bg-white shadow-sm shrink-0 border border-gray-150">{{ $voice['emoji'] }}</div>
                             <div>
-                                <h4 class="font-black text-gray-900">{{ $companion->name }}</h4>
-                                <p class="text-xs font-bold text-primary uppercase tracking-widest">{{ $companion->occupation }}</p>
+                                <h4 class="font-black text-gray-900 flex items-center gap-2">
+                                    {{ $voice['name'] }}
+                                    <span class="text-[10px] font-semibold text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full">{{ $voice['accent'] }}</span>
+                                </h4>
+                                <p class="text-xs font-semibold text-primary uppercase tracking-widest mt-1">{{ $voice['description'] }}</p>
                             </div>
                         </div>
-                        <p class="text-sm text-gray-500 font-medium leading-relaxed">{{ $companion->tagline }}</p>
                     </div>
                 </label>
                 @endforeach

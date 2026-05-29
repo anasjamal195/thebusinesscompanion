@@ -28,8 +28,5 @@ class Call extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function aiCharacter(): BelongsTo
-    {
-        return $this->belongsTo(AiCharacter::class, 'ai_character_id');
-    }
+
 }

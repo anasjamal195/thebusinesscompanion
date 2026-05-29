@@ -60,13 +60,14 @@
                         <td class="px-8 py-6">
                             <div class="flex items-center gap-4">
                                 <div class="relative">
-                                    <img src="{{ $call->aiCharacter->avatar_url }}" alt="{{ $call->aiCharacter->name }}" 
-                                         class="w-12 h-12 rounded-2xl object-cover ring-2 ring-white shadow-sm group-hover:scale-105 transition-transform">
+                                    <div class="w-12 h-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center ring-2 ring-white shadow-sm group-hover:scale-105 transition-transform">
+                                        <span class="material-symbols-outlined text-2xl">smart_toy</span>
+                                    </div>
                                     <div class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-white rounded-full"></div>
                                 </div>
                                 <div>
-                                    <div class="text-sm font-black text-slate-900">{{ $call->aiCharacter->name }}</div>
-                                    <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">{{ $call->aiCharacter->occupation }}</div>
+                                    <div class="text-sm font-black text-slate-900">dialer.best Agent</div>
+                                    <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">AI Assistant</div>
                                 </div>
                             </div>
                         </td>
@@ -183,7 +184,7 @@
         const call = calls.find(c => c.id === id);
         if (!call) return;
 
-        document.getElementById('modal-subtitle').innerText = `${call.ai_character.name} • ${new Date(call.created_at).toLocaleString()}`;
+        document.getElementById('modal-subtitle').innerText = `dialer.best Agent • ${new Date(call.created_at).toLocaleString()}`;
         document.getElementById('modal-transcript').innerText = call.transcript || 'No transcript available for this call.';
         
         const audioContainer = document.getElementById('modal-audio-container');

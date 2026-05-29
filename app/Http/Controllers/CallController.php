@@ -13,7 +13,6 @@ class CallController extends Controller
     public function index()
     {
         $calls = auth()->user()->calls()
-            ->with('aiCharacter')
             ->latest()
             ->paginate(10);
 
