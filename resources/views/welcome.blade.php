@@ -653,11 +653,10 @@
             <span class="text-[10px] font-bold text-white/80 uppercase tracking-widest">Now in private beta</span>
           </div>
 
-          <h1 class="text-4xl md:text-6xl lg:text-7xl font-extrabold text-white leading-[1] tracking-tight">
-            Your AI Todo<br>
-            Assistant that<br>
-            actually<br>
-            <span class="text-[#AFBBE0]">calls you</span>
+          <h1 class="text-3xl md:text-5xl lg:text-6xl font-extrabold text-white leading-[1] tracking-tight">
+            Plan your day<br>
+            with a<br>
+            <span class="text-[#AFBBE0]">morning call</span>
           </h1>
         </div>
 
@@ -730,7 +729,7 @@
         <div class="bg-[#F8FAFF] p-8 rounded-[2.5rem] border border-[#DEE8FF] relative group overflow-hidden">
           <div class="relative z-10 text-center">
             <div class="w-16 h-16 rounded-2xl bg-white shadow-sm flex items-center justify-center mb-6 text-[#3E50F7] mx-auto">
-              <span class="material-symbols-outlined text-3xl">wake_on_phone</span>
+              <span class="material-symbols-outlined text-3xl">phone_callback</span>
             </div>
             <div class="inline-flex items-center gap-1 px-3 py-1 bg-[#3E50F7]/10 rounded-full text-[10px] font-bold text-[#3E50F7] mb-4">Step 01</div>
             <h3 class="text-2xl font-bold text-[#25224A] mb-3">Morning Call</h3>
@@ -945,7 +944,7 @@
               class="h-full flex flex-col items-center p-8 bg-white/5 backdrop-blur-xl rounded-[2.5rem] border border-white/10 group-hover:border-[#3E50F7]/30 transition-all duration-500">
               <div
                 class="w-20 h-20 bg-white/5 text-white/20 rounded-full flex items-center justify-center mb-6 group-hover:text-[#22C55E] group-hover:bg-[#22C55E]/20 transition-all">
-                <span class="material-symbols-outlined text-4xl">sync_todo</span>
+                <span class="material-symbols-outlined text-4xl">sync</span>
               </div>
               <h3 class="font-bold text-white text-center text-xl mb-3">Smart Follow-ups</h3>
               <p class="text-sm text-white/40 text-center leading-relaxed">The AI calls you back at intervals until tasks are completed. Persistent accountability.</p>
