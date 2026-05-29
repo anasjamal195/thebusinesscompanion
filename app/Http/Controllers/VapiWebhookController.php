@@ -233,10 +233,11 @@ class VapiWebhookController extends Controller
         }
 
         $prompt = "You are an AI assistant analyzing a call transcript between a user and their daily planner AI.
+        Extract tasks in the user's own words — as if the user is telling you what to do.
         Respond ONLY with a JSON object containing a 'tasks' array.
         Each task object should have:
-        - title: (Brief task name)
-        - details: (Any specific instructions mentioned)
+        - title: (Brief, action-oriented task name in user's voice. e.g. 'Fix laptop', 'Research ad campaigns', 'Call client')
+        - details: (Any specific instructions or context the user mentioned, in user's own words)
         - estimated_minutes: (Integer. Estimated duration in minutes. If the user didn't specify, estimate a reasonable duration based on the task type)
         - priority: (String: 'high', 'medium', or 'low'. Infer from user's tone/urgency. Default 'medium')
         - status: (pending or completed. Use 'completed' only if they explicitly say they already did it)
