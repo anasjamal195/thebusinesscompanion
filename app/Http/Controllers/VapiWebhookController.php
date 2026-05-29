@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Call;
+use App\Models\DailyReport;
 use App\Models\Task;
 use App\Models\User;
+use App\Services\DailyReportService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
@@ -352,12 +354,8 @@ PROMPT;
             'new'       => count($newTasks),
         ]);
 
-        if (empty($completedTasks) && empty($updatedTasks) && empty($newTasks)) {
-            Log::warning("VapiWebhook: No task changes found in transcript for Call {$call->id}");
-            return;
-        }
-
-        DB::transaction(function() use ($user, $completedTasks, $updatedTasks, $newTasks) {
+        if (!empty($completedTasks) || !empty($updatedTasks) || !empty($newTasks)) {
+            DB::transaction(function() use ($user, $completedTasks, $updatedTasks, $newTasks) {
             try {
                 $userDate = now()->setTimezone($user->timezone)->toDateString();
 
@@ -473,6 +471,26 @@ PROMPT;
                 ]);
             }
         });
+        }
+
+        $this->tryGenerateDailyReport($user);
+    }
+
+    protected function tryGenerateDailyReport(?User $user): void
+    {
+        if (!$user) return;
+
+        try {
+            $service = app(DailyReportService::class);
+            if ($service->allTasksDoneForToday($user)) {
+                $service->generateForUser($user);
+            }
+        } catch (\Exception $e) {
+            Log::error("VapiWebhook: Failed to generate daily report", [
+                'message' => $e->getMessage(),
+                'user_id' => $user->id,
+            ]);
+        }
     }
 
     protected function findUserByPhoneNumber($phoneNumber)

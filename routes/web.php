@@ -68,6 +68,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/reports',               [ReportController::class, 'index'])->name('reports.index');
     Route::get('/reports/{report}',      [ReportController::class, 'show'])->name('reports.show');
     Route::get('/reports/{report}/pdf',  [ReportController::class, 'pdf'])->name('reports.pdf');
+    Route::post('/reports/daily',        [ReportController::class, 'generateDaily'])->name('reports.daily.generate');
+
+    // Daily Reports
+    Route::get('/daily-reports/{dailyReport}', [ReportController::class, 'showDaily'])->name('daily-reports.show');
 });
 
 // ── Webhooks (unauthenticated, verified by signature) ─────────────────────────

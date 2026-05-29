@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Task;
+use App\Services\DailyReportService;
 use Illuminate\Http\Request;
 
 class TaskController extends Controller
@@ -29,13 +30,17 @@ class TaskController extends Controller
         return back()->with('success', 'Task added successfully.');
     }
 
-    public function complete(Request $request, Task $task)
+    public function complete(Request $request, Task $task, DailyReportService $dailyService)
     {
         abort_unless($task->user_id === $request->user()->id, 404);
 
         $task->update([
             'status' => $task->status === 'completed' ? 'pending' : 'completed',
         ]);
+
+        if ($dailyService->allTasksDoneForToday($request->user())) {
+            $dailyService->generateForUser($request->user());
+        }
 
         return back();
     }

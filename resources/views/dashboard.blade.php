@@ -245,6 +245,21 @@
                     <span class="material-symbols-outlined text-[18px]">chevron_right</span>
                 </span>
             </a>
+
+            @if($tasks->isNotEmpty())
+            <form action="{{ route('reports.daily.generate') }}" method="POST">
+                @csrf
+                <button type="submit" class="w-full flex items-center justify-center gap-3 bg-white rounded-[2.5rem] p-6 shadow-lg shadow-gray-200/30 border border-gray-50 hover:border-green-400/30 hover:shadow-xl transition-all duration-300 group active:scale-[0.98]">
+                    <span class="w-12 h-12 rounded-2xl bg-green-100 text-green-600 flex items-center justify-center group-hover:scale-105 transition-transform">
+                        <span class="material-symbols-outlined text-[28px]">auto_awesome</span>
+                    </span>
+                    <div class="text-left">
+                        <h3 class="text-lg font-black text-gray-900 tracking-tight">Generate Report</h3>
+                        <p class="text-xs text-gray-500 font-medium">Create today's summary</p>
+                    </div>
+                </button>
+            </form>
+            @endif
         </div>
     </div>
 </div>
