@@ -8,6 +8,20 @@ use Barryvdh\DomPDF\Facade\Pdf;
 
 class ReportController extends Controller
 {
+    public function index(Request $request)
+    {
+        $reports = Report::whereHas('task', function ($q) use ($request) {
+            $q->where('user_id', $request->user()->id);
+        })->with('task')->latest()->paginate(20);
+
+        return view('reports.index', [
+            'reports' => $reports,
+            'title' => 'Reports',
+            'pageTitle' => 'Reports',
+            'activeNav' => 'reports',
+        ]);
+    }
+
     public function show(Request $request, Report $report)
     {
         $report->loadMissing('task.project');

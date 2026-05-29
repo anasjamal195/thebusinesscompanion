@@ -13,15 +13,25 @@ class ProjectController extends Controller
             return redirect(\App\Http\Controllers\OnboardingController::getNextOnboardingRoute($request->user()));
         }
 
+        $today = now()->setTimezone($request->user()->timezone)->toDateString();
+
         $tasks = Task::query()
             ->where('user_id', $request->user()->id)
-            ->whereDate('date', now()->setTimezone($request->user()->timezone)->toDateString())
-            ->orderBy('status', 'desc') // Pending first, then completed
+            ->whereDate('date', $today)
+            ->orderByRaw("FIELD(status, 'pending', 'completed', 'discarded')")
             ->latest('id')
             ->get();
 
+        $pendingCount = $tasks->where('status', 'pending')->count();
+        $completedCount = $tasks->where('status', 'completed')->count();
+        $discardedCount = $tasks->where('status', 'discarded')->count();
+
         return view('dashboard', [
             'tasks' => $tasks,
+            'pendingCount' => $pendingCount,
+            'completedCount' => $completedCount,
+            'discardedCount' => $discardedCount,
+            'totalCount' => $tasks->count(),
             'title' => 'Dashboard',
             'pageTitle' => 'Today\'s Tasks',
             'activeNav' => 'dashboard',

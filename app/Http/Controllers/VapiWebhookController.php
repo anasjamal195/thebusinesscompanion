@@ -134,8 +134,9 @@ class VapiWebhookController extends Controller
                 'result' => 'success'
             ];
 
+            $args = $toolCall['function']['arguments'] ?? [];
+
             if ($toolCall['function']['name'] === 'report_onboarding_data') {
-                $args = $toolCall['function']['arguments'] ?? [];
                 $field = $args['field'] ?? null;
                 $value = $args['value'] ?? null;
 
@@ -144,9 +145,63 @@ class VapiWebhookController extends Controller
                     $metadata['extracted_fields'][$field] = $value;
                     $call->update(['metadata' => $metadata]);
 
+                    // If field is 'task_completed', mark the task as done
+                    if ($field === 'task_completed' && $call->user_id) {
+                        Task::where('user_id', $call->user_id)
+                            ->where('title', $value)
+                            ->where('status', 'pending')
+                            ->whereDate('date', now()->setTimezone(
+                                optional($call->user)->timezone ?? 'UTC'
+                            )->toDateString())
+                            ->update(['status' => 'completed']);
+                    }
+
                     broadcast(new \App\Events\CallProgressUpdated(
                         $call->user_id, $field, $value, 'in_progress'
                     ));
+                }
+            }
+
+            if ($toolCall['function']['name'] === 'carry_forward_tasks') {
+                if ($call && $call->user_id) {
+                    $userDate = now()->setTimezone(
+                        optional($call->user)->timezone ?? 'UTC'
+                    )->toDateString();
+                    $tomorrowDate = now()->setTimezone(
+                        optional($call->user)->timezone ?? 'UTC'
+                    )->addDay()->toDateString();
+
+                    $taskIds = $args['task_ids'] ?? [];
+                    if (empty($taskIds)) {
+                        // Carry forward all pending tasks for today
+                        Task::where('user_id', $call->user_id)
+                            ->whereDate('date', $userDate)
+                            ->where('status', 'pending')
+                            ->update(['date' => $tomorrowDate]);
+                    } else {
+                        Task::whereIn('id', $taskIds)
+                            ->where('user_id', $call->user_id)
+                            ->update(['date' => $tomorrowDate]);
+                    }
+                }
+            }
+
+            if ($toolCall['function']['name'] === 'discard_tasks') {
+                if ($call && $call->user_id) {
+                    $taskIds = $args['task_ids'] ?? [];
+                    if (empty($taskIds)) {
+                        // Mark all today's pending tasks as discarded
+                        Task::where('user_id', $call->user_id)
+                            ->whereDate('date', now()->setTimezone(
+                                optional($call->user)->timezone ?? 'UTC'
+                            )->toDateString())
+                            ->where('status', 'pending')
+                            ->update(['status' => 'discarded']);
+                    } else {
+                        Task::whereIn('id', $taskIds)
+                            ->where('user_id', $call->user_id)
+                            ->update(['status' => 'discarded']);
+                    }
                 }
             }
 
@@ -178,13 +233,13 @@ class VapiWebhookController extends Controller
         }
 
         $prompt = "You are an AI assistant analyzing a call transcript between a user and their daily planner AI.
-        Extract any tasks discussed.
         Respond ONLY with a JSON object containing a 'tasks' array.
         Each task object should have:
         - title: (Brief task name)
         - details: (Any specific instructions mentioned)
-        - estimated_minutes: (Integer. Estimated duration in minutes. Default to 60 if not specified)
-        - status: (pending or completed. Usually pending for new tasks, or completed if they say they already did it)
+        - estimated_minutes: (Integer. Estimated duration in minutes. If the user didn't specify, estimate a reasonable duration based on the task type)
+        - priority: (String: 'high', 'medium', or 'low'. Infer from user's tone/urgency. Default 'medium')
+        - status: (pending or completed. Use 'completed' only if they explicitly say they already did it)
 
         Transcript:
         {$transcript}";
@@ -232,11 +287,17 @@ class VapiWebhookController extends Controller
                 foreach ($tasks as $taskData) {
                     $estimatedMins = (int)($taskData['estimated_minutes'] ?? 60);
 
+                    $validPriorities = ['high', 'medium', 'low'];
+                    $priority = $taskData['priority'] ?? 'medium';
+                    if (!in_array($priority, $validPriorities)) {
+                        $priority = 'medium';
+                    }
+
                     $task = Task::create([
                         'user_id'                 => $user->id,
                         'title'                   => $taskData['title'] ?? 'Extracted Task',
                         'input_text'              => $taskData['details'] ?? '',
-                        'priority'                => 'medium',
+                        'priority'                => $priority,
                         'status'                  => $taskData['status'] ?? 'pending',
                         'date'                    => $userDate,
                         'estimated_minutes'       => $estimatedMins,

@@ -47,22 +47,28 @@ class ScheduleCallsCommand extends Command
         $morningTime = Carbon::createFromFormat('H:i:s', $user->morning_call_time, $user->timezone);
 
         // ── 1. MORNING CALL ───────────────────────────────────────────────
+        $alreadyHasTasks = Task::where('user_id', $user->id)
+            ->whereDate('date', $now->toDateString())
+            ->exists();
+
         if ($user->last_morning_call_date !== $now->toDateString()) {
-            if ($now->greaterThanOrEqualTo($morningTime)) {
+            if ($now->greaterThanOrEqualTo($morningTime) && !$alreadyHasTasks) {
                 $todayTasks = $this->getTodayPendingTasks($user);
 
                 $this->info("Triggering morning call for User {$user->id} ({$user->name})");
-                $this->vapi->createCall($user, 'morning', $todayTasks);
+                $result = $this->vapi->createCall($user, 'morning', $todayTasks);
 
-                $user->update([
-                    'last_morning_call_date' => $now->toDateString(),
-                    'last_call_time'         => now('UTC')->toDateTimeString(),
-                ]);
+                if ($result) {
+                    $user->update([
+                        'last_morning_call_date' => $now->toDateString(),
+                        'last_call_time'         => now('UTC')->toDateTimeString(),
+                    ]);
+                }
 
                 return; // No follow-ups until morning call is done
             }
 
-            // Morning time hasn't arrived yet — nothing to do
+            // Morning time hasn't arrived yet or tasks already exist — nothing to do
             return;
         }
 

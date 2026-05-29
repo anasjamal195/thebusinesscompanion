@@ -22,7 +22,8 @@
             @php
                 $navItems = [
                     ['key' => 'dashboard', 'label' => 'Dashboard', 'icon' => 'grid_view', 'href' => route('dashboard')],
-                    ['key' => 'calls', 'label' => 'Call Logs', 'icon' => 'history', 'href' => route('calls.index')],
+                    ['key' => 'reports',  'label' => 'Reports',   'icon' => 'summarize', 'href' => route('reports.index')],
+                    ['key' => 'calls',    'label' => 'Call Logs', 'icon' => 'history',   'href' => route('calls.index')],
                 ];
             @endphp
 

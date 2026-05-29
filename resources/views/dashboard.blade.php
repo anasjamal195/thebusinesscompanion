@@ -2,6 +2,12 @@
     $title = 'Dashboard';
     $pageTitle = 'Today\'s Tasks';
     $activeNav = 'dashboard';
+
+    $priorityColors = [
+        'high' => ['bg' => 'bg-red-100', 'text' => 'text-red-700', 'dot' => 'bg-red-500'],
+        'medium' => ['bg' => 'bg-yellow-100', 'text' => 'text-yellow-700', 'dot' => 'bg-yellow-500'],
+        'low' => ['bg' => 'bg-green-100', 'text' => 'text-green-700', 'dot' => 'bg-green-500'],
+    ];
 @endphp
 
 @extends('layouts.app')
@@ -22,7 +28,7 @@
                     Hello, <span class="text-primary">{{ explode(' ', auth()->user()->name)[0] }}</span>.
                 </h2>
                 <p class="text-lg text-gray-500 max-w-xl font-medium">
-                    You have <span class="text-gray-900 font-bold">{{ $tasks->where('status', 'pending')->count() }}</span> pending tasks for today.
+                    You have <span class="text-gray-900 font-bold">{{ $pendingCount }}</span> pending tasks for today.
                 </p>
             </div>
             <div class="flex gap-4">
@@ -44,12 +50,21 @@
                         <h3 class="text-2xl font-black text-gray-900 tracking-tight">Today's Agenda</h3>
                         <p class="text-sm text-gray-500 font-medium">Tasks extracted from your morning call.</p>
                     </div>
+                    <div class="flex items-center gap-3 text-xs font-bold">
+                        <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-red-500"></span> High</span>
+                        <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-yellow-500"></span> Medium</span>
+                        <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-green-500"></span> Low</span>
+                    </div>
                 </div>
 
                 <div class="space-y-4">
                     @forelse ($tasks as $task)
-                        <div class="flex items-center justify-between p-5 bg-gray-50/50 hover:bg-white rounded-2xl border border-gray-100 hover:border-primary/20 hover:shadow-lg transition-all duration-300">
+                        @php
+                            $pc = $priorityColors[$task->priority] ?? $priorityColors['medium'];
+                        @endphp
+                        <div class="flex items-center justify-between p-5 bg-gray-50/50 hover:bg-white rounded-2xl border border-gray-100 hover:border-primary/20 hover:shadow-lg transition-all duration-300 {{ $task->status === 'discarded' ? 'opacity-50' : '' }}">
                             <div class="flex items-start gap-4">
+                                @if($task->status !== 'discarded')
                                 <form action="{{ route('tasks.complete', $task) }}" method="POST" class="mt-1">
                                     @csrf
                                     <button type="submit" class="w-6 h-6 rounded border {{ $task->status === 'completed' ? 'bg-primary border-primary text-white' : 'border-gray-300 bg-white hover:border-primary' }} flex items-center justify-center transition-colors">
@@ -58,8 +73,22 @@
                                         @endif
                                     </button>
                                 </form>
+                                @else
+                                <div class="mt-1 w-6 h-6 rounded border border-gray-200 bg-gray-100 flex items-center justify-center">
+                                    <span class="material-symbols-outlined text-[14px] text-gray-400">close</span>
+                                </div>
+                                @endif
                                 <div>
-                                    <h4 class="font-bold text-gray-900 {{ $task->status === 'completed' ? 'line-through text-gray-400' : '' }}">{{ $task->title }}</h4>
+                                    <div class="flex items-center gap-2">
+                                        <h4 class="font-bold text-gray-900 {{ $task->status === 'completed' ? 'line-through text-gray-400' : '' }} {{ $task->status === 'discarded' ? 'text-gray-400 line-through' : '' }}">{{ $task->title }}</h4>
+                                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold {{ $pc['bg'] }} {{ $pc['text'] }}">
+                                            <span class="w-1.5 h-1.5 rounded-full {{ $pc['dot'] }}"></span>
+                                            {{ ucfirst($task->priority) }}
+                                        </span>
+                                        @if($task->status === 'discarded')
+                                            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-gray-200 text-gray-500">Discarded</span>
+                                        @endif
+                                    </div>
                                     <p class="text-sm text-gray-500 mt-1">{{ $task->input_text }}</p>
                                     @if($task->estimated_minutes)
                                     <div class="flex items-center gap-1 mt-2 text-xs font-bold text-primary bg-primary/10 px-2 py-1 rounded w-fit">
@@ -79,10 +108,73 @@
                 </div>
             </div>
         </div>
+
+        <!-- Right Column: Daily Progress -->
+        <div class="space-y-8">
+            <div class="bg-white rounded-[2.5rem] p-8 shadow-lg shadow-gray-200/30 border border-gray-50">
+                <h3 class="text-lg font-black text-gray-900 tracking-tight mb-6">Daily Progress</h3>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between p-4 bg-green-50 rounded-2xl border border-green-100">
+                        <div class="flex items-center gap-3">
+                            <span class="w-10 h-10 rounded-xl bg-green-100 text-green-600 flex items-center justify-center">
+                                <span class="material-symbols-outlined text-[22px]">check_circle</span>
+                            </span>
+                            <div>
+                                <p class="text-sm font-bold text-green-700">Completed</p>
+                                <p class="text-xs text-green-500">{{ $totalCount > 0 ? round(($completedCount / max($totalCount - $discardedCount, 1)) * 100) : 0 }}% of tasks</p>
+                            </div>
+                        </div>
+                        <span class="text-2xl font-black text-green-600">{{ $completedCount }}</span>
+                    </div>
+
+                    <div class="flex items-center justify-between p-4 bg-yellow-50 rounded-2xl border border-yellow-100">
+                        <div class="flex items-center gap-3">
+                            <span class="w-10 h-10 rounded-xl bg-yellow-100 text-yellow-600 flex items-center justify-center">
+                                <span class="material-symbols-outlined text-[22px]">pending</span>
+                            </span>
+                            <div>
+                                <p class="text-sm font-bold text-yellow-700">Pending</p>
+                                <p class="text-xs text-yellow-500">{{ $pendingCount }} task(s) remaining</p>
+                            </div>
+                        </div>
+                        <span class="text-2xl font-black text-yellow-600">{{ $pendingCount }}</span>
+                    </div>
+
+                    <div class="flex items-center justify-between p-4 bg-gray-50 rounded-2xl border border-gray-100">
+                        <div class="flex items-center gap-3">
+                            <span class="w-10 h-10 rounded-xl bg-gray-100 text-gray-600 flex items-center justify-center">
+                                <span class="material-symbols-outlined text-[22px]">do_not_disturb</span>
+                            </span>
+                            <div>
+                                <p class="text-sm font-bold text-gray-700">Discarded</p>
+                                <p class="text-xs text-gray-500">{{ $discardedCount }} task(s) skipped</p>
+                            </div>
+                        </div>
+                        <span class="text-2xl font-black text-gray-600">{{ $discardedCount }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <a href="{{ route('reports.index') }}" class="block bg-white rounded-[2.5rem] p-8 shadow-lg shadow-gray-200/30 border border-gray-50 hover:border-primary/20 hover:shadow-xl transition-all duration-300 group">
+                <div class="flex items-center gap-4 mb-4">
+                    <span class="w-12 h-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center">
+                        <span class="material-symbols-outlined text-[28px]">summarize</span>
+                    </span>
+                    <div>
+                        <h3 class="text-lg font-black text-gray-900 tracking-tight">Reports</h3>
+                        <p class="text-xs text-gray-500 font-medium">View daily summaries</p>
+                    </div>
+                </div>
+                <span class="flex items-center gap-2 text-sm font-bold text-primary group-hover:gap-3 transition-all">
+                    View All Reports
+                    <span class="material-symbols-outlined text-[18px]">chevron_right</span>
+                </span>
+            </a>
+        </div>
     </div>
 </div>
 
-<!-- New Task Modal (Simplified for manual entry if needed) -->
+<!-- New Task Modal -->
 <div id="newTaskModal" class="hidden fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm">
     <div class="bg-white rounded-[2rem] p-8 max-w-md w-full shadow-2xl relative">
         <button onclick="document.getElementById('newTaskModal').classList.add('hidden')" class="absolute top-6 right-6 text-gray-400 hover:text-gray-600">

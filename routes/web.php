@@ -65,6 +65,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/calls/{call}',  [CallController::class, 'show'])->name('calls.show');
 
     // Reports
+    Route::get('/reports',               [ReportController::class, 'index'])->name('reports.index');
     Route::get('/reports/{report}',      [ReportController::class, 'show'])->name('reports.show');
     Route::get('/reports/{report}/pdf',  [ReportController::class, 'pdf'])->name('reports.pdf');
 });

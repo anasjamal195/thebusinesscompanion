@@ -150,6 +150,7 @@ class VapiService
             'firstMessage'       => $firstMessage,
             'firstMessageMode'   => 'assistant-speaks-first',
             'serverUrl'          => $this->getWebhookUrl(),
+            'serverUrlAfterStopped' => $this->getWebhookUrl(),
             'model'              => [
                 'provider' => 'openai',
                 'model'    => 'gpt-4o',
@@ -178,6 +179,63 @@ class VapiService
             'silenceTimeoutSeconds'     => 30,
             'maxDurationSeconds'        => 600,
             'backgroundDenoisingEnabled'=> true,
+            'tools' => [
+                [
+                    'type'       => 'function',
+                    'function'   => [
+                        'name'        => 'report_onboarding_data',
+                        'description' => 'Report a key-value data point extracted from the conversation (e.g., task title, time estimate, completion status).',
+                        'parameters'  => [
+                            'type'       => 'object',
+                            'properties' => [
+                                'field' => [
+                                    'type'        => 'string',
+                                    'description' => 'The field name (e.g. task_completed, task_title, time_estimate).',
+                                ],
+                                'value' => [
+                                    'type'        => 'string',
+                                    'description' => 'The value for the field.',
+                                ],
+                            ],
+                            'required'   => ['field', 'value'],
+                        ],
+                    ],
+                ],
+                [
+                    'type'       => 'function',
+                    'function'   => [
+                        'name'        => 'carry_forward_tasks',
+                        'description' => 'Carry forward pending tasks to tomorrow. Called when the user wants to end the day but has unfinished tasks they want to reschedule.',
+                        'parameters'  => [
+                            'type'       => 'object',
+                            'properties' => [
+                                'task_ids' => [
+                                    'type'        => 'array',
+                                    'items'       => ['type' => 'integer'],
+                                    'description' => 'Array of task IDs to carry forward. Omit to carry forward all pending tasks.',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'type'       => 'function',
+                    'function'   => [
+                        'name'        => 'discard_tasks',
+                        'description' => 'Discard/stale pending tasks. Called when the user wants to end the day and discard unfinished tasks instead of rescheduling them.',
+                        'parameters'  => [
+                            'type'       => 'object',
+                            'properties' => [
+                                'task_ids' => [
+                                    'type'        => 'array',
+                                    'items'       => ['type' => 'integer'],
+                                    'description' => 'Array of task IDs to discard. Omit to discard all pending tasks.',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
         ];
 
         if ($localCallId) {
@@ -253,11 +311,12 @@ YOUR GOAL:
 1. Say a warm, energetic good morning.
 2. Ask how they're doing — keep it quick.
 3. Ask what's on their plate today. Get each task one at a time.
-4. For each task, ask roughly how long they think it'll take.
+4. For each task, ask roughly how long they think it'll take, and what priority it is (high, medium, or low).
 5. Keep going until they say they're done adding tasks, or naturally wrap up.
 6. Give them a quick motivational send-off and end the call.
 
 IMPORTANT: Be encouraging! Starting the day right matters. Keep the energy up.
+Always ask for priority when adding new tasks.
 INSTRUCTIONS;
         }
 
@@ -266,12 +325,14 @@ This is the MORNING CHECK-IN call. {$firstName} already has some tasks logged fr
 
 YOUR GOAL:
 1. Say good morning and mention you can see they've already got some things lined up — that's great!
-2. Quickly run through the existing tasks with them.
+2. Quickly run through the existing tasks with them, noting their priorities.
 3. Ask if there's anything new to add for today.
 4. Ask for time estimates on any tasks that don't have one yet.
-5. Pump them up and end the call.
+5. For new tasks, also ask what priority they are (high, medium, or low).
+6. Pump them up and end the call.
 
 IMPORTANT: Don't re-ask about tasks they've clearly already defined well. Just confirm and add anything new.
+Always ask for priority when adding new tasks.
 INSTRUCTIONS;
     }
 
@@ -284,9 +345,11 @@ YOUR GOAL:
 1. Say a casual, upbeat hello — like checking in on a friend.
 2. Ask how it's going with their tasks today.
 3. If they completed something, celebrate it! ("That's awesome, nice work!")
-4. If they're stuck on something, be supportive and ask what's blocking them.
-5. Ask if there are any new tasks to add.
-6. Wrap up with energy and encouragement.
+4. Use the report_onboarding_data tool to mark the task as completed in the system.
+5. If they're stuck on something, be supportive and ask what's blocking them.
+6. Ask if there are any new tasks to add.
+7. WHEN ALL TASKS ARE DONE: Congratulate them warmly, tell them a full daily report will be emailed to them and is also available on their dashboard. Ask if they have any other tasks to add, or if they'd like to call the day off.
+8. IF USER WANTS TO END THE DAY but there are still pending tasks: Remind them about the remaining tasks. If they still want to end, ask if they'd like to carry the remaining tasks forward to tomorrow, or discard them. Use the carry_forward_tasks or discard_tasks tool accordingly.
 
 IMPORTANT: Keep this call SHORT and punchy. It's a check-in, not a planning session.
 Don't re-list all their tasks unless they ask. Just vibe with them and get the update.

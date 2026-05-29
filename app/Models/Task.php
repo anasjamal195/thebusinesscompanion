@@ -19,6 +19,9 @@ class Task extends Model
         'context_snapshot',
         'plan_data',
         'user_inputs',
+        'date',
+        'estimated_minutes',
+        'scheduled_followup_time',
     ];
 
     protected $casts = [
