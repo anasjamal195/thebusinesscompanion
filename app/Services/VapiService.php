@@ -16,12 +16,12 @@ class VapiService
 
     // Available 11labs voice IDs — mirrors the onboarding voice picker
     const VOICES = [
-        'cgSgspJ2msm6clMCkdW9' => ['name' => 'Jessica', 'provider' => 'elevenlabs'],
-        'TX3LPaxmHKxFdv7VOQHJ' => ['name' => 'Liam',    'provider' => 'elevenlabs'],
-        'EXAVITQu4vr4xnSDxMaL' => ['name' => 'Sarah',   'provider' => 'elevenlabs'],
-        'bIHbv24MWmeRgasZH58o' => ['name' => 'Will',    'provider' => 'elevenlabs'],
-        'XB0fDUnXU5powFXDhCwa' => ['name' => 'Charlotte','provider' => 'elevenlabs'],
-        'nPczCjzI2devNBz1zQrb' => ['name' => 'Brian',   'provider' => 'elevenlabs'],
+        'cgSgspJ2msm6clMCkdW9' => ['name' => 'Jessica', 'provider' => '11labs'],
+        'TX3LPaxmHKxFdv7VOQHJ' => ['name' => 'Liam',    'provider' => '11labs'],
+        'EXAVITQu4vr4xnSDxMaL' => ['name' => 'Sarah',   'provider' => '11labs'],
+        'bIHbv24MWmeRgasZH58o' => ['name' => 'Will',    'provider' => '11labs'],
+        'XB0fDUnXU5powFXDhCwa' => ['name' => 'Charlotte','provider' => '11labs'],
+        'nPczCjzI2devNBz1zQrb' => ['name' => 'Brian',   'provider' => '11labs'],
     ];
 
     // Fallback voice if user hasn't picked one
@@ -149,7 +149,7 @@ class VapiService
                 'temperature' => 0.8,
             ],
             'voice' => [
-                'provider' => 'elevenlabs',
+                'provider' => '11labs',
                 'voiceId'  => $voiceId,
                 'stability'        => 0.5,
                 'similarityBoost'  => 0.75,
