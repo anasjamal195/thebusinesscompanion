@@ -7,18 +7,24 @@
     $activeNav = 'dashboard';
 
     $user = auth()->user();
-    $today = now()->setTimezone($user->timezone)->toDateString();
+    $tz = $user->timezone;
+    $today = now()->setTimezone($tz)->toDateString();
 
     $morningTimeFormatted = $user->morning_call_time
         ? Carbon::createFromFormat('H:i:s', $user->morning_call_time)->format('g:i A')
         : 'Not set';
 
+    // Use last_morning_call_date (set in user's timezone) as source of truth
+    $morningCallDone = $user->last_morning_call_date === $today;
+
+    // Fetch today's calls using UTC range aligned to user's timezone
+    $tzStart = now()->setTimezone($tz)->startOfDay()->setTimezone('UTC');
+    $tzEnd   = now()->setTimezone($tz)->endOfDay()->setTimezone('UTC');
     $todayCalls = Call::where('user_id', $user->id)
-        ->whereDate('created_at', $today)
+        ->whereBetween('created_at', [$tzStart, $tzEnd])
         ->orderBy('created_at', 'desc')
         ->get();
 
-    $morningCallDone = $todayCalls->contains(fn ($c) => ($c->metadata['call_type'] ?? '') === 'morning');
     $lastCall = $todayCalls->first();
     $followUpCount = $todayCalls->filter(fn ($c) => ($c->metadata['call_type'] ?? '') === 'followup')->count();
 
