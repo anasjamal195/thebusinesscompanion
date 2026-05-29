@@ -143,7 +143,21 @@ class VapiWebhookController extends Controller
         $user = $call->user;
         $transcript = $call->transcript;
 
-        if (!$transcript) return;
+        Log::info("VapiWebhook: processCallTranscript called for Call {$call->id}", [
+            'user_id'         => $user?->id,
+            'has_transcript'  => !empty($transcript),
+            'transcript_len'  => strlen($transcript ?? ''),
+        ]);
+
+        if (!$transcript) {
+            Log::warning("VapiWebhook: No transcript for Call {$call->id} — skipping task extraction.");
+            return;
+        }
+
+        if (!$user) {
+            Log::error("VapiWebhook: No user associated with Call {$call->id} — cannot extract tasks.");
+            return;
+        }
 
         $prompt = "You are an AI assistant analyzing a call transcript between a user and their daily planner AI.
         Extract any tasks discussed.
@@ -157,44 +171,72 @@ class VapiWebhookController extends Controller
         Transcript:
         {$transcript}";
 
+        Log::info("VapiWebhook: Sending transcript to OpenRouter for Call {$call->id}");
+
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . config('services.openrouter.api_key'),
-            'HTTP-Referer' => config('app.url'),
+            'HTTP-Referer'  => config('app.url'),
         ])->post('https://openrouter.ai/api/v1/chat/completions', [
-            'model' => 'deepseek/deepseek-chat',
-            'messages' => [
+            'model'           => 'deepseek/deepseek-chat',
+            'messages'        => [
                 ['role' => 'user', 'content' => $prompt]
             ],
             'response_format' => ['type' => 'json_object']
         ]);
 
-        if ($response->successful()) {
-            $content = $response->json()['choices'][0]['message']['content'];
-            $extractedData = json_decode($content, true);
-            $tasks = $extractedData['tasks'] ?? [];
-            
-            DB::transaction(function() use ($user, $tasks) {
-                try {
-                    foreach ($tasks as $taskData) {
-                        $estimatedMins = (int)($taskData['estimated_minutes'] ?? 60);
-                        
-                        Task::create([
-                            'user_id' => $user->id,
-                            'title' => $taskData['title'] ?? 'Extracted Task',
-                            'input_text' => $taskData['details'] ?? '',
-                            'priority' => 'medium',
-                            'status' => $taskData['status'] ?? 'pending',
-                            'date' => now()->setTimezone($user->timezone)->toDateString(),
-                            'estimated_minutes' => $estimatedMins,
-                            'scheduled_followup_time' => now()->addMinutes($estimatedMins),
-                        ]);
-                    }
-                    Log::info("Extracted " . count($tasks) . " tasks for User {$user->id}");
-                } catch (\Exception $e) {
-                    Log::error("Failed to process tasks: " . $e->getMessage());
-                }
-            });
+        if (!$response->successful()) {
+            Log::error("VapiWebhook: OpenRouter request failed for Call {$call->id}", [
+                'status' => $response->status(),
+                'body'   => $response->body(),
+            ]);
+            return;
         }
+
+        $content = $response->json()['choices'][0]['message']['content'] ?? null;
+
+        Log::info("VapiWebhook: OpenRouter response for Call {$call->id}", [
+            'raw_content' => $content,
+        ]);
+
+        $extractedData = json_decode($content, true);
+        $tasks = $extractedData['tasks'] ?? [];
+
+        Log::info("VapiWebhook: Extracted " . count($tasks) . " task(s) from transcript for Call {$call->id}");
+
+        if (empty($tasks)) {
+            Log::warning("VapiWebhook: No tasks found in transcript for Call {$call->id}");
+            return;
+        }
+
+        DB::transaction(function() use ($user, $tasks, $call) {
+            try {
+                $userDate = now()->setTimezone($user->timezone)->toDateString();
+                foreach ($tasks as $taskData) {
+                    $estimatedMins = (int)($taskData['estimated_minutes'] ?? 60);
+
+                    $task = Task::create([
+                        'user_id'                 => $user->id,
+                        'title'                   => $taskData['title'] ?? 'Extracted Task',
+                        'input_text'              => $taskData['details'] ?? '',
+                        'priority'                => 'medium',
+                        'status'                  => $taskData['status'] ?? 'pending',
+                        'date'                    => $userDate,
+                        'estimated_minutes'       => $estimatedMins,
+                        'scheduled_followup_time' => now()->addMinutes($estimatedMins),
+                    ]);
+
+                    Log::info("VapiWebhook: Created task {$task->id} for User {$user->id}", [
+                        'title' => $task->title,
+                        'date'  => $task->date,
+                    ]);
+                }
+            } catch (\Exception $e) {
+                Log::error("VapiWebhook: Failed to save tasks for Call {$call->id}: " . $e->getMessage(), [
+                    'file' => $e->getFile(),
+                    'line' => $e->getLine(),
+                ]);
+            }
+        });
     }
 
     protected function findUserByPhoneNumber($phoneNumber)
