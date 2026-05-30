@@ -15,6 +15,7 @@ class OnboardingController extends Controller
             'default_delay_minutes' => ['nullable', 'integer', 'min:1'],
             'voice_id' => ['required', 'string'],
             'phone_number' => ['nullable', 'string'],
+            'calling_preference' => ['nullable', 'in:phone,app'],
         ]);
 
         $user = $request->user();
@@ -23,6 +24,7 @@ class OnboardingController extends Controller
             'timezone' => $validated['timezone'],
             'default_delay_minutes' => $validated['default_delay_minutes'] ?? null,
             'voice_id' => $validated['voice_id'],
+            'calling_preference' => $validated['calling_preference'] ?? 'phone',
         ]);
 
         if ($request->filled('phone_number')) {

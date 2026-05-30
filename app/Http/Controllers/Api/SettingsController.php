@@ -29,6 +29,7 @@ class SettingsController extends Controller
             'morning_call_time' => ['sometimes', 'date_format:H:i'],
             'timezone' => ['sometimes', 'timezone'],
             'default_delay_minutes' => ['nullable', 'integer', 'min:1'],
+            'calling_preference' => ['sometimes', 'in:phone,app'],
         ]);
 
         $user->update($validated);

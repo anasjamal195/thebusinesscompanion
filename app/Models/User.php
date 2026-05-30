@@ -14,7 +14,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Cashier\Billable;
 use Laravel\Sanctum\HasApiTokens;
 
-#[Fillable(['name', 'email', 'password', 'role', 'onboarding_completed', 'voice_id', 'morning_call_time', 'timezone', 'default_delay_minutes', 'last_morning_call_date', 'last_call_time', 'credits', 'google_id', 'avatar'])]
+#[Fillable(['name', 'email', 'password', 'role', 'onboarding_completed', 'voice_id', 'morning_call_time', 'timezone', 'default_delay_minutes', 'last_morning_call_date', 'last_call_time', 'credits', 'google_id', 'avatar', 'calling_preference', 'fcm_token'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
