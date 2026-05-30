@@ -416,6 +416,72 @@ INSTRUCTIONS;
     }
 
     /**
+     * Initiate a web-based call (no phone number needed — uses Vapi's web SDK).
+     * Returns an array with 'web_call_url', 'call_id', and 'vapi_call_id' on success, or false on failure.
+     */
+    public function createWebCall(User $user, string $callType = 'morning', ?Collection $tasks = null): array|false
+    {
+        $rate = (float) MonetizationSetting::getInstance()->per_minute_rate;
+        if (!$user->hasSufficientCredits($rate)) {
+            Log::warning("VapiService: User {$user->id} has insufficient credits ({$user->credits}) for a web call (\${$rate}/min)");
+            return false;
+        }
+
+        $assistant = $this->getWebCallAssistant($user, $callType, $tasks);
+
+        $call = Call::create([
+            'user_id'   => $user->id,
+            'status'    => 'initiating',
+            'direction' => 'outbound',
+            'metadata'  => [
+                'call_type' => $callType,
+                'task_ids'  => $tasks?->pluck('id')->toArray() ?? [],
+                'channel'   => 'app',
+            ],
+        ]);
+
+        try {
+            Log::info("VapiService: Initiating web {$callType} call for User {$user->id}");
+
+            $payload = [
+                'assistant' => $assistant,
+                'assistantOverrides' => [
+                    'metadata' => ['local_call_id' => (string) $call->id],
+                ],
+            ];
+
+            $response = Http::withToken(config('services.vapi.public_key'))
+                ->post("{$this->baseUrl}/call/web", $payload);
+
+            if (!$response->successful()) {
+                $call->update(['status' => 'failed']);
+                Log::error("VapiService: /call/web error {$response->status()}", ['body' => $response->body()]);
+                return false;
+            }
+
+            $vapiData = $response->json();
+
+            $call->update([
+                'call_id' => $vapiData['id'] ?? null,
+                'status'  => 'waiting',
+            ]);
+
+            return [
+                'web_call_url' => $vapiData['webCallUrl'] ?? null,
+                'call_id'      => $call->id,
+                'vapi_call_id' => $vapiData['id'] ?? null,
+            ];
+
+        } catch (\Exception $e) {
+            if (isset($call)) {
+                $call->update(['status' => 'failed']);
+            }
+            Log::error("VapiService: Exception in createWebCall — " . $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
      * Get the webhook URL for Vapi calls.
      */
     public function getWebhookUrl(): string

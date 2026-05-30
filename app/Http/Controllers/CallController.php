@@ -60,6 +60,16 @@ class CallController extends Controller
 
         $callType = $tasks->where('status', 'pending')->isNotEmpty() ? 'followup' : 'morning';
 
+        if ($user->calling_preference === 'app') {
+            $result = $vapi->createWebCall($user, $callType, $tasks);
+
+            if ($result && !empty($result['web_call_url'])) {
+                return redirect()->away($result['web_call_url']);
+            }
+
+            return back()->withErrors(['error' => 'Failed to initiate app call. Please try again.']);
+        }
+
         $result = $vapi->createCall($user, $callType, $tasks);
 
         if ($result) {

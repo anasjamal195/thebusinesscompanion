@@ -46,7 +46,20 @@ class CallController extends Controller
         $callType = $tasks->where('status', 'pending')->isNotEmpty() ? 'followup' : 'morning';
 
         if ($user->calling_preference === 'app') {
-            return $this->createAppCall($user, $vapi, $callType, $tasks);
+            $result = $vapi->createWebCall($user, $callType, $tasks);
+
+            if ($result && !empty($result['web_call_url'])) {
+                return response()->json([
+                    'message'      => 'Call initiated. Connecting via app...',
+                    'call_id'      => $result['call_id'],
+                    'web_call_url' => $result['web_call_url'],
+                    'vapi_call_id' => $result['vapi_call_id'],
+                ]);
+            }
+
+            return response()->json([
+                'message' => 'Failed to initiate app call.',
+            ], 500);
         }
 
         $result = $vapi->createCall($user, $callType, $tasks);
@@ -58,64 +71,6 @@ class CallController extends Controller
         return response()->json([
             'message' => 'Failed to initiate call. Please try again.',
         ], 500);
-    }
-
-    protected function createAppCall($user, VapiService $vapi, string $callType, $tasks)
-    {
-        $assistant = $vapi->getWebCallAssistant($user, $callType, $tasks);
-
-        $call = Call::create([
-            'user_id'   => $user->id,
-            'status'    => 'initiating',
-            'direction' => 'outbound',
-            'metadata'  => [
-                'call_type'  => $callType,
-                'task_ids'   => $tasks?->pluck('id')->toArray() ?? [],
-                'channel'    => 'app',
-            ],
-        ]);
-
-        try {
-            Log::info("VapiService: Initiating app {$callType} call for User {$user->id}");
-
-            $payload = [
-                'assistant' => $assistant,
-                'assistantOverrides' => [
-                    'metadata' => ['local_call_id' => (string) $call->id],
-                ],
-            ];
-
-            $response = Http::withToken(config('services.vapi.public_key'))
-                ->post('https://api.vapi.ai/call/web', $payload);
-
-            if (!$response->successful()) {
-                $call->update(['status' => 'failed']);
-                Log::error("VapiService: /call/web error {$response->status()}", ['body' => $response->body()]);
-                return response()->json(['message' => 'Failed to initiate call.'], 500);
-            }
-
-            $vapiData = $response->json();
-
-            $call->update([
-                'call_id' => $vapiData['id'] ?? null,
-                'status'  => 'waiting',
-            ]);
-
-            return response()->json([
-                'message'         => 'Call initiated. Connecting via app...',
-                'call_id'         => $call->id,
-                'call'            => $call->fresh(),
-                'web_call_url'    => $vapiData['webCallUrl'] ?? null,
-                'vapi_call_id'    => $vapiData['id'] ?? null,
-            ]);
-
-        } catch (\Exception $e) {
-            if (isset($call)) {
-                $call->update(['status' => 'failed']);
-            }
-            Log::error("VapiService: Exception — " . $e->getMessage());
-            return response()->json(['message' => 'Failed to initiate call.'], 500);
-        }
     }
 
     public function cancelCall(Request $request, Call $call, VapiService $vapi)
