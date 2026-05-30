@@ -36,7 +36,7 @@
       top: 0;
       width: 50%;
       height: 100%;
-      background: linear-gradient(90deg, transparent, #3E50F7, transparent);
+      background: linear-gradient(90deg, transparent, #00AFF0, transparent);
       animation: pulse-horizontal 2.5s infinite linear;
     }
 
@@ -103,7 +103,7 @@
             class="hidden md:block text-[15px] font-semibold text-white/70 hover:text-white transition-colors">Sign in</a>
         @endauth
         <a href="{{ Auth::check() ? route('dashboard') : route('register') }}"
-          class="px-6 py-2.5 bg-[#3E50F7] hover:bg-[#3E50F7]/90 text-white font-bold rounded-full transition-all text-sm shadow-lg shadow-[#3E50F7]/20">
+          class="px-6 py-2.5 bg-[#00AFF0] hover:bg-[#00AFF0]/90 text-white font-bold rounded-full transition-all text-sm shadow-lg shadow-[#00AFF0]/20">
           {{ Auth::check() ? 'Dashboard' : 'Get started' }}
         </a>
       </div>
@@ -156,7 +156,7 @@
                 }
 
                 .hero-path-flow {
-                  stroke: #3E50F7;
+                  stroke: #00AFF0;
                   stroke-width: 4;
                   fill: none;
                   stroke-linecap: round;
@@ -165,7 +165,7 @@
                 }
 
                 .hero-path-flow-rev {
-                  stroke: #3E50F7;
+                  stroke: #00AFF0;
                   stroke-width: 4;
                   fill: none;
                   stroke-linecap: round;
@@ -175,12 +175,12 @@
 
                 .hero-node {
                   fill: white;
-                  stroke: #3E50F7;
+                  stroke: #00AFF0;
                   stroke-width: 2;
                 }
 
                 .hero-node-pulse {
-                  fill: #3E50F7;
+                  fill: #00AFF0;
                   opacity: 0.4;
                 }
               </style>
@@ -300,7 +300,7 @@
 
                   <div class="p-8 flex flex-col h-full text-[#1E204A]">
                     <div class="flex items-center gap-3 mb-6">
-                      <div class="w-12 h-12 rounded-full bg-[#3E50F7] flex items-center justify-center text-white shadow-lg">
+                      <div class="w-12 h-12 rounded-full bg-[#00AFF0] flex items-center justify-center text-white shadow-lg">
                         <span class="material-symbols-outlined text-2xl">call</span>
                       </div>
                       <div>
@@ -311,8 +311,8 @@
 
                     <div class="flex-1 bg-[#F8FAFF] rounded-2xl p-5 border border-[#DEE8FF] space-y-3">
                       <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 rounded-full bg-[#3E50F7]/10 flex items-center justify-center">
-                          <span class="material-symbols-outlined text-[#3E50F7] text-lg">schedule</span>
+                        <div class="w-8 h-8 rounded-full bg-[#00AFF0]/10 flex items-center justify-center">
+                          <span class="material-symbols-outlined text-[#00AFF0] text-lg">schedule</span>
                         </div>
                         <div class="flex-1">
                           <div class="text-[11px] font-bold text-[#25224A]">"Good morning! Ready to plan your day?"</div>
@@ -327,8 +327,8 @@
                     </div>
 
                     <div class="mt-auto flex gap-2">
-                      <div class="flex-1 h-2 bg-[#3E50F7]/10 rounded-full"></div>
-                      <div class="flex-1 h-2 bg-[#3E50F7]/10 rounded-full w-2/3"></div>
+                      <div class="flex-1 h-2 bg-[#00AFF0]/10 rounded-full"></div>
+                      <div class="flex-1 h-2 bg-[#00AFF0]/10 rounded-full w-2/3"></div>
                     </div>
                   </div>
                 </div>
@@ -348,8 +348,8 @@
                   :class="(activeSlide === 1 && !isScrolling) ? 'opacity-100' : 'opacity-0 pointer-events-none'">
                   <div class="flex items-center gap-4 mb-6">
                     <div class="w-12 h-12 rounded-full bg-white p-1 shadow-sm relative shrink-0">
-                      <div class="w-full h-full rounded-full bg-[#3E50F7]/10 flex items-center justify-center">
-                        <span class="material-symbols-outlined text-[#3E50F7]">notifications_active</span>
+                      <div class="w-full h-full rounded-full bg-[#00AFF0]/10 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-[#00AFF0]">notifications_active</span>
                       </div>
                       <div
                         class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full animate-pulse">
@@ -368,9 +368,9 @@
                       <span class="ml-auto text-[10px] text-[#22C55E] font-bold">Done</span>
                     </div>
                     <div class="flex items-center gap-3 text-[13px]">
-                      <span class="material-symbols-outlined text-[#3E50F7] text-lg">radio_button_unchecked</span>
+                      <span class="material-symbols-outlined text-[#00AFF0] text-lg">radio_button_unchecked</span>
                       <span class="font-bold text-[#25224A]">Review Q3 budget</span>
-                      <span class="ml-auto text-[10px] text-[#3E50F7] font-bold">In Progress</span>
+                      <span class="ml-auto text-[10px] text-[#00AFF0] font-bold">In Progress</span>
                     </div>
                     <div class="flex items-center gap-3 text-[13px]">
                       <span class="material-symbols-outlined text-[#EF4444] text-lg">radio_button_unchecked</span>
@@ -378,8 +378,8 @@
                       <span class="ml-auto text-[10px] text-[#EF4444] font-bold">Overdue</span>
                     </div>
                   </div>
-                  <div class="flex items-center gap-2 text-[11px] text-[#3E50F7] font-bold mt-auto">
-                    <span class="w-2 h-2 rounded-full bg-[#3E50F7] animate-ping"></span>
+                  <div class="flex items-center gap-2 text-[11px] text-[#00AFF0] font-bold mt-auto">
+                    <span class="w-2 h-2 rounded-full bg-[#00AFF0] animate-ping"></span>
                     AI calling back in 30 min...
                   </div>
                 </div>
@@ -397,12 +397,12 @@
                 <div class="absolute inset-0 p-8 flex flex-col transition-opacity duration-300 text-[#1E204A]"
                   :class="(activeSlide === 2 && !isScrolling) ? 'opacity-100' : 'opacity-0 pointer-events-none'">
                   <div class="font-extrabold text-lg mb-4 tracking-tight flex items-center gap-2">
-                    <span class="material-symbols-outlined text-[#3E50F7]">history</span> Call Logs
+                    <span class="material-symbols-outlined text-[#00AFF0]">history</span> Call Logs
                   </div>
                   <div class="flex-1 space-y-3 overflow-hidden">
                     <div class="bg-white/60 rounded-xl p-3 border border-[#DEE8FF] flex items-center gap-3">
-                      <div class="w-8 h-8 rounded-full bg-[#3E50F7]/10 flex items-center justify-center shrink-0">
-                        <span class="material-symbols-outlined text-[#3E50F7] text-lg">call_received</span>
+                      <div class="w-8 h-8 rounded-full bg-[#00AFF0]/10 flex items-center justify-center shrink-0">
+                        <span class="material-symbols-outlined text-[#00AFF0] text-lg">call_received</span>
                       </div>
                       <div class="flex-1 min-w-0">
                         <div class="text-[11px] font-bold text-[#25224A]">Morning Planning</div>
@@ -411,8 +411,8 @@
                       <span class="text-[9px] text-[#22C55E] font-bold shrink-0">Completed</span>
                     </div>
                     <div class="bg-white/60 rounded-xl p-3 border border-[#DEE8FF] flex items-center gap-3">
-                      <div class="w-8 h-8 rounded-full bg-[#3E50F7]/10 flex items-center justify-center shrink-0">
-                        <span class="material-symbols-outlined text-[#3E50F7] text-lg">call_received</span>
+                      <div class="w-8 h-8 rounded-full bg-[#00AFF0]/10 flex items-center justify-center shrink-0">
+                        <span class="material-symbols-outlined text-[#00AFF0] text-lg">call_received</span>
                       </div>
                       <div class="flex-1 min-w-0">
                         <div class="text-[11px] font-bold text-[#25224A]">Follow-up Check</div>
@@ -431,9 +431,9 @@
                       <span class="text-[9px] text-[#EF4444] font-bold shrink-0">Missed</span>
                     </div>
                   </div>
-                  <div class="mt-3 flex items-center justify-between text-[9px] text-[#3E50F7] font-bold">
+                  <div class="mt-3 flex items-center justify-between text-[9px] text-[#00AFF0] font-bold">
                     <span>View all transcripts →</span>
-                    <span class="bg-[#3E50F7]/10 px-2 py-0.5 rounded-full">3 calls today</span>
+                    <span class="bg-[#00AFF0]/10 px-2 py-0.5 rounded-full">3 calls today</span>
                   </div>
                 </div>
               </div>
@@ -517,7 +517,7 @@
                       </div>
                       <div class="text-right">
                         <div class="text-[10px] text-[#525E7A] font-bold uppercase">Progress</div>
-                        <div class="text-lg font-extrabold text-[#3E50F7]">60%</div>
+                        <div class="text-lg font-extrabold text-[#00AFF0]">60%</div>
                       </div>
                     </div>
 
@@ -530,14 +530,14 @@
                         </div>
                       </div>
                       <div class="flex items-center gap-3 bg-[#F8FAFF] p-3 rounded-xl border border-[#DEE8FF]">
-                        <span class="material-symbols-outlined text-[#3E50F7] text-lg">radio_button_unchecked</span>
+                        <span class="material-symbols-outlined text-[#00AFF0] text-lg">radio_button_unchecked</span>
                         <div class="flex-1">
                           <div class="text-[13px] font-bold text-[#25224A]">Review team updates</div>
                           <div class="text-[9px] text-[#7F798D]">Due: Today • Medium</div>
                         </div>
                       </div>
                       <div class="flex items-center gap-3 bg-[#F8FAFF] p-3 rounded-xl border border-[#DEE8FF]">
-                        <span class="material-symbols-outlined text-[#3E50F7] text-lg">radio_button_unchecked</span>
+                        <span class="material-symbols-outlined text-[#00AFF0] text-lg">radio_button_unchecked</span>
                         <div class="flex-1">
                           <div class="text-[13px] font-bold text-[#25224A]">Call Johnson & Co.</div>
                           <div class="text-[9px] text-[#7F798D]">Due: Today • High priority</div>
@@ -554,7 +554,7 @@
 
                     <div class="mt-auto pt-4 border-t border-[#DEE8FF] flex justify-between text-[10px] text-[#7F798D] font-bold">
                       <span>2 completed • 3 remaining</span>
-                      <span class="text-[#3E50F7]">View all →</span>
+                      <span class="text-[#00AFF0]">View all →</span>
                     </div>
                   </div>
                 </div>
@@ -594,7 +594,7 @@
                   </div>
                   <div class="mt-auto pt-3 flex gap-2">
                     <div
-                      class="flex-1 bg-[#3E50F7] text-white text-center py-3 rounded-xl text-[10px] font-bold cursor-pointer hover:bg-[#3E50F7]/90 shadow-lg shadow-[#3E50F7]/20 transition-all uppercase tracking-wider">
+                      class="flex-1 bg-[#00AFF0] text-white text-center py-3 rounded-xl text-[10px] font-bold cursor-pointer hover:bg-[#00AFF0]/90 shadow-lg shadow-[#00AFF0]/20 transition-all uppercase tracking-wider">
                       View Full Report</div>
                   </div>
                 </div>
@@ -612,7 +612,7 @@
                 <div class="absolute inset-0 p-8 flex flex-col transition-opacity duration-300 text-[#1E204A]"
                   :class="(activeSlide === 2 && !isScrolling) ? 'opacity-100' : 'opacity-0 pointer-events-none'">
                   <div class="font-extrabold text-xl mb-4 tracking-tight flex items-center gap-2">
-                    <span class="material-symbols-outlined text-[#3E50F7]">bar_chart</span> Your Stats
+                    <span class="material-symbols-outlined text-[#00AFF0]">bar_chart</span> Your Stats
                   </div>
                   <div class="grid grid-cols-2 gap-3 mb-4">
                     <div class="bg-white/60 rounded-xl p-4 border border-[#DEE8FF] text-center">
@@ -624,7 +624,7 @@
                       <div class="text-[9px] text-[#7F798D] font-bold uppercase">Completed</div>
                     </div>
                     <div class="bg-white/60 rounded-xl p-4 border border-[#DEE8FF] text-center">
-                      <div class="text-2xl font-extrabold text-[#3E50F7]">75%</div>
+                      <div class="text-2xl font-extrabold text-[#00AFF0]">75%</div>
                       <div class="text-[9px] text-[#7F798D] font-bold uppercase">Completion Rate</div>
                     </div>
                     <div class="bg-white/60 rounded-xl p-4 border border-[#DEE8FF] text-center">
@@ -633,7 +633,7 @@
                     </div>
                   </div>
                   <div
-                    class="bg-[#3E50F7]/5 text-[#3E50F7] text-[10px] font-bold text-center py-3 rounded-xl mt-auto border border-[#3E50F7]/20 uppercase tracking-widest">
+                    class="bg-[#00AFF0]/5 text-[#00AFF0] text-[10px] font-bold text-center py-3 rounded-xl mt-auto border border-[#00AFF0]/20 uppercase tracking-widest">
                     Procrastination Score: 15% ↓</div>
                 </div>
               </div>
@@ -669,7 +669,7 @@
         <!-- Buttons -->
         <div class="flex flex-col sm:flex-row items-center gap-4 pt-4">
           <button @click="waitlistModalOpen = true"
-            class="px-10 py-4 bg-[#3E50F7] hover:bg-[#3E50F7]/90 text-white font-bold rounded-xl transition-all text-base flex items-center justify-center gap-2 w-full sm:w-auto shadow-lg shadow-[#3E50F7]/25">
+            class="px-10 py-4 bg-[#00AFF0] hover:bg-[#00AFF0]/90 text-white font-bold rounded-xl transition-all text-base flex items-center justify-center gap-2 w-full sm:w-auto shadow-lg shadow-[#00AFF0]/25">
             Join Waitlist <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
           </button>
           <a href="#how-it-works"
@@ -717,7 +717,7 @@
     <div class="max-w-[1400px] mx-auto px-6 md:px-12">
       <div class="text-center mb-20">
         <h2 class="text-3xl md:text-5xl font-black text-[#25224A] tracking-tight mb-6">How <span
-            class="text-[#3E50F7]">dialer.best</span> Works</h2>
+            class="text-[#00AFF0]">dialer.best</span> Works</h2>
         <p class="text-[#7F798D] text-lg max-w-2xl mx-auto">It will call you in the morning, Help you plan tasks on the call, organize scheduled tasks, Set follow-up reminders for each task, Help you close a productive day with confidence.</p>
       </div>
 
@@ -725,10 +725,10 @@
         <!-- Step 1: Morning Call -->
         <div class="bg-[#F8FAFF] p-8 rounded-[2.5rem] border border-[#DEE8FF] relative group overflow-hidden">
           <div class="relative z-10 text-center">
-            <div class="w-16 h-16 rounded-2xl bg-white shadow-sm flex items-center justify-center mb-6 text-[#3E50F7] mx-auto">
+            <div class="w-16 h-16 rounded-2xl bg-white shadow-sm flex items-center justify-center mb-6 text-[#00AFF0] mx-auto">
               <span class="material-symbols-outlined text-3xl">phone_callback</span>
             </div>
-            <div class="inline-flex items-center gap-1 px-3 py-1 bg-[#3E50F7]/10 rounded-full text-[10px] font-bold text-[#3E50F7] mb-4">Step 01</div>
+            <div class="inline-flex items-center gap-1 px-3 py-1 bg-[#00AFF0]/10 rounded-full text-[10px] font-bold text-[#00AFF0] mb-4">Step 01</div>
             <h3 class="text-2xl font-bold text-[#25224A] mb-3">Morning Call</h3>
             <p class="text-[#7F798D] text-sm leading-relaxed">You wake up. dialer.best calls you. A natural conversation to plan your day, set priorities, and commit to tasks.</p>
           </div>
@@ -737,7 +737,7 @@
         <!-- Step 2: Schedule -->
         <div class="bg-[#25224A] p-8 rounded-[2.5rem] border border-white/5 relative group overflow-hidden shadow-2xl -mt-4 lg:mt-8">
           <div class="relative z-10 text-center">
-            <div class="w-16 h-16 rounded-2xl bg-[#3E50F7] shadow-lg flex items-center justify-center mb-6 text-white mx-auto">
+            <div class="w-16 h-16 rounded-2xl bg-[#00AFF0] shadow-lg flex items-center justify-center mb-6 text-white mx-auto">
               <span class="material-symbols-outlined text-3xl">checklist</span>
             </div>
             <div class="inline-flex items-center gap-1 px-3 py-1 bg-white/10 rounded-full text-[10px] font-bold text-white/80 mb-4">Step 02</div>
@@ -761,7 +761,7 @@
         <!-- Step 4: Report -->
         <div class="bg-[#25224A] p-8 rounded-[2.5rem] border border-white/5 relative group overflow-hidden shadow-2xl -mt-4 lg:mt-8">
           <div class="relative z-10 text-center">
-            <div class="w-16 h-16 rounded-2xl bg-[#3E50F7] shadow-lg flex items-center justify-center mb-6 text-white mx-auto">
+            <div class="w-16 h-16 rounded-2xl bg-[#00AFF0] shadow-lg flex items-center justify-center mb-6 text-white mx-auto">
               <span class="material-symbols-outlined text-3xl">summarize</span>
             </div>
             <div class="inline-flex items-center gap-1 px-3 py-1 bg-white/10 rounded-full text-[10px] font-bold text-white/80 mb-4">Step 04</div>
@@ -778,16 +778,16 @@
     <div class="max-w-[1400px] mx-auto px-6 md:px-12">
       <div class="text-center mb-20">
         <h2 class="text-3xl md:text-5xl font-black text-[#25224A] tracking-tight mb-6">Why dialer.best <span
-            class="text-[#3E50F7]">Kills Procrastination</span></h2>
+            class="text-[#00AFF0]">Kills Procrastination</span></h2>
         <p class="text-[#7F798D] text-lg max-w-2xl mx-auto">Because notifications are too easy to ignore.</p>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
         <!-- Feature 1 -->
         <div
-          class="group relative bg-[#F8FAFF] p-8 rounded-[2.5rem] border border-[#DEE8FF] hover:border-[#3E50F7]/30 transition-all hover:-translate-y-2 shadow-sm">
+          class="group relative bg-[#F8FAFF] p-8 rounded-[2.5rem] border border-[#DEE8FF] hover:border-[#00AFF0]/30 transition-all hover:-translate-y-2 shadow-sm">
           <div
-            class="w-16 h-16 rounded-2xl bg-white shadow-md flex items-center justify-center mb-6 text-[#3E50F7] group-hover:scale-110 transition-transform">
+            class="w-16 h-16 rounded-2xl bg-white shadow-md flex items-center justify-center mb-6 text-[#00AFF0] group-hover:scale-110 transition-transform">
             <span class="material-symbols-outlined text-[32px]">call</span>
           </div>
           <h3 class="text-xl font-bold text-[#25224A] mb-3 leading-tight">Human-like Voice Calls</h3>
@@ -796,9 +796,9 @@
 
         <!-- Feature 2 -->
         <div
-          class="group relative bg-[#25224A] p-8 rounded-[2.5rem] border border-white/10 hover:border-[#3E50F7]/30 transition-all hover:-translate-y-2 shadow-2xl">
+          class="group relative bg-[#25224A] p-8 rounded-[2.5rem] border border-white/10 hover:border-[#00AFF0]/30 transition-all hover:-translate-y-2 shadow-2xl">
           <div
-            class="w-16 h-16 rounded-2xl bg-[#3E50F7] shadow-md flex items-center justify-center mb-6 text-white group-hover:scale-110 transition-transform">
+            class="w-16 h-16 rounded-2xl bg-[#00AFF0] shadow-md flex items-center justify-center mb-6 text-white group-hover:scale-110 transition-transform">
             <span class="material-symbols-outlined text-[32px]">notifications_active</span>
           </div>
           <h3 class="text-xl font-bold text-white mb-3 leading-tight">Persistent Follow-ups</h3>
@@ -807,7 +807,7 @@
 
         <!-- Feature 3 -->
         <div
-          class="group relative bg-[#F8FAFF] p-8 rounded-[2.5rem] border border-[#DEE8FF] hover:border-[#3E50F7]/30 transition-all hover:-translate-y-2 shadow-sm">
+          class="group relative bg-[#F8FAFF] p-8 rounded-[2.5rem] border border-[#DEE8FF] hover:border-[#00AFF0]/30 transition-all hover:-translate-y-2 shadow-sm">
           <div
             class="w-16 h-16 rounded-2xl bg-white shadow-md flex items-center justify-center mb-6 text-[#22C55E] group-hover:scale-110 transition-transform">
             <span class="material-symbols-outlined text-[32px]">fact_check</span>
@@ -818,7 +818,7 @@
       </div>
 
       <!-- US Only Banner -->
-      <div class="mt-20 p-8 rounded-3xl bg-gradient-to-br from-[#25224A] to-[#3E50F7] relative overflow-hidden group">
+      <div class="mt-20 p-8 rounded-3xl bg-gradient-to-br from-[#25224A] to-[#00AFF0] relative overflow-hidden group">
         <div
           class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10">
         </div>
@@ -845,7 +845,7 @@
   <section id="voice" class="bg-[#1E204A] py-32 border-y border-white/5 relative overflow-hidden">
     <div class="absolute inset-0 pointer-events-none">
       <div
-        class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#3E50F7]/10 rounded-full blur-[120px]">
+        class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#00AFF0]/10 rounded-full blur-[120px]">
       </div>
       <div
         class="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10">
@@ -855,12 +855,12 @@
     <div class="max-w-[1400px] mx-auto px-6 relative z-10">
       <div class="text-center mb-24">
         <div
-          class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-[#3E50F7] text-xs font-bold uppercase tracking-widest mb-6 shadow-xl">
+          class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-[#00AFF0] text-xs font-bold uppercase tracking-widest mb-6 shadow-xl">
           <span class="material-symbols-outlined text-[20px] animate-pulse">settings_input_antenna</span> The Technology
         </div>
         <h2
           class="text-4xl md:text-6xl lg:text-7xl font-black text-white max-w-4xl mx-auto leading-[1.1] tracking-tight">
-          Smart VOIP<br><span class="text-[#3E50F7]">Calling Assistant</span>
+          Smart VOIP<br><span class="text-[#00AFF0]">Calling Assistant</span>
         </h2>
         <p class="text-xl text-white/50 max-w-2xl mx-auto mt-8 leading-relaxed">
           No screens, no typing — just a proactive AI that calls you to plan your day, check progress, and keeps you accountable until every task is done.
@@ -885,13 +885,13 @@
             }
 
             .path-flow-new {
-              stroke: #3E50F7;
+              stroke: #00AFF0;
               stroke-width: 4;
               fill: none;
               stroke-linecap: round;
               stroke-dasharray: 60 400;
               animation: flowLineNew 3s linear infinite;
-              filter: drop-shadow(0 0 8px #3E50F7);
+              filter: drop-shadow(0 0 8px #00AFF0);
             }
           </style>
           <path class="path-base-new" d="M 280 150 L 317 150 Q 327 150 327 160 L 327 300 Q 327 310 337 310 L 374 310" />
@@ -911,9 +911,9 @@
           <!-- Step 1 -->
           <div class="w-full md:w-[22%] h-auto relative group">
             <div
-              class="h-full flex flex-col items-center p-8 bg-white/5 backdrop-blur-xl rounded-[2.5rem] border border-white/10 group-hover:border-[#3E50F7]/30 transition-all duration-500">
+              class="h-full flex flex-col items-center p-8 bg-white/5 backdrop-blur-xl rounded-[2.5rem] border border-white/10 group-hover:border-[#00AFF0]/30 transition-all duration-500">
               <div
-                class="w-20 h-20 bg-white/5 text-white/20 rounded-full flex items-center justify-center mb-6 group-hover:text-white group-hover:bg-[#3E50F7]/20 transition-all">
+                class="w-20 h-20 bg-white/5 text-white/20 rounded-full flex items-center justify-center mb-6 group-hover:text-white group-hover:bg-[#00AFF0]/20 transition-all">
                 <span class="material-symbols-outlined text-4xl">alarm</span>
               </div>
               <h3 class="font-bold text-white text-center text-xl mb-3">Morning Call</h3>
@@ -924,9 +924,9 @@
           <!-- Step 2 (Active/Grand) -->
           <div class="w-full md:w-[24%] h-auto relative md:mt-[150px] group">
             <div
-              class="h-full flex flex-col items-center p-10 bg-gradient-to-br from-[#3E50F7] to-[#25224A] text-white rounded-[3rem] shadow-[0_0_60px_rgba(62,80,247,0.3)] border border-white/20 transform group-hover:scale-105 transition-all duration-500">
+              class="h-full flex flex-col items-center p-10 bg-gradient-to-br from-[#00AFF0] to-[#25224A] text-white rounded-[3rem] shadow-[0_0_60px_rgba(62,80,247,0.3)] border border-white/20 transform group-hover:scale-105 transition-all duration-500">
               <div
-                class="w-24 h-24 bg-white text-[#3E50F7] rounded-full flex items-center justify-center mb-8 shadow-2xl relative">
+                class="w-24 h-24 bg-white text-[#00AFF0] rounded-full flex items-center justify-center mb-8 shadow-2xl relative">
                 <span class="material-symbols-outlined text-5xl">call</span>
                 <div class="absolute inset-0 rounded-full border-4 border-white/50 animate-ping"></div>
               </div>
@@ -938,7 +938,7 @@
           <!-- Step 3 -->
           <div class="w-full md:w-[22%] h-auto relative group">
             <div
-              class="h-full flex flex-col items-center p-8 bg-white/5 backdrop-blur-xl rounded-[2.5rem] border border-white/10 group-hover:border-[#3E50F7]/30 transition-all duration-500">
+              class="h-full flex flex-col items-center p-8 bg-white/5 backdrop-blur-xl rounded-[2.5rem] border border-white/10 group-hover:border-[#00AFF0]/30 transition-all duration-500">
               <div
                 class="w-20 h-20 bg-white/5 text-white/20 rounded-full flex items-center justify-center mb-6 group-hover:text-[#22C55E] group-hover:bg-[#22C55E]/20 transition-all">
                 <span class="material-symbols-outlined text-4xl">sync</span>
@@ -951,7 +951,7 @@
           <!-- Step 4 -->
           <div class="w-full md:w-[22%] h-auto relative md:mt-[150px] group">
             <div
-              class="h-full flex flex-col items-center p-8 bg-white/5 backdrop-blur-xl rounded-[2.5rem] border border-white/10 group-hover:border-[#3E50F7]/30 transition-all duration-500">
+              class="h-full flex flex-col items-center p-8 bg-white/5 backdrop-blur-xl rounded-[2.5rem] border border-white/10 group-hover:border-[#00AFF0]/30 transition-all duration-500">
               <div
                 class="w-20 h-20 bg-white/5 text-white/20 rounded-full flex items-center justify-center mb-6 group-hover:text-[#AFBBE0] group-hover:bg-[#AFBBE0]/20 transition-all">
                 <span class="material-symbols-outlined text-4xl">summarize</span>
@@ -970,11 +970,11 @@
     <div class="max-w-[1400px] mx-auto px-6 md:px-12">
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
         <div class="space-y-8">
-          <div class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#3E50F7]/10 border border-[#3E50F7]/20 text-[#3E50F7] text-xs font-bold uppercase tracking-widest">
+          <div class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#00AFF0]/10 border border-[#00AFF0]/20 text-[#00AFF0] text-xs font-bold uppercase tracking-widest">
             <span class="material-symbols-outlined text-[20px]">phone_android</span> Mobile App
           </div>
           <h2 class="text-3xl md:text-5xl font-black text-[#25224A] tracking-tight leading-[1.15]">
-            Take <span class="text-[#3E50F7]">dialer.best</span><br>On the Go
+            Take <span class="text-[#00AFF0]">dialer.best</span><br>On the Go
           </h2>
           <p class="text-lg text-[#7F798D] leading-relaxed max-w-lg">
             Our mobile app brings the full dialer.best experience to your pocket. Built for <strong>non-US based customers</strong> who need reliable access to receive calls and manage tasks from anywhere.
@@ -997,7 +997,7 @@
                 <!-- App header in phone -->
                 <div class="bg-[#25224A] px-4 pt-8 pb-4">
                   <div class="flex items-center gap-2 mb-3">
-                    <div class="w-6 h-6 rounded-full bg-[#3E50F7] flex items-center justify-center">
+                    <div class="w-6 h-6 rounded-full bg-[#00AFF0] flex items-center justify-center">
                       <span class="text-white text-[10px] font-bold">D</span>
                     </div>
                     <span class="text-white text-[10px] font-bold tracking-tight">dialer.best</span>
@@ -1008,8 +1008,8 @@
                 <!-- App content -->
                 <div class="flex-1 p-3 space-y-2 bg-[#F8FAFF]">
                   <div class="bg-white p-3 rounded-xl border border-[#DEE8FF] shadow-sm flex items-center gap-2">
-                    <div class="w-8 h-8 rounded-full bg-[#3E50F7]/10 flex items-center justify-center">
-                      <span class="material-symbols-outlined text-[#3E50F7] text-sm">call</span>
+                    <div class="w-8 h-8 rounded-full bg-[#00AFF0]/10 flex items-center justify-center">
+                      <span class="material-symbols-outlined text-[#00AFF0] text-sm">call</span>
                     </div>
                     <div class="flex-1">
                       <div class="text-[10px] font-bold text-[#25224A]">Morning Planning Call</div>
@@ -1028,19 +1028,19 @@
                     <span class="text-[8px] text-[#22C55E] font-bold">Done</span>
                   </div>
                   <div class="bg-white p-3 rounded-xl border border-[#DEE8FF] shadow-sm flex items-center gap-2">
-                    <div class="w-8 h-8 rounded-full bg-[#3E50F7]/10 flex items-center justify-center">
-                      <span class="material-symbols-outlined text-[#3E50F7] text-sm">radio_button_unchecked</span>
+                    <div class="w-8 h-8 rounded-full bg-[#00AFF0]/10 flex items-center justify-center">
+                      <span class="material-symbols-outlined text-[#00AFF0] text-sm">radio_button_unchecked</span>
                     </div>
                     <div class="flex-1">
                       <div class="text-[10px] font-bold text-[#25224A]">Review budget</div>
                       <div class="text-[8px] text-[#7F798D]">In Progress</div>
                     </div>
-                    <span class="text-[8px] text-[#3E50F7] font-bold">1:30 PM</span>
+                    <span class="text-[8px] text-[#00AFF0] font-bold">1:30 PM</span>
                   </div>
                 </div>
                 <!-- Bottom nav -->
                 <div class="bg-white border-t border-[#DEE8FF] px-4 py-2 flex justify-around">
-                  <span class="material-symbols-outlined text-[#3E50F7] text-lg">home</span>
+                  <span class="material-symbols-outlined text-[#00AFF0] text-lg">home</span>
                   <span class="material-symbols-outlined text-[#7F798D] text-lg">list_alt</span>
                   <span class="material-symbols-outlined text-[#7F798D] text-lg">history</span>
                   <span class="material-symbols-outlined text-[#7F798D] text-lg">person</span>
@@ -1048,7 +1048,7 @@
               </div>
             </div>
             <!-- Glow effect -->
-            <div class="absolute -inset-4 bg-[#3E50F7]/5 rounded-[4rem] blur-2xl -z-10"></div>
+            <div class="absolute -inset-4 bg-[#00AFF0]/5 rounded-[4rem] blur-2xl -z-10"></div>
           </div>
         </div>
       </div>
@@ -1060,7 +1060,7 @@
     <div class="max-w-4xl mx-auto px-6 md:px-12">
       <div class="text-center mb-16">
         <h2 class="text-3xl md:text-5xl font-black text-[#25224A] tracking-tight">Everything you <span
-            class="text-[#3E50F7]">Need to Know</span></h2>
+            class="text-[#00AFF0]">Need to Know</span></h2>
       </div>
 
       <div class="space-y-4">
@@ -1069,7 +1069,7 @@
           <button @click="activeFaq === 1 ? activeFaq = null : activeFaq = 1"
             class="w-full px-8 py-6 text-left flex items-center justify-between group">
             <span class="text-lg md:text-xl font-bold text-[#25224A]">What is dialer.best?</span>
-            <span class="material-symbols-outlined text-[#3E50F7] transition-transform duration-300"
+            <span class="material-symbols-outlined text-[#00AFF0] transition-transform duration-300"
               :class="activeFaq === 1 ? 'rotate-45' : ''">add</span>
           </button>
           <div x-show="activeFaq === 1" x-collapse class="px-8 pb-6 text-[#7F798D] leading-relaxed">
@@ -1082,7 +1082,7 @@
           <button @click="activeFaq === 2 ? activeFaq = null : activeFaq = 2"
             class="w-full px-8 py-6 text-left flex items-center justify-between group">
             <span class="text-lg md:text-xl font-bold text-[#25224A]">How does it work?</span>
-            <span class="material-symbols-outlined text-[#3E50F7] transition-transform duration-300"
+            <span class="material-symbols-outlined text-[#00AFF0] transition-transform duration-300"
               :class="activeFaq === 2 ? 'rotate-45' : ''">add</span>
           </button>
           <div x-show="activeFaq === 2" x-collapse class="px-8 pb-6 text-[#7F798D] leading-relaxed">
@@ -1095,7 +1095,7 @@
           <button @click="activeFaq === 3 ? activeFaq = null : activeFaq = 3"
             class="w-full px-8 py-6 text-left flex items-center justify-between group">
             <span class="text-lg md:text-xl font-bold text-[#25224A]">Is this available internationally?</span>
-            <span class="material-symbols-outlined text-[#3E50F7] transition-transform duration-300"
+            <span class="material-symbols-outlined text-[#00AFF0] transition-transform duration-300"
               :class="activeFaq === 3 ? 'rotate-45' : ''">add</span>
           </button>
           <div x-show="activeFaq === 3" x-collapse class="px-8 pb-6 text-[#7F798D] leading-relaxed">
@@ -1108,7 +1108,7 @@
           <button @click="activeFaq === 4 ? activeFaq = null : activeFaq = 4"
             class="w-full px-8 py-6 text-left flex items-center justify-between group">
             <span class="text-lg md:text-xl font-bold text-[#25224A]">Can I review past calls and transcripts?</span>
-            <span class="material-symbols-outlined text-[#3E50F7] transition-transform duration-300"
+            <span class="material-symbols-outlined text-[#00AFF0] transition-transform duration-300"
               :class="activeFaq === 4 ? 'rotate-45' : ''">add</span>
           </button>
           <div x-show="activeFaq === 4" x-collapse class="px-8 pb-6 text-[#7F798D] leading-relaxed">
@@ -1121,7 +1121,7 @@
           <button @click="activeFaq === 5 ? activeFaq = null : activeFaq = 5"
             class="w-full px-8 py-6 text-left flex items-center justify-between group">
             <span class="text-lg md:text-xl font-bold text-[#25224A]">What if I miss a call?</span>
-            <span class="material-symbols-outlined text-[#3E50F7] transition-transform duration-300"
+            <span class="material-symbols-outlined text-[#00AFF0] transition-transform duration-300"
               :class="activeFaq === 5 ? 'rotate-45' : ''">add</span>
           </button>
           <div x-show="activeFaq === 5" x-collapse class="px-8 pb-6 text-[#7F798D] leading-relaxed">
@@ -1134,7 +1134,7 @@
           <button @click="activeFaq === 6 ? activeFaq = null : activeFaq = 6"
             class="w-full px-8 py-6 text-left flex items-center justify-between group">
             <span class="text-lg md:text-xl font-bold text-[#25224A]">How much does it cost?</span>
-            <span class="material-symbols-outlined text-[#3E50F7] transition-transform duration-300"
+            <span class="material-symbols-outlined text-[#00AFF0] transition-transform duration-300"
               :class="activeFaq === 6 ? 'rotate-45' : ''">add</span>
           </button>
           <div x-show="activeFaq === 6" x-collapse class="px-8 pb-6 text-[#7F798D] leading-relaxed">
@@ -1158,9 +1158,9 @@
             The AI todo assistant that calls you — schedules tasks, follows up, and keeps you accountable. Kill procrastination with human-like voice interactions.
           </p>
           <div class="flex gap-4 text-[#7F798D]">
-            <a href="#" class="hover:text-[#3E50F7]"><span
+            <a href="#" class="hover:text-[#00AFF0]"><span
                 class="material-symbols-outlined text-[20px]">language</span></a>
-            <a href="#" class="hover:text-[#3E50F7]"><span class="material-symbols-outlined text-[20px]">mail</span></a>
+            <a href="#" class="hover:text-[#00AFF0]"><span class="material-symbols-outlined text-[20px]">mail</span></a>
           </div>
         </div>
 
@@ -1168,25 +1168,25 @@
         <div>
           <h4 class="font-bold text-[#25224A] mb-4 text-sm">Product</h4>
           <ul class="space-y-3 text-sm text-[#7F798D]">
-            <li><a href="#how-it-works" class="hover:text-[#3E50F7]">How It Works</a></li>
-            <li><a href="#voice" class="hover:text-[#3E50F7]">Call System</a></li>
-            <li><a href="#features" class="hover:text-[#3E50F7]">Features</a></li>
-            <li><a href="{{ route('mobile.app') }}" class="hover:text-[#3E50F7]">Mobile App</a></li>
+            <li><a href="#how-it-works" class="hover:text-[#00AFF0]">How It Works</a></li>
+            <li><a href="#voice" class="hover:text-[#00AFF0]">Call System</a></li>
+            <li><a href="#features" class="hover:text-[#00AFF0]">Features</a></li>
+            <li><a href="{{ route('mobile.app') }}" class="hover:text-[#00AFF0]">Mobile App</a></li>
           </ul>
         </div>
         <div>
           <h4 class="font-bold text-[#25224A] mb-4 text-sm">Company</h4>
           <ul class="space-y-3 text-sm text-[#7F798D]">
-            <li><a href="#" class="hover:text-[#3E50F7]">About</a></li>
-            <li><a href="#" class="hover:text-[#3E50F7]">Careers</a></li>
-            <li><a href="#faq" class="hover:text-[#3E50F7]">FAQ</a></li>
+            <li><a href="#" class="hover:text-[#00AFF0]">About</a></li>
+            <li><a href="#" class="hover:text-[#00AFF0]">Careers</a></li>
+            <li><a href="#faq" class="hover:text-[#00AFF0]">FAQ</a></li>
           </ul>
         </div>
         <div>
           <h4 class="font-bold text-[#25224A] mb-4 text-sm">Legal</h4>
           <ul class="space-y-3 text-sm text-[#7F798D]">
-            <li><a href="#" class="hover:text-[#3E50F7]">Privacy Policy</a></li>
-            <li><a href="#" class="hover:text-[#3E50F7]">Terms of Service</a></li>
+            <li><a href="#" class="hover:text-[#00AFF0]">Privacy Policy</a></li>
+            <li><a href="#" class="hover:text-[#00AFF0]">Terms of Service</a></li>
           </ul>
         </div>
       </div>
@@ -1214,7 +1214,7 @@
 
       <div x-show="!waitlistSubmitted">
         <div class="mb-8">
-          <div class="w-16 h-16 bg-[#3E50F7]/10 rounded-2xl flex items-center justify-center text-[#3E50F7] mb-6">
+          <div class="w-16 h-16 bg-[#00AFF0]/10 rounded-2xl flex items-center justify-center text-[#00AFF0] mb-6">
             <span class="material-symbols-outlined text-3xl">mail</span>
           </div>
           <h3 class="text-3xl font-black text-[#25224A] mb-3">Join the Waitlist</h3>
@@ -1239,9 +1239,9 @@
                 })
             " class="space-y-4">
           <input type="email" x-model="email" required placeholder="Enter your business email"
-            class="w-full px-6 py-4 bg-[#F8FAFF] border border-[#DEE8FF] rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#3E50F7]/20 focus:border-[#3E50F7] transition font-medium">
+            class="w-full px-6 py-4 bg-[#F8FAFF] border border-[#DEE8FF] rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#00AFF0]/20 focus:border-[#00AFF0] transition font-medium">
           <button type="submit"
-            class="w-full py-4 bg-[#3E50F7] text-white font-bold rounded-2xl shadow-lg shadow-[#3E50F7]/20 hover:bg-[#0000EE] transition-all active:scale-95 flex items-center justify-center gap-2">
+            class="w-full py-4 bg-[#00AFF0] text-white font-bold rounded-2xl shadow-lg shadow-[#00AFF0]/20 hover:bg-[#0000EE] transition-all active:scale-95 flex items-center justify-center gap-2">
             Reserve my spot
             <span class="material-symbols-outlined">send</span>
           </button>
@@ -1257,7 +1257,7 @@
         <p class="text-lg text-[#5F5770] leading-relaxed font-medium">You have been added to waitlist, we will update
           you through email</p>
         <button @click="waitlistModalOpen = false; waitlistSubmitted = false; email = ''"
-          class="mt-12 text-[#3E50F7] font-bold hover:underline">Close</button>
+          class="mt-12 text-[#00AFF0] font-bold hover:underline">Close</button>
       </div>
     </div>
   </div>

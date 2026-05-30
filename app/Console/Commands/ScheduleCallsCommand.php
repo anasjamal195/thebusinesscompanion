@@ -140,6 +140,12 @@ class ScheduleCallsCommand extends Command
 
     protected function sendAppCallPush(User $user, string $callType, ?\Illuminate\Support\Collection $tasks = null): void
     {
+        $rate = (float) MonetizationSetting::getInstance()->per_minute_rate;
+        if (!$user->hasSufficientCredits($rate)) {
+            $this->warn("[User {$user->id}] insufficient credits ({$user->credits}) — skipping {$callType} app push");
+            return;
+        }
+
         $callTypeLabel = $callType === 'morning' ? 'morning check-in' : 'follow-up';
         $voiceId = $user->voice_id ?? \App\Services\VapiService::DEFAULT_VOICE_ID;
         $voiceName = \App\Services\VapiService::VOICES[$voiceId]['name'] ?? 'Jessica';

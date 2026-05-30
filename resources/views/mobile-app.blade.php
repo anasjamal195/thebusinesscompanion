@@ -56,7 +56,7 @@
             class="hidden md:block text-[15px] font-semibold text-white/70 hover:text-white transition-colors">Sign in</a>
         @endauth
         <a href="{{ Auth::check() ? route('dashboard') : route('register') }}"
-          class="px-6 py-2.5 bg-[#3E50F7] hover:bg-[#3E50F7]/90 text-white font-bold rounded-full transition-all text-sm shadow-lg shadow-[#3E50F7]/20">
+          class="px-6 py-2.5 bg-[#00AFF0] hover:bg-[#00AFF0]/90 text-white font-bold rounded-full transition-all text-sm shadow-lg shadow-[#00AFF0]/20">
           {{ Auth::check() ? 'Dashboard' : 'Get started' }}
         </a>
       </div>
@@ -66,12 +66,12 @@
   <!-- Hero -->
   <section class="bg-[#25224A] pt-16 pb-24 overflow-hidden relative">
     <div class="absolute inset-0 pointer-events-none">
-      <div class="absolute top-1/2 right-0 -translate-y-1/2 w-[600px] h-[600px] bg-[#3E50F7]/10 rounded-full blur-[120px]"></div>
+      <div class="absolute top-1/2 right-0 -translate-y-1/2 w-[600px] h-[600px] bg-[#00AFF0]/10 rounded-full blur-[120px]"></div>
     </div>
     <div class="max-w-[1400px] mx-auto px-6 md:px-12 relative z-10">
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
         <div class="space-y-8">
-          <div class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-[#3E50F7] text-xs font-bold uppercase tracking-widest">
+          <div class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-[#00AFF0] text-xs font-bold uppercase tracking-widest">
             <span class="material-symbols-outlined text-[20px]">phone_android</span> Mobile App
           </div>
           <h1 class="text-4xl md:text-6xl lg:text-7xl font-black text-white leading-[1.1] tracking-tight">
@@ -83,7 +83,7 @@
           </p>
           <div class="flex flex-col sm:flex-row items-center gap-4">
             <a href="{{ route('apk.download') }}"
-              class="inline-flex items-center gap-3 px-8 py-4 bg-[#3E50F7] hover:bg-[#3E50F7]/90 text-white font-bold rounded-2xl transition-all text-base shadow-lg shadow-[#3E50F7]/25 group">
+              class="inline-flex items-center gap-3 px-8 py-4 bg-[#00AFF0] hover:bg-[#00AFF0]/90 text-white font-bold rounded-2xl transition-all text-base shadow-lg shadow-[#00AFF0]/25 group">
               <span class="material-symbols-outlined text-[22px] group-hover:animate-bounce">download</span>
               Download APK
             </a>
@@ -101,7 +101,7 @@
               <div class="absolute inset-2 bg-white rounded-[2.5rem] overflow-hidden flex flex-col">
                 <div class="bg-[#25224A] px-4 pt-8 pb-4">
                   <div class="flex items-center gap-2 mb-3">
-                    <div class="w-6 h-6 rounded-full bg-[#3E50F7] flex items-center justify-center">
+                    <div class="w-6 h-6 rounded-full bg-[#00AFF0] flex items-center justify-center">
                       <span class="text-white text-[10px] font-bold">D</span>
                     </div>
                     <span class="text-white text-[10px] font-bold tracking-tight">dialer.best</span>
@@ -111,8 +111,8 @@
                 </div>
                 <div class="flex-1 p-3 space-y-2 bg-[#F8FAFF]">
                   <div class="bg-white p-3 rounded-xl border border-[#DEE8FF] shadow-sm flex items-center gap-2">
-                    <div class="w-8 h-8 rounded-full bg-[#3E50F7]/10 flex items-center justify-center">
-                      <span class="material-symbols-outlined text-[#3E50F7] text-sm">call</span>
+                    <div class="w-8 h-8 rounded-full bg-[#00AFF0]/10 flex items-center justify-center">
+                      <span class="material-symbols-outlined text-[#00AFF0] text-sm">call</span>
                     </div>
                     <div class="flex-1">
                       <div class="text-[10px] font-bold text-[#25224A]">Morning Planning Call</div>
@@ -131,14 +131,14 @@
                     <span class="text-[8px] text-[#22C55E] font-bold">Done</span>
                   </div>
                   <div class="bg-white p-3 rounded-xl border border-[#DEE8FF] shadow-sm flex items-center gap-2">
-                    <div class="w-8 h-8 rounded-full bg-[#3E50F7]/10 flex items-center justify-center">
-                      <span class="material-symbols-outlined text-[#3E50F7] text-sm">radio_button_unchecked</span>
+                    <div class="w-8 h-8 rounded-full bg-[#00AFF0]/10 flex items-center justify-center">
+                      <span class="material-symbols-outlined text-[#00AFF0] text-sm">radio_button_unchecked</span>
                     </div>
                     <div class="flex-1">
                       <div class="text-[10px] font-bold text-[#25224A]">Review budget</div>
                       <div class="text-[8px] text-[#7F798D]">In Progress</div>
                     </div>
-                    <span class="text-[8px] text-[#3E50F7] font-bold">1:30 PM</span>
+                    <span class="text-[8px] text-[#00AFF0] font-bold">1:30 PM</span>
                   </div>
                   <div class="bg-white p-3 rounded-xl border border-[#DEE8FF] shadow-sm flex items-center gap-2">
                     <div class="w-8 h-8 rounded-full bg-[#EF4444]/10 flex items-center justify-center">
@@ -152,14 +152,14 @@
                   </div>
                 </div>
                 <div class="bg-white border-t border-[#DEE8FF] px-4 py-2 flex justify-around">
-                  <span class="material-symbols-outlined text-[#3E50F7] text-lg">home</span>
+                  <span class="material-symbols-outlined text-[#00AFF0] text-lg">home</span>
                   <span class="material-symbols-outlined text-[#7F798D] text-lg">list_alt</span>
                   <span class="material-symbols-outlined text-[#7F798D] text-lg">history</span>
                   <span class="material-symbols-outlined text-[#7F798D] text-lg">person</span>
                 </div>
               </div>
             </div>
-            <div class="absolute -inset-4 bg-[#3E50F7]/10 rounded-[4rem] blur-2xl -z-10"></div>
+            <div class="absolute -inset-4 bg-[#00AFF0]/10 rounded-[4rem] blur-2xl -z-10"></div>
           </div>
         </div>
       </div>
@@ -170,28 +170,28 @@
   <section class="bg-white py-24">
     <div class="max-w-[1400px] mx-auto px-6 md:px-12">
       <div class="text-center mb-20">
-        <h2 class="text-3xl md:text-5xl font-black text-[#25224A] tracking-tight mb-6">Why the <span class="text-[#3E50F7]">Mobile App</span>?</h2>
+        <h2 class="text-3xl md:text-5xl font-black text-[#25224A] tracking-tight mb-6">Why the <span class="text-[#00AFF0]">Mobile App</span>?</h2>
         <p class="text-[#7F798D] text-lg max-w-2xl mx-auto">We built the mobile app so users everywhere can access dialer.best — even outside the US.</p>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div class="bg-[#F8FAFF] p-8 rounded-[2.5rem] border border-[#DEE8FF] group hover:border-[#3E50F7]/30 transition-all hover:-translate-y-2 shadow-sm">
-          <div class="w-16 h-16 rounded-2xl bg-white shadow-md flex items-center justify-center mb-6 text-[#3E50F7] group-hover:scale-110 transition-transform">
+        <div class="bg-[#F8FAFF] p-8 rounded-[2.5rem] border border-[#DEE8FF] group hover:border-[#00AFF0]/30 transition-all hover:-translate-y-2 shadow-sm">
+          <div class="w-16 h-16 rounded-2xl bg-white shadow-md flex items-center justify-center mb-6 text-[#00AFF0] group-hover:scale-110 transition-transform">
             <span class="material-symbols-outlined text-[32px]">language</span>
           </div>
           <h3 class="text-xl font-bold text-[#25224A] mb-3 leading-tight">Global Access</h3>
           <p class="text-[15px] text-[#7F798D] leading-relaxed">Use dialer.best from anywhere. Our mobile app is built for non-US based customers who need reliable access to receive calls and manage their tasks.</p>
         </div>
 
-        <div class="bg-[#25224A] p-8 rounded-[2.5rem] border border-white/10 group hover:border-[#3E50F7]/30 transition-all hover:-translate-y-2 shadow-2xl">
-          <div class="w-16 h-16 rounded-2xl bg-[#3E50F7] shadow-md flex items-center justify-center mb-6 text-white group-hover:scale-110 transition-transform">
+        <div class="bg-[#25224A] p-8 rounded-[2.5rem] border border-white/10 group hover:border-[#00AFF0]/30 transition-all hover:-translate-y-2 shadow-2xl">
+          <div class="w-16 h-16 rounded-2xl bg-[#00AFF0] shadow-md flex items-center justify-center mb-6 text-white group-hover:scale-110 transition-transform">
             <span class="material-symbols-outlined text-[32px]">call_quality</span>
           </div>
           <h3 class="text-xl font-bold text-white mb-3 leading-tight">VoIP Calling</h3>
           <p class="text-[15px] text-white/60 leading-relaxed">Make and receive calls directly through the app over the internet. No need for a US phone number — use VoIP to stay connected from any country.</p>
         </div>
 
-        <div class="bg-[#F8FAFF] p-8 rounded-[2.5rem] border border-[#DEE8FF] group hover:border-[#3E50F7]/30 transition-all hover:-translate-y-2 shadow-sm">
+        <div class="bg-[#F8FAFF] p-8 rounded-[2.5rem] border border-[#DEE8FF] group hover:border-[#00AFF0]/30 transition-all hover:-translate-y-2 shadow-sm">
           <div class="w-16 h-16 rounded-2xl bg-white shadow-md flex items-center justify-center mb-6 text-[#22C55E] group-hover:scale-110 transition-transform">
             <span class="material-symbols-outlined text-[32px]">sync_alt</span>
           </div>
@@ -205,16 +205,16 @@
   <!-- VoIP Coming Soon -->
   <section class="bg-[#1E204A] py-24 relative overflow-hidden">
     <div class="absolute inset-0 pointer-events-none">
-      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#3E50F7]/10 rounded-full blur-[120px]"></div>
+      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#00AFF0]/10 rounded-full blur-[120px]"></div>
     </div>
     <div class="max-w-[1400px] mx-auto px-6 md:px-12 relative z-10">
       <div class="max-w-3xl mx-auto text-center">
-        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-[#3E50F7] text-xs font-bold uppercase tracking-widest mb-6">
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-[#00AFF0] text-xs font-bold uppercase tracking-widest mb-6">
           <span class="material-symbols-outlined text-[20px]">construction</span> In Development
         </div>
         <h2 class="text-3xl md:text-5xl font-black text-white tracking-tight mb-8">
           VoIP Calling for<br>
-          <span class="text-[#3E50F7]">International Users</span>
+          <span class="text-[#00AFF0]">International Users</span>
         </h2>
         <p class="text-xl text-white/60 leading-relaxed mb-6 max-w-2xl mx-auto">
           We know our non-US customers need a way to use dialer.best too. That's why we're working hard to implement <strong class="text-white">VoIP calling for international users</strong> — so you can receive calls, plan your day, and stay on top of tasks no matter where you are.
@@ -224,7 +224,7 @@
         </p>
         <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
           <a href="{{ route('apk.download') }}"
-            class="inline-flex items-center gap-3 px-8 py-4 bg-[#3E50F7] hover:bg-[#3E50F7]/90 text-white font-bold rounded-2xl transition-all text-base shadow-lg shadow-[#3E50F7]/25 group">
+            class="inline-flex items-center gap-3 px-8 py-4 bg-[#00AFF0] hover:bg-[#00AFF0]/90 text-white font-bold rounded-2xl transition-all text-base shadow-lg shadow-[#00AFF0]/25 group">
             <span class="material-symbols-outlined text-[22px] group-hover:animate-bounce">download</span>
             Download APK
           </a>
@@ -242,20 +242,20 @@
   <section class="bg-white py-24">
     <div class="max-w-[1400px] mx-auto px-6 md:px-12">
       <div class="text-center mb-20">
-        <h2 class="text-3xl md:text-5xl font-black text-[#25224A] tracking-tight mb-6">App <span class="text-[#3E50F7]">Features</span></h2>
+        <h2 class="text-3xl md:text-5xl font-black text-[#25224A] tracking-tight mb-6">App <span class="text-[#00AFF0]">Features</span></h2>
         <p class="text-[#7F798D] text-lg max-w-2xl mx-auto">Everything you love about dialer.best, now in your pocket.</p>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div class="bg-[#F8FAFF] p-6 rounded-[2rem] border border-[#DEE8FF] text-center hover:border-[#3E50F7]/30 transition-all hover:-translate-y-1">
-          <div class="w-14 h-14 rounded-2xl bg-white shadow-sm flex items-center justify-center mb-4 text-[#3E50F7] mx-auto">
+        <div class="bg-[#F8FAFF] p-6 rounded-[2rem] border border-[#DEE8FF] text-center hover:border-[#00AFF0]/30 transition-all hover:-translate-y-1">
+          <div class="w-14 h-14 rounded-2xl bg-white shadow-sm flex items-center justify-center mb-4 text-[#00AFF0] mx-auto">
             <span class="material-symbols-outlined text-[28px]">call</span>
           </div>
           <h3 class="text-lg font-bold text-[#25224A] mb-2">Receive Calls</h3>
           <p class="text-sm text-[#7F798D] leading-relaxed">Answer incoming AI calls directly on your phone. No web browser needed.</p>
         </div>
 
-        <div class="bg-[#F8FAFF] p-6 rounded-[2rem] border border-[#DEE8FF] text-center hover:border-[#3E50F7]/30 transition-all hover:-translate-y-1">
+        <div class="bg-[#F8FAFF] p-6 rounded-[2rem] border border-[#DEE8FF] text-center hover:border-[#00AFF0]/30 transition-all hover:-translate-y-1">
           <div class="w-14 h-14 rounded-2xl bg-white shadow-sm flex items-center justify-center mb-4 text-[#22C55E] mx-auto">
             <span class="material-symbols-outlined text-[28px]">checklist</span>
           </div>
@@ -263,15 +263,15 @@
           <p class="text-sm text-[#7F798D] leading-relaxed">View, complete, and organize your tasks with a tap. Stay on top of your day.</p>
         </div>
 
-        <div class="bg-[#F8FAFF] p-6 rounded-[2rem] border border-[#DEE8FF] text-center hover:border-[#3E50F7]/30 transition-all hover:-translate-y-1">
-          <div class="w-14 h-14 rounded-2xl bg-white shadow-sm flex items-center justify-center mb-4 text-[#3E50F7] mx-auto">
+        <div class="bg-[#F8FAFF] p-6 rounded-[2rem] border border-[#DEE8FF] text-center hover:border-[#00AFF0]/30 transition-all hover:-translate-y-1">
+          <div class="w-14 h-14 rounded-2xl bg-white shadow-sm flex items-center justify-center mb-4 text-[#00AFF0] mx-auto">
             <span class="material-symbols-outlined text-[28px]">history</span>
           </div>
           <h3 class="text-lg font-bold text-[#25224A] mb-2">Call Logs</h3>
           <p class="text-sm text-[#7F798D] leading-relaxed">Browse your call history with transcripts. Review what was discussed in every call.</p>
         </div>
 
-        <div class="bg-[#F8FAFF] p-6 rounded-[2rem] border border-[#DEE8FF] text-center hover:border-[#3E50F7]/30 transition-all hover:-translate-y-1">
+        <div class="bg-[#F8FAFF] p-6 rounded-[2rem] border border-[#DEE8FF] text-center hover:border-[#00AFF0]/30 transition-all hover:-translate-y-1">
           <div class="w-14 h-14 rounded-2xl bg-white shadow-sm flex items-center justify-center mb-4 text-[#22C55E] mx-auto">
             <span class="material-symbols-outlined text-[28px]">bar_chart</span>
           </div>
@@ -285,18 +285,18 @@
   <!-- Download CTA -->
   <section class="bg-[#25224A] py-24 relative overflow-hidden">
     <div class="absolute inset-0 pointer-events-none">
-      <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-[#3E50F7]/5 rounded-full blur-[120px]"></div>
+      <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-[#00AFF0]/5 rounded-full blur-[120px]"></div>
     </div>
     <div class="max-w-[1400px] mx-auto px-6 md:px-12 relative z-10 text-center">
       <h2 class="text-3xl md:text-5xl font-black text-white tracking-tight mb-6">
-        Ready to Take <span class="text-[#3E50F7]">dialer.best</span><br>
+        Ready to Take <span class="text-[#00AFF0]">dialer.best</span><br>
         Everywhere You Go?
       </h2>
       <p class="text-lg text-white/60 max-w-xl mx-auto mb-10 leading-relaxed">
         Download the APK now and start managing your calls and tasks from anywhere in the world.
       </p>
       <a href="{{ route('apk.download') }}"
-        class="inline-flex items-center gap-3 px-10 py-5 bg-[#3E50F7] hover:bg-[#3E50F7]/90 text-white font-bold rounded-2xl transition-all text-lg shadow-lg shadow-[#3E50F7]/25 group">
+        class="inline-flex items-center gap-3 px-10 py-5 bg-[#00AFF0] hover:bg-[#00AFF0]/90 text-white font-bold rounded-2xl transition-all text-lg shadow-lg shadow-[#00AFF0]/25 group">
         <span class="material-symbols-outlined text-[26px] group-hover:animate-bounce">download</span>
         Download APK Now
       </a>
@@ -316,32 +316,32 @@
             The AI todo assistant that calls you — schedules tasks, follows up, and keeps you accountable. Now available on mobile.
           </p>
           <div class="flex gap-4 text-[#7F798D]">
-            <a href="#" class="hover:text-[#3E50F7]"><span class="material-symbols-outlined text-[20px]">language</span></a>
-            <a href="#" class="hover:text-[#3E50F7]"><span class="material-symbols-outlined text-[20px]">mail</span></a>
+            <a href="#" class="hover:text-[#00AFF0]"><span class="material-symbols-outlined text-[20px]">language</span></a>
+            <a href="#" class="hover:text-[#00AFF0]"><span class="material-symbols-outlined text-[20px]">mail</span></a>
           </div>
         </div>
         <div>
           <h4 class="font-bold text-[#25224A] mb-4 text-sm">Product</h4>
           <ul class="space-y-3 text-sm text-[#7F798D]">
-            <li><a href="/#how-it-works" class="hover:text-[#3E50F7]">How It Works</a></li>
-            <li><a href="/#voice" class="hover:text-[#3E50F7]">Call System</a></li>
-            <li><a href="/#features" class="hover:text-[#3E50F7]">Features</a></li>
-            <li><a href="{{ route('mobile.app') }}" class="hover:text-[#3E50F7]">Mobile App</a></li>
+            <li><a href="/#how-it-works" class="hover:text-[#00AFF0]">How It Works</a></li>
+            <li><a href="/#voice" class="hover:text-[#00AFF0]">Call System</a></li>
+            <li><a href="/#features" class="hover:text-[#00AFF0]">Features</a></li>
+            <li><a href="{{ route('mobile.app') }}" class="hover:text-[#00AFF0]">Mobile App</a></li>
           </ul>
         </div>
         <div>
           <h4 class="font-bold text-[#25224A] mb-4 text-sm">Company</h4>
           <ul class="space-y-3 text-sm text-[#7F798D]">
-            <li><a href="#" class="hover:text-[#3E50F7]">About</a></li>
-            <li><a href="#" class="hover:text-[#3E50F7]">Careers</a></li>
-            <li><a href="/#faq" class="hover:text-[#3E50F7]">FAQ</a></li>
+            <li><a href="#" class="hover:text-[#00AFF0]">About</a></li>
+            <li><a href="#" class="hover:text-[#00AFF0]">Careers</a></li>
+            <li><a href="/#faq" class="hover:text-[#00AFF0]">FAQ</a></li>
           </ul>
         </div>
         <div>
           <h4 class="font-bold text-[#25224A] mb-4 text-sm">Legal</h4>
           <ul class="space-y-3 text-sm text-[#7F798D]">
-            <li><a href="#" class="hover:text-[#3E50F7]">Privacy Policy</a></li>
-            <li><a href="#" class="hover:text-[#3E50F7]">Terms of Service</a></li>
+            <li><a href="#" class="hover:text-[#00AFF0]">Privacy Policy</a></li>
+            <li><a href="#" class="hover:text-[#00AFF0]">Terms of Service</a></li>
           </ul>
         </div>
       </div>
