@@ -59,6 +59,12 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
     ->middleware('auth')
     ->name('logout');
 
+// ── Checkout ─────────────────────────────────────────────────────────────────
+
+Route::get('/checkout/thank-you', function () {
+    return view('checkout.thank-you');
+})->name('checkout.thank-you');
+
 // ── Authenticated ─────────────────────────────────────────────────────────────
 
 Route::middleware('auth')->group(function () {

@@ -50,8 +50,8 @@ class StripeCheckoutController extends Controller
                     'user_id' => (string) $user->id,
                     'amount' => (string) $amount,
                 ],
-                'success_url' => route('profile.index') . '?refill=success',
-                'cancel_url' => route('profile.index') . '?refill=cancelled',
+                'success_url' => route('checkout.thank-you') . '?session_id={CHECKOUT_SESSION_ID}',
+                'cancel_url' => route('checkout.thank-you') . '?cancelled=1',
             ]);
 
             CreditPurchase::create([
