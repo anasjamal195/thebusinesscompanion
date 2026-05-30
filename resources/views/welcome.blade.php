@@ -4,6 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <link rel="icon" type="image/png" href="{{ asset('assets/logo-min.png') }}">
   <title>Dialer.best - Your AI Todo Assistant</title>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900&display=swap"
@@ -78,14 +79,9 @@
   <nav class="bg-[#25224A] w-full border-b border-white/5">
     <div class="flex justify-between items-center h-20 px-6 md:px-12 max-w-[1600px] mx-auto">
       <div class="flex items-center gap-12">
-        <div class="font-bold tracking-tight text-white flex items-center">
-          <svg class="w-7 h-7 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 2L2 22H22L12 2Z" stroke="#3E50F7" stroke-width="2" stroke-linecap="round"
-              stroke-linejoin="round" />
-            <path d="M12 10L6.5 21H17.5L12 10Z" fill="#3E50F7" />
-          </svg>
-          <span class="text-xl font-extrabold tracking-tight">Dialer.best</span>
-        </div>
+        <a href="/" class="font-bold tracking-tight text-white flex items-center">
+          <img src="{{ asset('assets/logo.png') }}" alt="dialer.best" class="h-8 w-auto">
+        </a>
         <div class="hidden lg:flex items-center space-x-10 text-[15px] font-semibold text-white/70">
           <a class="hover:text-white transition-colors" href="#how-it-works">How It Works</a>
           <a class="hover:text-white transition-colors" href="#features">Features</a>
@@ -1064,10 +1060,9 @@
       <div class="grid grid-cols-2 md:grid-cols-5 gap-8 mb-16">
         <!-- Left Column (Logo & address) -->
         <div class="col-span-2 md:col-span-2 space-y-6">
-          <div class="font-black tracking-tighter text-[#25224A] flex items-baseline">
-            <span class="material-symbols-outlined text-[#3E50F7] mr-2">change_history</span>
-            <span class="text-xl">dialer.best</span>
-          </div>
+          <a href="/" class="block">
+            <img src="{{ asset('assets/logo.png') }}" alt="dialer.best" class="h-8 w-auto">
+          </a>
           <p class="text-sm text-[#7F798D] max-w-xs leading-relaxed">
             The AI todo assistant that calls you — schedules tasks, follows up, and keeps you accountable. Kill procrastination with human-like voice interactions.
           </p>
