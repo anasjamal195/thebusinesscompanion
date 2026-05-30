@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Call;
 use App\Models\MonetizationSetting;
+use App\Services\FcmNotificationService;
 use App\Services\VapiService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -95,6 +96,9 @@ class CallController extends Controller
                     'call_id' => $vapiCall['id'],
                     'status'  => 'waiting',
                 ]);
+
+                $fcm = app(FcmNotificationService::class);
+                $fcm->sendIncomingCall($user->id, $vapiCall['id'], 'dialer.best', $callType);
 
                 $clientToken = $this->generateClientToken($vapiCall['id']);
 
