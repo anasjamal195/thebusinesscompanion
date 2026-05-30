@@ -1,14 +1,14 @@
 @extends('admin.layouts.app', ['title' => 'Call Details', 'activeNav' => 'calls', 'pageTitle' => 'Call Details'])
 
 @section('content')
-<div class="max-w-4xl">
+<div class="max-w-7xl">
     <a href="{{ route('admin.calls.index') }}" class="inline-flex items-center gap-1.5 text-sm font-semibold text-gray-500 hover:text-primary transition-colors mb-6">
         <span class="material-symbols-outlined text-[18px]">arrow_back</span>
         Back to Call Logs
     </a>
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div class="lg:col-span-1">
+        <div>
             <div class="rounded-2xl border border-gray-200 bg-white p-6 space-y-5">
                 <div class="flex items-center gap-4">
                     <div class="h-14 w-14 rounded-2xl bg-primary/10 text-primary flex items-center justify-center">
@@ -90,37 +90,39 @@
         </div>
 
         <div class="lg:col-span-2">
-            <div class="rounded-2xl border border-gray-200 bg-white p-6">
+            <div class="rounded-2xl border border-gray-200 bg-white p-6 h-full flex flex-col">
                 <h3 class="text-lg font-extrabold text-gray-900 mb-4 flex items-center gap-2">
                     <span class="material-symbols-outlined text-[22px]">description</span>
                     Transcript
                 </h3>
 
                 @if($call->transcript)
-                    <div class="bg-gray-50 rounded-xl p-5 border border-gray-100 max-h-[600px] overflow-y-auto">
+                    <div class="bg-gray-50 rounded-xl p-5 border border-gray-100 flex-1 overflow-y-auto max-h-[600px]">
                         <pre class="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap font-sans">{{ $call->transcript }}</pre>
                     </div>
                 @else
-                    <div class="text-center py-12">
+                    <div class="text-center py-12 flex-1 flex flex-col items-center justify-center">
                         <span class="material-symbols-outlined text-4xl text-gray-300 mb-3">description</span>
                         <p class="text-sm text-gray-500 font-medium">No transcript available</p>
                         <p class="text-xs text-gray-400 mt-1">This call does not have a transcript.</p>
                     </div>
                 @endif
             </div>
+        </div>
 
-            @if($call->metadata)
-                <div class="rounded-2xl border border-gray-200 bg-white p-6 mt-6">
+        @if($call->metadata)
+            <div class="lg:col-span-1">
+                <div class="rounded-2xl border border-gray-200 bg-white p-6">
                     <h3 class="text-lg font-extrabold text-gray-900 mb-4 flex items-center gap-2">
                         <span class="material-symbols-outlined text-[22px]">data_object</span>
                         Metadata
                     </h3>
-                    <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
+                    <div class="bg-gray-50 rounded-xl p-5 border border-gray-100 overflow-x-auto">
                         <pre class="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap font-mono">{{ json_encode($call->metadata, JSON_PRETTY_PRINT) }}</pre>
                     </div>
                 </div>
-            @endif
-        </div>
+            </div>
+        @endif
     </div>
 </div>
 @endsection
