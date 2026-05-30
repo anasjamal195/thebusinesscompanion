@@ -86,6 +86,7 @@
           <a class="hover:text-white transition-colors" href="#how-it-works">How It Works</a>
           <a class="hover:text-white transition-colors" href="#features">Features</a>
           <a class="hover:text-white transition-colors" href="#voice">Call System</a>
+          <a class="hover:text-white transition-colors" href="{{ route('mobile.app') }}">Mobile App</a>
           <a class="hover:text-white transition-colors" href="#faq">FAQ</a>
         </div>
       </div>
@@ -964,6 +965,96 @@
     </div>
   </section>
 
+  <!-- Mobile App Section -->
+  <section id="mobile-app" class="bg-white py-24 relative overflow-hidden">
+    <div class="max-w-[1400px] mx-auto px-6 md:px-12">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <div class="space-y-8">
+          <div class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#3E50F7]/10 border border-[#3E50F7]/20 text-[#3E50F7] text-xs font-bold uppercase tracking-widest">
+            <span class="material-symbols-outlined text-[20px]">phone_android</span> Mobile App
+          </div>
+          <h2 class="text-3xl md:text-5xl font-black text-[#25224A] tracking-tight leading-[1.15]">
+            Take <span class="text-[#3E50F7]">dialer.best</span><br>On the Go
+          </h2>
+          <p class="text-lg text-[#7F798D] leading-relaxed max-w-lg">
+            Our mobile app brings the full dialer.best experience to your pocket. Built for <strong>non-US based customers</strong> who need reliable access to receive calls and manage tasks from anywhere.
+          </p>
+          <p class="text-lg text-[#7F798D] leading-relaxed max-w-lg">
+            We're working hard to implement <strong>VoIP calling for international users</strong> — so you can use dialer.best no matter where you are.
+          </p>
+            <a href="{{ route('mobile.app') }}"
+            class="inline-flex items-center gap-3 px-8 py-4 bg-[#25224A] hover:bg-[#25224A]/90 text-white font-bold rounded-2xl transition-all text-base shadow-lg shadow-[#25224A]/20 group">
+            <span class="material-symbols-outlined text-[22px]">phone_android</span>
+            Learn About Our App
+          </a>
+        </div>
+        <div class="relative flex items-center justify-center">
+          <div class="relative w-72 h-[500px]">
+            <!-- Phone frame mockup -->
+            <div class="absolute inset-0 bg-[#25224A] rounded-[3rem] border-4 border-[#25224A]/20 shadow-2xl overflow-hidden">
+              <div class="absolute top-0 left-1/2 -translate-x-1/2 w-28 h-6 bg-[#25224A] rounded-b-xl z-10"></div>
+              <div class="absolute inset-2 bg-white rounded-[2.5rem] overflow-hidden flex flex-col">
+                <!-- App header in phone -->
+                <div class="bg-[#25224A] px-4 pt-8 pb-4">
+                  <div class="flex items-center gap-2 mb-3">
+                    <div class="w-6 h-6 rounded-full bg-[#3E50F7] flex items-center justify-center">
+                      <span class="text-white text-[10px] font-bold">D</span>
+                    </div>
+                    <span class="text-white text-[10px] font-bold tracking-tight">dialer.best</span>
+                  </div>
+                  <div class="text-white text-lg font-black">Good morning!</div>
+                  <div class="text-white/60 text-[10px]">Ready to plan your day?</div>
+                </div>
+                <!-- App content -->
+                <div class="flex-1 p-3 space-y-2 bg-[#F8FAFF]">
+                  <div class="bg-white p-3 rounded-xl border border-[#DEE8FF] shadow-sm flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-full bg-[#3E50F7]/10 flex items-center justify-center">
+                      <span class="material-symbols-outlined text-[#3E50F7] text-sm">call</span>
+                    </div>
+                    <div class="flex-1">
+                      <div class="text-[10px] font-bold text-[#25224A]">Morning Planning Call</div>
+                      <div class="text-[8px] text-[#7F798D]">8:30 AM • Incoming</div>
+                    </div>
+                    <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                  </div>
+                  <div class="bg-white p-3 rounded-xl border border-[#DEE8FF] shadow-sm flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-full bg-[#22C55E]/10 flex items-center justify-center">
+                      <span class="material-symbols-outlined text-[#22C55E] text-sm">check_circle</span>
+                    </div>
+                    <div class="flex-1">
+                      <div class="text-[10px] font-bold text-[#25224A]">Draft proposal</div>
+                      <div class="text-[8px] text-[#7F798D]">Completed</div>
+                    </div>
+                    <span class="text-[8px] text-[#22C55E] font-bold">Done</span>
+                  </div>
+                  <div class="bg-white p-3 rounded-xl border border-[#DEE8FF] shadow-sm flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-full bg-[#3E50F7]/10 flex items-center justify-center">
+                      <span class="material-symbols-outlined text-[#3E50F7] text-sm">radio_button_unchecked</span>
+                    </div>
+                    <div class="flex-1">
+                      <div class="text-[10px] font-bold text-[#25224A]">Review budget</div>
+                      <div class="text-[8px] text-[#7F798D]">In Progress</div>
+                    </div>
+                    <span class="text-[8px] text-[#3E50F7] font-bold">1:30 PM</span>
+                  </div>
+                </div>
+                <!-- Bottom nav -->
+                <div class="bg-white border-t border-[#DEE8FF] px-4 py-2 flex justify-around">
+                  <span class="material-symbols-outlined text-[#3E50F7] text-lg">home</span>
+                  <span class="material-symbols-outlined text-[#7F798D] text-lg">list_alt</span>
+                  <span class="material-symbols-outlined text-[#7F798D] text-lg">history</span>
+                  <span class="material-symbols-outlined text-[#7F798D] text-lg">person</span>
+                </div>
+              </div>
+            </div>
+            <!-- Glow effect -->
+            <div class="absolute -inset-4 bg-[#3E50F7]/5 rounded-[4rem] blur-2xl -z-10"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- FAQ Section -->
   <section id="faq" class="bg-[#F8FAFF] py-24 relative overflow-hidden" x-data="{ activeFaq: null }">
     <div class="max-w-4xl mx-auto px-6 md:px-12">
@@ -1080,6 +1171,7 @@
             <li><a href="#how-it-works" class="hover:text-[#3E50F7]">How It Works</a></li>
             <li><a href="#voice" class="hover:text-[#3E50F7]">Call System</a></li>
             <li><a href="#features" class="hover:text-[#3E50F7]">Features</a></li>
+            <li><a href="{{ route('mobile.app') }}" class="hover:text-[#3E50F7]">Mobile App</a></li>
           </ul>
         </div>
         <div>

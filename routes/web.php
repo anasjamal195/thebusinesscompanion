@@ -20,6 +20,18 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/mobile-app', function () {
+    return view('mobile-app');
+})->name('mobile.app');
+
+Route::get('/download-apk', function () {
+    $filePath = storage_path('app/apk/dialer-best.apk');
+    if (file_exists($filePath)) {
+        return response()->download($filePath, 'dialer-best.apk');
+    }
+    abort(404, 'APK file not found. It will be available soon.');
+})->name('apk.download');
+
 Route::post('/waitlist', function (\Illuminate\Http\Request $request) {
     $request->validate([
         'email' => 'required|email|unique:waitlist_entries,email'
