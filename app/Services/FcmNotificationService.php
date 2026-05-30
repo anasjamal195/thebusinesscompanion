@@ -35,9 +35,7 @@ class FcmNotificationService
                 'priority' => 'high',
                 'notification' => [
                     'channel_id' => 'dialer_calls',
-                    'priority' => 'high',
                     'sound' => 'default',
-                    'click_action' => 'FLUTTER_NOTIFICATION_CLICK',
                 ],
             ],
             'apns' => [
