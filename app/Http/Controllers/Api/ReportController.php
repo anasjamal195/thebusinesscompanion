@@ -34,6 +34,15 @@ class ReportController extends Controller
         return response()->json(['report' => $report]);
     }
 
+    public function indexDaily(Request $request)
+    {
+        $dailyReports = DailyReport::where('user_id', $request->user()->id)
+            ->latest('report_date')
+            ->get();
+
+        return response()->json(['daily_reports' => $dailyReports]);
+    }
+
     public function showDaily(Request $request, DailyReport $dailyReport)
     {
         abort_unless($dailyReport->user_id === $request->user()->id, 404);

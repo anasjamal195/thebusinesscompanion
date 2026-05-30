@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\ReportController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\SettingsController;
 use App\Http\Controllers\Api\OnboardingController;
+use App\Http\Controllers\Api\StripeCheckoutController as ApiStripeCheckoutController;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,6 +51,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/reports/{report}', [ReportController::class, 'show']);
     Route::get('/reports/{report}/pdf', [ReportController::class, 'pdf']);
     Route::post('/reports/daily', [ReportController::class, 'generateDaily']);
+    Route::get('/daily-reports', [ReportController::class, 'indexDaily']);
     Route::get('/daily-reports/{dailyReport}', [ReportController::class, 'showDaily']);
 
     // Profile
@@ -59,4 +61,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // Settings
     Route::get('/settings', [SettingsController::class, 'index']);
     Route::post('/settings', [SettingsController::class, 'update']);
+
+    // Stripe Checkout
+    Route::post('/stripe/checkout', [ApiStripeCheckoutController::class, 'createCheckoutSession']);
 });
