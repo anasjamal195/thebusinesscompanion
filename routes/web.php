@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\Auth\GoogleSocialiteController;
 use App\Http\Controllers\OnboardingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
@@ -36,6 +37,9 @@ Route::middleware('guest')->group(function () {
 
     Route::get('/register',  [RegisteredUserController::class, 'create'])->name('register');
     Route::post('/register', [RegisteredUserController::class, 'store'])->name('register.store');
+
+    Route::get('/auth/google/redirect', [GoogleSocialiteController::class, 'redirect'])->name('google.redirect');
+    Route::get('/auth/google/callback', [GoogleSocialiteController::class, 'callback'])->name('google.callback');
 });
 
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
@@ -71,6 +75,10 @@ Route::middleware('auth')->group(function () {
     // Calls
     Route::get('/calls',         [CallController::class, 'index'])->name('calls.index');
     Route::get('/calls/{call}',  [CallController::class, 'show'])->name('calls.show');
+    Route::post('/calls/request', [CallController::class, 'requestCall'])->name('calls.request');
+
+    // Notifications
+    Route::post('/notifications/{notification}/read', [\App\Http\Controllers\NotificationController::class, 'markAsRead'])->name('notifications.read');
 
     // Reports
     Route::get('/reports',               [ReportController::class, 'index'])->name('reports.index');

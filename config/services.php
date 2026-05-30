@@ -59,4 +59,10 @@ return [
         'phone_number_id' => env('VAPI_PHONE_NUMBER_ID', '4fdd69b3-a1c1-4b17-8a3e-156a02f0a454'),
     ],
 
+    'google' => [
+        'client_id' => env('GOOGLE_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+        'redirect' => env('GOOGLE_REDIRECT_URI'),
+    ],
+
 ];

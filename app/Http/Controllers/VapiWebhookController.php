@@ -7,6 +7,7 @@ use App\Models\DailyReport;
 use App\Models\MonetizationSetting;
 use App\Models\Task;
 use App\Models\User;
+use App\Models\UserNotification;
 use App\Services\DailyReportService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -87,8 +88,10 @@ class VapiWebhookController extends Controller
             case 'end-of-call-report':
             case 'call-ended':
                 // Log the full payload for debugging
+                $callStatus = $payload['message']['call']['status'] ?? 'completed';
                 Log::info("VapiWebhook: {$type} received", [
                     'call_id'     => $callId,
+                    'call_status' => $callStatus,
                     'has_artifact'=> isset($payload['message']['artifact']),
                     'artifact_keys' => array_keys($payload['message']['artifact'] ?? []),
                     'has_transcript' => !empty($payload['message']['artifact']['transcript']),
@@ -96,7 +99,6 @@ class VapiWebhookController extends Controller
                 ]);
 
                 if ($call) {
-                    // Handle both end-of-call-report (artifact is inside message) and call-ended
                     $artifact = $payload['message']['artifact'] ?? [];
                     $transcript = $artifact['transcript'] ?? null;
                     $recordingUrl = $artifact['recordingUrl'] ?? null;
@@ -104,18 +106,30 @@ class VapiWebhookController extends Controller
                         ?? $payload['message']['durationSeconds']
                         ?? 0;
 
+                    $isMissed = in_array($callStatus, ['failed', 'busy', 'no-answer', 'cancelled', 'hangup'])
+                        || ($duration === 0 && $type === 'call-ended');
+
+                    $newStatus = $isMissed ? 'failed' : 'completed';
+
                     $call->update([
-                        'status'        => 'completed',
+                        'status'        => $newStatus,
                         'duration'      => $duration,
                         'transcript'    => $transcript,
                         'recording_url' => $recordingUrl,
                     ]);
 
+                    if ($isMissed) {
+                        $callType = $call->metadata['call_type'] ?? 'check-in';
+                        $this->createMissedCallNotification($call, $callType);
+                    }
+
                     // Deduct credits based on call duration
                     $this->deductCreditsForCall($call, $duration);
 
                     // Only process transcript for morning/followup call types
-                    $this->processCallTranscript($call);
+                    if (!$isMissed) {
+                        $this->processCallTranscript($call);
+                    }
                 }
                 break;
 
@@ -506,6 +520,32 @@ PROMPT;
                 'user_id' => $user->id,
             ]);
         }
+    }
+
+    protected function createMissedCallNotification(Call $call, string $callType): void
+    {
+        $title = match ($callType) {
+            'morning' => 'Morning call missed',
+            'followup' => 'Follow-up call missed',
+            default => 'Call missed',
+        };
+
+        $message = match ($callType) {
+            'morning' => 'Your morning call was not answered. We\'ll try again later.',
+            'followup' => 'A follow-up check-in was missed. Your tasks may need attention.',
+            default => 'A scheduled call was not answered.',
+        };
+
+        UserNotification::create([
+            'user_id' => $call->user_id,
+            'type' => 'missed_call',
+            'title' => $title,
+            'message' => $message,
+            'data' => [
+                'call_id' => $call->id,
+                'call_type' => $callType,
+            ],
+        ]);
     }
 
     protected function deductCreditsForCall(Call $call, int $durationSeconds): void

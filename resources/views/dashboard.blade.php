@@ -49,6 +49,19 @@
 @section('content')
 <div class="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
     
+    @if(session('success'))
+        <div class="inline-flex items-center gap-2 px-4 py-2.5 bg-green-50 text-green-600 rounded-xl text-sm font-bold border border-green-100">
+            <span class="material-symbols-outlined text-[18px]">check_circle</span>
+            {{ session('success') }}
+        </div>
+    @endif
+    @if($errors->any())
+        <div class="inline-flex items-center gap-2 px-4 py-2.5 bg-red-50 text-red-600 rounded-xl text-sm font-bold border border-red-100">
+            <span class="material-symbols-outlined text-[18px]">error</span>
+            {{ $errors->first() }}
+        </div>
+    @endif
+    
     <!-- Welcome Header -->
     <div class="relative overflow-hidden bg-white rounded-[3rem] p-8 md:p-12 shadow-xl shadow-gray-200/50 border border-gray-100 group">
         <div class="absolute -right-20 -top-20 w-80 h-80 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/10 transition-colors duration-700"></div>
@@ -65,11 +78,27 @@
                     You have <span class="text-gray-900 font-bold">{{ $pendingCount }}</span> pending tasks for today.
                 </p>
             </div>
-            <div class="flex gap-4">
+            <div class="flex gap-3">
+                <form action="{{ route('calls.request') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="px-6 py-4 bg-white text-primary font-bold rounded-2xl border-2 border-primary/20 hover:border-primary hover:bg-primary/5 shadow-lg transition-all active:scale-95 flex items-center gap-2.5">
+                        <span class="material-symbols-outlined">phone_in_talk</span>
+                        Request Call
+                    </button>
+                </form>
                 <button onclick="document.getElementById('newTaskModal').classList.remove('hidden')" class="px-8 py-4 bg-primary hover:bg-primary-container text-white font-bold rounded-2xl shadow-xl shadow-primary/20 transition-all active:scale-95 flex items-center gap-3">
                     <span class="material-symbols-outlined">add</span>
                     Add Task
                 </button>
+                @if($tasks->isNotEmpty())
+                <form action="{{ route('reports.daily.generate') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="px-6 py-4 bg-white text-emerald-600 font-bold rounded-2xl border-2 border-emerald-200 hover:border-emerald-400 hover:bg-emerald-50 shadow-lg transition-all active:scale-95 flex items-center gap-2.5">
+                        <span class="material-symbols-outlined">auto_awesome</span>
+                        Generate Report
+                    </button>
+                </form>
+                @endif
             </div>
         </div>
     </div>
@@ -246,20 +275,6 @@
                 </span>
             </a>
 
-            @if($tasks->isNotEmpty())
-            <form action="{{ route('reports.daily.generate') }}" method="POST">
-                @csrf
-                <button type="submit" class="w-full flex items-center justify-center gap-3 bg-white rounded-[2.5rem] p-6 shadow-lg shadow-gray-200/30 border border-gray-50 hover:border-green-400/30 hover:shadow-xl transition-all duration-300 group active:scale-[0.98]">
-                    <span class="w-12 h-12 rounded-2xl bg-green-100 text-green-600 flex items-center justify-center group-hover:scale-105 transition-transform">
-                        <span class="material-symbols-outlined text-[28px]">auto_awesome</span>
-                    </span>
-                    <div class="text-left">
-                        <h3 class="text-lg font-black text-gray-900 tracking-tight">Generate Report</h3>
-                        <p class="text-xs text-gray-500 font-medium">Create today's summary</p>
-                    </div>
-                </button>
-            </form>
-            @endif
         </div>
     </div>
 </div>

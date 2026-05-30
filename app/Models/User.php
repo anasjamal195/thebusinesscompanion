@@ -13,7 +13,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Cashier\Billable;
 
-#[Fillable(['name', 'email', 'password', 'role', 'onboarding_completed', 'voice_id', 'morning_call_time', 'timezone', 'default_delay_minutes', 'last_morning_call_date', 'last_call_time', 'credits'])]
+#[Fillable(['name', 'email', 'password', 'role', 'onboarding_completed', 'voice_id', 'morning_call_time', 'timezone', 'default_delay_minutes', 'last_morning_call_date', 'last_call_time', 'credits', 'google_id', 'avatar'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -53,6 +53,11 @@ class User extends Authenticatable
     public function creditPurchases(): HasMany
     {
         return $this->hasMany(CreditPurchase::class);
+    }
+
+    public function notifications(): HasMany
+    {
+        return $this->hasMany(UserNotification::class);
     }
 
     public function hasSufficientCredits(float $perMinuteRate): bool

@@ -16,6 +16,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'retell/*',
             'vapi/*',
             'api/tasks/webhook-process',
+            'auth/google/callback',
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

@@ -20,7 +20,7 @@ class OnboardingController extends Controller
             'timezone'              => ['required', 'timezone'],
             'default_delay_minutes' => ['nullable', 'integer', 'min:1'],
             'voice_id'              => ['required', 'string'],
-            'phone_number'          => ['nullable', 'string'],
+            'phone_number'          => ['nullable', 'string', 'regex:/^(\+1\d{10})?$/'],
         ]);
 
         $user = Auth::user();
