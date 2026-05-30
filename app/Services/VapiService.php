@@ -419,7 +419,7 @@ INSTRUCTIONS;
      * Initiate a web-based call (no phone number needed — uses Vapi's web SDK).
      * Returns an array with 'web_call_url', 'call_id', and 'vapi_call_id' on success, or false on failure.
      */
-    public function createWebCall(User $user, string $callType = 'morning', ?Collection $tasks = null): array|false
+    public function createWebCall(User $user, string $callType = 'morning', ?Collection $tasks = null, ?int $callId = null): array|false
     {
         $rate = (float) MonetizationSetting::getInstance()->per_minute_rate;
         if (!$user->hasSufficientCredits($rate)) {
@@ -429,16 +429,31 @@ INSTRUCTIONS;
 
         $assistant = $this->getWebCallAssistant($user, $callType, $tasks);
 
-        $call = Call::create([
-            'user_id'   => $user->id,
-            'status'    => 'initiating',
-            'direction' => 'outbound',
-            'metadata'  => [
-                'call_type' => $callType,
-                'task_ids'  => $tasks?->pluck('id')->toArray() ?? [],
-                'channel'   => 'app',
-            ],
-        ]);
+        if ($callId) {
+            $call = Call::where('id', $callId)->where('user_id', $user->id)->first();
+        }
+
+        if (!isset($call) || !$call) {
+            $call = Call::create([
+                'user_id'   => $user->id,
+                'status'    => 'initiating',
+                'direction' => 'outbound',
+                'metadata'  => [
+                    'call_type' => $callType,
+                    'task_ids'  => $tasks?->pluck('id')->toArray() ?? [],
+                    'channel'   => 'app',
+                ],
+            ]);
+        } else {
+            // Update metadata with task IDs if they are missing or new
+            $metadata = $call->metadata ?? [];
+            $metadata['task_ids'] = $tasks?->pluck('id')->toArray() ?? [];
+            $metadata['channel'] = 'app';
+            $call->update([
+                'status'   => 'initiating', // Reset to initiating when the user accepts
+                'metadata' => $metadata
+            ]);
+        }
 
         try {
             Log::info("VapiService: Initiating web {$callType} call for User {$user->id}");

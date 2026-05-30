@@ -66,15 +66,32 @@ class CallController extends Controller
             $voiceName = VapiService::VOICES[$voiceId]['name'] ?? 'Jessica';
             $callTypeLabel = $callType === 'morning' ? 'morning check-in' : 'follow-up';
 
+            // Pre-create the call record in initiating state so decline actions don't 404
+            $call = Call::create([
+                'user_id'   => $user->id,
+                'status'    => 'initiating',
+                'direction' => 'outbound',
+                'metadata'  => [
+                    'call_type' => $callType,
+                    'task_ids'  => $tasks?->pluck('id')->toArray() ?? [],
+                    'channel'   => 'app',
+                ],
+            ]);
+
             $sent = $fcm->sendIncomingCall(
                 $user->id,
-                (string) time(),
+                (string) $call->id,
                 $voiceName,
                 $callTypeLabel
             );
 
             if ($sent) {
                 return back()->with('success', 'Call initiated! Answer on your mobile app.');
+            }
+
+            // Clean up the call record if FCM notification failed to send
+            if (isset($call)) {
+                $call->delete();
             }
 
             return back()->withErrors(['error' => 'Failed to notify your mobile app. Make sure you\'re logged in and have notifications enabled.']);

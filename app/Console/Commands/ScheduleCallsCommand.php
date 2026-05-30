@@ -64,7 +64,7 @@ class ScheduleCallsCommand extends Command
                 $this->info("Triggering morning call for User {$user->id} ({$user->name})");
 
                 if ($user->calling_preference === 'app') {
-                    $this->sendAppCallPush($user, 'morning');
+                    $this->sendAppCallPush($user, 'morning', $todayTasks);
                 } else {
                     $result = $this->vapi->createCall($user, 'morning', $todayTasks);
                     if (!$result) {
@@ -127,7 +127,7 @@ class ScheduleCallsCommand extends Command
             $this->info("Triggering follow-up call for User {$user->id} ({$user->name})");
 
             if ($user->calling_preference === 'app') {
-                $this->sendAppCallPush($user, 'followup');
+                $this->sendAppCallPush($user, 'followup', $pendingTasks);
             } else {
                 $this->vapi->createCall($user, 'followup', $pendingTasks);
             }
@@ -138,19 +138,31 @@ class ScheduleCallsCommand extends Command
         }
     }
 
-    protected function sendAppCallPush(User $user, string $callType): void
+    protected function sendAppCallPush(User $user, string $callType, ?\Illuminate\Support\Collection $tasks = null): void
     {
         $callTypeLabel = $callType === 'morning' ? 'morning check-in' : 'follow-up';
         $voiceId = $user->voice_id ?? \App\Services\VapiService::DEFAULT_VOICE_ID;
         $voiceName = \App\Services\VapiService::VOICES[$voiceId]['name'] ?? 'Jessica';
 
+        // Pre-create the call record in initiating state so decline actions don't 404
+        $call = \App\Models\Call::create([
+            'user_id'   => $user->id,
+            'status'    => 'initiating',
+            'direction' => 'outbound',
+            'metadata'  => [
+                'call_type' => $callType,
+                'task_ids'  => $tasks?->pluck('id')->toArray() ?? [],
+                'channel'   => 'app',
+            ],
+        ]);
+
         $this->fcm->sendIncomingCall(
             $user->id,
-            (string) time(),
+            (string) $call->id,
             $voiceName,
             $callTypeLabel
         );
-        $this->info("[User {$user->id}] FCM push sent for {$callType} call (voice: {$voiceName})");
+        $this->info("[User {$user->id}] FCM push sent for {$callType} call (voice: {$voiceName}, call_id: {$call->id})");
     }
 
     protected function getTodayPendingTasks(User $user)

@@ -46,7 +46,8 @@ class CallController extends Controller
         $callType = $tasks->where('status', 'pending')->isNotEmpty() ? 'followup' : 'morning';
 
         if ($user->calling_preference === 'app') {
-            $result = $vapi->createWebCall($user, $callType, $tasks);
+            $callId = $request->input('call_id');
+            $result = $vapi->createWebCall($user, $callType, $tasks, $callId ? (int)$callId : null);
 
             if ($result && !empty($result['web_call_url'])) {
                 return response()->json([
