@@ -85,7 +85,7 @@ class CallController extends Controller
                 ],
             ];
 
-            $response = Http::withToken(config('services.vapi.private_key'))
+            $response = Http::withToken(config('services.vapi.public_key'))
                 ->post('https://api.vapi.ai/call/web', $payload);
 
             if (!$response->successful()) {
