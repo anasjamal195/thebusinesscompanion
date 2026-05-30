@@ -1061,7 +1061,7 @@
         <!-- Left Column (Logo & address) -->
         <div class="col-span-2 md:col-span-2 space-y-6">
           <a href="/" class="block">
-            <img src="{{ asset('assets/logo-new.png') }}" alt="dialer.best" class="h-8 w-auto">
+            <img src="{{ asset('assets/logo-new.png') }}" alt="dialer.best" class="h-20 w-auto">
           </a>
           <p class="text-sm text-[#7F798D] max-w-xs leading-relaxed">
             The AI todo assistant that calls you — schedules tasks, follows up, and keeps you accountable. Kill procrastination with human-like voice interactions.
