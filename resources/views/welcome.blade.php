@@ -80,7 +80,7 @@
     <div class="flex justify-between items-center h-20 px-6 md:px-12 max-w-[1600px] mx-auto">
       <div class="flex items-center gap-12">
         <a href="/" class="font-bold tracking-tight text-white flex items-center">
-          <img src="{{ asset('assets/logo-light.png') }}" alt="dialer.best" class="h-20 w-auto">
+          <img src="{{ asset('assets/logo-light-new.png') }}" alt="dialer.best" class="h-20 w-auto">
         </a>
         <div class="hidden lg:flex items-center space-x-10 text-[15px] font-semibold text-white/70">
           <a class="hover:text-white transition-colors" href="#how-it-works">How It Works</a>
@@ -646,7 +646,7 @@
         <div>
           <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/10 mb-6">
             <span class="w-2 h-2 rounded-full bg-[#22C55E] animate-pulse"></span>
-            <span class="text-[10px] font-bold text-white/80 uppercase tracking-widest">Now in private beta</span>
+            <span class="text-[10px] font-bold text-white/80 uppercase tracking-widest">Empowering America’s Youth Through VoIP Calling</span>
           </div>
 
           <h1 class="text-3xl md:text-5xl lg:text-6xl font-extrabold text-white leading-[1] tracking-tight">
