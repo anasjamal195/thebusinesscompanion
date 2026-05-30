@@ -82,8 +82,8 @@
                 <form action="{{ route('calls.request') }}" method="POST">
                     @csrf
                     <button type="submit" class="px-6 py-4 bg-white text-primary font-bold rounded-2xl border-2 border-primary/20 hover:border-primary hover:bg-primary/5 shadow-lg transition-all active:scale-95 flex items-center gap-2.5">
-                        <span class="material-symbols-outlined">phone_in_talk</span>
-                        Request Call
+                        <span class="material-symbols-outlined">{{ $user->calling_preference === 'app' ? 'smartphone' : 'phone_in_talk' }}</span>
+                        {{ $user->calling_preference === 'app' ? 'Call on App' : 'Request Call' }}
                     </button>
                 </form>
                 <button onclick="document.getElementById('newTaskModal').classList.remove('hidden')" class="px-8 py-4 bg-primary hover:bg-primary-container text-white font-bold rounded-2xl shadow-xl shadow-primary/20 transition-all active:scale-95 flex items-center gap-3">
