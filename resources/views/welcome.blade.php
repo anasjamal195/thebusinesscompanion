@@ -80,7 +80,7 @@
     <div class="flex justify-between items-center h-20 px-6 md:px-12 max-w-[1600px] mx-auto">
       <div class="flex items-center gap-12">
         <a href="/" class="font-bold tracking-tight text-white flex items-center">
-          <img src="{{ asset('assets/logo-new.png') }}" alt="dialer.best" class="h-8 w-auto">
+          <img src="{{ asset('assets/logo-light.png') }}" alt="dialer.best" class="h-8 w-auto">
         </a>
         <div class="hidden lg:flex items-center space-x-10 text-[15px] font-semibold text-white/70">
           <a class="hover:text-white transition-colors" href="#how-it-works">How It Works</a>
@@ -717,7 +717,7 @@
       <div class="text-center mb-20">
         <h2 class="text-3xl md:text-5xl font-black text-[#25224A] tracking-tight mb-6">How <span
             class="text-[#3E50F7]">dialer.best</span> Works</h2>
-        <p class="text-[#7F798D] text-lg max-w-2xl mx-auto">It calls you. You talk. Tasks get done. No apps, no typing.</p>
+        <p class="text-[#7F798D] text-lg max-w-2xl mx-auto">It will call you in the morning, Help you plan tasks on the call, organize scheduled tasks, Set follow-up reminders for each task, Help you close a productive day with confidence.</p>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 relative">
@@ -1061,7 +1061,7 @@
         <!-- Left Column (Logo & address) -->
         <div class="col-span-2 md:col-span-2 space-y-6">
           <a href="/" class="block">
-            <img src="{{ asset('assets/logo-new.png') }}" alt="dialer.best" class="h-20 w-auto">
+            <img src="{{ asset('assets/logo-dark.png') }}" alt="dialer.best" class="h-8 w-auto">
           </a>
           <p class="text-sm text-[#7F798D] max-w-xs leading-relaxed">
             The AI todo assistant that calls you — schedules tasks, follows up, and keeps you accountable. Kill procrastination with human-like voice interactions.
