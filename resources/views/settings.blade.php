@@ -138,28 +138,24 @@
 
         <!-- Plan & Billing -->
         <div x-show="tab === 'subscription'" class="bg-white rounded-[2.5rem] p-8 md:p-12 shadow-xl shadow-gray-200/50 border border-gray-100 space-y-6" x-cloak>
-            <h3 class="text-xl font-black text-gray-900 mb-6">Plan & Billing</h3>
+            <h3 class="text-xl font-black text-gray-900 mb-6">Billing & Credits</h3>
             <div class="bg-primary/5 rounded-[2rem] p-8 border border-primary/10">
                 <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
                     <div>
-                        <div class="inline-flex items-center gap-2 px-3 py-1 bg-primary text-white rounded-full text-[10px] font-black uppercase tracking-widest mb-3">Active Plan</div>
-                        <h4 class="text-2xl font-black text-gray-900">Business Pro</h4>
-                        <p class="text-gray-500 font-medium">Full access to autonomous cloud computer & voice calls.</p>
+                        <div class="inline-flex items-center gap-2 px-3 py-1 bg-primary text-white rounded-full text-[10px] font-black uppercase tracking-widest mb-3">Prepaid Billing</div>
+                        <h4 class="text-2xl font-black text-gray-900">Credits: {{ number_format($user->credits, 2) }}</h4>
+                        <p class="text-gray-500 font-medium">You are charged per minute of call time. 1 credit = $1.00.</p>
                     </div>
                     <div class="text-right">
-                        <p class="text-3xl font-black text-gray-900">$49<span class="text-sm font-bold text-gray-400">/mo</span></p>
-                        <p class="text-xs font-bold text-gray-400 mt-1 uppercase tracking-widest">Next payment: May 15, 2026</p>
+                        <p class="text-3xl font-black text-gray-900">${{ number_format(\App\Models\MonetizationSetting::getInstance()->per_minute_rate, 2) }}<span class="text-sm font-bold text-gray-400">/min</span></p>
+                        <p class="text-xs font-bold text-gray-400 mt-1 uppercase tracking-widest">per minute rate</p>
                     </div>
                 </div>
                 <div class="mt-8 pt-8 border-t border-primary/10 flex flex-wrap gap-4">
-                    <a href="#" class="px-6 py-3 bg-white text-gray-900 font-bold rounded-xl border border-gray-200 shadow-sm hover:bg-gray-50 transition-all active:scale-95 text-sm flex items-center gap-2">
-                        <span class="material-symbols-outlined text-[20px]">receipt_long</span>
-                        Billing Portal (Stripe)
+                    <a href="{{ route('profile.index') }}" class="px-6 py-3 bg-primary text-white font-bold rounded-xl border border-primary shadow-lg shadow-primary/20 hover:bg-primary-container transition-all active:scale-95 text-sm flex items-center gap-2">
+                        <span class="material-symbols-outlined text-[20px]">add_card</span>
+                        Refill Credits
                     </a>
-                    <button type="button" class="px-6 py-3 bg-red-50 text-red-600 font-bold rounded-xl border border-red-100 hover:bg-red-100 transition-all active:scale-95 text-sm flex items-center gap-2">
-                        <span class="material-symbols-outlined text-[20px]">cancel</span>
-                        Cancel Subscription
-                    </button>
                 </div>
             </div>
         </div>

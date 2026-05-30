@@ -4,11 +4,13 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\OnboardingController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\CallController;
+use App\Http\Controllers\StripeCheckoutController;
 
 // ── Public ────────────────────────────────────────────────────────────────────
 
@@ -51,6 +53,12 @@ Route::middleware('auth')->group(function () {
     // Dashboard
     Route::get('/dashboard', [ProjectController::class, 'index'])->name('dashboard');
 
+    // Profile
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+
+    // Stripe Credit Refill Checkout
+    Route::post('/stripe/checkout', [StripeCheckoutController::class, 'createCheckoutSession'])->name('stripe.checkout');
+
     // Settings
     Route::get('/settings',  [SettingsController::class, 'index'])->name('settings.index');
     Route::post('/settings', [SettingsController::class, 'update'])->name('settings.update');
@@ -77,3 +85,4 @@ Route::middleware('auth')->group(function () {
 // ── Webhooks (unauthenticated, verified by signature) ─────────────────────────
 
 Route::post('/vapi/webhook', [\App\Http\Controllers\VapiWebhookController::class, 'handle'])->name('vapi.webhook');
+Route::post('/stripe/webhook', [StripeCheckoutController::class, 'handleWebhook'])->name('stripe.webhook');

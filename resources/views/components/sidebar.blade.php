@@ -24,6 +24,7 @@
                     ['key' => 'dashboard', 'label' => 'Dashboard', 'icon' => 'grid_view', 'href' => route('dashboard')],
                     ['key' => 'reports',  'label' => 'Reports',   'icon' => 'summarize', 'href' => route('reports.index')],
                     ['key' => 'calls',    'label' => 'Call Logs', 'icon' => 'history',   'href' => route('calls.index')],
+                    ['key' => 'profile',  'label' => 'Profile',   'icon' => 'person',    'href' => route('profile.index')],
                 ];
             @endphp
 
@@ -48,7 +49,9 @@
                         </div>
                         <div class="min-w-0">
                             <div class="truncate text-sm font-bold text-gray-900">{{ auth()->user()->name }}</div>
-                            <div class="truncate text-[10px] font-bold text-gray-400 uppercase tracking-wider">Business Pro</div>
+                            <div class="truncate text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+                                Credits: {{ number_format(auth()->user()->credits, 2) }}
+                            </div>
                         </div>
                     </div>
                     <div class="flex items-center gap-2">

@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Call;
+use App\Models\MonetizationSetting;
 use App\Models\Task;
 use App\Models\User;
 use Illuminate\Support\Collection;
@@ -50,6 +51,13 @@ class VapiService
 
         if (!$phoneNumber) {
             Log::warning("VapiService: User {$user->id} has no phone number — skipping outbound call.");
+            return false;
+        }
+
+        // Check user has sufficient credits
+        $rate = (float) MonetizationSetting::getInstance()->per_minute_rate;
+        if (!$user->hasSufficientCredits($rate)) {
+            Log::warning("VapiService: User {$user->id} has insufficient credits ({$user->credits}) for a call (\${$rate}/min)");
             return false;
         }
 
@@ -227,7 +235,7 @@ class VapiService
             ],
             'endCallFunctionEnabled'    => true,
             'silenceTimeoutSeconds'     => 30,
-            'maxDurationSeconds'        => 600,
+            'maxDurationSeconds'        => $this->calculateMaxDuration($user),
             'backgroundDenoisingEnabled'=> true,
         ];
 
@@ -346,6 +354,24 @@ YOUR GOAL:
 
 IMPORTANT: Handle ALL pending tasks in this single call — one at a time. Don't end the call until you've checked in on every task. Differentiate clearly between tasks the user has completed (mark via report_onboarding_data), tasks they're still working on (optionally reschedule follow-up), and new tasks. Keep the conversation natural and don't sound like you're reading a list.
 INSTRUCTIONS;
+    }
+
+    /**
+     * Calculate max call duration in seconds based on user's remaining credits.
+     * Ensures user can't exceed their prepaid balance.
+     */
+    protected function calculateMaxDuration(User $user): int
+    {
+        $rate = (float) MonetizationSetting::getInstance()->per_minute_rate;
+        if ($rate <= 0) {
+            return 600;
+        }
+
+        $maxMinutes = (int) floor($user->credits / $rate);
+        $maxSeconds = $maxMinutes * 60;
+
+        // Cap at 30 minutes max, minimum 60 seconds
+        return max(60, min($maxSeconds, 1800));
     }
 
     /**

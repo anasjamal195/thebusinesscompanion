@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Call;
 use App\Models\DailyReport;
+use App\Models\MonetizationSetting;
 use App\Models\Task;
 use App\Models\User;
 use App\Services\DailyReportService;
@@ -110,6 +111,9 @@ class VapiWebhookController extends Controller
                         'recording_url' => $recordingUrl,
                     ]);
 
+                    // Deduct credits based on call duration
+                    $this->deductCreditsForCall($call, $duration);
+
                     // Only process transcript for morning/followup call types
                     $this->processCallTranscript($call);
                 }
@@ -118,6 +122,17 @@ class VapiWebhookController extends Controller
             case 'status-update':
                 if ($call) {
                     $call->update(['status' => $payload['message']['status'] ?? 'active']);
+
+                    // Check if user is running low on credits mid-call
+                    $user = $call->user;
+                    if ($user) {
+                        $rate = MonetizationSetting::getInstance()->per_minute_rate;
+                        $maxCostPerMin = (float) $rate;
+                        if ($user->credits < $maxCostPerMin) {
+                            Log::warning("VapiWebhook: User {$user->id} has low credits ({$user->credits}) — ending call {$call->id}");
+                            $this->endCallViaVapi($call);
+                        }
+                    }
                 }
                 break;
         }
@@ -489,6 +504,39 @@ PROMPT;
             Log::error("VapiWebhook: Failed to generate daily report", [
                 'message' => $e->getMessage(),
                 'user_id' => $user->id,
+            ]);
+        }
+    }
+
+    protected function deductCreditsForCall(Call $call, int $durationSeconds): void
+    {
+        $user = $call->user;
+        if (!$user) {
+            return;
+        }
+
+        $rate = (float) MonetizationSetting::getInstance()->per_minute_rate;
+        $durationMinutes = max(1, ceil($durationSeconds / 60));
+        $cost = round($durationMinutes * $rate, 2);
+
+        $user->deductCredits($cost);
+
+        Log::info("VapiWebhook: Deducted \${$cost} credits from User {$user->id} for Call {$call->id} ({$durationSeconds}s, {$durationMinutes}min @ \${$rate}/min)");
+    }
+
+    protected function endCallViaVapi(Call $call): void
+    {
+        if (!$call->call_id) {
+            return;
+        }
+
+        try {
+            $apiKey = config('services.vapi.private_key');
+            Http::withToken($apiKey)
+                ->post("https://api.vapi.ai/call/{$call->call_id}/end", []);
+        } catch (\Exception $e) {
+            Log::error("VapiWebhook: Failed to end call {$call->call_id}", [
+                'error' => $e->getMessage(),
             ]);
         }
     }

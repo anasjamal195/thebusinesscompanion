@@ -13,7 +13,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Cashier\Billable;
 
-#[Fillable(['name', 'email', 'password', 'role', 'onboarding_completed', 'voice_id', 'morning_call_time', 'timezone', 'default_delay_minutes', 'last_morning_call_date', 'last_call_time'])]
+#[Fillable(['name', 'email', 'password', 'role', 'onboarding_completed', 'voice_id', 'morning_call_time', 'timezone', 'default_delay_minutes', 'last_morning_call_date', 'last_call_time', 'credits'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -31,6 +31,7 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'onboarding_completed' => 'boolean',
+            'credits' => 'decimal:2',
         ];
     }
 
@@ -47,5 +48,25 @@ class User extends Authenticatable
     public function calls(): HasMany
     {
         return $this->hasMany(Call::class);
+    }
+
+    public function creditPurchases(): HasMany
+    {
+        return $this->hasMany(CreditPurchase::class);
+    }
+
+    public function hasSufficientCredits(float $perMinuteRate): bool
+    {
+        return $this->credits >= $perMinuteRate;
+    }
+
+    public function deductCredits(float $amount): void
+    {
+        $this->decrement('credits', min($amount, $this->credits));
+    }
+
+    public function addCredits(float $amount): void
+    {
+        $this->increment('credits', $amount);
     }
 }

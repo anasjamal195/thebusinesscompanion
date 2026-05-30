@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\MonetizationSetting;
 use App\Models\Task;
 use App\Models\User;
 use App\Services\VapiService;
@@ -48,6 +49,13 @@ class ScheduleCallsCommand extends Command
         $todayStr    = $now->toDateString();
 
         $this->line("[User {$user->id}] timezone={$user->timezone} now={$now->format('Y-m-d H:i:s')} today={$todayStr} morning_time={$morningTime->format('H:i')} last_morning_date={$user->last_morning_call_date} last_call={$user->last_call_time}");
+
+        // Check user has sufficient credits for at least 1 minute
+        $rate = (float) MonetizationSetting::getInstance()->per_minute_rate;
+        if (!$user->hasSufficientCredits($rate)) {
+            $this->warn("[User {$user->id}] insufficient credits ({$user->credits}) — skipping all calls");
+            return;
+        }
 
         // ── 1. MORNING CALL (only when no morning call yet, time is right, and no tasks exist) ──
         $needsMorningCall = $user->last_morning_call_date !== $todayStr;
