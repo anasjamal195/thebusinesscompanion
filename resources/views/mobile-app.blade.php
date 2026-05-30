@@ -27,10 +27,10 @@
   </style>
 </head>
 
-<body class="antialiased text-[#25224A]">
+<body class="antialiased text-[#0A1628]">
 
   <!-- Navbar -->
-  <nav class="bg-[#25224A] w-full border-b border-white/5">
+  <nav class="bg-[#0A1628] w-full border-b border-white/5">
     <div class="flex justify-between items-center h-20 px-6 md:px-12 max-w-[1600px] mx-auto">
       <div class="flex items-center gap-12">
         <a href="/" class="font-bold tracking-tight text-white flex items-center">
@@ -64,7 +64,7 @@
   </nav>
 
   <!-- Hero -->
-  <section class="bg-[#25224A] pt-16 pb-24 overflow-hidden relative">
+  <section class="bg-[#0A1628] pt-16 pb-24 overflow-hidden relative">
     <div class="absolute inset-0 pointer-events-none">
       <div class="absolute top-1/2 right-0 -translate-y-1/2 w-[600px] h-[600px] bg-[#00AFF0]/10 rounded-full blur-[120px]"></div>
     </div>
@@ -76,7 +76,7 @@
           </div>
           <h1 class="text-4xl md:text-6xl lg:text-7xl font-black text-white leading-[1.1] tracking-tight">
             dialer.best<br>
-            <span class="text-[#AFBBE0]">On the Go</span>
+            <span class="text-[#7DA5C3]">On the Go</span>
           </h1>
           <p class="text-xl text-white/70 max-w-xl leading-relaxed">
             The full dialer.best experience in your pocket. Manage calls, tasks, and daily planning — from anywhere in the world.
@@ -96,10 +96,10 @@
         </div>
         <div class="flex items-center justify-center lg:justify-end">
           <div class="relative w-72 h-[520px] animate-float">
-            <div class="absolute inset-0 bg-[#25224A] rounded-[3rem] border-4 border-white/10 shadow-2xl overflow-hidden">
-              <div class="absolute top-0 left-1/2 -translate-x-1/2 w-28 h-6 bg-[#25224A] rounded-b-xl z-10"></div>
+            <div class="absolute inset-0 bg-[#0A1628] rounded-[3rem] border-4 border-white/10 shadow-2xl overflow-hidden">
+              <div class="absolute top-0 left-1/2 -translate-x-1/2 w-28 h-6 bg-[#0A1628] rounded-b-xl z-10"></div>
               <div class="absolute inset-2 bg-white rounded-[2.5rem] overflow-hidden flex flex-col">
-                <div class="bg-[#25224A] px-4 pt-8 pb-4">
+                <div class="bg-[#0A1628] px-4 pt-8 pb-4">
                   <div class="flex items-center gap-2 mb-3">
                     <div class="w-6 h-6 rounded-full bg-[#00AFF0] flex items-center justify-center">
                       <span class="text-white text-[10px] font-bold">D</span>
@@ -109,53 +109,53 @@
                   <div class="text-white text-lg font-black">Good morning!</div>
                   <div class="text-white/60 text-[10px]">Ready to plan your day?</div>
                 </div>
-                <div class="flex-1 p-3 space-y-2 bg-[#F8FAFF]">
-                  <div class="bg-white p-3 rounded-xl border border-[#DEE8FF] shadow-sm flex items-center gap-2">
+                <div class="flex-1 p-3 space-y-2 bg-[#E8F4FC]">
+                  <div class="bg-white p-3 rounded-xl border border-[#B8D8EC] shadow-sm flex items-center gap-2">
                     <div class="w-8 h-8 rounded-full bg-[#00AFF0]/10 flex items-center justify-center">
                       <span class="material-symbols-outlined text-[#00AFF0] text-sm">call</span>
                     </div>
                     <div class="flex-1">
-                      <div class="text-[10px] font-bold text-[#25224A]">Morning Planning Call</div>
-                      <div class="text-[8px] text-[#7F798D]">8:30 AM • Incoming</div>
+                      <div class="text-[10px] font-bold text-[#0A1628]">Morning Planning Call</div>
+                      <div class="text-[8px] text-[#4A7B9E]">8:30 AM • Incoming</div>
                     </div>
                     <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
                   </div>
-                  <div class="bg-white p-3 rounded-xl border border-[#DEE8FF] shadow-sm flex items-center gap-2">
+                  <div class="bg-white p-3 rounded-xl border border-[#B8D8EC] shadow-sm flex items-center gap-2">
                     <div class="w-8 h-8 rounded-full bg-[#22C55E]/10 flex items-center justify-center">
                       <span class="material-symbols-outlined text-[#22C55E] text-sm">check_circle</span>
                     </div>
                     <div class="flex-1">
-                      <div class="text-[10px] font-bold text-[#25224A]">Draft proposal</div>
-                      <div class="text-[8px] text-[#7F798D]">Completed</div>
+                      <div class="text-[10px] font-bold text-[#0A1628]">Draft proposal</div>
+                      <div class="text-[8px] text-[#4A7B9E]">Completed</div>
                     </div>
                     <span class="text-[8px] text-[#22C55E] font-bold">Done</span>
                   </div>
-                  <div class="bg-white p-3 rounded-xl border border-[#DEE8FF] shadow-sm flex items-center gap-2">
+                  <div class="bg-white p-3 rounded-xl border border-[#B8D8EC] shadow-sm flex items-center gap-2">
                     <div class="w-8 h-8 rounded-full bg-[#00AFF0]/10 flex items-center justify-center">
                       <span class="material-symbols-outlined text-[#00AFF0] text-sm">radio_button_unchecked</span>
                     </div>
                     <div class="flex-1">
-                      <div class="text-[10px] font-bold text-[#25224A]">Review budget</div>
-                      <div class="text-[8px] text-[#7F798D]">In Progress</div>
+                      <div class="text-[10px] font-bold text-[#0A1628]">Review budget</div>
+                      <div class="text-[8px] text-[#4A7B9E]">In Progress</div>
                     </div>
                     <span class="text-[8px] text-[#00AFF0] font-bold">1:30 PM</span>
                   </div>
-                  <div class="bg-white p-3 rounded-xl border border-[#DEE8FF] shadow-sm flex items-center gap-2">
+                  <div class="bg-white p-3 rounded-xl border border-[#B8D8EC] shadow-sm flex items-center gap-2">
                     <div class="w-8 h-8 rounded-full bg-[#EF4444]/10 flex items-center justify-center">
                       <span class="material-symbols-outlined text-[#EF4444] text-sm">call_missed</span>
                     </div>
                     <div class="flex-1">
-                      <div class="text-[10px] font-bold text-[#25224A]">Follow-up Check</div>
-                      <div class="text-[8px] text-[#7F798D]">Missed - Will retry</div>
+                      <div class="text-[10px] font-bold text-[#0A1628]">Follow-up Check</div>
+                      <div class="text-[8px] text-[#4A7B9E]">Missed - Will retry</div>
                     </div>
                     <span class="text-[8px] text-[#EF4444] font-bold">Missed</span>
                   </div>
                 </div>
-                <div class="bg-white border-t border-[#DEE8FF] px-4 py-2 flex justify-around">
+                <div class="bg-white border-t border-[#B8D8EC] px-4 py-2 flex justify-around">
                   <span class="material-symbols-outlined text-[#00AFF0] text-lg">home</span>
-                  <span class="material-symbols-outlined text-[#7F798D] text-lg">list_alt</span>
-                  <span class="material-symbols-outlined text-[#7F798D] text-lg">history</span>
-                  <span class="material-symbols-outlined text-[#7F798D] text-lg">person</span>
+                  <span class="material-symbols-outlined text-[#4A7B9E] text-lg">list_alt</span>
+                  <span class="material-symbols-outlined text-[#4A7B9E] text-lg">history</span>
+                  <span class="material-symbols-outlined text-[#4A7B9E] text-lg">person</span>
                 </div>
               </div>
             </div>
@@ -170,20 +170,20 @@
   <section class="bg-white py-24">
     <div class="max-w-[1400px] mx-auto px-6 md:px-12">
       <div class="text-center mb-20">
-        <h2 class="text-3xl md:text-5xl font-black text-[#25224A] tracking-tight mb-6">Why the <span class="text-[#00AFF0]">Mobile App</span>?</h2>
-        <p class="text-[#7F798D] text-lg max-w-2xl mx-auto">We built the mobile app so users everywhere can access dialer.best — even outside the US.</p>
+        <h2 class="text-3xl md:text-5xl font-black text-[#0A1628] tracking-tight mb-6">Why the <span class="text-[#00AFF0]">Mobile App</span>?</h2>
+        <p class="text-[#4A7B9E] text-lg max-w-2xl mx-auto">We built the mobile app so users everywhere can access dialer.best — even outside the US.</p>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div class="bg-[#F8FAFF] p-8 rounded-[2.5rem] border border-[#DEE8FF] group hover:border-[#00AFF0]/30 transition-all hover:-translate-y-2 shadow-sm">
+        <div class="bg-[#E8F4FC] p-8 rounded-[2.5rem] border border-[#B8D8EC] group hover:border-[#00AFF0]/30 transition-all hover:-translate-y-2 shadow-sm">
           <div class="w-16 h-16 rounded-2xl bg-white shadow-md flex items-center justify-center mb-6 text-[#00AFF0] group-hover:scale-110 transition-transform">
             <span class="material-symbols-outlined text-[32px]">language</span>
           </div>
-          <h3 class="text-xl font-bold text-[#25224A] mb-3 leading-tight">Global Access</h3>
-          <p class="text-[15px] text-[#7F798D] leading-relaxed">Use dialer.best from anywhere. Our mobile app is built for non-US based customers who need reliable access to receive calls and manage their tasks.</p>
+          <h3 class="text-xl font-bold text-[#0A1628] mb-3 leading-tight">Global Access</h3>
+          <p class="text-[15px] text-[#4A7B9E] leading-relaxed">Use dialer.best from anywhere. Our mobile app is built for non-US based customers who need reliable access to receive calls and manage their tasks.</p>
         </div>
 
-        <div class="bg-[#25224A] p-8 rounded-[2.5rem] border border-white/10 group hover:border-[#00AFF0]/30 transition-all hover:-translate-y-2 shadow-2xl">
+        <div class="bg-[#0A1628] p-8 rounded-[2.5rem] border border-white/10 group hover:border-[#00AFF0]/30 transition-all hover:-translate-y-2 shadow-2xl">
           <div class="w-16 h-16 rounded-2xl bg-[#00AFF0] shadow-md flex items-center justify-center mb-6 text-white group-hover:scale-110 transition-transform">
             <span class="material-symbols-outlined text-[32px]">call_quality</span>
           </div>
@@ -191,19 +191,19 @@
           <p class="text-[15px] text-white/60 leading-relaxed">Make and receive calls directly through the app over the internet. No need for a US phone number — use VoIP to stay connected from any country.</p>
         </div>
 
-        <div class="bg-[#F8FAFF] p-8 rounded-[2.5rem] border border-[#DEE8FF] group hover:border-[#00AFF0]/30 transition-all hover:-translate-y-2 shadow-sm">
+        <div class="bg-[#E8F4FC] p-8 rounded-[2.5rem] border border-[#B8D8EC] group hover:border-[#00AFF0]/30 transition-all hover:-translate-y-2 shadow-sm">
           <div class="w-16 h-16 rounded-2xl bg-white shadow-md flex items-center justify-center mb-6 text-[#22C55E] group-hover:scale-110 transition-transform">
             <span class="material-symbols-outlined text-[32px]">sync_alt</span>
           </div>
-          <h3 class="text-xl font-bold text-[#25224A] mb-3 leading-tight">Seamless Sync</h3>
-          <p class="text-[15px] text-[#7F798D] leading-relaxed">Your calls, tasks, and reports sync instantly across devices. Start a task on the web, track it on mobile — everything stays in sync.</p>
+          <h3 class="text-xl font-bold text-[#0A1628] mb-3 leading-tight">Seamless Sync</h3>
+          <p class="text-[15px] text-[#4A7B9E] leading-relaxed">Your calls, tasks, and reports sync instantly across devices. Start a task on the web, track it on mobile — everything stays in sync.</p>
         </div>
       </div>
     </div>
   </section>
 
   <!-- VoIP Coming Soon -->
-  <section class="bg-[#1E204A] py-24 relative overflow-hidden">
+  <section class="bg-[#0F2440] py-24 relative overflow-hidden">
     <div class="absolute inset-0 pointer-events-none">
       <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#00AFF0]/10 rounded-full blur-[120px]"></div>
     </div>
@@ -242,48 +242,48 @@
   <section class="bg-white py-24">
     <div class="max-w-[1400px] mx-auto px-6 md:px-12">
       <div class="text-center mb-20">
-        <h2 class="text-3xl md:text-5xl font-black text-[#25224A] tracking-tight mb-6">App <span class="text-[#00AFF0]">Features</span></h2>
-        <p class="text-[#7F798D] text-lg max-w-2xl mx-auto">Everything you love about dialer.best, now in your pocket.</p>
+        <h2 class="text-3xl md:text-5xl font-black text-[#0A1628] tracking-tight mb-6">App <span class="text-[#00AFF0]">Features</span></h2>
+        <p class="text-[#4A7B9E] text-lg max-w-2xl mx-auto">Everything you love about dialer.best, now in your pocket.</p>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div class="bg-[#F8FAFF] p-6 rounded-[2rem] border border-[#DEE8FF] text-center hover:border-[#00AFF0]/30 transition-all hover:-translate-y-1">
+        <div class="bg-[#E8F4FC] p-6 rounded-[2rem] border border-[#B8D8EC] text-center hover:border-[#00AFF0]/30 transition-all hover:-translate-y-1">
           <div class="w-14 h-14 rounded-2xl bg-white shadow-sm flex items-center justify-center mb-4 text-[#00AFF0] mx-auto">
             <span class="material-symbols-outlined text-[28px]">call</span>
           </div>
-          <h3 class="text-lg font-bold text-[#25224A] mb-2">Receive Calls</h3>
-          <p class="text-sm text-[#7F798D] leading-relaxed">Answer incoming AI calls directly on your phone. No web browser needed.</p>
+          <h3 class="text-lg font-bold text-[#0A1628] mb-2">Receive Calls</h3>
+          <p class="text-sm text-[#4A7B9E] leading-relaxed">Answer incoming AI calls directly on your phone. No web browser needed.</p>
         </div>
 
-        <div class="bg-[#F8FAFF] p-6 rounded-[2rem] border border-[#DEE8FF] text-center hover:border-[#00AFF0]/30 transition-all hover:-translate-y-1">
+        <div class="bg-[#E8F4FC] p-6 rounded-[2rem] border border-[#B8D8EC] text-center hover:border-[#00AFF0]/30 transition-all hover:-translate-y-1">
           <div class="w-14 h-14 rounded-2xl bg-white shadow-sm flex items-center justify-center mb-4 text-[#22C55E] mx-auto">
             <span class="material-symbols-outlined text-[28px]">checklist</span>
           </div>
-          <h3 class="text-lg font-bold text-[#25224A] mb-2">Manage Tasks</h3>
-          <p class="text-sm text-[#7F798D] leading-relaxed">View, complete, and organize your tasks with a tap. Stay on top of your day.</p>
+          <h3 class="text-lg font-bold text-[#0A1628] mb-2">Manage Tasks</h3>
+          <p class="text-sm text-[#4A7B9E] leading-relaxed">View, complete, and organize your tasks with a tap. Stay on top of your day.</p>
         </div>
 
-        <div class="bg-[#F8FAFF] p-6 rounded-[2rem] border border-[#DEE8FF] text-center hover:border-[#00AFF0]/30 transition-all hover:-translate-y-1">
+        <div class="bg-[#E8F4FC] p-6 rounded-[2rem] border border-[#B8D8EC] text-center hover:border-[#00AFF0]/30 transition-all hover:-translate-y-1">
           <div class="w-14 h-14 rounded-2xl bg-white shadow-sm flex items-center justify-center mb-4 text-[#00AFF0] mx-auto">
             <span class="material-symbols-outlined text-[28px]">history</span>
           </div>
-          <h3 class="text-lg font-bold text-[#25224A] mb-2">Call Logs</h3>
-          <p class="text-sm text-[#7F798D] leading-relaxed">Browse your call history with transcripts. Review what was discussed in every call.</p>
+          <h3 class="text-lg font-bold text-[#0A1628] mb-2">Call Logs</h3>
+          <p class="text-sm text-[#4A7B9E] leading-relaxed">Browse your call history with transcripts. Review what was discussed in every call.</p>
         </div>
 
-        <div class="bg-[#F8FAFF] p-6 rounded-[2rem] border border-[#DEE8FF] text-center hover:border-[#00AFF0]/30 transition-all hover:-translate-y-1">
+        <div class="bg-[#E8F4FC] p-6 rounded-[2rem] border border-[#B8D8EC] text-center hover:border-[#00AFF0]/30 transition-all hover:-translate-y-1">
           <div class="w-14 h-14 rounded-2xl bg-white shadow-sm flex items-center justify-center mb-4 text-[#22C55E] mx-auto">
             <span class="material-symbols-outlined text-[28px]">bar_chart</span>
           </div>
-          <h3 class="text-lg font-bold text-[#25224A] mb-2">Daily Reports</h3>
-          <p class="text-sm text-[#7F798D] leading-relaxed">Get your end-of-day productivity report with stats and progress, right on mobile.</p>
+          <h3 class="text-lg font-bold text-[#0A1628] mb-2">Daily Reports</h3>
+          <p class="text-sm text-[#4A7B9E] leading-relaxed">Get your end-of-day productivity report with stats and progress, right on mobile.</p>
         </div>
       </div>
     </div>
   </section>
 
   <!-- Download CTA -->
-  <section class="bg-[#25224A] py-24 relative overflow-hidden">
+  <section class="bg-[#0A1628] py-24 relative overflow-hidden">
     <div class="absolute inset-0 pointer-events-none">
       <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-[#00AFF0]/5 rounded-full blur-[120px]"></div>
     </div>
@@ -305,24 +305,24 @@
   </section>
 
   <!-- Footer -->
-  <footer class="bg-white border-t border-[#DEE8FF] py-16">
+  <footer class="bg-white border-t border-[#B8D8EC] py-16">
     <div class="max-w-[1600px] mx-auto px-6 md:px-12">
       <div class="grid grid-cols-2 md:grid-cols-5 gap-8 mb-16">
         <div class="col-span-2 md:col-span-2 space-y-6">
           <a href="/" class="block">
             <img src="{{ asset('assets/logo-dark.png') }}" alt="dialer.best" class="h-40 w-auto">
           </a>
-          <p class="text-sm text-[#7F798D] max-w-xs leading-relaxed">
+          <p class="text-sm text-[#4A7B9E] max-w-xs leading-relaxed">
             The AI todo assistant that calls you — schedules tasks, follows up, and keeps you accountable. Now available on mobile.
           </p>
-          <div class="flex gap-4 text-[#7F798D]">
+          <div class="flex gap-4 text-[#4A7B9E]">
             <a href="#" class="hover:text-[#00AFF0]"><span class="material-symbols-outlined text-[20px]">language</span></a>
             <a href="#" class="hover:text-[#00AFF0]"><span class="material-symbols-outlined text-[20px]">mail</span></a>
           </div>
         </div>
         <div>
-          <h4 class="font-bold text-[#25224A] mb-4 text-sm">Product</h4>
-          <ul class="space-y-3 text-sm text-[#7F798D]">
+          <h4 class="font-bold text-[#0A1628] mb-4 text-sm">Product</h4>
+          <ul class="space-y-3 text-sm text-[#4A7B9E]">
             <li><a href="/#how-it-works" class="hover:text-[#00AFF0]">How It Works</a></li>
             <li><a href="/#voice" class="hover:text-[#00AFF0]">Call System</a></li>
             <li><a href="/#features" class="hover:text-[#00AFF0]">Features</a></li>
@@ -330,22 +330,22 @@
           </ul>
         </div>
         <div>
-          <h4 class="font-bold text-[#25224A] mb-4 text-sm">Company</h4>
-          <ul class="space-y-3 text-sm text-[#7F798D]">
+          <h4 class="font-bold text-[#0A1628] mb-4 text-sm">Company</h4>
+          <ul class="space-y-3 text-sm text-[#4A7B9E]">
             <li><a href="#" class="hover:text-[#00AFF0]">About</a></li>
             <li><a href="#" class="hover:text-[#00AFF0]">Careers</a></li>
             <li><a href="/#faq" class="hover:text-[#00AFF0]">FAQ</a></li>
           </ul>
         </div>
         <div>
-          <h4 class="font-bold text-[#25224A] mb-4 text-sm">Legal</h4>
-          <ul class="space-y-3 text-sm text-[#7F798D]">
+          <h4 class="font-bold text-[#0A1628] mb-4 text-sm">Legal</h4>
+          <ul class="space-y-3 text-sm text-[#4A7B9E]">
             <li><a href="#" class="hover:text-[#00AFF0]">Privacy Policy</a></li>
             <li><a href="#" class="hover:text-[#00AFF0]">Terms of Service</a></li>
           </ul>
         </div>
       </div>
-      <div class="border-t border-[#DEE8FF] pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-[#7F798D]">
+      <div class="border-t border-[#B8D8EC] pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-[#4A7B9E]">
         <p>&copy; {{ date('Y') }} dialer.best. All rights reserved.</p>
         <p>Engineered for Excellence.</p>
       </div>

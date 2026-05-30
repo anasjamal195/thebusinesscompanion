@@ -73,10 +73,10 @@
   </style>
 </head>
 
-<body class="antialiased text-[#25224A]" x-data="{ waitlistModalOpen: false, waitlistSubmitted: false, email: '' }">
+<body class="antialiased text-[#0A1628]" x-data="{ waitlistModalOpen: false, waitlistSubmitted: false, email: '' }">
 
   <!-- Navbar -->
-  <nav class="bg-[#25224A] w-full border-b border-white/5">
+  <nav class="bg-[#0A1628] w-full border-b border-white/5">
     <div class="flex justify-between items-center h-20 px-6 md:px-12 max-w-[1600px] mx-auto">
       <div class="flex items-center gap-12">
         <a href="/" class="font-bold tracking-tight text-white flex items-center">
@@ -111,7 +111,7 @@
   </nav>
 
   <!-- Hero Section -->
-  <section class="bg-[#25224A] pt-14 pb-0 lg:pt-20 overflow-hidden min-h-[600px] lg:min-h-[700px] flex items-center">
+  <section class="bg-[#0A1628] pt-14 pb-0 lg:pt-20 overflow-hidden min-h-[600px] lg:min-h-[700px] flex items-center">
     <div
       class="w-full max-w-[1600px] mx-auto px-6 md:px-12 grid grid-cols-1 lg:grid-cols-[50%_50%] gap-0 lg:gap-8 items-center"
       x-data="{ activeSlide: 0, isScrolling: false }"
@@ -226,7 +226,7 @@
             :style="`transform: translateY(-${activeSlide * 410}px)`">
             <div class="absolute left-4 right-4 h-[380px] top-[calc(50%-95px-1230px)] -translate-y-1/2">
               <div
-                class="w-full h-full rounded-3xl bg-[#272459] border border-white/10 opacity-40 p-6 flex flex-col gap-4 shadow-lg">
+                class="w-full h-full rounded-3xl bg-[#162D4F] border border-white/10 opacity-40 p-6 flex flex-col gap-4 shadow-lg">
                 <div class="flex items-center gap-3">
                   <div class="w-10 h-10 rounded-full bg-white/10"></div>
                   <div class="space-y-2 flex-1">
@@ -241,7 +241,7 @@
             </div>
             <div class="absolute left-4 right-4 h-[380px] top-[calc(50%-95px-820px)] -translate-y-1/2">
               <div
-                class="w-full h-full rounded-3xl bg-[#272459] border border-white/10 opacity-40 p-6 flex flex-col gap-4 shadow-lg">
+                class="w-full h-full rounded-3xl bg-[#162D4F] border border-white/10 opacity-40 p-6 flex flex-col gap-4 shadow-lg">
                 <div class="flex items-center gap-3">
                   <div class="w-10 h-10 rounded-full bg-white/10"></div>
                   <div class="space-y-2 flex-1">
@@ -256,7 +256,7 @@
             </div>
             <div class="absolute left-4 right-4 h-[380px] top-[calc(50%-95px-410px)] -translate-y-1/2">
               <div
-                class="w-full h-full rounded-3xl bg-[#272459] border border-white/10 opacity-40 p-6 flex flex-col gap-4 shadow-lg">
+                class="w-full h-full rounded-3xl bg-[#162D4F] border border-white/10 opacity-40 p-6 flex flex-col gap-4 shadow-lg">
                 <div class="flex items-center gap-3">
                   <div class="w-10 h-10 rounded-full bg-white/10"></div>
                   <div class="space-y-2 flex-1">
@@ -272,7 +272,7 @@
 
             <div class="absolute left-4 right-4 h-[380px] top-[calc(50%-95px)] -translate-y-1/2">
               <div class="relative w-full h-full rounded-3xl overflow-visible transition-all duration-500 border"
-                :class="(activeSlide === 0 && !isScrolling) ? 'bg-white border-white/20 shadow-2xl z-20 scale-100' : 'bg-[#272459] border-white/10 opacity-60 z-10 scale-95 overflow-hidden'">
+                :class="(activeSlide === 0 && !isScrolling) ? 'bg-white border-white/20 shadow-2xl z-20 scale-100' : 'bg-[#162D4F] border-white/10 opacity-60 z-10 scale-95 overflow-hidden'">
 
                 <!-- Background Content for inactive state -->
                 <div class="absolute inset-0 p-6 flex flex-col gap-4 transition-opacity duration-300"
@@ -298,29 +298,29 @@
                     <span class="text-[10px] text-white font-bold uppercase tracking-wider">Live Call</span>
                   </div>
 
-                  <div class="p-8 flex flex-col h-full text-[#1E204A]">
+                  <div class="p-8 flex flex-col h-full text-[#0F2440]">
                     <div class="flex items-center gap-3 mb-6">
                       <div class="w-12 h-12 rounded-full bg-[#00AFF0] flex items-center justify-center text-white shadow-lg">
                         <span class="material-symbols-outlined text-2xl">call</span>
                       </div>
                       <div>
-                        <div class="text-[10px] text-[#525E7A] font-bold uppercase tracking-wider">Incoming Call</div>
+                        <div class="text-[10px] text-[#2C5F8A] font-bold uppercase tracking-wider">Incoming Call</div>
                         <div class="text-lg font-extrabold">dialer.best AI</div>
                       </div>
                     </div>
 
-                    <div class="flex-1 bg-[#F8FAFF] rounded-2xl p-5 border border-[#DEE8FF] space-y-3">
+                    <div class="flex-1 bg-[#E8F4FC] rounded-2xl p-5 border border-[#B8D8EC] space-y-3">
                       <div class="flex items-center gap-3">
                         <div class="w-8 h-8 rounded-full bg-[#00AFF0]/10 flex items-center justify-center">
                           <span class="material-symbols-outlined text-[#00AFF0] text-lg">schedule</span>
                         </div>
                         <div class="flex-1">
-                          <div class="text-[11px] font-bold text-[#25224A]">"Good morning! Ready to plan your day?"</div>
-                          <div class="text-[9px] text-[#7F798D] font-medium mt-0.5">AI Assistant • Just now</div>
+                          <div class="text-[11px] font-bold text-[#0A1628]">"Good morning! Ready to plan your day?"</div>
+                          <div class="text-[9px] text-[#4A7B9E] font-medium mt-0.5">AI Assistant • Just now</div>
                         </div>
                       </div>
-                      <div class="h-px bg-[#DEE8FF]"></div>
-                      <div class="flex items-center gap-2 text-[11px] text-[#7F798D]">
+                      <div class="h-px bg-[#B8D8EC]"></div>
+                      <div class="flex items-center gap-2 text-[11px] text-[#4A7B9E]">
                         <span class="w-2 h-2 rounded-full bg-[#22C55E] animate-pulse"></span>
                         <span>AI is speaking...</span>
                       </div>
@@ -337,14 +337,14 @@
 
             <div class="absolute left-4 right-4 h-[380px] top-[calc(50%-95px+410px)] -translate-y-1/2">
               <div class="relative w-full h-full rounded-3xl overflow-hidden transition-all duration-500 border"
-                :class="(activeSlide === 1 && !isScrolling) ? 'bg-white border-white/20 shadow-2xl z-20 scale-100' : 'bg-[#272459] border-white/10 opacity-60 z-10 scale-95'">
+                :class="(activeSlide === 1 && !isScrolling) ? 'bg-white border-white/20 shadow-2xl z-20 scale-100' : 'bg-[#162D4F] border-white/10 opacity-60 z-10 scale-95'">
                 <div class="absolute inset-0 p-6 flex flex-col gap-4 transition-opacity duration-300"
                   :class="(activeSlide === 1 && !isScrolling) ? 'opacity-0' : 'opacity-100'">
                   <div class="flex items-center gap-3">
                     <div class="w-10 h-10 rounded-full bg-white/10"></div>
                   </div>
                 </div>
-                <div class="absolute inset-0 p-8 flex flex-col transition-opacity duration-300 text-[#1E204A]"
+                <div class="absolute inset-0 p-8 flex flex-col transition-opacity duration-300 text-[#0F2440]"
                   :class="(activeSlide === 1 && !isScrolling) ? 'opacity-100' : 'opacity-0 pointer-events-none'">
                   <div class="flex items-center gap-4 mb-6">
                     <div class="w-12 h-12 rounded-full bg-white p-1 shadow-sm relative shrink-0">
@@ -356,7 +356,7 @@
                       </div>
                     </div>
                     <div>
-                      <div class="text-[10px] text-[#525E7A] uppercase font-bold tracking-wider">Follow-up</div>
+                      <div class="text-[10px] text-[#2C5F8A] uppercase font-bold tracking-wider">Follow-up</div>
                       <div class="font-extrabold text-lg">Progress Check</div>
                     </div>
                   </div>
@@ -364,17 +364,17 @@
                     class="bg-white/40 p-4 rounded-xl border border-white/40 flex-1 space-y-3 mb-6">
                     <div class="flex items-center gap-3 text-[13px]">
                       <span class="material-symbols-outlined text-[#22C55E] text-lg">check_circle</span>
-                      <span class="font-bold text-[#25224A]">Draft proposal</span>
+                      <span class="font-bold text-[#0A1628]">Draft proposal</span>
                       <span class="ml-auto text-[10px] text-[#22C55E] font-bold">Done</span>
                     </div>
                     <div class="flex items-center gap-3 text-[13px]">
                       <span class="material-symbols-outlined text-[#00AFF0] text-lg">radio_button_unchecked</span>
-                      <span class="font-bold text-[#25224A]">Review Q3 budget</span>
+                      <span class="font-bold text-[#0A1628]">Review Q3 budget</span>
                       <span class="ml-auto text-[10px] text-[#00AFF0] font-bold">In Progress</span>
                     </div>
                     <div class="flex items-center gap-3 text-[13px]">
                       <span class="material-symbols-outlined text-[#EF4444] text-lg">radio_button_unchecked</span>
-                      <span class="font-bold text-[#25224A]">Call client back</span>
+                      <span class="font-bold text-[#0A1628]">Call client back</span>
                       <span class="ml-auto text-[10px] text-[#EF4444] font-bold">Overdue</span>
                     </div>
                   </div>
@@ -387,46 +387,46 @@
             </div>
             <div class="absolute left-4 right-4 h-[380px] top-[calc(50%-95px+820px)] -translate-y-1/2">
               <div class="relative w-full h-full rounded-3xl overflow-hidden transition-all duration-500 border"
-                :class="(activeSlide === 2 && !isScrolling) ? 'bg-white border-white/20 shadow-2xl z-20 scale-100' : 'bg-[#272459] border-white/10 opacity-60 z-10 scale-95'">
+                :class="(activeSlide === 2 && !isScrolling) ? 'bg-white border-white/20 shadow-2xl z-20 scale-100' : 'bg-[#162D4F] border-white/10 opacity-60 z-10 scale-95'">
                 <div class="absolute inset-0 p-6 flex flex-col gap-4 transition-opacity duration-300"
                   :class="(activeSlide === 2 && !isScrolling) ? 'opacity-0' : 'opacity-100'">
                   <div class="flex items-center gap-3">
                     <div class="w-10 h-10 rounded-full bg-white/10"></div>
                   </div>
                 </div>
-                <div class="absolute inset-0 p-8 flex flex-col transition-opacity duration-300 text-[#1E204A]"
+                <div class="absolute inset-0 p-8 flex flex-col transition-opacity duration-300 text-[#0F2440]"
                   :class="(activeSlide === 2 && !isScrolling) ? 'opacity-100' : 'opacity-0 pointer-events-none'">
                   <div class="font-extrabold text-lg mb-4 tracking-tight flex items-center gap-2">
                     <span class="material-symbols-outlined text-[#00AFF0]">history</span> Call Logs
                   </div>
                   <div class="flex-1 space-y-3 overflow-hidden">
-                    <div class="bg-white/60 rounded-xl p-3 border border-[#DEE8FF] flex items-center gap-3">
+                    <div class="bg-white/60 rounded-xl p-3 border border-[#B8D8EC] flex items-center gap-3">
                       <div class="w-8 h-8 rounded-full bg-[#00AFF0]/10 flex items-center justify-center shrink-0">
                         <span class="material-symbols-outlined text-[#00AFF0] text-lg">call_received</span>
                       </div>
                       <div class="flex-1 min-w-0">
-                        <div class="text-[11px] font-bold text-[#25224A]">Morning Planning</div>
-                        <div class="text-[9px] text-[#7F798D]">Today, 8:30 AM • 12 min</div>
+                        <div class="text-[11px] font-bold text-[#0A1628]">Morning Planning</div>
+                        <div class="text-[9px] text-[#4A7B9E]">Today, 8:30 AM • 12 min</div>
                       </div>
                       <span class="text-[9px] text-[#22C55E] font-bold shrink-0">Completed</span>
                     </div>
-                    <div class="bg-white/60 rounded-xl p-3 border border-[#DEE8FF] flex items-center gap-3">
+                    <div class="bg-white/60 rounded-xl p-3 border border-[#B8D8EC] flex items-center gap-3">
                       <div class="w-8 h-8 rounded-full bg-[#00AFF0]/10 flex items-center justify-center shrink-0">
                         <span class="material-symbols-outlined text-[#00AFF0] text-lg">call_received</span>
                       </div>
                       <div class="flex-1 min-w-0">
-                        <div class="text-[11px] font-bold text-[#25224A]">Follow-up Check</div>
-                        <div class="text-[9px] text-[#7F798D]">Today, 11:15 AM • 5 min</div>
+                        <div class="text-[11px] font-bold text-[#0A1628]">Follow-up Check</div>
+                        <div class="text-[9px] text-[#4A7B9E]">Today, 11:15 AM • 5 min</div>
                       </div>
                       <span class="text-[9px] text-[#22C55E] font-bold shrink-0">Completed</span>
                     </div>
-                    <div class="bg-white/60 rounded-xl p-3 border border-[#DEE8FF] flex items-center gap-3 opacity-70">
+                    <div class="bg-white/60 rounded-xl p-3 border border-[#B8D8EC] flex items-center gap-3 opacity-70">
                       <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center shrink-0">
-                        <span class="material-symbols-outlined text-[#7F798D] text-lg">call_missed</span>
+                        <span class="material-symbols-outlined text-[#4A7B9E] text-lg">call_missed</span>
                       </div>
                       <div class="flex-1 min-w-0">
-                        <div class="text-[11px] font-bold text-[#25224A]">Afternoon Update</div>
-                        <div class="text-[9px] text-[#7F798D]">Today, 2:00 PM • Missed</div>
+                        <div class="text-[11px] font-bold text-[#0A1628]">Afternoon Update</div>
+                        <div class="text-[9px] text-[#4A7B9E]">Today, 2:00 PM • Missed</div>
                       </div>
                       <span class="text-[9px] text-[#EF4444] font-bold shrink-0">Missed</span>
                     </div>
@@ -445,7 +445,7 @@
             :style="`transform: translateY(-${activeSlide * 410}px)`">
             <div class="absolute left-4 right-4 h-[380px] top-[calc(50%+95px-1230px)] -translate-y-1/2">
               <div
-                class="w-full h-full rounded-3xl bg-[#272459] border border-white/10 opacity-40 p-6 flex flex-col gap-4 shadow-lg">
+                class="w-full h-full rounded-3xl bg-[#162D4F] border border-white/10 opacity-40 p-6 flex flex-col gap-4 shadow-lg">
                 <div class="flex items-center gap-3">
                   <div class="w-10 h-10 rounded-full bg-white/10"></div>
                   <div class="space-y-2 flex-1">
@@ -460,7 +460,7 @@
             </div>
             <div class="absolute left-4 right-4 h-[380px] top-[calc(50%+95px-820px)] -translate-y-1/2">
               <div
-                class="w-full h-full rounded-3xl bg-[#272459] border border-white/10 opacity-40 p-6 flex flex-col gap-4 shadow-lg">
+                class="w-full h-full rounded-3xl bg-[#162D4F] border border-white/10 opacity-40 p-6 flex flex-col gap-4 shadow-lg">
                 <div class="flex items-center gap-3">
                   <div class="w-10 h-10 rounded-full bg-white/10"></div>
                   <div class="space-y-2 flex-1">
@@ -475,7 +475,7 @@
             </div>
             <div class="absolute left-4 right-4 h-[380px] top-[calc(50%+95px-410px)] -translate-y-1/2">
               <div
-                class="w-full h-full rounded-3xl bg-[#272459] border border-white/10 opacity-40 p-6 flex flex-col gap-4 shadow-lg">
+                class="w-full h-full rounded-3xl bg-[#162D4F] border border-white/10 opacity-40 p-6 flex flex-col gap-4 shadow-lg">
                 <div class="flex items-center gap-3">
                   <div class="w-10 h-10 rounded-full bg-white/10"></div>
                   <div class="space-y-2 flex-1">
@@ -490,7 +490,7 @@
             </div>
             <div class="absolute left-4 right-4 h-[380px] top-[calc(50%+95px)] -translate-y-1/2">
               <div class="relative w-full h-full rounded-3xl overflow-visible transition-all duration-500 border"
-                :class="(activeSlide === 0 && !isScrolling) ? 'bg-white border-white/20 shadow-2xl z-20 scale-100' : 'bg-[#272459] border-white/10 opacity-60 z-10 scale-95 overflow-hidden'">
+                :class="(activeSlide === 0 && !isScrolling) ? 'bg-white border-white/20 shadow-2xl z-20 scale-100' : 'bg-[#162D4F] border-white/10 opacity-60 z-10 scale-95 overflow-hidden'">
 
                 <!-- Background Content for inactive state -->
                 <div class="absolute inset-0 p-6 flex flex-col gap-4 transition-opacity duration-300"
@@ -506,53 +506,53 @@
                 </div>
 
                 <!-- Active Content (Today's Tasks) -->
-                <div class="absolute inset-0 flex flex-col transition-opacity duration-300 text-[#1E204A]"
+                <div class="absolute inset-0 flex flex-col transition-opacity duration-300 text-[#0F2440]"
                   :class="(activeSlide === 0 && !isScrolling) ? 'opacity-100' : 'opacity-0 pointer-events-none'">
 
                   <div class="p-8 flex flex-col h-full">
                     <div class="flex items-center justify-between mb-6">
                       <div>
-                        <div class="text-[10px] text-[#525E7A] font-bold uppercase tracking-wider">Today's Schedule</div>
+                        <div class="text-[10px] text-[#2C5F8A] font-bold uppercase tracking-wider">Today's Schedule</div>
                         <div class="text-2xl font-extrabold">5 Tasks</div>
                       </div>
                       <div class="text-right">
-                        <div class="text-[10px] text-[#525E7A] font-bold uppercase">Progress</div>
+                        <div class="text-[10px] text-[#2C5F8A] font-bold uppercase">Progress</div>
                         <div class="text-lg font-extrabold text-[#00AFF0]">60%</div>
                       </div>
                     </div>
 
                     <div class="flex-1 space-y-3">
-                      <div class="flex items-center gap-3 bg-[#F8FAFF] p-3 rounded-xl border border-[#DEE8FF]">
+                      <div class="flex items-center gap-3 bg-[#E8F4FC] p-3 rounded-xl border border-[#B8D8EC]">
                         <span class="material-symbols-outlined text-[#22C55E] text-lg">check_circle</span>
                         <div class="flex-1">
-                          <div class="text-[13px] font-bold text-[#25224A]">Draft Q4 proposal</div>
-                          <div class="text-[9px] text-[#7F798D]">Due: Today • High priority</div>
+                          <div class="text-[13px] font-bold text-[#0A1628]">Draft Q4 proposal</div>
+                          <div class="text-[9px] text-[#4A7B9E]">Due: Today • High priority</div>
                         </div>
                       </div>
-                      <div class="flex items-center gap-3 bg-[#F8FAFF] p-3 rounded-xl border border-[#DEE8FF]">
+                      <div class="flex items-center gap-3 bg-[#E8F4FC] p-3 rounded-xl border border-[#B8D8EC]">
                         <span class="material-symbols-outlined text-[#00AFF0] text-lg">radio_button_unchecked</span>
                         <div class="flex-1">
-                          <div class="text-[13px] font-bold text-[#25224A]">Review team updates</div>
-                          <div class="text-[9px] text-[#7F798D]">Due: Today • Medium</div>
+                          <div class="text-[13px] font-bold text-[#0A1628]">Review team updates</div>
+                          <div class="text-[9px] text-[#4A7B9E]">Due: Today • Medium</div>
                         </div>
                       </div>
-                      <div class="flex items-center gap-3 bg-[#F8FAFF] p-3 rounded-xl border border-[#DEE8FF]">
+                      <div class="flex items-center gap-3 bg-[#E8F4FC] p-3 rounded-xl border border-[#B8D8EC]">
                         <span class="material-symbols-outlined text-[#00AFF0] text-lg">radio_button_unchecked</span>
                         <div class="flex-1">
-                          <div class="text-[13px] font-bold text-[#25224A]">Call Johnson & Co.</div>
-                          <div class="text-[9px] text-[#7F798D]">Due: Today • High priority</div>
+                          <div class="text-[13px] font-bold text-[#0A1628]">Call Johnson & Co.</div>
+                          <div class="text-[9px] text-[#4A7B9E]">Due: Today • High priority</div>
                         </div>
                       </div>
                       <div class="flex items-center gap-3 opacity-60 p-3">
-                        <span class="material-symbols-outlined text-[#7F798D] text-lg">radio_button_unchecked</span>
+                        <span class="material-symbols-outlined text-[#4A7B9E] text-lg">radio_button_unchecked</span>
                         <div class="flex-1">
-                          <div class="text-[13px] font-bold text-[#25224A]">Prepare presentation</div>
-                          <div class="text-[9px] text-[#7F798D]">Due: Tomorrow</div>
+                          <div class="text-[13px] font-bold text-[#0A1628]">Prepare presentation</div>
+                          <div class="text-[9px] text-[#4A7B9E]">Due: Tomorrow</div>
                         </div>
                       </div>
                     </div>
 
-                    <div class="mt-auto pt-4 border-t border-[#DEE8FF] flex justify-between text-[10px] text-[#7F798D] font-bold">
+                    <div class="mt-auto pt-4 border-t border-[#B8D8EC] flex justify-between text-[10px] text-[#4A7B9E] font-bold">
                       <span>2 completed • 3 remaining</span>
                       <span class="text-[#00AFF0]">View all →</span>
                     </div>
@@ -563,34 +563,34 @@
 
             <div class="absolute left-4 right-4 h-[380px] top-[calc(50%+95px+410px)] -translate-y-1/2">
               <div class="relative w-full h-full rounded-3xl overflow-hidden transition-all duration-500 border"
-                :class="(activeSlide === 1 && !isScrolling) ? 'bg-white border-white/20 shadow-2xl z-20 scale-100' : 'bg-[#272459] border-white/10 opacity-60 z-10 scale-95'">
+                :class="(activeSlide === 1 && !isScrolling) ? 'bg-white border-white/20 shadow-2xl z-20 scale-100' : 'bg-[#162D4F] border-white/10 opacity-60 z-10 scale-95'">
                 <div class="absolute inset-0 p-6 flex flex-col gap-4 transition-opacity duration-300"
                   :class="(activeSlide === 1 && !isScrolling) ? 'opacity-0' : 'opacity-100'">
                   <div class="flex items-center gap-3">
                     <div class="w-10 h-10 rounded-full bg-white/10"></div>
                   </div>
                 </div>
-                <div class="absolute inset-0 p-8 flex flex-col transition-opacity duration-300 text-[#1E204A]"
+                <div class="absolute inset-0 p-8 flex flex-col transition-opacity duration-300 text-[#0F2440]"
                   :class="(activeSlide === 1 && !isScrolling) ? 'opacity-100' : 'opacity-0 pointer-events-none'">
                   <div class="font-extrabold text-xl tracking-tight mb-4 flex items-center gap-3">
                     <span class="material-symbols-outlined text-[#22C55E] text-2xl">summarize</span> Daily Report
                   </div>
                   <div class="bg-white/40 p-4 rounded-2xl border border-white/40 mb-4 space-y-3">
                     <div class="flex justify-between items-center">
-                      <span class="text-[10px] font-bold text-[#525E7A] uppercase">Tasks Completed</span>
+                      <span class="text-[10px] font-bold text-[#2C5F8A] uppercase">Tasks Completed</span>
                       <span class="text-lg font-extrabold text-[#22C55E]">3/5</span>
                     </div>
-                    <div class="h-2 bg-[#DEE8FF] rounded-full overflow-hidden">
+                    <div class="h-2 bg-[#B8D8EC] rounded-full overflow-hidden">
                       <div class="h-full w-[60%] bg-[#22C55E] rounded-full"></div>
                     </div>
-                    <div class="flex justify-between text-[10px] text-[#7F798D]">
+                    <div class="flex justify-between text-[10px] text-[#4A7B9E]">
                       <span>Hours logged: 4.5h</span>
                       <span>Calls: 3</span>
                     </div>
                   </div>
                   <div class="bg-white/30 rounded-xl p-3 border border-white/40 text-[11px]">
-                    <div class="font-bold text-[#25224A] mb-1">Transcript Preview</div>
-                    <div class="text-[#7F798D] italic">"Draft proposal completed. Moving to budget review..."</div>
+                    <div class="font-bold text-[#0A1628] mb-1">Transcript Preview</div>
+                    <div class="text-[#4A7B9E] italic">"Draft proposal completed. Moving to budget review..."</div>
                   </div>
                   <div class="mt-auto pt-3 flex gap-2">
                     <div
@@ -602,34 +602,34 @@
             </div>
             <div class="absolute left-4 right-4 h-[380px] top-[calc(50%+95px+820px)] -translate-y-1/2">
               <div class="relative w-full h-full rounded-3xl overflow-hidden transition-all duration-500 border"
-                :class="(activeSlide === 2 && !isScrolling) ? 'bg-white border-white/20 shadow-2xl z-20 scale-100' : 'bg-[#272459] border-white/10 opacity-60 z-10 scale-95'">
+                :class="(activeSlide === 2 && !isScrolling) ? 'bg-white border-white/20 shadow-2xl z-20 scale-100' : 'bg-[#162D4F] border-white/10 opacity-60 z-10 scale-95'">
                 <div class="absolute inset-0 p-6 flex flex-col gap-4 transition-opacity duration-300"
                   :class="(activeSlide === 2 && !isScrolling) ? 'opacity-0' : 'opacity-100'">
                   <div class="flex items-center gap-3">
                     <div class="w-10 h-10 rounded-full bg-white/10"></div>
                   </div>
                 </div>
-                <div class="absolute inset-0 p-8 flex flex-col transition-opacity duration-300 text-[#1E204A]"
+                <div class="absolute inset-0 p-8 flex flex-col transition-opacity duration-300 text-[#0F2440]"
                   :class="(activeSlide === 2 && !isScrolling) ? 'opacity-100' : 'opacity-0 pointer-events-none'">
                   <div class="font-extrabold text-xl mb-4 tracking-tight flex items-center gap-2">
                     <span class="material-symbols-outlined text-[#00AFF0]">bar_chart</span> Your Stats
                   </div>
                   <div class="grid grid-cols-2 gap-3 mb-4">
-                    <div class="bg-white/60 rounded-xl p-4 border border-[#DEE8FF] text-center">
-                      <div class="text-2xl font-extrabold text-[#25224A]">12</div>
-                      <div class="text-[9px] text-[#7F798D] font-bold uppercase">Tasks This Week</div>
+                    <div class="bg-white/60 rounded-xl p-4 border border-[#B8D8EC] text-center">
+                      <div class="text-2xl font-extrabold text-[#0A1628]">12</div>
+                      <div class="text-[9px] text-[#4A7B9E] font-bold uppercase">Tasks This Week</div>
                     </div>
-                    <div class="bg-white/60 rounded-xl p-4 border border-[#DEE8FF] text-center">
+                    <div class="bg-white/60 rounded-xl p-4 border border-[#B8D8EC] text-center">
                       <div class="text-2xl font-extrabold text-[#22C55E]">9</div>
-                      <div class="text-[9px] text-[#7F798D] font-bold uppercase">Completed</div>
+                      <div class="text-[9px] text-[#4A7B9E] font-bold uppercase">Completed</div>
                     </div>
-                    <div class="bg-white/60 rounded-xl p-4 border border-[#DEE8FF] text-center">
+                    <div class="bg-white/60 rounded-xl p-4 border border-[#B8D8EC] text-center">
                       <div class="text-2xl font-extrabold text-[#00AFF0]">75%</div>
-                      <div class="text-[9px] text-[#7F798D] font-bold uppercase">Completion Rate</div>
+                      <div class="text-[9px] text-[#4A7B9E] font-bold uppercase">Completion Rate</div>
                     </div>
-                    <div class="bg-white/60 rounded-xl p-4 border border-[#DEE8FF] text-center">
-                      <div class="text-2xl font-extrabold text-[#25224A]">8h</div>
-                      <div class="text-[9px] text-[#7F798D] font-bold uppercase">Focused Time</div>
+                    <div class="bg-white/60 rounded-xl p-4 border border-[#B8D8EC] text-center">
+                      <div class="text-2xl font-extrabold text-[#0A1628]">8h</div>
+                      <div class="text-[9px] text-[#4A7B9E] font-bold uppercase">Focused Time</div>
                     </div>
                   </div>
                   <div
@@ -653,7 +653,7 @@
           <h1 class="text-3xl md:text-5xl lg:text-6xl font-extrabold text-white leading-[1] tracking-tight">
             Plan your day
             with a<br>
-            <span class="text-[#AFBBE0]">morning call</span>
+            <span class="text-[#7DA5C3]">morning call</span>
           </h1>
         </div>
 
@@ -675,7 +675,7 @@
           <a href="#how-it-works"
             class="px-10 py-4 bg-white/5 border border-white/10 hover:bg-white/10 text-white font-bold rounded-xl transition-all text-base flex items-center justify-center gap-3 w-full sm:w-auto">
             <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center">
-              <span class="material-symbols-outlined text-[#1E204A] text-[20px] ml-0.5">play_arrow</span>
+              <span class="material-symbols-outlined text-[#0F2440] text-[20px] ml-0.5">play_arrow</span>
             </div>
             How it works
           </a>
@@ -685,28 +685,28 @@
   </section>
 
   <!-- Stats Section -->
-  <section class="bg-[#272459] py-10 border-t border-white/5">
+  <section class="bg-[#162D4F] py-10 border-t border-white/5">
     <div class="max-w-[1600px] mx-auto px-6 md:px-12">
       <div class="grid grid-cols-2 md:grid-cols-5 gap-8 text-center divide-x divide-white/10">
         <div class="px-4">
           <div class="text-2xl font-bold text-white mb-1">10,000+</div>
-          <div class="text-xs text-[#AFBBE0] uppercase tracking-wider font-semibold">Active Users</div>
+          <div class="text-xs text-[#7DA5C3] uppercase tracking-wider font-semibold">Active Users</div>
         </div>
         <div class="px-4">
           <div class="text-2xl font-bold text-white mb-1">100K+</div>
-          <div class="text-xs text-[#AFBBE0] uppercase tracking-wider font-semibold">Tasks Completed</div>
+          <div class="text-xs text-[#7DA5C3] uppercase tracking-wider font-semibold">Tasks Completed</div>
         </div>
         <div class="px-4">
           <div class="text-2xl font-bold text-white mb-1">50K+</div>
-          <div class="text-xs text-[#AFBBE0] uppercase tracking-wider font-semibold">Hours Saved</div>
+          <div class="text-xs text-[#7DA5C3] uppercase tracking-wider font-semibold">Hours Saved</div>
         </div>
         <div class="px-4">
           <div class="text-2xl font-bold text-white mb-1">24/7</div>
-          <div class="text-xs text-[#AFBBE0] uppercase tracking-wider font-semibold">AI Follow-ups</div>
+          <div class="text-xs text-[#7DA5C3] uppercase tracking-wider font-semibold">AI Follow-ups</div>
         </div>
         <div class="px-4 hidden md:block">
           <div class="text-2xl font-bold text-white mb-1">US</div>
-          <div class="text-xs text-[#AFBBE0] uppercase tracking-wider font-semibold">Phone Numbers</div>
+          <div class="text-xs text-[#7DA5C3] uppercase tracking-wider font-semibold">Phone Numbers</div>
         </div>
       </div>
     </div>
@@ -716,26 +716,26 @@
   <section id="how-it-works" class="bg-white py-24 relative overflow-hidden">
     <div class="max-w-[1400px] mx-auto px-6 md:px-12">
       <div class="text-center mb-20">
-        <h2 class="text-3xl md:text-5xl font-black text-[#25224A] tracking-tight mb-6">How <span
+        <h2 class="text-3xl md:text-5xl font-black text-[#0A1628] tracking-tight mb-6">How <span
             class="text-[#00AFF0]">dialer.best</span> Works</h2>
-        <p class="text-[#7F798D] text-lg max-w-2xl mx-auto">It will call you in the morning, Help you plan tasks on the call, organize scheduled tasks, Set follow-up reminders for each task, Help you close a productive day with confidence.</p>
+        <p class="text-[#4A7B9E] text-lg max-w-2xl mx-auto">It will call you in the morning, Help you plan tasks on the call, organize scheduled tasks, Set follow-up reminders for each task, Help you close a productive day with confidence.</p>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 relative">
         <!-- Step 1: Morning Call -->
-        <div class="bg-[#F8FAFF] p-8 rounded-[2.5rem] border border-[#DEE8FF] relative group overflow-hidden">
+        <div class="bg-[#E8F4FC] p-8 rounded-[2.5rem] border border-[#B8D8EC] relative group overflow-hidden">
           <div class="relative z-10 text-center">
             <div class="w-16 h-16 rounded-2xl bg-white shadow-sm flex items-center justify-center mb-6 text-[#00AFF0] mx-auto">
               <span class="material-symbols-outlined text-3xl">phone_callback</span>
             </div>
             <div class="inline-flex items-center gap-1 px-3 py-1 bg-[#00AFF0]/10 rounded-full text-[10px] font-bold text-[#00AFF0] mb-4">Step 01</div>
-            <h3 class="text-2xl font-bold text-[#25224A] mb-3">Morning Call</h3>
-            <p class="text-[#7F798D] text-sm leading-relaxed">You wake up. dialer.best calls you. A natural conversation to plan your day, set priorities, and commit to tasks.</p>
+            <h3 class="text-2xl font-bold text-[#0A1628] mb-3">Morning Call</h3>
+            <p class="text-[#4A7B9E] text-sm leading-relaxed">You wake up. dialer.best calls you. A natural conversation to plan your day, set priorities, and commit to tasks.</p>
           </div>
         </div>
 
         <!-- Step 2: Schedule -->
-        <div class="bg-[#25224A] p-8 rounded-[2.5rem] border border-white/5 relative group overflow-hidden shadow-2xl -mt-4 lg:mt-8">
+        <div class="bg-[#0A1628] p-8 rounded-[2.5rem] border border-white/5 relative group overflow-hidden shadow-2xl -mt-4 lg:mt-8">
           <div class="relative z-10 text-center">
             <div class="w-16 h-16 rounded-2xl bg-[#00AFF0] shadow-lg flex items-center justify-center mb-6 text-white mx-auto">
               <span class="material-symbols-outlined text-3xl">checklist</span>
@@ -747,19 +747,19 @@
         </div>
 
         <!-- Step 3: Follow-ups -->
-        <div class="bg-[#F8FAFF] p-8 rounded-[2.5rem] border border-[#DEE8FF] relative group overflow-hidden">
+        <div class="bg-[#E8F4FC] p-8 rounded-[2.5rem] border border-[#B8D8EC] relative group overflow-hidden">
           <div class="relative z-10 text-center">
             <div class="w-16 h-16 rounded-2xl bg-white shadow-sm flex items-center justify-center mb-6 text-[#22C55E] mx-auto">
               <span class="material-symbols-outlined text-3xl">notifications_active</span>
             </div>
             <div class="inline-flex items-center gap-1 px-3 py-1 bg-[#22C55E]/10 rounded-full text-[10px] font-bold text-[#22C55E] mb-4">Step 03</div>
-            <h3 class="text-2xl font-bold text-[#25224A] mb-3">Smart Follow-ups</h3>
-            <p class="text-[#7F798D] text-sm leading-relaxed">The AI calls you back throughout the day. Not a notification — an actual conversation. "Did you finish that proposal? Need help?"</p>
+            <h3 class="text-2xl font-bold text-[#0A1628] mb-3">Smart Follow-ups</h3>
+            <p class="text-[#4A7B9E] text-sm leading-relaxed">The AI calls you back throughout the day. Not a notification — an actual conversation. "Did you finish that proposal? Need help?"</p>
           </div>
         </div>
 
         <!-- Step 4: Report -->
-        <div class="bg-[#25224A] p-8 rounded-[2.5rem] border border-white/5 relative group overflow-hidden shadow-2xl -mt-4 lg:mt-8">
+        <div class="bg-[#0A1628] p-8 rounded-[2.5rem] border border-white/5 relative group overflow-hidden shadow-2xl -mt-4 lg:mt-8">
           <div class="relative z-10 text-center">
             <div class="w-16 h-16 rounded-2xl bg-[#00AFF0] shadow-lg flex items-center justify-center mb-6 text-white mx-auto">
               <span class="material-symbols-outlined text-3xl">summarize</span>
@@ -777,26 +777,26 @@
   <section id="features" class="bg-white py-24 relative overflow-hidden">
     <div class="max-w-[1400px] mx-auto px-6 md:px-12">
       <div class="text-center mb-20">
-        <h2 class="text-3xl md:text-5xl font-black text-[#25224A] tracking-tight mb-6">Why dialer.best <span
+        <h2 class="text-3xl md:text-5xl font-black text-[#0A1628] tracking-tight mb-6">Why dialer.best <span
             class="text-[#00AFF0]">Kills Procrastination</span></h2>
-        <p class="text-[#7F798D] text-lg max-w-2xl mx-auto">Because notifications are too easy to ignore.</p>
+        <p class="text-[#4A7B9E] text-lg max-w-2xl mx-auto">Because notifications are too easy to ignore.</p>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
         <!-- Feature 1 -->
         <div
-          class="group relative bg-[#F8FAFF] p-8 rounded-[2.5rem] border border-[#DEE8FF] hover:border-[#00AFF0]/30 transition-all hover:-translate-y-2 shadow-sm">
+          class="group relative bg-[#E8F4FC] p-8 rounded-[2.5rem] border border-[#B8D8EC] hover:border-[#00AFF0]/30 transition-all hover:-translate-y-2 shadow-sm">
           <div
             class="w-16 h-16 rounded-2xl bg-white shadow-md flex items-center justify-center mb-6 text-[#00AFF0] group-hover:scale-110 transition-transform">
             <span class="material-symbols-outlined text-[32px]">call</span>
           </div>
-          <h3 class="text-xl font-bold text-[#25224A] mb-3 leading-tight">Human-like Voice Calls</h3>
-          <p class="text-[15px] text-[#7F798D] leading-relaxed">A real voice on the line. Not another notification you can swipe away. The AI calls you with natural conversation that keeps you accountable.</p>
+          <h3 class="text-xl font-bold text-[#0A1628] mb-3 leading-tight">Human-like Voice Calls</h3>
+          <p class="text-[15px] text-[#4A7B9E] leading-relaxed">A real voice on the line. Not another notification you can swipe away. The AI calls you with natural conversation that keeps you accountable.</p>
         </div>
 
         <!-- Feature 2 -->
         <div
-          class="group relative bg-[#25224A] p-8 rounded-[2.5rem] border border-white/10 hover:border-[#00AFF0]/30 transition-all hover:-translate-y-2 shadow-2xl">
+          class="group relative bg-[#0A1628] p-8 rounded-[2.5rem] border border-white/10 hover:border-[#00AFF0]/30 transition-all hover:-translate-y-2 shadow-2xl">
           <div
             class="w-16 h-16 rounded-2xl bg-[#00AFF0] shadow-md flex items-center justify-center mb-6 text-white group-hover:scale-110 transition-transform">
             <span class="material-symbols-outlined text-[32px]">notifications_active</span>
@@ -807,18 +807,18 @@
 
         <!-- Feature 3 -->
         <div
-          class="group relative bg-[#F8FAFF] p-8 rounded-[2.5rem] border border-[#DEE8FF] hover:border-[#00AFF0]/30 transition-all hover:-translate-y-2 shadow-sm">
+          class="group relative bg-[#E8F4FC] p-8 rounded-[2.5rem] border border-[#B8D8EC] hover:border-[#00AFF0]/30 transition-all hover:-translate-y-2 shadow-sm">
           <div
             class="w-16 h-16 rounded-2xl bg-white shadow-md flex items-center justify-center mb-6 text-[#22C55E] group-hover:scale-110 transition-transform">
             <span class="material-symbols-outlined text-[32px]">fact_check</span>
           </div>
-          <h3 class="text-xl font-bold text-[#25224A] mb-3 leading-tight">Call Logs & Transcripts</h3>
-          <p class="text-[15px] text-[#7F798D] leading-relaxed">Every call is recorded with a full AI transcript. Review your history, track decisions, and never forget a commitment.</p>
+          <h3 class="text-xl font-bold text-[#0A1628] mb-3 leading-tight">Call Logs & Transcripts</h3>
+          <p class="text-[15px] text-[#4A7B9E] leading-relaxed">Every call is recorded with a full AI transcript. Review your history, track decisions, and never forget a commitment.</p>
         </div>
       </div>
 
       <!-- US Only Banner -->
-      <div class="mt-20 p-8 rounded-3xl bg-gradient-to-br from-[#25224A] to-[#00AFF0] relative overflow-hidden group">
+      <div class="mt-20 p-8 rounded-3xl bg-gradient-to-br from-[#0A1628] to-[#00AFF0] relative overflow-hidden group">
         <div
           class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10">
         </div>
@@ -842,7 +842,7 @@
   </section>
 
   <!-- Section: Smart VOIP Calling System -->
-  <section id="voice" class="bg-[#1E204A] py-32 border-y border-white/5 relative overflow-hidden">
+  <section id="voice" class="bg-[#0F2440] py-32 border-y border-white/5 relative overflow-hidden">
     <div class="absolute inset-0 pointer-events-none">
       <div
         class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#00AFF0]/10 rounded-full blur-[120px]">
@@ -924,7 +924,7 @@
           <!-- Step 2 (Active/Grand) -->
           <div class="w-full md:w-[24%] h-auto relative md:mt-[150px] group">
             <div
-              class="h-full flex flex-col items-center p-10 bg-gradient-to-br from-[#00AFF0] to-[#25224A] text-white rounded-[3rem] shadow-[0_0_60px_rgba(62,80,247,0.3)] border border-white/20 transform group-hover:scale-105 transition-all duration-500">
+              class="h-full flex flex-col items-center p-10 bg-gradient-to-br from-[#00AFF0] to-[#0A1628] text-white rounded-[3rem] shadow-[0_0_60px_rgba(0,175,240,0.3)] border border-white/20 transform group-hover:scale-105 transition-all duration-500">
               <div
                 class="w-24 h-24 bg-white text-[#00AFF0] rounded-full flex items-center justify-center mb-8 shadow-2xl relative">
                 <span class="material-symbols-outlined text-5xl">call</span>
@@ -953,7 +953,7 @@
             <div
               class="h-full flex flex-col items-center p-8 bg-white/5 backdrop-blur-xl rounded-[2.5rem] border border-white/10 group-hover:border-[#00AFF0]/30 transition-all duration-500">
               <div
-                class="w-20 h-20 bg-white/5 text-white/20 rounded-full flex items-center justify-center mb-6 group-hover:text-[#AFBBE0] group-hover:bg-[#AFBBE0]/20 transition-all">
+                class="w-20 h-20 bg-white/5 text-white/20 rounded-full flex items-center justify-center mb-6 group-hover:text-[#7DA5C3] group-hover:bg-[#7DA5C3]/20 transition-all">
                 <span class="material-symbols-outlined text-4xl">summarize</span>
               </div>
               <h3 class="font-bold text-white text-center text-xl mb-3">Daily Report</h3>
@@ -973,17 +973,17 @@
           <div class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#00AFF0]/10 border border-[#00AFF0]/20 text-[#00AFF0] text-xs font-bold uppercase tracking-widest">
             <span class="material-symbols-outlined text-[20px]">phone_android</span> Mobile App
           </div>
-          <h2 class="text-3xl md:text-5xl font-black text-[#25224A] tracking-tight leading-[1.15]">
+          <h2 class="text-3xl md:text-5xl font-black text-[#0A1628] tracking-tight leading-[1.15]">
             Take <span class="text-[#00AFF0]">dialer.best</span><br>On the Go
           </h2>
-          <p class="text-lg text-[#7F798D] leading-relaxed max-w-lg">
+          <p class="text-lg text-[#4A7B9E] leading-relaxed max-w-lg">
             Our mobile app brings the full dialer.best experience to your pocket. Built for <strong>non-US based customers</strong> who need reliable access to receive calls and manage tasks from anywhere.
           </p>
-          <p class="text-lg text-[#7F798D] leading-relaxed max-w-lg">
+          <p class="text-lg text-[#4A7B9E] leading-relaxed max-w-lg">
             We're working hard to implement <strong>VoIP calling for international users</strong> — so you can use dialer.best no matter where you are.
           </p>
             <a href="{{ route('mobile.app') }}"
-            class="inline-flex items-center gap-3 px-8 py-4 bg-[#25224A] hover:bg-[#25224A]/90 text-white font-bold rounded-2xl transition-all text-base shadow-lg shadow-[#25224A]/20 group">
+            class="inline-flex items-center gap-3 px-8 py-4 bg-[#0A1628] hover:bg-[#0A1628]/90 text-white font-bold rounded-2xl transition-all text-base shadow-lg shadow-[#0A1628]/20 group">
             <span class="material-symbols-outlined text-[22px]">phone_android</span>
             Learn About Our App
           </a>
@@ -991,11 +991,11 @@
         <div class="relative flex items-center justify-center">
           <div class="relative w-72 h-[500px]">
             <!-- Phone frame mockup -->
-            <div class="absolute inset-0 bg-[#25224A] rounded-[3rem] border-4 border-[#25224A]/20 shadow-2xl overflow-hidden">
-              <div class="absolute top-0 left-1/2 -translate-x-1/2 w-28 h-6 bg-[#25224A] rounded-b-xl z-10"></div>
+            <div class="absolute inset-0 bg-[#0A1628] rounded-[3rem] border-4 border-[#0A1628]/20 shadow-2xl overflow-hidden">
+              <div class="absolute top-0 left-1/2 -translate-x-1/2 w-28 h-6 bg-[#0A1628] rounded-b-xl z-10"></div>
               <div class="absolute inset-2 bg-white rounded-[2.5rem] overflow-hidden flex flex-col">
                 <!-- App header in phone -->
-                <div class="bg-[#25224A] px-4 pt-8 pb-4">
+                <div class="bg-[#0A1628] px-4 pt-8 pb-4">
                   <div class="flex items-center gap-2 mb-3">
                     <div class="w-6 h-6 rounded-full bg-[#00AFF0] flex items-center justify-center">
                       <span class="text-white text-[10px] font-bold">D</span>
@@ -1006,44 +1006,44 @@
                   <div class="text-white/60 text-[10px]">Ready to plan your day?</div>
                 </div>
                 <!-- App content -->
-                <div class="flex-1 p-3 space-y-2 bg-[#F8FAFF]">
-                  <div class="bg-white p-3 rounded-xl border border-[#DEE8FF] shadow-sm flex items-center gap-2">
+                <div class="flex-1 p-3 space-y-2 bg-[#E8F4FC]">
+                  <div class="bg-white p-3 rounded-xl border border-[#B8D8EC] shadow-sm flex items-center gap-2">
                     <div class="w-8 h-8 rounded-full bg-[#00AFF0]/10 flex items-center justify-center">
                       <span class="material-symbols-outlined text-[#00AFF0] text-sm">call</span>
                     </div>
                     <div class="flex-1">
-                      <div class="text-[10px] font-bold text-[#25224A]">Morning Planning Call</div>
-                      <div class="text-[8px] text-[#7F798D]">8:30 AM • Incoming</div>
+                      <div class="text-[10px] font-bold text-[#0A1628]">Morning Planning Call</div>
+                      <div class="text-[8px] text-[#4A7B9E]">8:30 AM • Incoming</div>
                     </div>
                     <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
                   </div>
-                  <div class="bg-white p-3 rounded-xl border border-[#DEE8FF] shadow-sm flex items-center gap-2">
+                  <div class="bg-white p-3 rounded-xl border border-[#B8D8EC] shadow-sm flex items-center gap-2">
                     <div class="w-8 h-8 rounded-full bg-[#22C55E]/10 flex items-center justify-center">
                       <span class="material-symbols-outlined text-[#22C55E] text-sm">check_circle</span>
                     </div>
                     <div class="flex-1">
-                      <div class="text-[10px] font-bold text-[#25224A]">Draft proposal</div>
-                      <div class="text-[8px] text-[#7F798D]">Completed</div>
+                      <div class="text-[10px] font-bold text-[#0A1628]">Draft proposal</div>
+                      <div class="text-[8px] text-[#4A7B9E]">Completed</div>
                     </div>
                     <span class="text-[8px] text-[#22C55E] font-bold">Done</span>
                   </div>
-                  <div class="bg-white p-3 rounded-xl border border-[#DEE8FF] shadow-sm flex items-center gap-2">
+                  <div class="bg-white p-3 rounded-xl border border-[#B8D8EC] shadow-sm flex items-center gap-2">
                     <div class="w-8 h-8 rounded-full bg-[#00AFF0]/10 flex items-center justify-center">
                       <span class="material-symbols-outlined text-[#00AFF0] text-sm">radio_button_unchecked</span>
                     </div>
                     <div class="flex-1">
-                      <div class="text-[10px] font-bold text-[#25224A]">Review budget</div>
-                      <div class="text-[8px] text-[#7F798D]">In Progress</div>
+                      <div class="text-[10px] font-bold text-[#0A1628]">Review budget</div>
+                      <div class="text-[8px] text-[#4A7B9E]">In Progress</div>
                     </div>
                     <span class="text-[8px] text-[#00AFF0] font-bold">1:30 PM</span>
                   </div>
                 </div>
                 <!-- Bottom nav -->
-                <div class="bg-white border-t border-[#DEE8FF] px-4 py-2 flex justify-around">
+                <div class="bg-white border-t border-[#B8D8EC] px-4 py-2 flex justify-around">
                   <span class="material-symbols-outlined text-[#00AFF0] text-lg">home</span>
-                  <span class="material-symbols-outlined text-[#7F798D] text-lg">list_alt</span>
-                  <span class="material-symbols-outlined text-[#7F798D] text-lg">history</span>
-                  <span class="material-symbols-outlined text-[#7F798D] text-lg">person</span>
+                  <span class="material-symbols-outlined text-[#4A7B9E] text-lg">list_alt</span>
+                  <span class="material-symbols-outlined text-[#4A7B9E] text-lg">history</span>
+                  <span class="material-symbols-outlined text-[#4A7B9E] text-lg">person</span>
                 </div>
               </div>
             </div>
@@ -1056,88 +1056,88 @@
   </section>
 
   <!-- FAQ Section -->
-  <section id="faq" class="bg-[#F8FAFF] py-24 relative overflow-hidden" x-data="{ activeFaq: null }">
+  <section id="faq" class="bg-[#E8F4FC] py-24 relative overflow-hidden" x-data="{ activeFaq: null }">
     <div class="max-w-4xl mx-auto px-6 md:px-12">
       <div class="text-center mb-16">
-        <h2 class="text-3xl md:text-5xl font-black text-[#25224A] tracking-tight">Everything you <span
+        <h2 class="text-3xl md:text-5xl font-black text-[#0A1628] tracking-tight">Everything you <span
             class="text-[#00AFF0]">Need to Know</span></h2>
       </div>
 
       <div class="space-y-4">
         <!-- FAQ Item 1 -->
-        <div class="bg-white rounded-3xl border border-[#DEE8FF] overflow-hidden transition-all shadow-sm">
+        <div class="bg-white rounded-3xl border border-[#B8D8EC] overflow-hidden transition-all shadow-sm">
           <button @click="activeFaq === 1 ? activeFaq = null : activeFaq = 1"
             class="w-full px-8 py-6 text-left flex items-center justify-between group">
-            <span class="text-lg md:text-xl font-bold text-[#25224A]">What is dialer.best?</span>
+            <span class="text-lg md:text-xl font-bold text-[#0A1628]">What is dialer.best?</span>
             <span class="material-symbols-outlined text-[#00AFF0] transition-transform duration-300"
               :class="activeFaq === 1 ? 'rotate-45' : ''">add</span>
           </button>
-          <div x-show="activeFaq === 1" x-collapse class="px-8 pb-6 text-[#7F798D] leading-relaxed">
+          <div x-show="activeFaq === 1" x-collapse class="px-8 pb-6 text-[#4A7B9E] leading-relaxed">
             dialer.best is an AI todo assistant that calls you on the phone. It helps you schedule daily tasks, tracks your progress, follows up until everything is done, and generates a daily report — all through natural voice conversations.
           </div>
         </div>
 
         <!-- FAQ Item 2 -->
-        <div class="bg-white rounded-3xl border border-[#DEE8FF] overflow-hidden transition-all shadow-sm">
+        <div class="bg-white rounded-3xl border border-[#B8D8EC] overflow-hidden transition-all shadow-sm">
           <button @click="activeFaq === 2 ? activeFaq = null : activeFaq = 2"
             class="w-full px-8 py-6 text-left flex items-center justify-between group">
-            <span class="text-lg md:text-xl font-bold text-[#25224A]">How does it work?</span>
+            <span class="text-lg md:text-xl font-bold text-[#0A1628]">How does it work?</span>
             <span class="material-symbols-outlined text-[#00AFF0] transition-transform duration-300"
               :class="activeFaq === 2 ? 'rotate-45' : ''">add</span>
           </button>
-          <div x-show="activeFaq === 2" x-collapse class="px-8 pb-6 text-[#7F798D] leading-relaxed">
+          <div x-show="activeFaq === 2" x-collapse class="px-8 pb-6 text-[#4A7B9E] leading-relaxed">
             The AI calls you in the morning to plan your day. You talk through your tasks naturally. It schedules them, then calls you back throughout the day to check progress. At the end of the day, you get a full report with call transcripts.
           </div>
         </div>
 
         <!-- FAQ Item 3 -->
-        <div class="bg-white rounded-3xl border border-[#DEE8FF] overflow-hidden transition-all shadow-sm">
+        <div class="bg-white rounded-3xl border border-[#B8D8EC] overflow-hidden transition-all shadow-sm">
           <button @click="activeFaq === 3 ? activeFaq = null : activeFaq = 3"
             class="w-full px-8 py-6 text-left flex items-center justify-between group">
-            <span class="text-lg md:text-xl font-bold text-[#25224A]">Is this available internationally?</span>
+            <span class="text-lg md:text-xl font-bold text-[#0A1628]">Is this available internationally?</span>
             <span class="material-symbols-outlined text-[#00AFF0] transition-transform duration-300"
               :class="activeFaq === 3 ? 'rotate-45' : ''">add</span>
           </button>
-          <div x-show="activeFaq === 3" x-collapse class="px-8 pb-6 text-[#7F798D] leading-relaxed">
+          <div x-show="activeFaq === 3" x-collapse class="px-8 pb-6 text-[#4A7B9E] leading-relaxed">
             Currently, dialer.best is available for <strong>US-based phone numbers only</strong>. We are working on expanding to more regions. Join the waitlist to get notified when your region is supported.
           </div>
         </div>
 
         <!-- FAQ Item 4 -->
-        <div class="bg-white rounded-3xl border border-[#DEE8FF] overflow-hidden transition-all shadow-sm">
+        <div class="bg-white rounded-3xl border border-[#B8D8EC] overflow-hidden transition-all shadow-sm">
           <button @click="activeFaq === 4 ? activeFaq = null : activeFaq = 4"
             class="w-full px-8 py-6 text-left flex items-center justify-between group">
-            <span class="text-lg md:text-xl font-bold text-[#25224A]">Can I review past calls and transcripts?</span>
+            <span class="text-lg md:text-xl font-bold text-[#0A1628]">Can I review past calls and transcripts?</span>
             <span class="material-symbols-outlined text-[#00AFF0] transition-transform duration-300"
               :class="activeFaq === 4 ? 'rotate-45' : ''">add</span>
           </button>
-          <div x-show="activeFaq === 4" x-collapse class="px-8 pb-6 text-[#7F798D] leading-relaxed">
+          <div x-show="activeFaq === 4" x-collapse class="px-8 pb-6 text-[#4A7B9E] leading-relaxed">
             Yes! Every call is recorded with a full AI-generated transcript. You can browse your call history, read transcripts, and review task progress at any time from your dashboard.
           </div>
         </div>
 
         <!-- FAQ Item 5 -->
-        <div class="bg-white rounded-3xl border border-[#DEE8FF] overflow-hidden transition-all shadow-sm">
+        <div class="bg-white rounded-3xl border border-[#B8D8EC] overflow-hidden transition-all shadow-sm">
           <button @click="activeFaq === 5 ? activeFaq = null : activeFaq = 5"
             class="w-full px-8 py-6 text-left flex items-center justify-between group">
-            <span class="text-lg md:text-xl font-bold text-[#25224A]">What if I miss a call?</span>
+            <span class="text-lg md:text-xl font-bold text-[#0A1628]">What if I miss a call?</span>
             <span class="material-symbols-outlined text-[#00AFF0] transition-transform duration-300"
               :class="activeFaq === 5 ? 'rotate-45' : ''">add</span>
           </button>
-          <div x-show="activeFaq === 5" x-collapse class="px-8 pb-6 text-[#7F798D] leading-relaxed">
+          <div x-show="activeFaq === 5" x-collapse class="px-8 pb-6 text-[#4A7B9E] leading-relaxed">
             No problem. The AI will call you back. You can also check your missed calls and transcripts in your dashboard, or simply wait for the follow-up call.
           </div>
         </div>
 
         <!-- FAQ Item 6 -->
-        <div class="bg-white rounded-3xl border border-[#DEE8FF] overflow-hidden transition-all shadow-sm">
+        <div class="bg-white rounded-3xl border border-[#B8D8EC] overflow-hidden transition-all shadow-sm">
           <button @click="activeFaq === 6 ? activeFaq = null : activeFaq = 6"
             class="w-full px-8 py-6 text-left flex items-center justify-between group">
-            <span class="text-lg md:text-xl font-bold text-[#25224A]">How much does it cost?</span>
+            <span class="text-lg md:text-xl font-bold text-[#0A1628]">How much does it cost?</span>
             <span class="material-symbols-outlined text-[#00AFF0] transition-transform duration-300"
               :class="activeFaq === 6 ? 'rotate-45' : ''">add</span>
           </button>
-          <div x-show="activeFaq === 6" x-collapse class="px-8 pb-6 text-[#7F798D] leading-relaxed">
+          <div x-show="activeFaq === 6" x-collapse class="px-8 pb-6 text-[#4A7B9E] leading-relaxed">
             We're currently in private beta with a free tier. Premium plans will include unlimited calls, advanced scheduling, priority follow-ups, and detailed analytics. Join the waitlist for early access pricing.
           </div>
         </div>
@@ -1146,7 +1146,7 @@
   </section>
 
   <!-- Footer -->
-  <footer class="bg-white border-t border-[#DEE8FF] py-16">
+  <footer class="bg-white border-t border-[#B8D8EC] py-16">
     <div class="max-w-[1600px] mx-auto px-6 md:px-12">
       <div class="grid grid-cols-2 md:grid-cols-5 gap-8 mb-16">
         <!-- Left Column (Logo & address) -->
@@ -1154,10 +1154,10 @@
           <a href="/" class="block">
             <img src="{{ asset('assets/logo-dark.png') }}" alt="dialer.best" class="h-40 w-auto">
           </a>
-          <p class="text-sm text-[#7F798D] max-w-xs leading-relaxed">
+          <p class="text-sm text-[#4A7B9E] max-w-xs leading-relaxed">
             The AI todo assistant that calls you — schedules tasks, follows up, and keeps you accountable. Kill procrastination with human-like voice interactions.
           </p>
-          <div class="flex gap-4 text-[#7F798D]">
+          <div class="flex gap-4 text-[#4A7B9E]">
             <a href="#" class="hover:text-[#00AFF0]"><span
                 class="material-symbols-outlined text-[20px]">language</span></a>
             <a href="#" class="hover:text-[#00AFF0]"><span class="material-symbols-outlined text-[20px]">mail</span></a>
@@ -1166,8 +1166,8 @@
 
         <!-- Links Cols -->
         <div>
-          <h4 class="font-bold text-[#25224A] mb-4 text-sm">Product</h4>
-          <ul class="space-y-3 text-sm text-[#7F798D]">
+          <h4 class="font-bold text-[#0A1628] mb-4 text-sm">Product</h4>
+          <ul class="space-y-3 text-sm text-[#4A7B9E]">
             <li><a href="#how-it-works" class="hover:text-[#00AFF0]">How It Works</a></li>
             <li><a href="#voice" class="hover:text-[#00AFF0]">Call System</a></li>
             <li><a href="#features" class="hover:text-[#00AFF0]">Features</a></li>
@@ -1175,23 +1175,23 @@
           </ul>
         </div>
         <div>
-          <h4 class="font-bold text-[#25224A] mb-4 text-sm">Company</h4>
-          <ul class="space-y-3 text-sm text-[#7F798D]">
+          <h4 class="font-bold text-[#0A1628] mb-4 text-sm">Company</h4>
+          <ul class="space-y-3 text-sm text-[#4A7B9E]">
             <li><a href="#" class="hover:text-[#00AFF0]">About</a></li>
             <li><a href="#" class="hover:text-[#00AFF0]">Careers</a></li>
             <li><a href="#faq" class="hover:text-[#00AFF0]">FAQ</a></li>
           </ul>
         </div>
         <div>
-          <h4 class="font-bold text-[#25224A] mb-4 text-sm">Legal</h4>
-          <ul class="space-y-3 text-sm text-[#7F798D]">
+          <h4 class="font-bold text-[#0A1628] mb-4 text-sm">Legal</h4>
+          <ul class="space-y-3 text-sm text-[#4A7B9E]">
             <li><a href="#" class="hover:text-[#00AFF0]">Privacy Policy</a></li>
             <li><a href="#" class="hover:text-[#00AFF0]">Terms of Service</a></li>
           </ul>
         </div>
       </div>
       <div
-        class="border-t border-[#DEE8FF] pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-[#7F798D]">
+        class="border-t border-[#B8D8EC] pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-[#4A7B9E]">
         <p>© {{ date('Y') }} dialer.best. All rights reserved.</p>
         <p>Engineered for Excellence.</p>
       </div>
@@ -1205,10 +1205,10 @@
     x-transition:enter-end="opacity-100 scale-100" x-transition:leave="transition ease-in duration-200"
     x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
     @keydown.escape.window="waitlistModalOpen = false">
-    <div class="bg-white rounded-[2.5rem] p-8 md:p-12 max-w-lg w-full shadow-2xl relative border border-[#DEE8FF]"
+    <div class="bg-white rounded-[2.5rem] p-8 md:p-12 max-w-lg w-full shadow-2xl relative border border-[#B8D8EC]"
       @click.away="waitlistModalOpen = false">
       <button @click="waitlistModalOpen = false"
-        class="absolute top-6 right-6 text-[#7F798D] hover:text-[#5F5770] transition">
+        class="absolute top-6 right-6 text-[#4A7B9E] hover:text-[#2C5F8A] transition">
         <span class="material-symbols-outlined text-3xl">close</span>
       </button>
 
@@ -1217,8 +1217,8 @@
           <div class="w-16 h-16 bg-[#00AFF0]/10 rounded-2xl flex items-center justify-center text-[#00AFF0] mb-6">
             <span class="material-symbols-outlined text-3xl">mail</span>
           </div>
-          <h3 class="text-3xl font-black text-[#25224A] mb-3">Join the Waitlist</h3>
-          <p class="text-[#7F798D]">We are currently in private beta for US phone numbers. Leave your email to get early access.</p>
+          <h3 class="text-3xl font-black text-[#0A1628] mb-3">Join the Waitlist</h3>
+          <p class="text-[#4A7B9E]">We are currently in private beta for US phone numbers. Leave your email to get early access.</p>
         </div>
 
         <form @submit.prevent="
@@ -1239,9 +1239,9 @@
                 })
             " class="space-y-4">
           <input type="email" x-model="email" required placeholder="Enter your business email"
-            class="w-full px-6 py-4 bg-[#F8FAFF] border border-[#DEE8FF] rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#00AFF0]/20 focus:border-[#00AFF0] transition font-medium">
+            class="w-full px-6 py-4 bg-[#E8F4FC] border border-[#B8D8EC] rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#00AFF0]/20 focus:border-[#00AFF0] transition font-medium">
           <button type="submit"
-            class="w-full py-4 bg-[#00AFF0] text-white font-bold rounded-2xl shadow-lg shadow-[#00AFF0]/20 hover:bg-[#0000EE] transition-all active:scale-95 flex items-center justify-center gap-2">
+            class="w-full py-4 bg-[#00AFF0] text-white font-bold rounded-2xl shadow-lg shadow-[#00AFF0]/20 hover:bg-[#00AFF0] transition-all active:scale-95 flex items-center justify-center gap-2">
             Reserve my spot
             <span class="material-symbols-outlined">send</span>
           </button>
@@ -1253,8 +1253,8 @@
           class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center text-green-600 mx-auto mb-8 animate-bounce">
           <span class="material-symbols-outlined text-4xl">check_circle</span>
         </div>
-        <h3 class="text-3xl font-black text-[#25224A] mb-4">You're on the list!</h3>
-        <p class="text-lg text-[#5F5770] leading-relaxed font-medium">You have been added to waitlist, we will update
+        <h3 class="text-3xl font-black text-[#0A1628] mb-4">You're on the list!</h3>
+        <p class="text-lg text-[#2C5F8A] leading-relaxed font-medium">You have been added to waitlist, we will update
           you through email</p>
         <button @click="waitlistModalOpen = false; waitlistSubmitted = false; email = ''"
           class="mt-12 text-[#00AFF0] font-bold hover:underline">Close</button>
