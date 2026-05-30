@@ -45,6 +45,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/calls', [CallController::class, 'index']);
     Route::get('/calls/{call}', [CallController::class, 'show']);
     Route::post('/calls/request', [CallController::class, 'requestCall']);
+    Route::post('/calls/{call}/cancel', [CallController::class, 'cancelCall']);
     Route::post('/calls/fcm', [CallController::class, 'registerFcm']);
 
     // Reports

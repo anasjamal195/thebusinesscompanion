@@ -118,6 +118,25 @@ class CallController extends Controller
         }
     }
 
+    public function cancelCall(Request $request, Call $call, VapiService $vapi)
+    {
+        $user = $request->user();
+        abort_unless($call->user_id === $user->id, 404);
+
+        if ($call->call_id) {
+            try {
+                \Illuminate\Support\Facades\Http::withToken(config('services.vapi.private_key'))
+                    ->post("https://api.vapi.ai/call/{$call->call_id}/end", []);
+            } catch (\Exception $e) {
+                Log::warning("CancelCall: Failed to end Vapi call {$call->call_id}: {$e->getMessage()}");
+            }
+        }
+
+        $call->update(['status' => 'cancelled']);
+
+        return response()->json(['message' => 'Call cancelled.']);
+    }
+
     public function registerFcm(Request $request)
     {
         $request->validate([

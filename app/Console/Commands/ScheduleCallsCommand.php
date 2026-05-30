@@ -5,30 +5,24 @@ namespace App\Console\Commands;
 use App\Models\MonetizationSetting;
 use App\Models\Task;
 use App\Models\User;
+use App\Services\FcmNotificationService;
 use App\Services\VapiService;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 
 class ScheduleCallsCommand extends Command
 {
-    /**
-     * The name and signature of the console command.
-     */
     protected $signature = 'calls:schedule';
 
-    /**
-     * The console command description.
-     */
     protected $description = 'Trigger morning and follow-up calls for users based on their schedule';
 
-    public function __construct(protected VapiService $vapi)
-    {
+    public function __construct(
+        protected VapiService $vapi,
+        protected FcmNotificationService $fcm
+    ) {
         parent::__construct();
     }
 
-    /**
-     * Execute the console command.
-     */
     public function handle()
     {
         $users = User::whereNotNull('morning_call_time')->get();
@@ -50,14 +44,13 @@ class ScheduleCallsCommand extends Command
 
         $this->line("[User {$user->id}] timezone={$user->timezone} now={$now->format('Y-m-d H:i:s')} today={$todayStr} morning_time={$morningTime->format('H:i')} last_morning_date={$user->last_morning_call_date} last_call={$user->last_call_time}");
 
-        // Check user has sufficient credits for at least 1 minute
         $rate = (float) MonetizationSetting::getInstance()->per_minute_rate;
         if (!$user->hasSufficientCredits($rate)) {
             $this->warn("[User {$user->id}] insufficient credits ({$user->credits}) — skipping all calls");
             return;
         }
 
-        // ── 1. MORNING CALL (only when no morning call yet, time is right, and no tasks exist) ──
+        // ── 1. MORNING CALL ──
         $needsMorningCall = $user->last_morning_call_date !== $todayStr;
 
         $this->line("[User {$user->id}] needsMorningCall=".($needsMorningCall?'true':'false')." now>=morningTime=".($now->greaterThanOrEqualTo($morningTime)?'true':'false'));
@@ -69,25 +62,30 @@ class ScheduleCallsCommand extends Command
 
             if ($todayTasks->isEmpty()) {
                 $this->info("Triggering morning call for User {$user->id} ({$user->name})");
-                $result = $this->vapi->createCall($user, 'morning', $todayTasks);
 
-                if ($result) {
-                    $user->update([
-                        'last_morning_call_date' => $todayStr,
-                        'last_call_time'         => now('UTC')->toDateTimeString(),
-                    ]);
-                    $this->line("[User {$user->id}] morning call initiated, set last_morning_call_date={$todayStr}");
+                if ($user->calling_preference === 'app') {
+                    $this->sendAppCallPush($user, 'morning');
                 } else {
-                    $this->error("[User {$user->id}] morning call FAILED");
+                    $result = $this->vapi->createCall($user, 'morning', $todayTasks);
+                    if (!$result) {
+                        $this->error("[User {$user->id}] morning call FAILED");
+                        return;
+                    }
                 }
 
-                return; // Wait for morning call to complete
+                $user->update([
+                    'last_morning_call_date' => $todayStr,
+                    'last_call_time'         => now('UTC')->toDateTimeString(),
+                ]);
+                $this->line("[User {$user->id}] morning call initiated, set last_morning_call_date={$todayStr}");
+
+                return;
             }
 
             $this->line("[User {$user->id}] tasks exist — skipping morning call, falling through to follow-up");
         }
 
-        // ── 2. FOLLOW-UP CALLS ────────────────────────────────────────────
+        // ── 2. FOLLOW-UP CALLS ──
         $pendingTasks = $this->getTodayPendingTasks($user);
 
         $this->line("[User {$user->id}] follow-up: pending_tasks=".$pendingTasks->count()." default_delay=".($user->default_delay_minutes ?? 'null'));
@@ -97,7 +95,6 @@ class ScheduleCallsCommand extends Command
             return;
         }
 
-        // Always check AI-estimated mode first: any task's scheduled_followup_time elapsed?
         $dueTasks = $pendingTasks->filter(function (Task $t) use ($user) {
                 $isDue = $t->scheduled_followup_time
                     && Carbon::parse($t->scheduled_followup_time, 'UTC')->lessThanOrEqualTo(now('UTC'));
@@ -109,7 +106,6 @@ class ScheduleCallsCommand extends Command
 
         $shouldCall = $dueTasks->isNotEmpty();
 
-        // If default_delay_minutes is set, enforce it as a minimum gap since last call
         if ($shouldCall && $user->default_delay_minutes) {
             $lastCall   = $user->last_call_time ? Carbon::parse($user->last_call_time, 'UTC') : now('UTC')->startOfDay();
             $nextCallAt = $lastCall->copy()->addMinutes($user->default_delay_minutes);
@@ -123,18 +119,35 @@ class ScheduleCallsCommand extends Command
         }
 
         if ($shouldCall) {
-            // Push due tasks' follow-up times ahead to avoid re-triggering before next call
             foreach ($dueTasks as $task) {
                 $task->update(['scheduled_followup_time' => now()->addMinutes(60)]);
                 $this->line("[User {$user->id}]   pushed task #{$task->id} followup to +60min");
             }
 
             $this->info("Triggering follow-up call for User {$user->id} ({$user->name})");
-            $this->vapi->createCall($user, 'followup', $pendingTasks);
+
+            if ($user->calling_preference === 'app') {
+                $this->sendAppCallPush($user, 'followup');
+            } else {
+                $this->vapi->createCall($user, 'followup', $pendingTasks);
+            }
+
             $user->update(['last_call_time' => now('UTC')->toDateTimeString()]);
         } else {
             $this->line("[User {$user->id}] shouldCall=false — not triggering follow-up");
         }
+    }
+
+    protected function sendAppCallPush(User $user, string $callType): void
+    {
+        $callTypeLabel = $callType === 'morning' ? 'morning check-in' : 'follow-up';
+        $this->fcm->sendIncomingCall(
+            $user->id,
+            (string) time(),
+            'dialer.best',
+            $callTypeLabel
+        );
+        $this->info("[User {$user->id}] FCM push sent for {$callType} call");
     }
 
     protected function getTodayPendingTasks(User $user)
