@@ -79,7 +79,7 @@ class FcmNotificationService
             ],
             'android' => [
                 'priority' => 'high',
-                'ttl' => '30000ms',
+                'ttl' => '30s',
             ],
             'apns' => [
                 'headers' => [
