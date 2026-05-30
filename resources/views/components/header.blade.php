@@ -23,7 +23,14 @@
             </div>
         </div>
 
-        <div class="flex flex-1 items-center justify-end gap-4">
+        <div class="flex flex-1 items-center justify-end gap-2">
+            @auth
+                <a href="{{ route('profile.index') }}" class="hidden md:inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-primary/5 text-primary font-bold text-xs border border-primary/10 hover:bg-primary/10 transition-all">
+                    <span class="material-symbols-outlined text-[16px]">account_balance_wallet</span>
+                    {{ number_format(auth()->user()->credits, 2) }}
+                </a>
+            @endauth
+
             <button class="relative inline-flex h-10 w-10 items-center justify-center rounded-xl border border-gray-200 bg-white text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all active:scale-95" type="button" aria-label="Notifications">
                 <span class="material-symbols-outlined text-[22px]">notifications</span>
                 <span class="absolute top-2 right-2 h-2 w-2 rounded-full bg-red-500 ring-2 ring-white"></span>

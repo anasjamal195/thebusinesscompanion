@@ -46,32 +46,10 @@
                     </div>
                 </div>
 
-                @if($profile)
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-gray-100">
-                    @if($profile->business_name)
-                    <div>
-                        <p class="text-xs font-black text-gray-400 uppercase tracking-widest">Business</p>
-                        <p class="font-bold text-gray-900 mt-1">{{ $profile->business_name }}</p>
-                    </div>
-                    @endif
-                    @if($profile->industry)
-                    <div>
-                        <p class="text-xs font-black text-gray-400 uppercase tracking-widest">Industry</p>
-                        <p class="font-bold text-gray-900 mt-1">{{ $profile->industry }}</p>
-                    </div>
-                    @endif
-                    @if($profile->phone_number)
-                    <div>
-                        <p class="text-xs font-black text-gray-400 uppercase tracking-widest">Phone</p>
-                        <p class="font-bold text-gray-900 mt-1">{{ $profile->phone_number }}</p>
-                    </div>
-                    @endif
-                    @if($profile->timezone ?? $user->timezone)
-                    <div>
-                        <p class="text-xs font-black text-gray-400 uppercase tracking-widest">Timezone</p>
-                        <p class="font-bold text-gray-900 mt-1">{{ $user->timezone }}</p>
-                    </div>
-                    @endif
+                @if($user->timezone)
+                <div class="pt-4 border-t border-gray-100">
+                    <p class="text-xs font-black text-gray-400 uppercase tracking-widest">Timezone</p>
+                    <p class="font-bold text-gray-900 mt-1">{{ $user->timezone }}</p>
                 </div>
                 @endif
 

@@ -23,15 +23,7 @@ class SettingsController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
-            'business_name' => 'required|string|max:255',
-            'business_url' => 'nullable|url|max:255',
-            'business_description' => 'required|string',
-            'industry' => 'required|string|max:255',
-            'experience_level' => 'required|in:beginner,intermediate,expert',
             'voice_id' => 'required|string',
-            'current_problems' => 'nullable|string',
-            'urgent_tasks' => 'nullable|string',
-            'web_links_enabled' => 'nullable|boolean',
         ]);
 
         $user->update([
@@ -39,20 +31,6 @@ class SettingsController extends Controller
             'email' => $validated['email'],
             'voice_id' => $validated['voice_id'],
         ]);
-
-        $user->profile()->updateOrCreate(
-            ['user_id' => $user->id],
-            [
-                'business_name' => $validated['business_name'],
-                'business_url' => $validated['business_url'],
-                'business_description' => $validated['business_description'],
-                'industry' => $validated['industry'],
-                'experience_level' => $validated['experience_level'],
-                'current_problems' => $validated['current_problems'],
-                'urgent_tasks' => $validated['urgent_tasks'],
-                'web_links_enabled' => $request->has('web_links_enabled'),
-            ]
-        );
 
         return back()->with('success', 'Settings updated successfully.');
     }
