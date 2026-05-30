@@ -60,17 +60,47 @@ class FcmNotificationService
 
     public function sendIncomingCall(int $userId, string $callId, string $callerName = 'dialer.best', string $callType = 'Planning'): bool
     {
-        return $this->send(
-            $userId,
-            'Incoming Call',
-            "$callerName is calling you for a $callType session.",
-            [
+        $user = \App\Models\User::find($userId);
+        if (!$user || !$user->fcm_token) {
+            return false;
+        }
+
+        // Data-only message — no notification block.
+        // Android requires data-only payloads for the background handler to fire
+        // when the app is killed. A notification block would show a tray notification
+        // instead of routing to the Dart background handler.
+        $message = [
+            'token' => $user->fcm_token,
+            'data' => [
                 'type' => 'incoming_call',
-                'call_id' => $callId,
+                'call_id' => (string) $callId,
                 'caller_name' => $callerName,
                 'call_type' => $callType,
-            ]
-        );
+            ],
+            'android' => [
+                'priority' => 'high',
+                'ttl' => '30000ms',
+            ],
+            'apns' => [
+                'headers' => [
+                    'apns-priority' => '10',
+                    'apns-push-type' => 'voip',
+                ],
+                'payload' => [
+                    'aps' => [
+                        'alert' => [
+                            'title' => 'Incoming Call',
+                            'body' => "$callerName is calling you for a $callType session.",
+                        ],
+                        'sound' => 'default',
+                        'badge' => 1,
+                        'category' => 'VOIP',
+                    ],
+                ],
+            ],
+        ];
+
+        return $this->sendMessage($message);
     }
 
     protected function sendMessage(array $message): bool
