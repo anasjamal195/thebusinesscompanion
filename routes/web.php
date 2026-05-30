@@ -99,6 +99,7 @@ Route::get('/api/voice-preview/{voiceId}', VoicePreviewController::class)->name(
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AdminUserController;
+use App\Http\Controllers\Admin\AdminCallController;
 use App\Http\Controllers\Admin\AdminPaymentController;
 use App\Http\Controllers\Admin\AdminMonetizationController;
 use App\Http\Controllers\Admin\AdminWaitlistController;
@@ -107,6 +108,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/',                         [AdminController::class, 'index'])->name('dashboard');
     Route::get('/users',                    [AdminUserController::class, 'index'])->name('users.index');
     Route::get('/users/{user}',             [AdminUserController::class, 'show'])->name('users.show');
+    Route::get('/calls',                    [AdminCallController::class, 'index'])->name('calls.index');
+    Route::get('/calls/{call}',             [AdminCallController::class, 'show'])->name('calls.show');
     Route::get('/payments',                 [AdminPaymentController::class, 'index'])->name('payments.index');
     Route::get('/monetization',             [AdminMonetizationController::class, 'index'])->name('monetization.index');
     Route::post('/monetization',            [AdminMonetizationController::class, 'update'])->name('monetization.update');

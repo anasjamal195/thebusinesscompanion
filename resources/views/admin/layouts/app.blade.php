@@ -76,6 +76,7 @@
                         $navItems = [
                             ['key' => 'dashboard', 'label' => 'Dashboard', 'icon' => 'grid_view', 'route' => 'admin.dashboard'],
                             ['key' => 'users', 'label' => 'User Management', 'icon' => 'group', 'route' => 'admin.users.index'],
+                            ['key' => 'calls', 'label' => 'Calls', 'icon' => 'history', 'route' => 'admin.calls.index'],
                             ['key' => 'payments', 'label' => 'Payments', 'icon' => 'payments', 'route' => 'admin.payments.index'],
                             ['key' => 'monetization', 'label' => 'Monetization Settings', 'icon' => 'tune', 'route' => 'admin.monetization.index'],
                             ['key' => 'waitlist', 'label' => 'Waitlist', 'icon' => 'list_alt', 'route' => 'admin.waitlist.index'],
