@@ -60,6 +60,42 @@ class TaskController extends Controller
         return response()->json(['task' => $task]);
     }
 
+    public function show(Request $request, Task $task)
+    {
+        abort_unless($task->user_id === $request->user()->id, 404);
+
+        $task->load('output', 'logs');
+
+        return response()->json(['task' => $task]);
+    }
+
+    public function history(Request $request)
+    {
+        $tasks = Task::where('user_id', $request->user()->id)
+            ->orderBy('date', 'desc')
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->groupBy('date')
+            ->map(function ($dateTasks, $date) {
+                $total = $dateTasks->count();
+                $completed = $dateTasks->where('status', 'completed')->count();
+                $pending = $dateTasks->where('status', 'pending')->count();
+                $discarded = $dateTasks->where('status', 'discarded')->count();
+
+                return [
+                    'date' => $date,
+                    'total' => $total,
+                    'completed' => $completed,
+                    'pending' => $pending,
+                    'discarded' => $discarded,
+                    'tasks' => $dateTasks->values()->toArray(),
+                ];
+            })
+            ->values();
+
+        return response()->json(['history' => $tasks]);
+    }
+
     public function complete(Request $request, Task $task, DailyReportService $dailyService)
     {
         abort_unless($task->user_id === $request->user()->id, 404);

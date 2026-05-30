@@ -141,13 +141,16 @@ class ScheduleCallsCommand extends Command
     protected function sendAppCallPush(User $user, string $callType): void
     {
         $callTypeLabel = $callType === 'morning' ? 'morning check-in' : 'follow-up';
+        $voiceId = $user->voice_id ?? \App\Services\VapiService::DEFAULT_VOICE_ID;
+        $voiceName = \App\Services\VapiService::VOICES[$voiceId]['name'] ?? 'Jessica';
+
         $this->fcm->sendIncomingCall(
             $user->id,
             (string) time(),
-            'dialer.best',
+            $voiceName,
             $callTypeLabel
         );
-        $this->info("[User {$user->id}] FCM push sent for {$callType} call");
+        $this->info("[User {$user->id}] FCM push sent for {$callType} call (voice: {$voiceName})");
     }
 
     protected function getTodayPendingTasks(User $user)

@@ -36,8 +36,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/onboarding/schedule', [OnboardingController::class, 'saveSchedule']);
 
     // Tasks
+    Route::get('/tasks/history', [TaskController::class, 'history']);
     Route::get('/tasks', [TaskController::class, 'index']);
     Route::post('/tasks', [TaskController::class, 'store']);
+    Route::get('/tasks/{task}', [TaskController::class, 'show']);
     Route::put('/tasks/{task}', [TaskController::class, 'update']);
     Route::post('/tasks/{task}/complete', [TaskController::class, 'complete']);
 
