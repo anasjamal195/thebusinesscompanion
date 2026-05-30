@@ -103,7 +103,7 @@
         @endauth
         <a href="{{ Auth::check() ? route('dashboard') : route('register') }}"
           class="px-6 py-2.5 bg-[#3E50F7] hover:bg-[#3E50F7]/90 text-white font-bold rounded-full transition-all text-sm shadow-lg shadow-[#3E50F7]/20">
-          Get started
+          {{ Auth::check() ? 'Dashboard' : 'Get started' }}
         </a>
       </div>
     </div>

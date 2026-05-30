@@ -106,12 +106,19 @@
                     <div class="flex items-center gap-1">
                         <button type="button" @@click.stop="togglePreview('{{ $voice['id'] }}', '{{ $voice['name'] }}')"
                                 class="voice-play-btn w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200 shrink-0"
-                                :class="playing === '{{ $voice['id'] }}' ? 'bg-primary text-white shadow-sm' : 'bg-slate-100 text-slate-400 hover:bg-slate-200 hover:text-slate-600'"
+                                :class="{
+                                    'bg-primary text-white shadow-sm': playing === '{{ $voice['id'] }}',
+                                    'bg-slate-100 text-slate-400': previewLoading['{{ $voice['id'] }}'],
+                                    'bg-slate-100 text-slate-400 hover:bg-slate-200 hover:text-slate-600': playing !== '{{ $voice['id'] }}' && !previewLoading['{{ $voice['id'] }}'],
+                                }"
                                 :title="playing === '{{ $voice['id'] }}' ? 'Stop' : 'Play sample'">
-                            <template x-if="playing !== '{{ $voice['id'] }}'">
+                            <template x-if="previewLoading['{{ $voice['id'] }}']">
+                                <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
+                            </template>
+                            <template x-if="!previewLoading['{{ $voice['id'] }}'] && playing !== '{{ $voice['id'] }}'">
                                 <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                             </template>
-                            <template x-if="playing === '{{ $voice['id'] }}'">
+                            <template x-if="!previewLoading['{{ $voice['id'] }}'] && playing === '{{ $voice['id'] }}'">
                                 <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
                             </template>
                         </button>
@@ -181,6 +188,8 @@ function onboardingForm() {
     return {
         selectedVoice: '{{ old('voice_id', 'cgSgspJ2msm6clMCkdW9') }}',
         playing: null,
+        previewLoading: {},
+        audioEl: null,
         synth: window.speechSynthesis,
         utterance: null,
         phoneFull: '',
@@ -188,34 +197,80 @@ function onboardingForm() {
         showNonUsModal: false,
         nonUsAttempt: '',
 
+        voiceConfig: {
+            'cgSgspJ2msm6clMCkdW9': { gender: 'female', pitch: 1.2, rate: 0.9 },
+            'TX3LPaxmHKxFdv7VOQHJ': { gender: 'male', pitch: 0.8, rate: 1.0 },
+            'EXAVITQu4vr4xnSDxMaL': { gender: 'female', pitch: 1.1, rate: 0.95 },
+            'bIHbv24MWmeRgasZH58o': { gender: 'male', pitch: 0.9, rate: 1.15 },
+            'XB0fDUnXU5powFXDhCwa': { gender: 'female', pitch: 1.15, rate: 0.85 },
+            'nPczCjzI2devNBz1zQrb': { gender: 'male', pitch: 0.7, rate: 0.92 },
+        },
+
         selectVoice(voiceId) {
             this.selectedVoice = voiceId;
             document.getElementById('voice_id').value = voiceId;
         },
 
-        togglePreview(voiceId, voiceName) {
+        async togglePreview(voiceId, voiceName) {
             if (this.playing === voiceId) {
                 this.stopPreview();
                 return;
             }
             this.stopPreview();
+
+            this.previewLoading = { ...this.previewLoading, [voiceId]: true };
             this.playing = voiceId;
+
+            const sampleText = `Hi, I'm ${voiceName}. Let me help you run your business today.`;
+
+            try {
+                const response = await fetch(`/api/voice-preview/${encodeURIComponent(voiceId)}?text=${encodeURIComponent(sampleText)}`);
+                if (!response.ok) throw new Error('Server preview failed');
+
+                const blob = await response.blob();
+                const url = URL.createObjectURL(blob);
+
+                this.audioEl = new Audio(url);
+                this.audioEl.onended = () => {
+                    URL.revokeObjectURL(url);
+                    this.playing = null;
+                    this.audioEl = null;
+                };
+                this.audioEl.onerror = () => {
+                    URL.revokeObjectURL(url);
+                    this.fallbackPreview(voiceId, voiceName);
+                };
+                this.audioEl.play().catch(() => this.fallbackPreview(voiceId, voiceName));
+            } catch {
+                this.fallbackPreview(voiceId, voiceName);
+            } finally {
+                this.previewLoading = { ...this.previewLoading, [voiceId]: false };
+            }
+        },
+
+        fallbackPreview(voiceId, voiceName) {
+            if (this.playing !== voiceId) return;
             this.synth.cancel();
 
             const sampleText = `Hi, I'm ${voiceName}. Let me help you run your business today.`;
             this.utterance = new SpeechSynthesisUtterance(sampleText);
+            const cfg = this.voiceConfig[voiceId] || { gender: 'female', pitch: 1, rate: 1 };
 
             const voices = this.synth.getVoices();
-            const preferred = voices.find(v =>
-                voiceName === 'Jessica' || voiceName === 'Sarah' || voiceName === 'Charlotte'
-                    ? v.name.toLowerCase().includes('female')
-                    : v.name.toLowerCase().includes('male')
-            );
+            const isMale = cfg.gender === 'male';
+            const name = voiceName.toLowerCase();
+
+            const preferred = voices.find(v => {
+                const vn = v.name.toLowerCase();
+                if (name === 'charlotte') return vn.includes('uk') || vn.includes('gb') || v.lang?.includes('GB');
+                if (isMale) return vn.includes('male') || /\b(david|mark|james|daniel|michael|john)\b/.test(vn);
+                return vn.includes('female') || /\b(zira|susan|hazel|heather)\b/.test(vn);
+            });
             if (preferred) this.utterance.voice = preferred;
 
-            this.utterance.rate = 1.0;
-            this.utterance.pitch = 1.0;
-            this.utterance.volume = 1.0;
+            this.utterance.pitch = cfg.pitch;
+            this.utterance.rate = cfg.rate;
+            this.utterance.volume = 1;
 
             this.utterance.onend = () => { this.playing = null; };
             this.utterance.onerror = () => { this.playing = null; };
@@ -224,6 +279,7 @@ function onboardingForm() {
         },
 
         stopPreview() {
+            if (this.audioEl) { this.audioEl.pause(); this.audioEl = null; }
             this.synth.cancel();
             this.playing = null;
             this.utterance = null;

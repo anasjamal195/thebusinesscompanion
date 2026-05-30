@@ -12,6 +12,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\CallController;
 use App\Http\Controllers\StripeCheckoutController;
+use App\Http\Controllers\VoicePreviewController;
 
 // ── Public ────────────────────────────────────────────────────────────────────
 
@@ -88,6 +89,29 @@ Route::middleware('auth')->group(function () {
 
     // Daily Reports
     Route::get('/daily-reports/{dailyReport}', [ReportController::class, 'showDaily'])->name('daily-reports.show');
+});
+
+// ── Voice Previews ────────────────────────────────────────────────────────────
+
+Route::get('/api/voice-preview/{voiceId}', VoicePreviewController::class)->name('voice.preview');
+
+// ── Admin ──────────────────────────────────────────────────────────────────────
+
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\AdminUserController;
+use App\Http\Controllers\Admin\AdminPaymentController;
+use App\Http\Controllers\Admin\AdminMonetizationController;
+use App\Http\Controllers\Admin\AdminWaitlistController;
+
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/',                         [AdminController::class, 'index'])->name('dashboard');
+    Route::get('/users',                    [AdminUserController::class, 'index'])->name('users.index');
+    Route::get('/users/{user}',             [AdminUserController::class, 'show'])->name('users.show');
+    Route::get('/payments',                 [AdminPaymentController::class, 'index'])->name('payments.index');
+    Route::get('/monetization',             [AdminMonetizationController::class, 'index'])->name('monetization.index');
+    Route::post('/monetization',            [AdminMonetizationController::class, 'update'])->name('monetization.update');
+    Route::get('/waitlist',                 [AdminWaitlistController::class, 'index'])->name('waitlist.index');
+    Route::delete('/waitlist/{entry}',      [AdminWaitlistController::class, 'destroy'])->name('waitlist.destroy');
 });
 
 // ── Webhooks (unauthenticated, verified by signature) ─────────────────────────
