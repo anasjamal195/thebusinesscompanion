@@ -7,6 +7,7 @@ use App\Models\Call;
 use App\Models\MonetizationSetting;
 use App\Services\VapiService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 class CallController extends Controller
@@ -77,12 +78,35 @@ class CallController extends Controller
         try {
             Log::info("VapiService: Initiating app {$callType} call for User {$user->id}");
 
+            $payload = [
+                'assistant' => $assistant,
+                'assistantOverrides' => [
+                    'metadata' => ['local_call_id' => (string) $call->id],
+                ],
+            ];
+
+            $response = Http::withToken(config('services.vapi.private_key'))
+                ->post('https://api.vapi.ai/call/web', $payload);
+
+            if (!$response->successful()) {
+                $call->update(['status' => 'failed']);
+                Log::error("VapiService: /call/web error {$response->status()}", ['body' => $response->body()]);
+                return response()->json(['message' => 'Failed to initiate call.'], 500);
+            }
+
+            $vapiData = $response->json();
+
+            $call->update([
+                'call_id' => $vapiData['id'] ?? null,
+                'status'  => 'waiting',
+            ]);
+
             return response()->json([
                 'message'         => 'Call initiated. Connecting via app...',
                 'call_id'         => $call->id,
                 'call'            => $call->fresh(),
-                'assistant'       => $assistant,
-                'vapi_public_key' => config('services.vapi.public_key'),
+                'web_call_url'    => $vapiData['webCallUrl'] ?? null,
+                'vapi_call_id'    => $vapiData['id'] ?? null,
             ]);
 
         } catch (\Exception $e) {
