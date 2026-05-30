@@ -8,21 +8,6 @@
             <h1 class="truncate text-xl font-extrabold text-gray-900 tracking-tight">{{ $title }}</h1>
         </div>
 
-        <div class="hidden flex-1 justify-center md:flex">
-            <div class="w-full max-w-md">
-                <div class="relative group">
-                    <input
-                        type="search"
-                        placeholder="Search projects, tasks..."
-                        class="w-full rounded-2xl border border-gray-200 bg-gray-50/50 px-5 py-2.5 text-sm text-gray-900 placeholder:text-gray-500 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-300"
-                    />
-                    <div class="absolute inset-y-0 right-4 flex items-center text-gray-400 group-focus-within:text-primary transition-colors">
-                        <span class="material-symbols-outlined text-[22px]">search</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <div class="flex flex-1 items-center justify-end gap-2">
             @auth
                 <a href="{{ route('profile.index') }}" class="hidden md:inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-primary/5 text-primary font-bold text-xs border border-primary/10 hover:bg-primary/10 transition-all">
