@@ -5,10 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Call;
 use App\Models\MonetizationSetting;
-use App\Services\FcmNotificationService;
 use App\Services\VapiService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 class CallController extends Controller
@@ -77,43 +75,15 @@ class CallController extends Controller
         ]);
 
         try {
-            $payload = [
-                'assistant' => $assistant,
-                'metadata'  => [
-                    'local_call_id' => (string) $call->id,
-                ],
-            ];
-
             Log::info("VapiService: Initiating app {$callType} call for User {$user->id}");
 
-            $response = Http::withToken(config('services.vapi.private_key'))
-                ->post('https://api.vapi.ai/call', $payload);
-
-            if ($response->successful()) {
-                $vapiCall = $response->json();
-
-                $call->update([
-                    'call_id' => $vapiCall['id'],
-                    'status'  => 'waiting',
-                ]);
-
-                $fcm = app(FcmNotificationService::class);
-                $fcm->sendIncomingCall($user->id, $vapiCall['id'], 'dialer.best', $callType);
-
-                $clientToken = $this->generateClientToken($vapiCall['id']);
-
-                return response()->json([
-                    'message'    => 'Call initiated. Connecting via app...',
-                    'call_id'    => $vapiCall['id'],
-                    'call'       => $call->fresh(),
-                    'assistant'  => $assistant,
-                    'token'      => $clientToken,
-                ]);
-            }
-
-            $call->update(['status' => 'failed']);
-            Log::error("VapiService: Vapi API error {$response->status()}", ['body' => $response->body()]);
-            return response()->json(['message' => 'Failed to initiate call.'], 500);
+            return response()->json([
+                'message'         => 'Call initiated. Connecting via app...',
+                'call_id'         => $call->id,
+                'call'            => $call->fresh(),
+                'assistant'       => $assistant,
+                'vapi_public_key' => config('services.vapi.public_key'),
+            ]);
 
         } catch (\Exception $e) {
             if (isset($call)) {
@@ -122,23 +92,6 @@ class CallController extends Controller
             Log::error("VapiService: Exception — " . $e->getMessage());
             return response()->json(['message' => 'Failed to initiate call.'], 500);
         }
-    }
-
-    protected function generateClientToken(string $callId): string
-    {
-        $key = config('services.vapi.private_key');
-        $parts = explode('.', $key);
-        if (count($parts) === 3) {
-            $header = base64_encode('{"alg":"HS256","typ":"JWT"}');
-            $payload = base64_encode(json_encode([
-                'callId' => $callId,
-                'iat'    => time(),
-                'exp'    => time() + 3600,
-            ]));
-            $signature = base64_encode(hash_hmac('sha256', "$header.$payload", $key, true));
-            return "$header.$payload.$signature";
-        }
-        return $callId;
     }
 
     public function registerFcm(Request $request)
