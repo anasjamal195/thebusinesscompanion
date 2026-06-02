@@ -39,6 +39,15 @@
             -webkit-backdrop-filter: blur(12px);
         }
     </style>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-J7LP5YXVEH"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-J7LP5YXVEH');
+    </script>
 </head>
 <body class="h-full font-sans antialiased text-slate-900 overflow-x-hidden">
     <div class="min-h-full flex flex-col">

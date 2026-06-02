@@ -71,6 +71,14 @@
       animation: text-slide 10s infinite cubic-bezier(0.4, 0, 0.2, 1);
     }
   </style>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-J7LP5YXVEH"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-J7LP5YXVEH');
+    </script>
 </head>
 
 <body class="antialiased text-[#0A1628]" x-data="{ waitlistModalOpen: false, waitlistSubmitted: false, email: '' }">
