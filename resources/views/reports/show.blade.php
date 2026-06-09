@@ -2,83 +2,92 @@
     /** @var \App\Models\Report $report */
     /** @var \App\Models\Task $task */
     /** @var \App\Models\Project $project */
+    $title = 'Report';
+    $pageTitle = 'Report';
+    $activeNav = 'reports';
 @endphp
 
 @extends('layouts.app')
 
 @section('content')
-    <div class="mx-auto max-w-3xl">
-        <div class="mb-4 flex items-center justify-end">
-            <x-button variant="outline" href="{{ route('dashboard') }}">Back to Dashboard</x-button>
-            <x-button class="ml-2" href="{{ route('reports.pdf', $report) }}">Download PDF</x-button>
+    <div class="max-w-3xl mx-auto space-y-6">
+        <div class="flex items-center justify-between">
+            <a href="{{ route('reports.index') }}" class="inline-flex items-center gap-1.5 text-sm font-medium text-gray-400 hover:text-gray-600 transition-colors">
+                <span class="material-symbols-outlined text-[16px]">arrow_back</span>
+                Back to Reports
+            </a>
+            <div class="flex items-center gap-2">
+                <a href="{{ route('reports.pdf', $report) }}" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-gray-200 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-all shadow-sm">
+                    <span class="material-symbols-outlined text-[16px]">download</span>
+                    PDF
+                </a>
+            </div>
         </div>
 
-        <div class="rounded-xl border border-gray-200 bg-white p-8 shadow-sm">
+        <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
             <div class="flex items-start justify-between gap-4">
                 <div>
-                    <h1 class="text-2xl font-semibold text-gray-900">Report</h1>
-                    <p class="mt-1 text-sm text-gray-500">Project: {{ $project->name }} · Task: {{ $task->title }}</p>
+                    <h1 class="text-lg font-bold text-gray-900">Task Report</h1>
+                    <p class="text-sm text-gray-500 mt-0.5">Project: {{ $project->name }} &middot; Task: {{ $task->title }}</p>
                 </div>
-                <x-badge status="active">Generated</x-badge>
+                <span class="inline-flex items-center rounded-md px-2 py-0.5 text-xs font-medium bg-blue-50 text-blue-700 ring-1 ring-blue-200">Generated</span>
             </div>
 
-            <div class="mt-8 space-y-8 text-sm leading-relaxed text-gray-900">
+            <div class="mt-6 space-y-6 text-sm leading-relaxed text-gray-900">
                 @if (is_array($report->structured_data) && !empty($report->structured_data))
                     @php
                         $sd = $report->structured_data;
-                        $list = fn ($v) => is_array($v) && !empty($v) ? implode("\n", array_map(fn ($x) => "- " . trim((string) $x), $v)) : "—";
+                        $list = fn ($v) => is_array($v) && !empty($v) ? implode('<br>', array_map(fn ($x) => "• " . e(trim((string) $x)), $v)) : "—";
                     @endphp
 
                     <section>
-                        <h2 class="text-base font-semibold">Executive Summary</h2>
-                        <p class="mt-2 whitespace-pre-wrap text-gray-700">{{ $sd['executive_summary'] ?? '—' }}</p>
+                        <h2 class="text-sm font-semibold text-gray-700 mb-2">Executive Summary</h2>
+                        <p class="text-gray-600 whitespace-pre-wrap">{{ $sd['executive_summary'] ?? '—' }}</p>
                     </section>
 
                     <section>
-                        <h2 class="text-base font-semibold">Problem Analysis</h2>
-                        <p class="mt-2 whitespace-pre-wrap text-gray-700">{{ $sd['problem_analysis'] ?? '—' }}</p>
+                        <h2 class="text-sm font-semibold text-gray-700 mb-2">Problem Analysis</h2>
+                        <p class="text-gray-600 whitespace-pre-wrap">{{ $sd['problem_analysis'] ?? '—' }}</p>
                     </section>
 
                     <section>
-                        <h2 class="text-base font-semibold">Proposed Solution</h2>
-                        <p class="mt-2 whitespace-pre-wrap text-gray-700">{{ $sd['proposed_solution'] ?? '—' }}</p>
+                        <h2 class="text-sm font-semibold text-gray-700 mb-2">Proposed Solution</h2>
+                        <p class="text-gray-600 whitespace-pre-wrap">{{ $sd['proposed_solution'] ?? '—' }}</p>
                     </section>
 
                     <section>
-                        <h2 class="text-base font-semibold">Step-by-Step Execution Plan</h2>
-                        <p class="mt-2 whitespace-pre-wrap text-gray-700">{{ $list($sd['execution_plan'] ?? []) }}</p>
+                        <h2 class="text-sm font-semibold text-gray-700 mb-2">Execution Plan</h2>
+                        <p class="text-gray-600 whitespace-pre-wrap">{!! $list($sd['execution_plan'] ?? []) !!}</p>
                     </section>
 
                     <section>
-                        <h2 class="text-base font-semibold">Tools / Resources</h2>
-                        <p class="mt-2 whitespace-pre-wrap text-gray-700">{{ $list($sd['tools_resources'] ?? []) }}</p>
+                        <h2 class="text-sm font-semibold text-gray-700 mb-2">Tools & Resources</h2>
+                        <p class="text-gray-600 whitespace-pre-wrap">{!! $list($sd['tools_resources'] ?? []) !!}</p>
                     </section>
 
                     <section>
-                        <h2 class="text-base font-semibold">Risks & Considerations</h2>
-                        <p class="mt-2 whitespace-pre-wrap text-gray-700">{{ $list($sd['risks_considerations'] ?? []) }}</p>
+                        <h2 class="text-sm font-semibold text-gray-700 mb-2">Risks & Considerations</h2>
+                        <p class="text-gray-600 whitespace-pre-wrap">{!! $list($sd['risks_considerations'] ?? []) !!}</p>
                     </section>
 
                     <section>
-                        <h2 class="text-base font-semibold">Next Actions</h2>
-                        <p class="mt-2 whitespace-pre-wrap text-gray-700">{{ $list($sd['next_actions'] ?? []) }}</p>
+                        <h2 class="text-sm font-semibold text-gray-700 mb-2">Next Actions</h2>
+                        <p class="text-gray-600 whitespace-pre-wrap">{!! $list($sd['next_actions'] ?? []) !!}</p>
                     </section>
                 @else
                     <section>
-                        <h2 class="text-base font-semibold">Executive Summary</h2>
-                        <p class="mt-2 text-gray-700">
-                            {{ $report->summary ?: '—' }}
-                        </p>
+                        <h2 class="text-sm font-semibold text-gray-700 mb-2">Executive Summary</h2>
+                        <p class="text-gray-600">{{ $report->summary ?: '—' }}</p>
                     </section>
 
                     <section>
-                        <h2 class="text-base font-semibold">Insights</h2>
-                        <p class="mt-2 whitespace-pre-wrap text-gray-700">{{ $report->insights ?: '—' }}</p>
+                        <h2 class="text-sm font-semibold text-gray-700 mb-2">Insights</h2>
+                        <p class="text-gray-600 whitespace-pre-wrap">{{ $report->insights ?: '—' }}</p>
                     </section>
 
                     <section>
-                        <h2 class="text-base font-semibold">Recommendations</h2>
-                        <p class="mt-2 whitespace-pre-wrap text-gray-700">{{ $report->recommendations ?: '—' }}</p>
+                        <h2 class="text-sm font-semibold text-gray-700 mb-2">Recommendations</h2>
+                        <p class="text-gray-600 whitespace-pre-wrap">{{ $report->recommendations ?: '—' }}</p>
                     </section>
                 @endif
             </div>

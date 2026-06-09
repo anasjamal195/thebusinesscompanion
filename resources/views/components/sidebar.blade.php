@@ -4,77 +4,86 @@
     'activeTaskId' => null,
 ])
 
-<aside class="fixed inset-y-0 left-0 z-30 w-[260px] border-r border-gray-200 bg-white">
-    <div class="flex h-full flex-col">
-        <div class="px-6 pt-8">
-            <a href="{{ url('/dashboard') }}" class="flex items-center gap-3">
-                <span class="relative inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-primary text-white shadow-lg shadow-primary/20">
-                    <span class="material-symbols-outlined text-[24px]">smart_toy</span>
-                </span>
-                <div class="leading-tight">
-                    <div class="text-[17px] font-black text-gray-900 tracking-tight">Dialer</div>
-                    <div class="text-[11px] font-bold text-primary uppercase tracking-widest">.Best</div>
-                </div>
-            </a>
-        </div>
-
-        <nav class="flex-1 mt-6 px-4 space-y-1 overflow-y-auto scrollbar-thin">
-            @php
-                $navItems = [
-                    ['key' => 'dashboard', 'label' => 'Dashboard', 'icon' => 'grid_view', 'href' => route('dashboard')],
-                    ['key' => 'achievements', 'label' => 'Achievements', 'icon' => 'emoji_events', 'href' => route('achievements.index')],
-                    ['key' => 'community', 'label' => 'Community', 'icon' => 'groups', 'href' => route('community.feed')],
-                    ['key' => 'challenges', 'label' => 'Challenges', 'icon' => 'flag', 'href' => route('challenges.index')],
-                    ['key' => 'hall-of-fame', 'label' => 'Hall of Fame', 'icon' => 'military_tech', 'href' => route('hall-of-fame.index')],
-                    ['key' => 'mentors', 'label' => 'Mentors', 'icon' => 'school', 'href' => route('mentors.index')],
-                    ['key' => 'reports',  'label' => 'Reports',   'icon' => 'summarize', 'href' => route('reports.index')],
-                    ['key' => 'calls',    'label' => 'Call Logs', 'icon' => 'history',   'href' => route('calls.index')],
-                    ['key' => 'profile',  'label' => 'Profile',   'icon' => 'person',    'href' => route('profile.index')],
-                ];
-            @endphp
-
-            @foreach ($navItems as $item)
-                @php $isActive = $active === $item['key']; @endphp
-                <a
-                    href="{{ $item['href'] }}"
-                    class="{{ $isActive ? 'bg-primary/10 text-primary' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900' }} group flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-bold transition-all duration-200"
-                >
-                    <span class="material-symbols-outlined text-[22px]">{{ $item['icon'] }}</span>
-                    <span>{{ $item['label'] }}</span>
-                </a>
-            @endforeach
-        </nav>
-
-        <div class="mt-auto p-4">
-            <div class="bg-gray-50 rounded-[2rem] p-4 border border-gray-100">
-                @auth
-                    <div class="flex items-center gap-3 mb-4">
-                        <div class="h-10 w-10 rounded-2xl bg-primary/10 text-primary flex items-center justify-center font-bold">
-                            {{ substr(auth()->user()->name, 0, 1) }}
-                        </div>
-                        <div class="min-w-0">
-                            <div class="truncate text-sm font-bold text-gray-900">{{ auth()->user()->name }}</div>
-                            <div class="truncate text-[10px] font-bold text-gray-400 uppercase tracking-wider">
-                                Credits: {{ number_format(auth()->user()->credits, 2) }}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <a href="{{ route('settings.index') }}" class="flex-1 flex items-center justify-center gap-2 bg-white rounded-xl py-2 text-xs font-bold text-gray-700 border border-gray-200 shadow-sm hover:bg-gray-50 transition-all active:scale-95">
-                            <span class="material-symbols-outlined text-[18px]">settings</span>
-                            Settings
-                        </a>
-                        <form method="POST" action="{{ route('logout') }}" class="inline">
-                            @csrf
-                            <button type="submit" class="p-2 rounded-xl bg-white text-red-500 border border-gray-200 shadow-sm hover:bg-red-50 hover:border-red-100 transition-all active:scale-95">
-                                <span class="material-symbols-outlined text-[18px]">logout</span>
-                            </button>
-                        </form>
-                    </div>
-                @else
-                    <a href="{{ route('login') }}" class="block w-full text-center bg-primary text-white rounded-2xl py-3 font-bold text-sm shadow-lg shadow-primary/20 hover:bg-primary-container transition-all active:scale-95">Sign In</a>
-                @endauth
+<aside class="hidden lg:flex fixed inset-y-0 left-0 z-30 w-60 flex-col border-r border-gray-200 bg-white">
+    <div class="flex h-14 items-center gap-3 px-5 border-b border-gray-100">
+        <a href="{{ url('/dashboard') }}" class="flex items-center gap-2.5">
+            <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-white shadow-sm">
+                <span class="material-symbols-outlined text-[18px]">smart_toy</span>
+            </span>
+            <div class="leading-tight">
+                <div class="text-sm font-bold text-gray-900 tracking-tight">dialer</div>
+                <div class="text-[9px] font-semibold text-primary uppercase tracking-[0.2em]">.best</div>
             </div>
-        </div>
+        </a>
+    </div>
+
+    <nav class="flex-1 overflow-y-auto scrollbar-thin px-3 py-4 space-y-0.5">
+        @php
+            $navGroups = [
+                'Main' => [
+                    ['key' => 'dashboard', 'label' => 'Dashboard', 'icon' => 'grid_view', 'href' => route('dashboard')],
+                    ['key' => 'feed', 'label' => 'Feed', 'icon' => 'dynamic_feed', 'href' => route('community.feed')],
+                    ['key' => 'community', 'label' => 'Community', 'icon' => 'groups', 'href' => route('community.feed')],
+                ],
+                'Growth' => [
+                    ['key' => 'challenges', 'label' => 'Challenges', 'icon' => 'flag', 'href' => route('challenges.index')],
+                    ['key' => 'mentors', 'label' => 'Mentors', 'icon' => 'school', 'href' => route('mentors.index')],
+                    ['key' => 'achievements', 'label' => 'Achievements', 'icon' => 'emoji_events', 'href' => route('achievements.index')],
+                    ['key' => 'hall-of-fame', 'label' => 'Hall of Fame', 'icon' => 'military_tech', 'href' => route('hall-of-fame.index')],
+                ],
+                'Productivity' => [
+                    ['key' => 'tasks', 'label' => 'Tasks', 'icon' => 'checklist', 'href' => route('dashboard')],
+                    ['key' => 'calls', 'label' => 'Call Logs', 'icon' => 'call_log', 'href' => route('calls.index')],
+                    ['key' => 'reports', 'label' => 'Reports', 'icon' => 'summarize', 'href' => route('reports.index')],
+                ],
+            ];
+        @endphp
+
+        @foreach ($navGroups as $groupName => $items)
+            <div class="mb-4">
+                <div class="px-3 py-1.5 text-[10px] font-semibold text-gray-400 uppercase tracking-[0.1em]">{{ $groupName }}</div>
+                @foreach ($items as $item)
+                    @php $isActive = $active === $item['key']; @endphp
+                    <a
+                        href="{{ $item['href'] }}"
+                        class="{{ $isActive ? 'bg-primary/10 text-primary font-semibold' : 'text-gray-500 hover:bg-gray-100 hover:text-gray-700 font-medium' }} group flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition-all duration-150"
+                    >
+                        <span class="material-symbols-outlined text-[20px]">{{ $item['icon'] }}</span>
+                        <span>{{ $item['label'] }}</span>
+                    </a>
+                @endforeach
+            </div>
+        @endforeach
+    </nav>
+
+    <div class="border-t border-gray-100 p-3">
+        @auth
+            <div class="flex items-center gap-3 px-2 py-2">
+                <div class="h-8 w-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center font-semibold text-xs shrink-0">
+                    {{ substr(auth()->user()->name, 0, 1) }}
+                </div>
+                <div class="min-w-0 flex-1">
+                    <div class="truncate text-sm font-medium text-gray-900">{{ auth()->user()->name }}</div>
+                    <div class="flex items-center gap-1 text-[11px] text-gray-400">
+                        <span class="material-symbols-outlined text-[12px]">account_balance_wallet</span>
+                        {{ number_format(auth()->user()->credits, 2) }}
+                    </div>
+                </div>
+            </div>
+            <div class="mt-1 flex items-center gap-1">
+                <a href="{{ route('settings.index') }}" class="flex-1 flex items-center justify-center gap-1.5 rounded-lg py-2 text-xs font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-all">
+                    <span class="material-symbols-outlined text-[16px]">settings</span>
+                    Settings
+                </a>
+                <form method="POST" action="{{ route('logout') }}" class="inline">
+                    @csrf
+                    <button type="submit" class="flex items-center justify-center gap-1.5 rounded-lg py-2 px-3 text-xs font-medium text-gray-500 hover:bg-red-50 hover:text-red-500 transition-all">
+                        <span class="material-symbols-outlined text-[16px]">logout</span>
+                    </button>
+                </form>
+            </div>
+        @else
+            <a href="{{ route('login') }}" class="block w-full text-center bg-primary text-white rounded-lg py-2.5 font-semibold text-sm shadow-sm hover:bg-primary-container transition-all">Sign In</a>
+        @endauth
     </div>
 </aside>

@@ -1,155 +1,265 @@
 @php
-    $title = 'Community';
+    use App\Models\Mentor;
+    use App\Models\Challenge;
+
+    $title = 'Feed';
     $pageTitle = 'Community Feed';
-    $activeNav = 'community';
+    $activeNav = 'feed';
+
+    $featuredMentors = Mentor::with('user')->inRandomOrder()->take(3)->get();
+    $activeChallenges = Challenge::where('end_date', '>=', now())->take(3)->get();
 @endphp
 
 @extends('layouts.app')
 
 @section('content')
-<div class="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700 max-w-4xl mx-auto" x-data="{ showNewPost: false, commentPost: null, commentText: '' }">
-    <div class="flex items-center justify-between">
-        <h2 class="text-3xl font-black text-gray-900 tracking-tight">Community</h2>
-        @if(session('success'))
-            <div class="inline-flex items-center gap-2 px-4 py-2 bg-green-50 text-green-600 rounded-xl text-sm font-bold border border-green-100">
-                <span class="material-symbols-outlined text-[18px]">check_circle</span>
-                {{ session('success') }}
-            </div>
-        @endif
-    </div>
-
-    <!-- New Post Button -->
-    <button @click="showNewPost = !showNewPost" class="w-full bg-white rounded-[2rem] p-6 shadow-lg shadow-gray-200/30 border border-gray-50 hover:border-primary/20 transition-all flex items-center gap-4 text-left">
-        <span class="w-12 h-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
-            <span class="material-symbols-outlined text-[28px]">edit_note</span>
-        </span>
-        <div>
-            <p class="font-bold text-gray-900">Share your progress</p>
-            <p class="text-sm text-gray-500">Post a progress update or success story</p>
+<div class="flex gap-6" x-data="{ showNewPost: false, commentPost: null }">
+    {{-- Left Sidebar --}}
+    <div class="hidden lg:block w-56 shrink-0">
+        <div class="sticky top-20 space-y-1">
+            <a href="{{ route('community.feed') }}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-semibold bg-primary/10 text-primary">
+                <span class="material-symbols-outlined text-[20px]">dynamic_feed</span>
+                Feed
+            </a>
+            <a href="{{ route('challenges.index') }}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-colors">
+                <span class="material-symbols-outlined text-[20px]">flag</span>
+                Challenges
+            </a>
+            <a href="{{ route('mentors.index') }}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-colors">
+                <span class="material-symbols-outlined text-[20px]">school</span>
+                Mentors
+            </a>
+            <a href="{{ route('hall-of-fame.index') }}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-colors">
+                <span class="material-symbols-outlined text-[20px]">military_tech</span>
+                Hall of Fame
+            </a>
+            <a href="{{ route('achievements.index') }}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-colors">
+                <span class="material-symbols-outlined text-[20px]">emoji_events</span>
+                Achievements
+            </a>
         </div>
-        <span class="ml-auto material-symbols-outlined text-gray-400" x-show="!showNewPost">add</span>
-        <span class="ml-auto material-symbols-outlined text-gray-400" x-show="showNewPost" x-cloak>close</span>
-    </button>
-
-    <!-- New Post Form -->
-    <div x-show="showNewPost" x-cloak class="bg-white rounded-[2.5rem] p-8 shadow-xl shadow-gray-200/50 border border-gray-100">
-        <form action="{{ route('community.posts.store') }}" method="POST" class="space-y-4">
-            @csrf
-            <div>
-                <label class="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2">Post Type</label>
-                <select name="type" class="w-full rounded-2xl border-gray-200 bg-gray-50 focus:border-primary focus:ring focus:ring-primary/20 font-semibold">
-                    <option value="progress">Progress Update</option>
-                    <option value="success_story">Success Story</option>
-                </select>
-            </div>
-            <div>
-                <label class="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2">Content</label>
-                <textarea name="content" rows="4" required maxlength="5000" class="w-full rounded-2xl border-gray-200 bg-gray-50 focus:border-primary focus:ring focus:ring-primary/20 font-semibold resize-none" placeholder="Share your journey..."></textarea>
-            </div>
-            <button type="submit" class="px-8 py-3 bg-primary hover:bg-primary-container text-white font-bold rounded-2xl shadow-lg shadow-primary/20 transition-all active:scale-95 flex items-center gap-2">
-                <span class="material-symbols-outlined text-[20px]">send</span>
-                Post
-            </button>
-        </form>
     </div>
 
-    <!-- Feed -->
-    <div class="space-y-6">
-        @forelse ($posts as $post)
-            <div class="bg-white rounded-[2.5rem] p-8 shadow-xl shadow-gray-200/50 border border-gray-100">
-                <!-- Post Header -->
-                <div class="flex items-center justify-between mb-4">
-                    <a href="{{ route('profiles.public', $post->user) }}" class="flex items-center gap-3 group">
-                        <div class="w-10 h-10 rounded-2xl bg-primary/10 text-primary flex items-center justify-center font-bold text-sm">
-                            {{ substr($post->user->name, 0, 1) }}
+    {{-- Center Column --}}
+    <div class="flex-1 min-w-0 max-w-2xl">
+        <div class="space-y-4">
+            {{-- New Post Button --}}
+            <div class="bg-white rounded-xl border border-gray-200 shadow-sm">
+                <button @click="showNewPost = !showNewPost" class="w-full flex items-center gap-3 px-4 py-3 text-left">
+                    <div class="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center font-semibold text-xs shrink-0">
+                        {{ substr(auth()->user()->name, 0, 1) }}
+                    </div>
+                    <span class="flex-1 text-sm text-gray-400">Share your progress or story...</span>
+                    <span class="material-symbols-outlined text-gray-400 text-[20px]" x-show="!showNewPost">add</span>
+                    <span class="material-symbols-outlined text-gray-400 text-[20px]" x-show="showNewPost" x-cloak>close</span>
+                </button>
+
+                {{-- New Post Form --}}
+                <div x-show="showNewPost" x-cloak class="border-t border-gray-100 px-4 py-4">
+                    <form action="{{ route('community.posts.store') }}" method="POST" class="space-y-3">
+                        @csrf
+                        <div>
+                            <select name="type" class="text-sm rounded-lg border-gray-200 bg-gray-50 focus:border-primary focus:ring-2 focus:ring-primary/20 w-auto">
+                                <option value="progress">Progress Update</option>
+                                <option value="success_story">Success Story</option>
+                            </select>
                         </div>
                         <div>
-                            <p class="font-bold text-gray-900 group-hover:text-primary transition-colors text-sm">{{ $post->user->name }}</p>
-                            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">{{ $post->created_at->diffForHumans() }}</p>
+                            <textarea name="content" rows="4" required maxlength="5000" class="w-full rounded-lg border-gray-200 bg-gray-50 focus:border-primary focus:ring-2 focus:ring-primary/20 text-sm resize-none" placeholder="What's on your mind?"></textarea>
                         </div>
-                    </a>
-                    <span class="text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full {{ $post->type === 'achievement' ? 'bg-yellow-100 text-yellow-700' : ($post->type === 'success_story' ? 'bg-purple-100 text-purple-700' : ($post->type === 'challenge_result' ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-blue-700')) }}">
-                        @switch($post->type)
-                            @case('achievement') Achievement @break
-                            @case('progress') Progress @break
-                            @case('success_story') Success Story @break
-                            @case('challenge_result') Challenge @break
-                        @endswitch
-                    </span>
-                </div>
-
-                <!-- Achievement Badge Display -->
-                @if($post->achievement)
-                    <div class="mb-4 inline-flex items-center gap-2 px-4 py-2 rounded-2xl" style="background: {{ $post->achievement->badge_color }}15; color: {{ $post->achievement->badge_color }}">
-                        <span class="material-symbols-outlined text-[20px]">{{ $post->achievement->icon }}</span>
-                        <span class="font-bold text-sm">{{ $post->achievement->name }}</span>
-                    </div>
-                @endif
-
-                <!-- Post Content -->
-                <div class="text-gray-700 font-medium leading-relaxed whitespace-pre-wrap">{{ $post->content }}</div>
-
-                <!-- Actions -->
-                <div class="mt-6 pt-4 border-t border-gray-100 flex items-center gap-6">
-                    <form action="{{ route('community.like', $post) }}" method="POST" class="inline">
-                        @csrf
-                            <button type="submit" class="flex items-center gap-1.5 text-sm font-bold transition-colors {{ $post->isLikedBy($user) ? 'text-red-500' : 'text-gray-400 hover:text-red-500' }}">
-                            <span class="material-symbols-outlined text-[20px]">                                {{ $post->isLikedBy($user) ? 'favorite' : 'favorite_border' }}</span>
-                            {{ $post->likes_count ?? $post->likes->count() }}
-                        </button>
-                    </form>
-
-                    <button @click="commentPost = commentPost === {{ $post->id }} ? null : {{ $post->id }}" class="flex items-center gap-1.5 text-sm font-bold text-gray-400 hover:text-primary transition-colors">
-                        <span class="material-symbols-outlined text-[20px]">comment</span>
-                        {{ $post->comments_count ?? $post->comments->count() }}
-                    </button>
-
-                    @if(Auth::user()->id !== $post->user_id)
-                        <form action="{{ route('community.follow', $post->user) }}" method="POST" class="inline ml-auto">
-                            @csrf
-                            <button type="submit" class="text-xs font-bold text-primary hover:text-primary-container transition-colors flex items-center gap-1">
-                                <span class="material-symbols-outlined text-[16px]">person_add</span>
-                                {{ $user->following()->where('following_id', $post->user->id)->exists() ? 'Following' : 'Follow' }}
+                        <div class="flex items-center justify-between">
+                            <p class="text-xs text-gray-400">Share your journey with the community</p>
+                            <button type="submit" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-primary-container transition-all shadow-sm">
+                                <span class="material-symbols-outlined text-[18px]">send</span>
+                                Post
                             </button>
-                        </form>
-                    @endif
-                </div>
-
-                <!-- Comments Section -->
-                <div x-show="commentPost === {{ $post->id }}" x-cloak class="mt-6 pt-4 border-t border-gray-100 space-y-4">
-                    @foreach ($post->comments as $comment)
-                        <div class="flex items-start gap-3">
-                            <div class="w-8 h-8 rounded-xl bg-gray-100 text-gray-500 flex items-center justify-center font-bold text-xs shrink-0">
-                                {{ substr($comment->user->name, 0, 1) }}
-                            </div>
-                            <div class="flex-1 min-w-0">
-                                <div class="bg-gray-50 rounded-2xl px-4 py-3">
-                                    <p class="font-bold text-xs text-gray-900">{{ $comment->user->name }}</p>
-                                    <p class="text-sm text-gray-600 font-medium mt-0.5">{{ $comment->content }}</p>
-                                </div>
-                                <p class="text-[10px] text-gray-400 font-medium mt-1 px-1">{{ $comment->created_at->diffForHumans() }}</p>
-                            </div>
                         </div>
-                    @endforeach
-
-                    <form action="{{ route('community.comment', $post) }}" method="POST" class="flex items-center gap-3">
-                        @csrf
-                        <input type="text" name="content" required maxlength="2000" placeholder="Write a comment..." class="flex-1 rounded-2xl border-gray-200 bg-gray-50 focus:border-primary focus:ring focus:ring-primary/20 font-medium text-sm">
-                        <button type="submit" class="px-5 py-3 bg-primary text-white font-bold rounded-2xl text-sm hover:bg-primary-container transition-all active:scale-95">
-                            <span class="material-symbols-outlined text-[18px]">send</span>
-                        </button>
                     </form>
                 </div>
             </div>
-        @empty
-            <div class="text-center py-16">
-                <span class="material-symbols-outlined text-6xl text-gray-300 mb-4">groups</span>
-                <h3 class="text-xl font-black text-gray-900 mb-2">No posts yet</h3>
-                <p class="text-gray-500 font-medium">Be the first to share your progress with the community!</p>
-            </div>
-        @endforelse
 
-        {{ $posts->links() }}
+            {{-- Feed --}}
+            <div class="space-y-4">
+                @forelse ($posts as $post)
+                    <div class="bg-white rounded-xl border border-gray-200 shadow-sm">
+                        {{-- Post Header --}}
+                        <div class="flex items-center justify-between px-4 pt-4 pb-2">
+                            <a href="{{ route('profiles.public', $post->user) }}" class="flex items-center gap-2.5 group">
+                                <div class="w-9 h-9 rounded-lg bg-primary/10 text-primary flex items-center justify-center font-semibold text-sm">
+                                    {{ substr($post->user->name, 0, 1) }}
+                                </div>
+                                <div>
+                                    <p class="text-sm font-medium text-gray-900 group-hover:text-primary transition-colors">{{ $post->user->name }}</p>
+                                    <p class="text-xs text-gray-400">{{ $post->created_at->diffForHumans() }}</p>
+                                </div>
+                            </a>
+                            <span class="text-[11px] font-medium px-2 py-0.5 rounded-md {{ $post->type === 'achievement' ? 'bg-yellow-50 text-yellow-700' : ($post->type === 'success_story' ? 'bg-purple-50 text-purple-700' : ($post->type === 'challenge_result' ? 'bg-green-50 text-green-700' : 'bg-blue-50 text-blue-700')) }}">
+                                @switch($post->type)
+                                    @case('achievement') Achievement @break
+                                    @case('progress') Progress @break
+                                    @case('success_story') Success Story @break
+                                    @case('challenge_result') Challenge @break
+                                @endswitch
+                            </span>
+                        </div>
+
+                        {{-- Achievement Badge --}}
+                        @if($post->achievement)
+                            <div class="px-4 mb-2 inline-flex items-center gap-1.5 px-3 py-1 rounded-lg" style="background: {{ $post->achievement->badge_color }}12; color: {{ $post->achievement->badge_color }}">
+                                <span class="material-symbols-outlined text-[16px]">{{ $post->achievement->icon }}</span>
+                                <span class="text-xs font-medium">{{ $post->achievement->name }}</span>
+                            </div>
+                        @endif
+
+                        {{-- Post Content --}}
+                        <div class="px-4 py-2">
+                            <p class="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">{{ $post->content }}</p>
+                        </div>
+
+                        {{-- Actions --}}
+                        <div class="flex items-center gap-1 px-4 py-2.5 border-t border-gray-50">
+                            <form action="{{ route('community.like', $post) }}" method="POST" class="inline">
+                                @csrf
+                                <button type="submit" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors {{ $post->isLikedBy($user) ? 'text-red-500 bg-red-50' : 'text-gray-400 hover:text-red-500 hover:bg-red-50' }}">
+                                    <span class="material-symbols-outlined text-[18px]">{{ $post->isLikedBy($user) ? 'favorite' : 'favorite_border' }}</span>
+                                    {{ $post->likes_count ?? $post->likes->count() }}
+                                </button>
+                            </form>
+
+                            <button @click="commentPost = commentPost === {{ $post->id }} ? null : {{ $post->id }}" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-sm font-medium text-gray-400 hover:text-primary hover:bg-blue-50 transition-colors">
+                                <span class="material-symbols-outlined text-[18px]">comment</span>
+                                {{ $post->comments_count ?? $post->comments->count() }}
+                            </button>
+
+                            @if(Auth::user()->id !== $post->user_id)
+                                <form action="{{ route('community.follow', $post->user) }}" method="POST" class="inline ml-auto">
+                                    @csrf
+                                    <button type="submit" class="text-xs font-medium text-primary hover:text-primary-container transition-colors flex items-center gap-1 px-2 py-1 rounded hover:bg-blue-50">
+                                        <span class="material-symbols-outlined text-[14px]">person_add</span>
+                                        {{ $user->following()->where('following_id', $post->user->id)->exists() ? 'Following' : 'Follow' }}
+                                    </button>
+                                </form>
+                            @endif
+                        </div>
+
+                        {{-- Comments Section --}}
+                        <div x-show="commentPost === {{ $post->id }}" x-cloak class="border-t border-gray-100 px-4 py-4 space-y-3">
+                            @foreach ($post->comments as $comment)
+                                <div class="flex items-start gap-2.5">
+                                    <div class="w-7 h-7 rounded-md bg-gray-100 text-gray-500 flex items-center justify-center font-semibold text-xs shrink-0 mt-0.5">
+                                        {{ substr($comment->user->name, 0, 1) }}
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <div class="bg-gray-50 rounded-lg px-3 py-2">
+                                            <p class="text-xs font-medium text-gray-900">{{ $comment->user->name }}</p>
+                                            <p class="text-sm text-gray-600 mt-0.5">{{ $comment->content }}</p>
+                                        </div>
+                                        <p class="text-[11px] text-gray-400 mt-0.5">{{ $comment->created_at->diffForHumans() }}</p>
+                                    </div>
+                                </div>
+                            @endforeach
+
+                            <form action="{{ route('community.comment', $post) }}" method="POST" class="flex items-center gap-2">
+                                @csrf
+                                <input type="text" name="content" required maxlength="2000" placeholder="Write a comment..." class="flex-1 rounded-lg border-gray-200 bg-gray-50 focus:border-primary focus:ring-2 focus:ring-primary/20 text-sm">
+                                <button type="submit" class="px-3 py-2 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-primary-container transition-all shadow-sm">
+                                    <span class="material-symbols-outlined text-[18px]">send</span>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                @empty
+                    <div class="bg-white rounded-xl border border-gray-200 shadow-sm text-center py-12">
+                        <span class="material-symbols-outlined text-5xl text-gray-300 mb-3">dynamic_feed</span>
+                        <h3 class="text-base font-semibold text-gray-900 mb-1">No posts yet</h3>
+                        <p class="text-sm text-gray-500">Be the first to share your progress!</p>
+                    </div>
+                @endforelse
+
+                <div class="py-4">
+                    {{ $posts->links() }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Right Sidebar --}}
+    <div class="hidden xl:block w-72 shrink-0">
+        <div class="sticky top-20 space-y-5">
+            {{-- Suggested Mentors --}}
+            @if($featuredMentors->isNotEmpty())
+            <div class="bg-white rounded-xl border border-gray-200 shadow-sm">
+                <div class="px-4 py-3 border-b border-gray-100">
+                    <h3 class="text-sm font-semibold text-gray-900">Featured Mentors</h3>
+                </div>
+                <div class="p-3 space-y-2">
+                    @foreach($featuredMentors as $mentor)
+                        <a href="{{ route('mentors.show', $mentor->user) }}" class="flex items-center gap-2.5 px-2 py-2 rounded-lg hover:bg-gray-50 transition-colors group">
+                            <div class="w-8 h-8 rounded-md bg-purple-100 text-purple-600 flex items-center justify-center font-semibold text-xs">
+                                {{ substr($mentor->user->name, 0, 1) }}
+                            </div>
+                            <div class="min-w-0 flex-1">
+                                <p class="text-sm font-medium text-gray-900 group-hover:text-primary transition-colors truncate">{{ $mentor->user->name }}</p>
+                                <p class="text-[11px] text-gray-400">{{ $mentor->specialties[0] ?? 'Mentor' }}</p>
+                            </div>
+                        </a>
+                    @endforeach
+                </div>
+                <div class="px-4 py-2.5 border-t border-gray-100">
+                    <a href="{{ route('mentors.index') }}" class="text-xs font-medium text-primary hover:text-primary-container transition-colors">View all mentors →</a>
+                </div>
+            </div>
+            @endif
+
+            {{-- Active Challenges --}}
+            @if($activeChallenges->isNotEmpty())
+            <div class="bg-white rounded-xl border border-gray-200 shadow-sm">
+                <div class="px-4 py-3 border-b border-gray-100">
+                    <h3 class="text-sm font-semibold text-gray-900">Active Challenges</h3>
+                </div>
+                <div class="p-3 space-y-2">
+                    @foreach($activeChallenges as $challenge)
+                        <a href="{{ route('challenges.show', $challenge) }}" class="flex items-center gap-2.5 px-2 py-2 rounded-lg hover:bg-gray-50 transition-colors group">
+                            <span class="w-8 h-8 rounded-md bg-primary/10 text-primary flex items-center justify-center">
+                                <span class="material-symbols-outlined text-[18px]">{{ $challenge->icon }}</span>
+                            </span>
+                            <div class="min-w-0 flex-1">
+                                <p class="text-sm font-medium text-gray-900 group-hover:text-primary transition-colors truncate">{{ $challenge->name }}</p>
+                                <p class="text-[11px] text-gray-400">{{ $challenge->participants_count }} participants</p>
+                            </div>
+                        </a>
+                    @endforeach
+                </div>
+                <div class="px-4 py-2.5 border-t border-gray-100">
+                    <a href="{{ route('challenges.index') }}" class="text-xs font-medium text-primary hover:text-primary-container transition-colors">View all challenges →</a>
+                </div>
+            </div>
+            @endif
+
+            {{-- Quick Links --}}
+            <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-4">
+                <h3 class="text-sm font-semibold text-gray-900 mb-3">Discover</h3>
+                <div class="space-y-2">
+                    <a href="{{ route('hall-of-fame.index') }}" class="flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900 transition-colors">
+                        <span class="material-symbols-outlined text-[18px] text-yellow-500">military_tech</span>
+                        Hall of Fame
+                    </a>
+                    <a href="{{ route('achievements.index') }}" class="flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900 transition-colors">
+                        <span class="material-symbols-outlined text-[18px] text-primary">emoji_events</span>
+                        Achievements
+                    </a>
+                    <a href="{{ route('calls.index') }}" class="flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900 transition-colors">
+                        <span class="material-symbols-outlined text-[18px] text-green-500">call_log</span>
+                        Call History
+                    </a>
+                </div>
+            </div>
+
+            {{-- Community Guidelines --}}
+            <div class="text-xs text-gray-400 px-1 space-y-1">
+                <p>Be respectful and supportive. Share your journey and help others grow.</p>
+            </div>
+        </div>
     </div>
 </div>
 @endsection
