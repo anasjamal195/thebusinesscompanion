@@ -19,8 +19,9 @@
     </div>
 
     <!-- Tabs Nav -->
-    <div class="flex p-1.5 bg-gray-100 rounded-2xl w-fit">
+    <div class="flex p-1.5 bg-gray-100 rounded-2xl w-fit flex-wrap">
         <button @click="tab = 'general'" :class="tab === 'general' ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500 hover:text-gray-700'" class="px-6 py-2 rounded-xl text-sm font-bold transition-all">General</button>
+        <button @click="tab = 'community'" :class="tab === 'community' ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500 hover:text-gray-700'" class="px-6 py-2 rounded-xl text-sm font-bold transition-all">Community</button>
         <button @click="tab = 'companion'" :class="tab === 'companion' ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500 hover:text-gray-700'" class="px-6 py-2 rounded-xl text-sm font-bold transition-all">AI Voice</button>
         <button @click="tab = 'subscription'" :class="tab === 'subscription' ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500 hover:text-gray-700'" class="px-6 py-2 rounded-xl text-sm font-bold transition-all">Billing</button>
     </div>
@@ -42,9 +43,50 @@
                 </div>
             </div>
         </div>
- 
 
- 
+        <!-- Community Settings -->
+        <div x-show="tab === 'community'" class="bg-white rounded-[2.5rem] p-8 md:p-12 shadow-xl shadow-gray-200/50 border border-gray-100 space-y-6" x-cloak>
+            <h3 class="text-xl font-black text-gray-900 mb-2">Community Participation</h3>
+            <p class="text-sm text-gray-500 font-medium mb-6">Choose how you want to participate in the community. Your activity data remains private by default.</p>
+
+            <div class="space-y-4">
+                @php $mode = old('community_participation_mode', $user->community_participation_mode ?? 'private'); @endphp
+                @foreach ([
+                    ['value' => 'private', 'icon' => 'lock', 'title' => 'Private Mode', 'desc' => 'Your activity remains private. Achievements are earned internally. Nothing is visible to other users.', 'recommended' => false],
+                    ['value' => 'social', 'icon' => 'public', 'title' => 'Social Mode', 'desc' => 'Share selected achievements and interact with the community. You can follow other users and see their progress.', 'recommended' => false],
+                    ['value' => 'hybrid', 'icon' => 'manage_accounts', 'title' => 'Hybrid Mode', 'desc' => 'Selectively share individual achievements. The best of both worlds.', 'recommended' => true],
+                ] as $option)
+                <label class="block cursor-pointer">
+                    <div class="relative p-5 rounded-2xl border-2 transition-all duration-200 {{ $mode === $option['value'] ? 'border-primary bg-primary/5' : 'border-gray-100 bg-gray-50 hover:border-gray-200' }}">
+                        <div class="flex items-start gap-4">
+                            <span class="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
+                                <span class="material-symbols-outlined text-[22px]">{{ $option['icon'] }}</span>
+                            </span>
+                            <div class="flex-1">
+                                <div class="flex items-center gap-2">
+                                    <span class="font-bold text-gray-900">{{ $option['title'] }}</span>
+                                    @if($option['recommended'])
+                                        <span class="text-[9px] font-black text-green-600 bg-green-100 px-2 py-0.5 rounded-full uppercase tracking-widest">Recommended</span>
+                                    @endif
+                                </div>
+                                <p class="text-sm text-gray-500 font-medium mt-1">{{ $option['desc'] }}</p>
+                            </div>
+                            <div class="shrink-0">
+                                <div class="w-5 h-5 rounded-full border-2 flex items-center justify-center {{ $mode === $option['value'] ? 'border-primary bg-primary' : 'border-gray-300' }}">
+                                    @if($mode === $option['value'])
+                                        <span class="material-symbols-outlined text-[14px] text-white font-bold">check</span>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                        <input type="radio" name="community_participation_mode" value="{{ $option['value'] }}" class="absolute inset-0 opacity-0 cursor-pointer" @click="document.getElementById('community_mode').value = '{{ $option['value'] }}'" {{ $mode === $option['value'] ? 'checked' : '' }}>
+                    </div>
+                </label>
+                @endforeach
+            </div>
+            <input type="hidden" name="community_participation_mode" id="community_mode" value="{{ $mode }}">
+        </div>
+
         <!-- Companion Settings -->
         <div x-show="tab === 'companion'" class="bg-white rounded-[2.5rem] p-8 md:p-12 shadow-xl shadow-gray-200/50 border border-gray-100 space-y-6" x-cloak>
             <h3 class="text-xl font-black text-gray-900 mb-2">AI Voice Settings</h3>

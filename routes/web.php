@@ -13,6 +13,12 @@ use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\CallController;
 use App\Http\Controllers\StripeCheckoutController;
 use App\Http\Controllers\VoicePreviewController;
+use App\Http\Controllers\AchievementController;
+use App\Http\Controllers\ChallengeController;
+use App\Http\Controllers\CommunityController;
+use App\Http\Controllers\HallOfFameController;
+use App\Http\Controllers\MentorController;
+use App\Http\Controllers\PublicProfileController;
 
 // ── Public ────────────────────────────────────────────────────────────────────
 
@@ -107,6 +113,34 @@ Route::middleware('auth')->group(function () {
 
     // Daily Reports
     Route::get('/daily-reports/{dailyReport}', [ReportController::class, 'showDaily'])->name('daily-reports.show');
+
+    // Achievements
+    Route::get('/achievements', [AchievementController::class, 'index'])->name('achievements.index');
+    Route::post('/achievements/{achievement}/share', [AchievementController::class, 'share'])->name('achievements.share');
+    Route::post('/achievements/{achievement}/keep-private', [AchievementController::class, 'keepPrivate'])->name('achievements.keep-private');
+
+    // Community
+    Route::get('/community', [CommunityController::class, 'feed'])->name('community.feed');
+    Route::post('/community/posts', [CommunityController::class, 'storePost'])->name('community.posts.store');
+    Route::post('/community/{post}/like', [CommunityController::class, 'like'])->name('community.like');
+    Route::post('/community/{post}/comment', [CommunityController::class, 'comment'])->name('community.comment');
+    Route::post('/community/follow/{user}', [CommunityController::class, 'follow'])->name('community.follow');
+
+    // Challenges
+    Route::get('/challenges', [ChallengeController::class, 'index'])->name('challenges.index');
+    Route::get('/challenges/{challenge}', [ChallengeController::class, 'show'])->name('challenges.show');
+    Route::post('/challenges/{challenge}/join', [ChallengeController::class, 'join'])->name('challenges.join');
+
+    // Hall of Fame
+    Route::get('/hall-of-fame', [HallOfFameController::class, 'index'])->name('hall-of-fame.index');
+
+    // Mentors
+    Route::get('/mentors', [MentorController::class, 'index'])->name('mentors.index');
+    Route::get('/mentors/{user}', [MentorController::class, 'show'])->name('mentors.show');
+    Route::post('/mentors/apply', [MentorController::class, 'apply'])->name('mentors.apply');
+
+    // Public Profiles
+    Route::get('/profiles/{user}', [PublicProfileController::class, 'show'])->name('profiles.public');
 });
 
 // ── Voice Previews ────────────────────────────────────────────────────────────

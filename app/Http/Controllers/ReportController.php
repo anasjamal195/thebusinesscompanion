@@ -102,6 +102,8 @@ class ReportController extends Controller
             return redirect()->route('dashboard')->with('error', 'No tasks found for today.');
         }
 
+        event('daily-report.generated', [$request->user()->id]);
+
         return redirect()->route('daily-reports.show', $report)
             ->with('success', 'Daily report generated successfully!');
     }

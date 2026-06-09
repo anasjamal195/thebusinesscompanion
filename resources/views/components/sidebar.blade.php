@@ -22,6 +22,11 @@
             @php
                 $navItems = [
                     ['key' => 'dashboard', 'label' => 'Dashboard', 'icon' => 'grid_view', 'href' => route('dashboard')],
+                    ['key' => 'achievements', 'label' => 'Achievements', 'icon' => 'emoji_events', 'href' => route('achievements.index')],
+                    ['key' => 'community', 'label' => 'Community', 'icon' => 'groups', 'href' => route('community.feed')],
+                    ['key' => 'challenges', 'label' => 'Challenges', 'icon' => 'flag', 'href' => route('challenges.index')],
+                    ['key' => 'hall-of-fame', 'label' => 'Hall of Fame', 'icon' => 'military_tech', 'href' => route('hall-of-fame.index')],
+                    ['key' => 'mentors', 'label' => 'Mentors', 'icon' => 'school', 'href' => route('mentors.index')],
                     ['key' => 'reports',  'label' => 'Reports',   'icon' => 'summarize', 'href' => route('reports.index')],
                     ['key' => 'calls',    'label' => 'Call Logs', 'icon' => 'history',   'href' => route('calls.index')],
                     ['key' => 'profile',  'label' => 'Profile',   'icon' => 'person',    'href' => route('profile.index')],

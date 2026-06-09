@@ -129,6 +129,7 @@ class VapiWebhookController extends Controller
                     // Only process transcript for morning/followup call types
                     if (!$isMissed) {
                         $this->processCallTranscript($call);
+                        event('call.completed', [$call->user_id]);
                     }
                 }
                 break;
