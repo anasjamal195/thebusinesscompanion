@@ -18,7 +18,7 @@
             </a>
         </div>
 
-        <nav class="mt-10 px-4 space-y-1">
+        <nav class="flex-1 mt-6 px-4 space-y-1 overflow-y-auto scrollbar-thin">
             @php
                 $navItems = [
                     ['key' => 'dashboard', 'label' => 'Dashboard', 'icon' => 'grid_view', 'href' => route('dashboard')],

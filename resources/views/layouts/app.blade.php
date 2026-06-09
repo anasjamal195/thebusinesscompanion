@@ -51,6 +51,23 @@
             [x-cloak] {
                 display: none !important;
             }
+
+            .scrollbar-thin::-webkit-scrollbar {
+                width: 4px;
+            }
+
+            .scrollbar-thin::-webkit-scrollbar-track {
+                background: transparent;
+            }
+
+            .scrollbar-thin::-webkit-scrollbar-thumb {
+                background: #d1d5db;
+                border-radius: 99px;
+            }
+
+            .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+                background: #9ca3af;
+            }
         </style>
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])

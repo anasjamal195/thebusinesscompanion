@@ -20,6 +20,10 @@ class DatabaseSeeder extends Seeder
             AchievementSeeder::class,
         ]);
 
+        if (app()->environment('local', 'development')) {
+            $this->call(DemoDataSeeder::class);
+        }
+
         User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
