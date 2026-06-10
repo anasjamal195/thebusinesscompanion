@@ -57,33 +57,28 @@
                     $totalCount = $dayTasks->count();
                     $completedCount = $dayTasks->where('status', 'completed')->count();
 
+                    $dateStatusClass = '';
                     if ($totalCount > 0) {
                         if ($completedCount === $totalCount) {
-                            $dotClass = 'bg-green-500';
+                            $dateStatusClass = 'bg-green-500 text-white';
                         } elseif ($completedCount > 0) {
-                            $dotClass = 'bg-yellow-500';
+                            $dateStatusClass = 'bg-amber-500 text-white';
                         } else {
-                            $dotClass = 'bg-red-500';
+                            $dateStatusClass = 'bg-red-500 text-white';
                         }
-                    } else {
-                        $dotClass = '';
                     }
 
-                    $cellBg = $isToday ? 'bg-primary-fixed' : ($isInMonth ? 'bg-white' : 'bg-gray-50');
-                    $cellExtra = $isPast ? 'opacity-40' : '';
+                    $cellBg = $isToday ? 'bg-primary-fixed' : ($isInMonth ? 'bg-white' : 'bg-gray-50/50');
+                    $cellExtra = $isPast ? 'opacity-70' : '';
                     $completedExtra = $isCompleted && !$isToday ? 'bg-emerald-50' : '';
+                    $todayHighlight = $isToday ? 'ring-2 ring-primary/30 ring-inset' : '';
                 @endphp
-                <div class="min-h-[120px] {{ $cellBg }} {{ $completedExtra }} {{ $cellExtra }} {{ $i % 7 === 6 ? '' : 'border-b border-gray-100' }}">
+                <div class="min-h-[120px] {{ $cellBg }} {{ $completedExtra }} {{ $cellExtra }} {{ $todayHighlight }} {{ $i % 7 === 6 ? '' : 'border-b border-gray-100' }}">
                     @if ($isInMonth)
                         <div class="px-2 py-1.5 text-center">
-                            <span class="inline-flex items-center justify-center w-7 h-7 rounded-full text-sm font-medium {{ $isToday ? 'bg-primary text-white' : ($isPast ? 'text-gray-300' : 'text-gray-700') }}">
+                            <span class="inline-flex items-center justify-center w-7 h-7 rounded-full text-sm font-medium {{ $isToday ? 'bg-primary text-white ring-2 ring-primary/30' : ($dateStatusClass ?: ($isPast ? 'text-gray-400' : 'text-gray-700')) }}">
                                 {{ $dayNum }}
                             </span>
-                            @if ($totalCount > 0)
-                                <div class="mt-1 flex justify-center">
-                                    <span class="w-2.5 h-2.5 rounded-full {{ $dotClass }}"></span>
-                                </div>
-                            @endif
                         </div>
 
                         <div class="px-1.5 space-y-1 max-h-[100px] overflow-y-auto">
