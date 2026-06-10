@@ -247,10 +247,6 @@
                             </div>
                         </div>
                         <div class="flex items-center gap-2">
-                            <span class="inline-flex items-center gap-0.5 text-[11px] font-medium px-2 py-0.5 rounded-md {{ $pt['color'] }}">
-                                <span class="material-symbols-outlined text-[14px]">{{ $pt['icon'] }}</span>
-                                {{ $pt['label'] }}
-                            </span>
                             @if($isOwner)
                                 <div class="flex items-center gap-1">
                                     <button @click="showEdit = !showEdit" class="text-xs text-gray-400 hover:text-primary p-1 rounded hover:bg-gray-50 transition-colors">
@@ -264,6 +260,10 @@
                                     </form>
                                 </div>
                             @endif
+                            <span class="inline-flex items-center gap-0.5 text-[11px] font-medium px-2 py-0.5 rounded-md {{ $pt['color'] }}">
+                                <span class="material-symbols-outlined text-[14px]">{{ $pt['icon'] }}</span>
+                                {{ $pt['label'] }}
+                            </span>
                         </div>
                     </div>
 

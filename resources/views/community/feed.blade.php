@@ -140,10 +140,6 @@
                                     <p class="text-xs text-gray-400">{{ $post->created_at->diffForHumans() }}</p>
                                 </div>
                             </a>
-                            <span class="inline-flex items-center gap-0.5 text-[11px] font-medium px-2 py-0.5 rounded-md {{ $pt['color'] }}">
-                                <span class="material-symbols-outlined text-[14px]">{{ $pt['icon'] }}</span>
-                                {{ $pt['label'] }}
-                            </span>
                             @if(Auth::user()->id === $post->user_id)
                                 <div class="flex items-center gap-1">
                                     <button @click="openEdit({{ $post->id }}, $el)" data-content="{{ $post->content }}" class="text-xs text-gray-400 hover:text-primary p-1 rounded hover:bg-gray-50 transition-colors">
@@ -154,6 +150,10 @@
                                     </button>
                                 </div>
                             @endif
+                            <span class="inline-flex items-center gap-0.5 text-[11px] font-medium px-2 py-0.5 rounded-md {{ $pt['color'] }}">
+                                <span class="material-symbols-outlined text-[14px]">{{ $pt['icon'] }}</span>
+                                {{ $pt['label'] }}
+                            </span>
                         </div>
 
                         {{-- Visibility Badge --}}
