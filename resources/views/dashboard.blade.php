@@ -76,6 +76,37 @@
         </div>
     </div>
 
+    {{-- Low Balance Banner --}}
+    @php
+        $minRate = \App\Models\MonetizationSetting::getInstance()->per_minute_rate;
+        $credits = auth()->user()->credits;
+    @endphp
+    @if($credits <= 0 || $credits < $minRate)
+        <div class="flex items-center gap-3 px-5 py-3 rounded-xl bg-red-50 border border-red-200 shadow-sm">
+            <span class="material-symbols-outlined text-red-500 text-[24px]">error</span>
+            <div class="flex-1">
+                <p class="text-sm font-semibold text-red-800">Out of Balance</p>
+                <p class="text-xs text-red-600">Your credits are depleted. You will not receive any calls until you recharge.</p>
+            </div>
+            <a href="{{ route('profile.index') }}" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-red-600 text-white text-sm font-semibold hover:bg-red-700 transition-all shadow-sm">
+                <span class="material-symbols-outlined text-[18px]">bolt</span>
+                Recharge Now
+            </a>
+        </div>
+    @elseif($credits < 2)
+        <div class="flex items-center gap-3 px-5 py-3 rounded-xl bg-orange-50 border border-orange-200 shadow-sm">
+            <span class="material-symbols-outlined text-orange-500 text-[24px]">warning</span>
+            <div class="flex-1">
+                <p class="text-sm font-semibold text-orange-800">Low Balance</p>
+                <p class="text-xs text-orange-600">Your balance is running low ({{ number_format($credits, 2) }} credits). Recharge to continue receiving calls.</p>
+            </div>
+            <a href="{{ route('profile.index') }}" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-orange-600 text-white text-sm font-semibold hover:bg-orange-700 transition-all shadow-sm">
+                <span class="material-symbols-outlined text-[18px]">bolt</span>
+                Recharge
+            </a>
+        </div>
+    @endif
+
     {{-- Metrics Row --}}
     <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
         <div class="bg-white rounded-xl border border-gray-200 p-4 shadow-sm">

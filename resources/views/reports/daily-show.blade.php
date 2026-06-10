@@ -8,7 +8,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="max-w-3xl mx-auto space-y-6" x-data="{ showShareModal: false, hiddenTasks: [], visibility: 'public' }">
+<div class="max-w-3xl mx-auto space-y-6" x-data="{ showShareModal: false, visibility: 'public' }">
     <div class="flex items-center justify-between">
         <div>
             <h2 class="text-lg font-bold text-gray-900">Daily Summary</h2>
@@ -55,8 +55,15 @@
                     <span class="material-symbols-outlined text-[20px]">close</span>
                 </button>
             </div>
-            <form action="{{ route('reports.share', $report) }}" method="POST" class="p-5 space-y-4">
+            <form action="{{ route('reports.share', $report) }}" method="POST" class="p-5 space-y-4"
+                  @submit.prevent="
+                      let hidden = [];
+                      document.querySelectorAll('.task-checkbox:not(:checked)').forEach(cb => hidden.push(cb.value));
+                      document.getElementById('hiddenTaskIds').value = JSON.stringify(hidden);
+                      $el.submit();
+                  ">
                 @csrf
+                <input type="hidden" name="hidden_task_ids" id="hiddenTaskIds" value="[]">
 
                 <div>
                     <label class="block text-xs font-medium text-gray-500 mb-1.5">Visibility</label>
@@ -83,13 +90,13 @@
                 </div>
 
                 <div>
-                    <label class="block text-xs font-medium text-gray-500 mb-1.5">Tasks (uncheck to hide as asterisks)</label>
+                    <label class="block text-xs font-medium text-gray-500 mb-1.5">Tasks (checked = shown in post, unchecked = hidden)</label>
                     <div class="space-y-1.5 max-h-48 overflow-y-auto">
                         @foreach ($tasksData as $task)
                             @php $taskId = $task['id'] ?? 'task_' . $loop->index; @endphp
                             <label class="flex items-center gap-2.5 p-2 rounded-lg border border-gray-100 cursor-pointer hover:bg-gray-50 transition-colors">
-                                <input type="checkbox" name="hidden_task_ids[]" value="{{ $taskId }}"
-                                       class="rounded border-gray-300 text-primary focus:ring-primary/20">
+                                <input type="checkbox" value="{{ $taskId }}" checked
+                                       class="task-checkbox rounded border-gray-300 text-primary focus:ring-primary/20">
                                 <div class="flex-1 min-w-0">
                                     <p class="text-sm font-medium text-gray-900">{{ $task['title'] ?? 'Task' }}</p>
                                     <p class="text-[11px] text-gray-400">
@@ -99,14 +106,14 @@
                                         @endif
                                     </p>
                                 </div>
-                                <span class="text-xs font-medium text-gray-400">Hide</span>
+                                <span class="text-xs font-medium text-gray-400">Show</span>
                             </label>
                         @endforeach
                     </div>
                 </div>
 
                 <div class="bg-gray-50 rounded-lg p-3">
-                    <p class="text-xs text-gray-500">Your progress will be shared as a post on the Feed. Hidden tasks will appear as asterisks.</p>
+                    <p class="text-xs text-gray-500">Your progress will be shared as a post on the Feed with an AI-generated personal message. Unchecked tasks will be hidden.</p>
                 </div>
 
                 <div class="flex items-center gap-3 pt-2">

@@ -503,24 +503,7 @@ PROMPT;
         });
         }
 
-        $this->tryGenerateDailyReport($user);
-    }
-
-    protected function tryGenerateDailyReport(?User $user): void
-    {
-        if (!$user) return;
-
-        try {
-            $service = app(DailyReportService::class);
-            if ($service->allTasksDoneForToday($user)) {
-                $service->generateForUser($user);
-            }
-        } catch (\Exception $e) {
-            Log::error("VapiWebhook: Failed to generate daily report", [
-                'message' => $e->getMessage(),
-                'user_id' => $user->id,
-            ]);
-        }
+        // Daily report generation is now triggered manually by the user
     }
 
     protected function createMissedCallNotification(Call $call, string $callType): void

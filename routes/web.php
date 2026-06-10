@@ -98,12 +98,14 @@ Route::middleware('auth')->group(function () {
     Route::post('/tasks',                  [TaskController::class, 'store'])->name('tasks.store');
     Route::put('/tasks/{task}',            [TaskController::class, 'update'])->name('tasks.update');
     Route::post('/tasks/{task}/complete',  [TaskController::class, 'complete'])->name('tasks.complete');
+    Route::post('/tasks/mark-day-completed', [TaskController::class, 'markDayCompleted'])->name('tasks.mark-day-completed');
     Route::delete('/tasks/{task}',         [TaskController::class, 'destroy'])->name('tasks.destroy');
 
     // Calls
-    Route::get('/calls',         [CallController::class, 'index'])->name('calls.index');
-    Route::get('/calls/{call}',  [CallController::class, 'show'])->name('calls.show');
-    Route::post('/calls/request', [CallController::class, 'requestCall'])->name('calls.request');
+    Route::get('/calls',                    [CallController::class, 'index'])->name('calls.index');
+    Route::get('/calls/{call}',             [CallController::class, 'show'])->name('calls.show');
+    Route::get('/calls/{call}/transcript',  [CallController::class, 'downloadTranscript'])->name('calls.transcript');
+    Route::post('/calls/request',           [CallController::class, 'requestCall'])->name('calls.request');
 
     // Notifications
     Route::post('/notifications/{notification}/read', [\App\Http\Controllers\NotificationController::class, 'markAsRead'])->name('notifications.read');
@@ -133,6 +135,10 @@ Route::middleware('auth')->group(function () {
 
     // Public Profiles
     Route::get('/profiles/{user}', [PublicProfileController::class, 'show'])->name('profiles.public');
+
+    // Followers
+    Route::get('/followers', [\App\Http\Controllers\FollowController::class, 'followers'])->name('followers.index');
+    Route::post('/followers/{user}/remove', [\App\Http\Controllers\FollowController::class, 'removeFollower'])->name('followers.remove');
 });
 
 // ── Voice Previews ────────────────────────────────────────────────────────────

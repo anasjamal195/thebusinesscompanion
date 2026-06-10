@@ -37,7 +37,9 @@ class CommunityController extends Controller
 
         $userAchievements = $user->achievements()->get();
 
-        return view('community.feed', compact('posts', 'user', 'userAchievements'));
+        $topFollowers = $user->followers()->with('follower')->take(10)->get();
+
+        return view('community.feed', compact('posts', 'user', 'userAchievements', 'topFollowers'));
     }
 
     public function storePost(Request $request)
@@ -69,7 +71,7 @@ class CommunityController extends Controller
         return back()->with('success', 'Post shared with the community!');
     }
 
-    public function like(CommunityPost $post)
+    public function like(Request $request, CommunityPost $post)
     {
         $user = Auth::user();
 
@@ -81,6 +83,9 @@ class CommunityController extends Controller
             $existing->delete();
             $this->reputationService->recalculate($post->user);
 
+            if ($request->wantsJson()) {
+                return response()->json(['liked' => false, 'likes_count' => $post->likes()->count()]);
+            }
             return back()->with('success', 'Like removed.');
         }
 
@@ -91,6 +96,9 @@ class CommunityController extends Controller
 
         $this->reputationService->recalculate($post->user);
 
+        if ($request->wantsJson()) {
+            return response()->json(['liked' => true, 'likes_count' => $post->likes()->count()]);
+        }
         return back()->with('success', 'Post liked!');
     }
 
@@ -102,7 +110,7 @@ class CommunityController extends Controller
 
         $user = Auth::user();
 
-        CommunityComment::create([
+        $comment = CommunityComment::create([
             'post_id' => $post->id,
             'user_id' => $user->id,
             'content' => $validated['content'],
@@ -110,14 +118,29 @@ class CommunityController extends Controller
 
         $this->reputationService->recalculate($post->user);
 
+        if ($request->wantsJson()) {
+            $comment->load('user');
+            return response()->json([
+                'comment' => [
+                    'id' => $comment->id,
+                    'content' => e($comment->content),
+                    'user' => ['name' => e($comment->user->name)],
+                    'created_at' => $comment->created_at->diffForHumans(),
+                ],
+                'comments_count' => $post->comments()->count(),
+            ]);
+        }
         return back()->with('success', 'Comment added!');
     }
 
-    public function follow(User $user)
+    public function follow(Request $request, User $user)
     {
         $authUser = Auth::user();
 
         if ($authUser->id === $user->id) {
+            if ($request->wantsJson()) {
+                return response()->json(['error' => 'You cannot follow yourself.'], 422);
+            }
             return back()->with('error', 'You cannot follow yourself.');
         }
 
@@ -128,6 +151,9 @@ class CommunityController extends Controller
         if ($existing) {
             $existing->delete();
 
+            if ($request->wantsJson()) {
+                return response()->json(['following' => false]);
+            }
             return back()->with('success', 'Unfollowed user.');
         }
 
@@ -138,6 +164,9 @@ class CommunityController extends Controller
 
         $this->reputationService->recalculate($user);
 
+        if ($request->wantsJson()) {
+            return response()->json(['following' => true]);
+        }
         return back()->with('success', 'Now following user!');
     }
 }

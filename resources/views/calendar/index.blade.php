@@ -4,37 +4,37 @@
     $activeNav = 'calendar';
 
     $daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-    $today = now()->setTimezone(auth()->user()->timezone)->toDateString();
-    $prevWeek = $weekStart->copy()->subWeek()->toDateString();
-    $nextWeek = $weekStart->copy()->addWeek()->toDateString();
+    $tz = auth()->user()->timezone;
+    $today = now()->setTimezone($tz)->toDateString();
+
+    $startDayOfWeek = (int) $monthStart->format('N') - 1;
+    $daysInMonth = $monthStart->daysInMonth;
+    $totalCells = ceil(($startDayOfWeek + $daysInMonth) / 7) * 7;
 @endphp
 
 @extends('layouts.app')
 
 @section('content')
 <div class="max-w-5xl mx-auto space-y-6">
-    {{-- Week Navigation --}}
     <div class="flex items-center justify-between">
         <div class="flex items-center gap-3">
-            <h2 class="text-lg font-bold text-gray-900">Weekly View</h2>
-            <span class="text-sm text-gray-500">{{ $weekStart->format('M j') }} — {{ $weekEnd->format('M j, Y') }}</span>
+            <h2 class="text-lg font-bold text-gray-900">{{ $monthStart->format('F Y') }}</h2>
         </div>
         <div class="flex items-center gap-2">
-            <a href="{{ route('calendar.index', ['week_start' => $prevWeek]) }}" class="inline-flex items-center gap-1 px-3 py-2 rounded-lg border border-gray-200 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all">
+            <a href="{{ route('calendar.index', ['month' => $prevMonth, 'year' => $prevYear]) }}" class="inline-flex items-center gap-1 px-3 py-2 rounded-lg border border-gray-200 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all">
                 <span class="material-symbols-outlined text-[16px]">chevron_left</span>
                 Prev
             </a>
             <a href="{{ route('calendar.index') }}" class="inline-flex items-center gap-1 px-3 py-2 rounded-lg border border-gray-200 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all">
                 Today
             </a>
-            <a href="{{ route('calendar.index', ['week_start' => $nextWeek]) }}" class="inline-flex items-center gap-1 px-3 py-2 rounded-lg border border-gray-200 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all">
+            <a href="{{ route('calendar.index', ['month' => $nextMonth, 'year' => $nextYear]) }}" class="inline-flex items-center gap-1 px-3 py-2 rounded-lg border border-gray-200 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all">
                 Next
                 <span class="material-symbols-outlined text-[16px]">chevron_right</span>
             </a>
         </div>
     </div>
 
-    {{-- Week Grid --}}
     <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
         <div class="grid grid-cols-7 border-b border-gray-100">
             @foreach ($daysOfWeek as $day)
@@ -45,88 +45,142 @@
         </div>
 
         <div class="grid grid-cols-7 divide-x divide-gray-100">
-            @for ($i = 0; $i < 7; $i++)
+            @for ($i = 0; $i < $totalCells; $i++)
                 @php
-                    $date = $weekStart->copy()->addDays($i);
-                    $dateStr = $date->toDateString();
-                    $dayTasks = $tasks->get($dateStr, collect());
+                    $dayNum = $i - $startDayOfWeek + 1;
+                    $isInMonth = $dayNum >= 1 && $dayNum <= $daysInMonth;
+                    $dateStr = $isInMonth ? $monthStart->copy()->setDay($dayNum)->toDateString() : null;
+                    $dayTasks = $isInMonth && isset($tasks[$dateStr]) ? $tasks[$dateStr] : collect();
                     $isToday = $dateStr === $today;
-                    $isPast = $date->isPast() && !$isToday;
-                    $completedCount = $dayTasks->where('status', 'completed')->count();
                     $totalCount = $dayTasks->count();
-                @endphp
-                <div class="min-h-[200px] {{ $isToday ? 'bg-primary/5' : ($isPast ? 'bg-gray-50/50' : 'bg-white') }}">
-                    {{-- Date Header --}}
-                    <div class="px-2.5 py-2 text-center border-b border-gray-50">
-                        <span class="inline-flex items-center justify-center w-7 h-7 rounded-full text-sm font-medium {{ $isToday ? 'bg-primary text-white' : 'text-gray-700' }}">
-                            {{ $date->format('j') }}
-                        </span>
-                        @if($totalCount > 0)
-                            <div class="mt-0.5 flex items-center justify-center gap-0.5">
-                                <span class="text-[10px] font-medium text-green-600">{{ $completedCount }}</span>
-                                <span class="text-[10px] text-gray-300">/</span>
-                                <span class="text-[10px] font-medium text-gray-500">{{ $totalCount }}</span>
-                            </div>
-                        @endif
-                    </div>
+                    $completedCount = $dayTasks->where('status', 'completed')->count();
 
-                    {{-- Tasks --}}
-                    <div class="p-1.5 space-y-1">
-                        @forelse ($dayTasks as $task)
-                            @php
-                                $priorityColor = match ($task->priority) {
-                                    'high' => 'border-l-red-400 bg-red-50',
-                                    'medium' => 'border-l-yellow-400 bg-yellow-50',
-                                    'low' => 'border-l-green-400 bg-green-50',
-                                    default => 'border-l-gray-300 bg-gray-50',
-                                };
-                                $isDone = $task->status === 'completed';
-                            @endphp
-                            <div class="px-2 py-1.5 rounded-md border-l-2 text-xs {{ $priorityColor }} {{ $isDone ? 'opacity-60' : '' }}">
-                                <div class="flex items-center gap-1.5">
-                                    @if($isDone)
-                                        <span class="material-symbols-outlined text-[12px] text-green-600">check_circle</span>
-                                    @elseif($task->status === 'discarded')
-                                        <span class="material-symbols-outlined text-[12px] text-gray-400">cancel</span>
-                                    @else
-                                        <span class="material-symbols-outlined text-[12px] text-gray-400">radio_button_unchecked</span>
-                                    @endif
-                                    <span class="font-medium text-gray-800 {{ $isDone ? 'line-through text-gray-400' : '' }} truncate">
-                                        {{ $task->title }}
-                                    </span>
+                    if ($totalCount > 0) {
+                        if ($completedCount === $totalCount) {
+                            $dotClass = 'bg-green-500';
+                        } elseif ($completedCount > 0) {
+                            $dotClass = 'bg-yellow-500';
+                        } else {
+                            $dotClass = 'bg-red-500';
+                        }
+                    } else {
+                        $dotClass = '';
+                    }
+                @endphp
+                <div class="min-h-[120px] {{ $isToday ? 'bg-primary-fixed' : ($isInMonth ? 'bg-white' : 'bg-gray-50') }} {{ $i % 7 === 6 ? '' : 'border-b border-gray-100' }}">
+                    @if ($isInMonth)
+                        <div class="px-2 py-1.5 text-center">
+                            <span class="inline-flex items-center justify-center w-7 h-7 rounded-full text-sm font-medium {{ $isToday ? 'bg-primary text-white' : 'text-gray-700' }}">
+                                {{ $dayNum }}
+                            </span>
+                            @if ($totalCount > 0)
+                                <div class="mt-1 flex justify-center">
+                                    <span class="w-2.5 h-2.5 rounded-full {{ $dotClass }}"></span>
                                 </div>
-                                @if($task->estimated_minutes)
-                                    <div class="text-[10px] text-gray-400 mt-0.5 ml-[22px]">{{ $task->estimated_minutes }} min</div>
-                                @endif
-                            </div>
-                        @empty
-                            <div class="text-center py-4">
-                                <span class="text-[10px] text-gray-300">No tasks</span>
-                            </div>
-                        @endforelse
-                    </div>
+                            @endif
+                        </div>
+
+                        <div class="px-1.5 space-y-1">
+                            @foreach ($dayTasks as $task)
+                                @php
+                                    $priorityColor = match ($task->priority) {
+                                        'high' => 'border-l-red-400',
+                                        'medium' => 'border-l-yellow-400',
+                                        'low' => 'border-l-green-400',
+                                        default => 'border-l-gray-300',
+                                    };
+                                    $isDone = $task->status === 'completed';
+                                @endphp
+                                <div
+                                    class="px-2 py-1 rounded border-l-2 text-xs cursor-pointer hover:bg-gray-50 transition-all {{ $priorityColor }} {{ $isDone ? 'opacity-60' : '' }}"
+                                    onclick="openModal({{ $task->id }}, '{{ addslashes($task->title) }}', '{{ $task->priority }}', '{{ $task->status }}', '{{ $task->estimated_minutes }}')"
+                                >
+                                    <div class="flex items-center gap-1">
+                                        <span class="truncate font-medium {{ $isDone ? 'line-through text-gray-400' : 'text-gray-800' }}">{{ $task->title }}</span>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
                 </div>
             @endfor
         </div>
     </div>
+</div>
 
-    {{-- Legend --}}
-    <div class="flex items-center gap-4 text-xs text-gray-500">
-        <span class="flex items-center gap-1.5">
-            <span class="w-3 h-0.5 rounded bg-red-400"></span> High
-        </span>
-        <span class="flex items-center gap-1.5">
-            <span class="w-3 h-0.5 rounded bg-yellow-400"></span> Medium
-        </span>
-        <span class="flex items-center gap-1.5">
-            <span class="w-3 h-0.5 rounded bg-green-400"></span> Low
-        </span>
-        <span class="flex items-center gap-1.5 ml-4">
-            <span class="material-symbols-outlined text-[14px] text-green-600">check_circle</span> Completed
-        </span>
-        <span class="flex items-center gap-1.5">
-            <span class="material-symbols-outlined text-[14px] text-gray-400">radio_button_unchecked</span> Pending
-        </span>
+<div id="taskModal" class="fixed inset-0 z-50 hidden" aria-modal="true" role="dialog">
+    <div class="absolute inset-0 bg-black/40" onclick="closeModal()"></div>
+    <div class="relative min-h-screen flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-xl max-w-md w-full p-6 space-y-4">
+            <div class="flex items-center justify-between">
+                <h3 class="text-lg font-semibold text-gray-900" id="modalTitle"></h3>
+                <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+
+            <div class="space-y-3">
+                <div class="flex items-center gap-2 text-sm">
+                    <span class="text-gray-500 w-24">Priority</span>
+                    <span id="modalPriority" class="font-medium text-gray-800"></span>
+                </div>
+                <div class="flex items-center gap-2 text-sm">
+                    <span class="text-gray-500 w-24">Status</span>
+                    <span id="modalStatus" class="font-medium text-gray-800"></span>
+                </div>
+                <div class="flex items-center gap-2 text-sm">
+                    <span class="text-gray-500 w-24">Est. Minutes</span>
+                    <span id="modalMinutes" class="font-medium text-gray-800"></span>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-3 pt-2">
+                <button id="modalCompleteBtn" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-green-600 text-white text-sm font-medium hover:bg-green-700 transition-all">
+                    <span class="material-symbols-outlined text-[16px]">check_circle</span>
+                    Mark Complete
+                </button>
+                <a id="modalEditLink" href="#" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-gray-200 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all">
+                    <span class="material-symbols-outlined text-[16px]">edit</span>
+                    Edit
+                </a>
+            </div>
+        </div>
     </div>
 </div>
+
+<script>
+function openModal(id, title, priority, status, minutes) {
+    document.getElementById('modalTitle').textContent = title;
+    document.getElementById('modalPriority').textContent = priority.charAt(0).toUpperCase() + priority.slice(1);
+    document.getElementById('modalStatus').textContent = status.charAt(0).toUpperCase() + status.slice(1);
+    document.getElementById('modalMinutes').textContent = minutes ? minutes + ' min' : '\u2014';
+    document.getElementById('modalCompleteBtn').setAttribute('data-task-id', id);
+    document.getElementById('modalEditLink').href = '/tasks';
+    document.getElementById('taskModal').classList.remove('hidden');
+}
+
+function closeModal() {
+    document.getElementById('taskModal').classList.add('hidden');
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('modalCompleteBtn').addEventListener('click', function () {
+        var taskId = this.getAttribute('data-task-id');
+        if (!taskId) return;
+        fetch('/tasks/' + taskId + '/complete', {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                'Content-Type': 'application/json',
+            },
+        }).then(function () {
+            location.reload();
+        });
+    });
+
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') closeModal();
+    });
+});
+</script>
 @endsection

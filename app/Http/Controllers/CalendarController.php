@@ -13,20 +13,25 @@ class CalendarController extends Controller
         $user = Auth::user();
         $tz = $user->timezone;
 
-        $weekStart = request('week_start')
-            ? now()->parse(request('week_start'))
-            : now()->setTimezone($tz)->startOfWeek();
+        $month = request('month', now()->setTimezone($tz)->month);
+        $year = request('year', now()->setTimezone($tz)->year);
 
-        $weekEnd = $weekStart->copy()->endOfWeek();
+        $monthStart = now()->setTimezone($tz)->setDay(1)->setMonth($month)->setYear($year)->startOfMonth();
+        $monthEnd = $monthStart->copy()->endOfMonth();
 
         $tasks = Task::where('user_id', $user->id)
-            ->whereBetween('date', [$weekStart->toDateString(), $weekEnd->toDateString()])
+            ->whereBetween('date', [$monthStart->toDateString(), $monthEnd->toDateString()])
             ->orderBy('date')
             ->orderBy('priority', 'desc')
             ->get()
             ->groupBy(fn ($t) => $t->date);
 
-        return view('calendar.index', compact('tasks', 'weekStart', 'weekEnd'));
+        $prevMonth = $monthStart->copy()->subMonth()->month;
+        $prevYear = $monthStart->copy()->subMonth()->year;
+        $nextMonth = $monthStart->copy()->addMonth()->month;
+        $nextYear = $monthStart->copy()->addMonth()->year;
+
+        return view('calendar.index', compact('tasks', 'monthStart', 'monthEnd', 'prevMonth', 'nextMonth', 'prevYear', 'nextYear'));
     }
 
     public function data()

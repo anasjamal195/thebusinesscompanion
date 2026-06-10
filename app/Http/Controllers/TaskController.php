@@ -67,7 +67,7 @@ class TaskController extends Controller
         return back()->with('success', 'Task added successfully.');
     }
 
-    public function complete(Request $request, Task $task, DailyReportService $dailyService)
+    public function complete(Request $request, Task $task)
     {
         abort_unless($task->user_id === $request->user()->id, 404);
 
@@ -75,11 +75,19 @@ class TaskController extends Controller
             'status' => $task->status === 'completed' ? 'pending' : 'completed',
         ]);
 
-        if ($dailyService->allTasksDoneForToday($request->user())) {
-            $dailyService->generateForUser($request->user());
+        return back();
+    }
+
+    public function markDayCompleted(Request $request, DailyReportService $dailyService)
+    {
+        $report = $dailyService->generateForUser($request->user());
+
+        if (!$report) {
+            return back()->with('error', 'No tasks found for today.');
         }
 
-        return back();
+        return redirect()->route('daily-reports.show', $report)
+            ->with('success', 'Day marked as completed! Report generated.');
     }
 
     public function update(Request $request, Task $task)
@@ -91,14 +99,12 @@ class TaskController extends Controller
             'input_text' => ['required', 'string'],
             'estimated_minutes' => ['required', 'integer', 'min:1'],
             'priority' => ['nullable', 'in:low,medium,high'],
+            'status' => ['nullable', 'in:pending,completed,discarded'],
         ]);
 
-        $task->update([
-            ...$validated,
-            'scheduled_followup_time' => now()->addMinutes($validated['estimated_minutes']),
-        ]);
+        $task->update($validated);
 
-        return back();
+        return back()->with('success', 'Task updated successfully.');
     }
 
     public function destroy(Request $request, Task $task)

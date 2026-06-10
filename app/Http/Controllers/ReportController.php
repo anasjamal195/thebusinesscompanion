@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\CommunityPost;
 use App\Models\DailyReport;
 use App\Models\Report;
+use App\Models\User;
 use App\Services\DailyReportService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Barryvdh\DomPDF\Facade\Pdf;
 
 class ReportController extends Controller
@@ -115,31 +117,32 @@ class ReportController extends Controller
 
         $validated = $request->validate([
             'visibility' => 'required|in:public,followers',
-            'hidden_task_ids' => 'nullable|array',
-            'hidden_task_ids.*' => 'integer|exists:tasks,id',
+            'hidden_task_ids' => 'nullable',
         ]);
 
         $user = $request->user();
         $tasksData = $dailyReport->tasks_data ?? [];
-        $hiddenIds = $validated['hidden_task_ids'] ?? [];
+
+        // hidden_task_ids comes as JSON string from the front-end
+        $hiddenIds = [];
+        if (!empty($validated['hidden_task_ids'])) {
+            $decoded = json_decode($validated['hidden_task_ids'], true);
+            if (is_array($decoded)) {
+                $hiddenIds = $decoded;
+            }
+        }
 
         $completedCount = $dailyReport->completed_tasks;
         $totalCount = $dailyReport->total_tasks;
         $score = $totalCount > 0 ? round(($completedCount / $totalCount) * 100) : 0;
 
-        $taskLines = '';
-        foreach ($tasksData as $task) {
-            $taskId = $task['id'] ?? null;
-            $isHidden = in_array($taskId, $hiddenIds);
-            $title = $isHidden ? str_repeat('*', mb_strlen($task['title'] ?? 'Task')) : ($task['title'] ?? 'Task');
-            $status = $isHidden ? '***' : ($task['status'] ?? 'pending');
-            $taskLines .= "  {$title} — {$status}\n";
-        }
+        // Build visible tasks list for the content
+        $visibleTasks = array_filter($tasksData, function ($task) use ($hiddenIds) {
+            return !in_array($task['id'] ?? null, $hiddenIds);
+        });
 
-        $content = "📊 Daily Progress Report — {$dailyReport->report_date->format('M j, Y')}\n\n";
-        $content .= "Completed {$completedCount} of {$totalCount} tasks ({$score}% completion rate)\n\n";
-        $content .= "Tasks:\n{$taskLines}\n";
-        $content .= "{$dailyReport->summary}";
+        // Generate first-person AI content
+        $content = $this->generateShareContent($user, $dailyReport, $completedCount, $totalCount, $score, $visibleTasks, $hiddenIds, $tasksData);
 
         CommunityPost::create([
             'user_id' => $user->id,
@@ -153,10 +156,60 @@ class ReportController extends Controller
                 'completed' => $completedCount,
                 'total' => $totalCount,
                 'score' => $score,
+                'ai_summary' => $dailyReport->summary,
             ],
         ]);
 
         return redirect()->route('community.feed')
             ->with('success', 'Progress shared to feed!');
+    }
+
+    protected function generateShareContent(User $user, DailyReport $report, int $completed, int $total, int $score, array $visibleTasks, array $hiddenIds, array $allTasks): string
+    {
+        $aiSummary = $report->summary ?? '';
+
+        // Try to generate AI first-person content using OpenRouter
+        try {
+            $openRouter = app(\App\Services\OpenRouterService::class);
+            $taskSummary = collect($allTasks)->map(fn($t) => ($t['title'] ?? 'Task') . ' (' . ($t['status'] ?? 'pending') . ')')->implode(', ');
+
+            $hiddenCount = count($hiddenIds);
+            $hiddenNote = $hiddenCount > 0 ? " (with {$hiddenCount} task(s) hidden)" : '';
+
+            $prompt = <<<PROMPT
+You are a user sharing their daily productivity progress on a social feed. Write a warm, first-person sharing post (2-4 sentences) that:
+
+- Starts with "I completed {$completed} of {$total} tasks today{$hiddenNote}!"
+- Mentions the completion score of {$score}%
+- Includes a brief reflection on the day — what went well, or motivation for tomorrow
+- Uses first person ("I", "my", "me")
+- Ends with a positive note or question to engage the community
+- Keep it under 150 words, natural and conversational, no hashtags
+
+Tasks: {$taskSummary}
+
+AI summary: {$aiSummary}
+PROMPT;
+
+            $messages = [
+                ['role' => 'system', 'content' => 'You write short, warm, first-person productivity posts. Output only the post text, no JSON, no extra commentary.'],
+                ['role' => 'user', 'content' => $prompt],
+            ];
+
+            $response = $openRouter->chatCompletion($messages, false, 300);
+            if ($response && $response->successful()) {
+                $aiContent = trim($response->json('choices.0.message.content', ''));
+                if ($aiContent !== '') {
+                    return $aiContent;
+                }
+            }
+        } catch (\Throwable $e) {
+            Log::warning('Failed to generate AI share content, using fallback.', ['error' => $e->getMessage()]);
+        }
+
+        // Fallback first-person content
+        $hiddenNote = count($hiddenIds) > 0 ? ' (some tasks hidden)' : '';
+        $summary = $aiSummary ?: "Keep pushing forward!";
+        return "I completed {$completed} of {$total} tasks today{$hiddenNote} — that's {$score}% done! {$summary}";
     }
 }

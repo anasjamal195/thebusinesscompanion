@@ -17,14 +17,118 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="flex gap-6" x-data="{ showNewPost: false, commentPost: null, selectedType: 'progress' }">
+<div class="flex gap-6" x-data="{
+    showNewPost: false,
+    commentPost: null,
+    selectedType: 'progress',
+    escapeHtml(str) {
+        const el = document.createElement('span');
+        el.textContent = str;
+        return el.innerHTML;
+    },
+    async toggleLike(postId, btn) {
+        const res = await fetch(`/community/${postId}/like`, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name=\"csrf-token\"]').content,
+                'Accept': 'application/json',
+            },
+        });
+        if (!res.ok) return;
+        const data = await res.json();
+        const icon = btn.querySelector('.like-icon');
+        const count = btn.querySelector('.like-count');
+        if (icon) icon.textContent = data.liked ? 'favorite' : 'favorite_border';
+        if (count) count.textContent = data.likes_count;
+        btn.classList.toggle('text-red-500', data.liked);
+        btn.classList.toggle('bg-red-50', data.liked);
+        btn.classList.toggle('text-gray-400', !data.liked);
+        btn.classList.toggle('hover:text-red-500', !data.liked);
+        btn.classList.toggle('hover:bg-red-50', !data.liked);
+    },
+    async submitComment(postId) {
+        const input = document.querySelector(`[data-comment-input=\"${postId}\"]`);
+        if (!input || !input.value.trim()) return;
+        const content = input.value.trim();
+        const res = await fetch(`/community/${postId}/comment`, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name=\"csrf-token\"]').content,
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify({ content }),
+        });
+        if (!res.ok) return;
+        const data = await res.json();
+        input.value = '';
+        const section = document.querySelector(`[data-comments-section=\"${postId}\"]`);
+        if (section && data.comment) {
+            const div = document.createElement('div');
+            div.className = 'flex items-start gap-2.5';
+            div.innerHTML = `<div class='w-7 h-7 rounded-md bg-gray-100 text-gray-500 flex items-center justify-center font-semibold text-xs shrink-0 mt-0.5'>{{ substr(Auth::user()->name, 0, 1) }}</div><div class='flex-1 min-w-0'><div class='bg-gray-50 rounded-lg px-3 py-2'><p class='text-xs font-medium text-gray-900'>${this.escapeHtml('{{ Auth::user()->name }}')}</p><p class='text-sm text-gray-600 mt-0.5'>${this.escapeHtml(data.comment.content)}</p></div><p class='text-[11px] text-gray-400 mt-0.5'>${data.comment.created_at}</p></div>`;
+            section.insertBefore(div, section.lastElementChild);
+        }
+        const countEl = document.querySelector(`[data-comment-count=\"${postId}\"]`);
+        if (countEl) countEl.textContent = data.comments_count;
+    },
+    async toggleFollow(userId, btn) {
+        const res = await fetch(`/community/follow/${userId}`, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name=\"csrf-token\"]').content,
+                'Accept': 'application/json',
+            },
+        });
+        if (!res.ok) return;
+        const data = await res.json();
+        const icon = btn.querySelector('.material-symbols-outlined');
+        const text = btn.querySelector('.follow-text');
+        if (data.following) {
+            icon.textContent = 'check';
+            text.textContent = 'Following';
+        } else {
+            icon.textContent = 'person_add';
+            text.textContent = 'Follow';
+        }
+    },
+}">
     {{-- Left Sidebar --}}
     <div class="hidden lg:block w-56 shrink-0">
-        <div class="sticky top-20 space-y-1">
-            <a href="{{ route('community.feed') }}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-semibold bg-primary/10 text-primary">
-                <span class="material-symbols-outlined text-[20px]">dynamic_feed</span>
-                Feed
-            </a>
+        <div class="sticky top-20 space-y-5">
+            <div class="space-y-1">
+                <a href="{{ route('community.feed') }}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-semibold bg-primary/10 text-primary">
+                    <span class="material-symbols-outlined text-[20px]">dynamic_feed</span>
+                    Feed
+                </a>
+            </div>
+
+            @auth
+            <div class="bg-white rounded-xl border border-gray-200 shadow-sm">
+                <div class="px-4 py-3 border-b border-gray-100">
+                    <h3 class="text-xs font-semibold text-gray-900">My Followers</h3>
+                </div>
+                <div class="p-2 space-y-0.5">
+                    @forelse ($topFollowers as $follow)
+                        @php $follower = $follow->follower; @endphp
+                        <a href="{{ route('profiles.public', $follower) }}" class="flex items-center gap-2 px-2 py-1.5 rounded-lg hover:bg-gray-50 transition-colors group">
+                            <div class="w-7 h-7 rounded-md bg-primary/10 text-primary flex items-center justify-center font-semibold text-xs shrink-0">
+                                {{ substr($follower->name, 0, 1) }}
+                            </div>
+                            <span class="text-xs font-medium text-gray-600 group-hover:text-primary truncate">{{ $follower->name }}</span>
+                        </a>
+                    @empty
+                        <p class="text-xs text-gray-400 px-2 py-2">No followers yet.</p>
+                    @endforelse
+                </div>
+                <div class="px-3 py-2 border-t border-gray-100">
+                    <a href="{{ route('followers.index') }}" class="flex items-center justify-center gap-1.5 text-xs font-medium text-primary hover:text-primary-container transition-colors">
+                        <span class="material-symbols-outlined text-[14px]">manage_accounts</span>
+                        Manage Followers
+                    </a>
+                </div>
+            </div>
+            @endauth
         </div>
     </div>
 
@@ -127,19 +231,9 @@
                             </div>
                         @endif
 
-                        {{-- Report metadata badge --}}
-                        @if($post->daily_report_id && $post->metadata)
-                            <div class="px-4 pb-1">
-                                <span class="inline-flex items-center gap-0.5 text-[10px] font-medium text-primary bg-primary/5 px-1.5 py-0.5 rounded">
-                                    <span class="material-symbols-outlined text-[12px]">summarize</span>
-                                    Daily Report &middot; {{ $post->metadata['completed'] ?? 0 }}/{{ $post->metadata['total'] ?? 0 }} tasks
-                                </span>
-                            </div>
-                        @endif
-
                         {{-- Achievement Badge --}}
                         @if($post->achievement)
-                            <div class="px-4 mb-2 inline-flex items-center gap-1.5 px-3 py-1 rounded-lg" style="background: {{ $post->achievement->badge_color }}12; color: {{ $post->achievement->badge_color }}">
+                            <div class="mx-4 mb-2 inline-flex items-center gap-1.5 px-3 py-1 rounded-lg" style="background: {{ $post->achievement->badge_color }}12; color: {{ $post->achievement->badge_color }}">
                                 <span class="material-symbols-outlined text-[16px]">{{ $post->achievement->icon }}</span>
                                 <span class="text-xs font-medium">{{ $post->achievement->name }}</span>
                             </div>
@@ -147,7 +241,45 @@
 
                         {{-- Post Content --}}
                         <div class="px-4 py-2">
-                            <p class="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">{{ $post->content }}</p>
+                            @if($post->type === 'progress' && $post->metadata)
+                                {{-- Infographic Layout for Progress Posts --}}
+                                <p class="text-sm text-gray-800 leading-relaxed mb-4">{{ $post->content }}</p>
+                                <div class="bg-gradient-to-br from-primary/5 to-blue-50 rounded-xl border border-primary/10 p-4 space-y-4">
+                                    {{-- Stats Row --}}
+                                    <div class="grid grid-cols-3 gap-3">
+                                        <div class="text-center">
+                                            <div class="text-2xl font-bold text-primary">{{ $post->metadata['completed'] ?? 0 }}</div>
+                                            <div class="text-[10px] font-medium uppercase tracking-wider text-gray-400">Done</div>
+                                        </div>
+                                        <div class="text-center">
+                                            <div class="text-2xl font-bold text-gray-700">{{ $post->metadata['total'] ?? 0 }}</div>
+                                            <div class="text-[10px] font-medium uppercase tracking-wider text-gray-400">Total</div>
+                                        </div>
+                                        <div class="text-center">
+                                            <div class="text-2xl font-bold {{ ($post->metadata['score'] ?? 0) >= 80 ? 'text-green-600' : (($post->metadata['score'] ?? 0) >= 50 ? 'text-yellow-600' : 'text-red-500') }}">
+                                                {{ $post->metadata['score'] ?? 0 }}%
+                                            </div>
+                                            <div class="text-[10px] font-medium uppercase tracking-wider text-gray-400">Score</div>
+                                        </div>
+                                    </div>
+
+                                    {{-- Progress Bar --}}
+                                    @php $pct = min(100, max(0, $post->metadata['score'] ?? 0)); @endphp
+                                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                        <div class="h-2.5 rounded-full transition-all duration-500 {{ $pct >= 80 ? 'bg-green-500' : ($pct >= 50 ? 'bg-yellow-500' : 'bg-red-500') }}" style="width: {{ $pct }}%"></div>
+                                    </div>
+
+                                    {{-- AI Summary --}}
+                                    @if($post->metadata['ai_summary'] ?? null)
+                                        <div class="flex items-start gap-2 text-xs text-gray-600 bg-white/60 rounded-lg p-3">
+                                            <span class="material-symbols-outlined text-[16px] text-primary shrink-0 mt-0.5">auto_awesome</span>
+                                            <span>{{ $post->metadata['ai_summary'] }}</span>
+                                        </div>
+                                    @endif
+                                </div>
+                            @else
+                                <p class="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">{{ $post->content }}</p>
+                            @endif
                         </div>
 
                         {{-- Post Image --}}
@@ -159,32 +291,28 @@
 
                         {{-- Actions --}}
                         <div class="flex items-center gap-1 px-4 py-2.5 border-t border-gray-50">
-                            <form action="{{ route('community.like', $post) }}" method="POST" class="inline">
-                                @csrf
-                                <button type="submit" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors {{ $post->isLikedBy($user) ? 'text-red-500 bg-red-50' : 'text-gray-400 hover:text-red-500 hover:bg-red-50' }}">
-                                    <span class="material-symbols-outlined text-[18px]">{{ $post->isLikedBy($user) ? 'favorite' : 'favorite_border' }}</span>
-                                    {{ $post->likes_count ?? $post->likes->count() }}
-                                </button>
-                            </form>
+                            <button @click.prevent="toggleLike({{ $post->id }}, $el)"
+                                class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors {{ $post->isLikedBy($user) ? 'text-red-500 bg-red-50' : 'text-gray-400 hover:text-red-500 hover:bg-red-50' }}">
+                                <span class="material-symbols-outlined text-[18px] like-icon">{{ $post->isLikedBy($user) ? 'favorite' : 'favorite_border' }}</span>
+                                <span class="like-count">{{ $post->likes_count ?? $post->likes->count() }}</span>
+                            </button>
 
                             <button @click="commentPost = commentPost === {{ $post->id }} ? null : {{ $post->id }}" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-sm font-medium text-gray-400 hover:text-primary hover:bg-blue-50 transition-colors">
                                 <span class="material-symbols-outlined text-[18px]">comment</span>
-                                {{ $post->comments_count ?? $post->comments->count() }}
+                                <span data-comment-count="{{ $post->id }}">{{ $post->comments_count ?? $post->comments->count() }}</span>
                             </button>
 
                             @if(Auth::user()->id !== $post->user_id)
-                                <form action="{{ route('community.follow', $post->user) }}" method="POST" class="inline ml-auto">
-                                    @csrf
-                                    <button type="submit" class="text-xs font-medium text-primary hover:text-primary-container transition-colors flex items-center gap-1 px-2 py-1 rounded hover:bg-blue-50">
-                                        <span class="material-symbols-outlined text-[14px]">person_add</span>
-                                        {{ $user->following()->where('following_id', $post->user->id)->exists() ? 'Following' : 'Follow' }}
-                                    </button>
-                                </form>
+                                <button @click.prevent="toggleFollow({{ $post->user->id }}, $el)"
+                                    class="text-xs font-medium text-primary hover:text-primary-container transition-colors flex items-center gap-1 px-2 py-1 rounded hover:bg-blue-50 ml-auto">
+                                    <span class="material-symbols-outlined text-[14px]">{{ $user->following()->where('following_id', $post->user->id)->exists() ? 'check' : 'person_add' }}</span>
+                                    <span class="follow-text">{{ $user->following()->where('following_id', $post->user->id)->exists() ? 'Following' : 'Follow' }}</span>
+                                </button>
                             @endif
                         </div>
 
                         {{-- Comments Section --}}
-                        <div x-show="commentPost === {{ $post->id }}" x-cloak class="border-t border-gray-100 px-4 py-4 space-y-3">
+                        <div x-show="commentPost === {{ $post->id }}" x-cloak class="border-t border-gray-100 px-4 py-4 space-y-3" data-comments-section="{{ $post->id }}">
                             @foreach ($post->comments as $comment)
                                 <div class="flex items-start gap-2.5">
                                     <div class="w-7 h-7 rounded-md bg-gray-100 text-gray-500 flex items-center justify-center font-semibold text-xs shrink-0 mt-0.5">
@@ -200,9 +328,9 @@
                                 </div>
                             @endforeach
 
-                            <form action="{{ route('community.comment', $post) }}" method="POST" class="flex items-center gap-2">
+                            <form @submit.prevent="submitComment({{ $post->id }})" class="flex items-center gap-2">
                                 @csrf
-                                <input type="text" name="content" required maxlength="2000" placeholder="Write a comment..." class="flex-1 rounded-lg border-gray-200 bg-gray-50 focus:border-primary focus:ring-2 focus:ring-primary/20 text-sm">
+                                <input type="text" name="content" required maxlength="2000" placeholder="Write a comment..." data-comment-input="{{ $post->id }}" class="flex-1 rounded-lg border-gray-200 bg-gray-50 focus:border-primary focus:ring-2 focus:ring-primary/20 text-sm">
                                 <button type="submit" class="px-3 py-2 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-primary-container transition-all shadow-sm">
                                     <span class="material-symbols-outlined text-[18px]">send</span>
                                 </button>

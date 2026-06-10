@@ -17,12 +17,23 @@ class CallController extends Controller
      */
     public function index()
     {
+        $rate = (float) MonetizationSetting::getInstance()->per_minute_rate;
+
         $calls = auth()->user()->calls()
             ->latest()
             ->paginate(10);
 
+        $calls->getCollection()->transform(function ($call) use ($rate) {
+            $call->cost = $call->duration ? round(($call->duration / 60) * $rate, 2) : 0;
+            return $call;
+        });
+
+        $totalCost = $calls->getCollection()->sum('cost');
+
         return view('calls.index', [
             'calls' => $calls,
+            'totalCost' => $totalCost,
+            'perMinuteRate' => $rate,
             'activeNav' => 'calls',
             'pageTitle' => 'Call Logs'
         ]);
@@ -104,5 +115,16 @@ class CallController extends Controller
         }
 
         return back()->withErrors(['error' => 'Failed to initiate call. Please try again.']);
+    }
+
+    public function downloadTranscript(Call $call)
+    {
+        $this->authorize('view', $call);
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('calls.pdf', [
+            'call' => $call,
+        ])->setPaper('a4');
+
+        return $pdf->download('transcript-call-' . $call->id . '.pdf');
     }
 }
