@@ -17,84 +17,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="flex gap-6" x-data="{
-    showNewPost: false,
-    commentPost: null,
-    selectedType: 'progress',
-    userName: @json(Auth::user()->name),
-    userInitial: @json(substr(Auth::user()->name, 0, 1)),
-    escapeHtml(str) {
-        const el = document.createElement('span');
-        el.textContent = str;
-        return el.innerHTML;
-    },
-    async toggleLike(postId, btn) {
-        const res = await fetch(`/community/${postId}/like`, {
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name=\"csrf-token\"]').content,
-                'Accept': 'application/json',
-            },
-        });
-        if (!res.ok) return;
-        const data = await res.json();
-        const icon = btn.querySelector('.like-icon');
-        const count = btn.querySelector('.like-count');
-        if (icon) icon.textContent = data.liked ? 'favorite' : 'favorite_border';
-        if (count) count.textContent = data.likes_count;
-        btn.classList.toggle('text-red-500', data.liked);
-        btn.classList.toggle('bg-red-50', data.liked);
-        btn.classList.toggle('text-gray-400', !data.liked);
-        btn.classList.toggle('hover:text-red-500', !data.liked);
-        btn.classList.toggle('hover:bg-red-50', !data.liked);
-    },
-    async submitComment(postId) {
-        const input = document.querySelector(`[data-comment-input=\"${postId}\"]`);
-        if (!input || !input.value.trim()) return;
-        const content = input.value.trim();
-        const res = await fetch(`/community/${postId}/comment`, {
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name=\"csrf-token\"]').content,
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-            },
-            body: JSON.stringify({ content }),
-        });
-        if (!res.ok) return;
-        const data = await res.json();
-        input.value = '';
-        const section = document.querySelector(`[data-comments-section=\"${postId}\"]`);
-        if (section && data.comment) {
-            const div = document.createElement('div');
-            div.className = 'flex items-start gap-2.5';
-            div.innerHTML = `<div class='w-7 h-7 rounded-md bg-gray-100 text-gray-500 flex items-center justify-center font-semibold text-xs shrink-0 mt-0.5'>${this.userInitial}</div><div class='flex-1 min-w-0'><div class='bg-gray-50 rounded-lg px-3 py-2'><p class='text-xs font-medium text-gray-900'>${this.escapeHtml(this.userName)}</p><p class='text-sm text-gray-600 mt-0.5'>${this.escapeHtml(data.comment.content)}</p></div><p class='text-[11px] text-gray-400 mt-0.5'>${data.comment.created_at}</p></div>`;
-            section.insertBefore(div, section.lastElementChild);
-        }
-        const countEl = document.querySelector(`[data-comment-count=\"${postId}\"]`);
-        if (countEl) countEl.textContent = data.comments_count;
-    },
-    async toggleFollow(userId, btn) {
-        const res = await fetch(`/community/follow/${userId}`, {
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name=\"csrf-token\"]').content,
-                'Accept': 'application/json',
-            },
-        });
-        if (!res.ok) return;
-        const data = await res.json();
-        const icon = btn.querySelector('.material-symbols-outlined');
-        const text = btn.querySelector('.follow-text');
-        if (data.following) {
-            icon.textContent = 'check';
-            text.textContent = 'Following';
-        } else {
-            icon.textContent = 'person_add';
-            text.textContent = 'Follow';
-        }
-    },
-}">
+<div class="flex gap-6" x-data="feedComponent()">
     {{-- Left Sidebar --}}
     <div class="hidden lg:block w-56 shrink-0">
         <div class="sticky top-20 space-y-5">
@@ -398,4 +321,89 @@
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('alpine:init', function () {
+    Alpine.data('feedComponent', function () {
+        return {
+            showNewPost: false,
+            commentPost: null,
+            selectedType: 'progress',
+            userName: @json(Auth::user()->name),
+            userInitial: @json(substr(Auth::user()->name, 0, 1)),
+            escapeHtml(str) {
+                const el = document.createElement('span');
+                el.textContent = str;
+                return el.innerHTML;
+            },
+            async toggleLike(postId, btn) {
+                const res = await fetch(`/community/${postId}/like`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Accept': 'application/json',
+                    },
+                });
+                if (!res.ok) return;
+                const data = await res.json();
+                const icon = btn.querySelector('.like-icon');
+                const count = btn.querySelector('.like-count');
+                if (icon) icon.textContent = data.liked ? 'favorite' : 'favorite_border';
+                if (count) count.textContent = data.likes_count;
+                btn.classList.toggle('text-red-500', data.liked);
+                btn.classList.toggle('bg-red-50', data.liked);
+                btn.classList.toggle('text-gray-400', !data.liked);
+                btn.classList.toggle('hover:text-red-500', !data.liked);
+                btn.classList.toggle('hover:bg-red-50', !data.liked);
+            },
+            async submitComment(postId) {
+                const input = document.querySelector(`[data-comment-input="${postId}"]`);
+                if (!input || !input.value.trim()) return;
+                const content = input.value.trim();
+                const res = await fetch(`/community/${postId}/comment`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                    },
+                    body: JSON.stringify({ content }),
+                });
+                if (!res.ok) return;
+                const data = await res.json();
+                input.value = '';
+                const section = document.querySelector(`[data-comments-section="${postId}"]`);
+                if (section && data.comment) {
+                    const div = document.createElement('div');
+                    div.className = 'flex items-start gap-2.5';
+                    div.innerHTML = `<div class='w-7 h-7 rounded-md bg-gray-100 text-gray-500 flex items-center justify-center font-semibold text-xs shrink-0 mt-0.5'>${this.userInitial}</div><div class='flex-1 min-w-0'><div class='bg-gray-50 rounded-lg px-3 py-2'><p class='text-xs font-medium text-gray-900'>${this.escapeHtml(this.userName)}</p><p class='text-sm text-gray-600 mt-0.5'>${this.escapeHtml(data.comment.content)}</p></div><p class='text-[11px] text-gray-400 mt-0.5'>${data.comment.created_at}</p></div>`;
+                    section.insertBefore(div, section.lastElementChild);
+                }
+                const countEl = document.querySelector(`[data-comment-count="${postId}"]`);
+                if (countEl) countEl.textContent = data.comments_count;
+            },
+            async toggleFollow(userId, btn) {
+                const res = await fetch(`/community/follow/${userId}`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Accept': 'application/json',
+                    },
+                });
+                if (!res.ok) return;
+                const data = await res.json();
+                const icon = btn.querySelector('.material-symbols-outlined');
+                const text = btn.querySelector('.follow-text');
+                if (data.following) {
+                    icon.textContent = 'check';
+                    text.textContent = 'Following';
+                } else {
+                    icon.textContent = 'person_add';
+                    text.textContent = 'Follow';
+                }
+            },
+        };
+    });
+});
+</script>
 @endsection
