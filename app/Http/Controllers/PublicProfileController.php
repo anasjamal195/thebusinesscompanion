@@ -14,8 +14,39 @@ class PublicProfileController extends Controller
 
     public function show(User $user)
     {
+        $authUser = Auth::user();
+        $isFollowing = false;
+
         if ($user->community_participation_mode === 'private' && $user->id !== Auth::id()) {
-            return back()->with('error', 'This user\'s profile is private.');
+            if ($authUser) {
+                $isFollowing = \App\Models\Follow::where('follower_id', $authUser->id)
+                    ->where('following_id', $user->id)
+                    ->where('status', 'accepted')
+                    ->exists();
+            }
+
+            if (!$isFollowing) {
+                $followersCount = $user->followers()->where('status', 'accepted')->count();
+                $followingCount = $user->following()->where('status', 'accepted')->count();
+
+                $achievements = collect();
+                $allPosts = new \Illuminate\Pagination\LengthAwarePaginator([], 0, 10);
+                $streak = 0;
+                $tasksCompleted = 0;
+                $reportsGenerated = 0;
+                $callsAnswered = 0;
+                $badgesEarned = 0;
+                $sharedAchievements = 0;
+                $totalPosts = 0;
+                $mentorInfo = null;
+
+                return view('profiles.public', compact(
+                    'user', 'authUser', 'isFollowing', 'followersCount', 'followingCount',
+                    'achievements', 'allPosts', 'streak', 'tasksCompleted',
+                    'reportsGenerated', 'callsAnswered', 'badgesEarned',
+                    'sharedAchievements', 'totalPosts', 'mentorInfo'
+                ));
+            }
         }
 
         $achievements = $user->achievements()
@@ -33,19 +64,18 @@ class PublicProfileController extends Controller
         $totalPosts = \App\Models\CommunityPost::where('user_id', $user->id)->count();
         $mentorInfo = $user->mentor;
 
-        $followersCount = $user->followers()->count();
-        $followingCount = $user->following()->count();
+        $followersCount = $user->followers()->where('status', 'accepted')->count();
+        $followingCount = $user->following()->where('status', 'accepted')->count();
 
         $allPosts = \App\Models\CommunityPost::with(['comments', 'likes'])
             ->where('user_id', $user->id)
             ->latest()
             ->paginate(10);
 
-        $authUser = Auth::user();
-        $isFollowing = false;
         if ($authUser && $authUser->id !== $user->id) {
             $isFollowing = \App\Models\Follow::where('follower_id', $authUser->id)
                 ->where('following_id', $user->id)
+                ->where('status', 'accepted')
                 ->exists();
         }
 

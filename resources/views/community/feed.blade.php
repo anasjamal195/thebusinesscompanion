@@ -144,6 +144,16 @@
                                 <span class="material-symbols-outlined text-[14px]">{{ $pt['icon'] }}</span>
                                 {{ $pt['label'] }}
                             </span>
+                            @if(Auth::user()->id === $post->user_id)
+                                <div class="flex items-center gap-1 ml-auto">
+                                    <button @click="openEdit({{ $post->id }}, {{ json_encode($post->content) }})" class="text-xs text-gray-400 hover:text-primary p-1 rounded hover:bg-gray-50 transition-colors">
+                                        <span class="material-symbols-outlined text-[16px]">edit</span>
+                                    </button>
+                                    <button @click="deletePost({{ $post->id }})" class="text-xs text-gray-400 hover:text-red-500 p-1 rounded hover:bg-red-50 transition-colors">
+                                        <span class="material-symbols-outlined text-[16px]">delete</span>
+                                    </button>
+                                </div>
+                            @endif
                         </div>
 
                         {{-- Visibility Badge --}}
@@ -166,54 +176,67 @@
 
                         {{-- Post Content --}}
                         <div class="px-4 py-2">
-                            @if($post->type === 'progress' && $post->metadata)
-                                @php
-                                    $pct = min(100, max(0, $post->metadata['score'] ?? 0));
-                                    if ($pct >= 80) {
-                                        $theme = ['card' => 'from-green-50 to-emerald-50', 'border' => 'border-green-200', 'text' => 'text-green-600', 'bar' => 'bg-green-500', 'icon' => 'check_circle'];
-                                    } elseif ($pct >= 50) {
-                                        $theme = ['card' => 'from-amber-50 to-yellow-50', 'border' => 'border-amber-200', 'text' => 'text-amber-600', 'bar' => 'bg-yellow-500', 'icon' => 'trending_up'];
-                                    } else {
-                                        $theme = ['card' => 'from-red-50 to-rose-50', 'border' => 'border-red-200', 'text' => 'text-red-600', 'bar' => 'bg-red-500', 'icon' => 'fiber_manual_record'];
-                                    }
-                                @endphp
-                                {{-- Infographic Layout for Progress Posts --}}
-                                <p class="text-sm text-gray-800 leading-relaxed mb-4">{{ $post->content }}</p>
-                                <div class="bg-gradient-to-br {{ $theme['card'] }} rounded-xl border {{ $theme['border'] }} p-4 space-y-4">
-                                    {{-- Stats Row --}}
-                                    <div class="grid grid-cols-3 gap-3">
-                                        <div class="text-center">
-                                            <div class="text-2xl font-bold {{ $theme['text'] }}">{{ $post->metadata['completed'] ?? 0 }}</div>
-                                            <div class="text-[10px] font-medium uppercase tracking-wider text-gray-400">Done</div>
-                                        </div>
-                                        <div class="text-center">
-                                            <div class="text-2xl font-bold text-gray-700">{{ $post->metadata['total'] ?? 0 }}</div>
-                                            <div class="text-[10px] font-medium uppercase tracking-wider text-gray-400">Total</div>
-                                        </div>
-                                        <div class="text-center">
-                                            <div class="text-2xl font-bold {{ $theme['text'] }}">
-                                                {{ $pct }}%
-                                            </div>
-                                            <div class="text-[10px] font-medium uppercase tracking-wider text-gray-400">Score</div>
-                                        </div>
+                            {{-- Edit mode --}}
+                            @if(Auth::user()->id === $post->user_id)
+                                <div x-show="editPostId === {{ $post->id }}" x-cloak class="space-y-2">
+                                    <textarea x-model="editContent" class="w-full rounded-lg border-gray-200 bg-gray-50 text-sm" rows="3"></textarea>
+                                    <div class="flex gap-2">
+                                        <button @click="saveEdit({{ $post->id }})" class="px-3 py-1.5 rounded-lg bg-primary text-white text-xs font-semibold">Save</button>
+                                        <button @click="cancelEdit()" class="px-3 py-1.5 rounded-lg border border-gray-200 text-xs font-medium text-gray-600">Cancel</button>
                                     </div>
-
-                                    {{-- Progress Bar --}}
-                                    <div class="w-full bg-gray-200 rounded-full h-2.5">
-                                        <div class="h-2.5 rounded-full transition-all duration-500 {{ $theme['bar'] }}" style="width: {{ $pct }}%"></div>
-                                    </div>
-
-                                    {{-- AI Summary --}}
-                                    @if($post->metadata['ai_summary'] ?? null)
-                                        <div class="flex items-start gap-2 text-xs text-gray-600 bg-white/60 rounded-lg p-3">
-                                            <span class="material-symbols-outlined text-[16px] {{ $theme['text'] }} shrink-0 mt-0.5">auto_awesome</span>
-                                            <span>{{ $post->metadata['ai_summary'] }}</span>
-                                        </div>
-                                    @endif
                                 </div>
-                            @else
-                                <p class="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">{{ $post->content }}</p>
                             @endif
+
+                            <div x-show="editPostId !== {{ $post->id }}">
+                                @if($post->type === 'progress' && $post->metadata)
+                                    @php
+                                        $pct = min(100, max(0, $post->metadata['score'] ?? 0));
+                                        if ($pct >= 80) {
+                                            $theme = ['card' => 'from-green-50 to-emerald-50', 'border' => 'border-green-200', 'text' => 'text-green-600', 'bar' => 'bg-green-500', 'icon' => 'check_circle'];
+                                        } elseif ($pct >= 50) {
+                                            $theme = ['card' => 'from-amber-50 to-yellow-50', 'border' => 'border-amber-200', 'text' => 'text-amber-600', 'bar' => 'bg-yellow-500', 'icon' => 'trending_up'];
+                                        } else {
+                                            $theme = ['card' => 'from-red-50 to-rose-50', 'border' => 'border-red-200', 'text' => 'text-red-600', 'bar' => 'bg-red-500', 'icon' => 'fiber_manual_record'];
+                                        }
+                                    @endphp
+                                    {{-- Infographic Layout for Progress Posts --}}
+                                    <p class="text-sm text-gray-800 leading-relaxed mb-4">{{ $post->content }}</p>
+                                    <div class="bg-gradient-to-br {{ $theme['card'] }} rounded-xl border {{ $theme['border'] }} p-4 space-y-4">
+                                        {{-- Stats Row --}}
+                                        <div class="grid grid-cols-3 gap-3">
+                                            <div class="text-center">
+                                                <div class="text-2xl font-bold {{ $theme['text'] }}">{{ $post->metadata['completed'] ?? 0 }}</div>
+                                                <div class="text-[10px] font-medium uppercase tracking-wider text-gray-400">Done</div>
+                                            </div>
+                                            <div class="text-center">
+                                                <div class="text-2xl font-bold text-gray-700">{{ $post->metadata['total'] ?? 0 }}</div>
+                                                <div class="text-[10px] font-medium uppercase tracking-wider text-gray-400">Total</div>
+                                            </div>
+                                            <div class="text-center">
+                                                <div class="text-2xl font-bold {{ $theme['text'] }}">
+                                                    {{ $pct }}%
+                                                </div>
+                                                <div class="text-[10px] font-medium uppercase tracking-wider text-gray-400">Score</div>
+                                            </div>
+                                        </div>
+
+                                        {{-- Progress Bar --}}
+                                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                            <div class="h-2.5 rounded-full transition-all duration-500 {{ $theme['bar'] }}" style="width: {{ $pct }}%"></div>
+                                        </div>
+
+                                        {{-- AI Summary --}}
+                                        @if($post->metadata['ai_summary'] ?? null)
+                                            <div class="flex items-start gap-2 text-xs text-gray-600 bg-white/60 rounded-lg p-3">
+                                                <span class="material-symbols-outlined text-[16px] {{ $theme['text'] }} shrink-0 mt-0.5">auto_awesome</span>
+                                                <span>{{ $post->metadata['ai_summary'] }}</span>
+                                            </div>
+                                        @endif
+                                    </div>
+                                @else
+                                    <p class="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">{{ $post->content }}</p>
+                                @endif
+                            </div>
                         </div>
 
                         {{-- Post Image --}}
@@ -329,6 +352,8 @@ document.addEventListener('alpine:init', function () {
             showNewPost: false,
             commentPost: null,
             selectedType: 'progress',
+            editPostId: null,
+            editContent: '',
             userName: @json(Auth::user()->name),
             userInitial: @json(substr(Auth::user()->name, 0, 1)),
             escapeHtml(str) {
@@ -381,6 +406,40 @@ document.addEventListener('alpine:init', function () {
                 }
                 const countEl = document.querySelector(`[data-comment-count="${postId}"]`);
                 if (countEl) countEl.textContent = data.comments_count;
+            },
+            openEdit(postId, content) {
+                this.editPostId = postId;
+                this.editContent = content;
+            },
+            cancelEdit() {
+                this.editPostId = null;
+                this.editContent = '';
+            },
+            async saveEdit(postId) {
+                if (!this.editContent.trim()) return;
+                const res = await fetch(`/community/${postId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                    },
+                    body: JSON.stringify({ content: this.editContent }),
+                });
+                if (res.ok) {
+                    this.editPostId = null;
+                    location.reload();
+                }
+            },
+            async deletePost(postId) {
+                if (!confirm('Delete this post?')) return;
+                const res = await fetch(`/community/${postId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    },
+                });
+                if (res.ok) location.reload();
             },
             async toggleFollow(userId, btn) {
                 const res = await fetch(`/community/follow/${userId}`, {

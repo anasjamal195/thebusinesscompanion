@@ -69,6 +69,13 @@
                     {{ $user->calling_preference === 'app' ? 'Call on App' : 'Request Call' }}
                 </button>
             </form>
+            <form action="{{ route('tasks.mark-day-completed') }}" method="POST">
+                @csrf
+                <button type="submit" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-green-600 text-white text-sm font-semibold hover:bg-green-700 transition-all shadow-sm">
+                    <span class="material-symbols-outlined text-[18px]">celebration</span>
+                    Mark Day Completed
+                </button>
+            </form>
             <button onclick="document.getElementById('newTaskModal').classList.remove('hidden')" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-primary-container transition-all shadow-sm">
                 <span class="material-symbols-outlined text-[18px]">add</span>
                 New Task

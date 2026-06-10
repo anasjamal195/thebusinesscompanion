@@ -7,7 +7,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="max-w-3xl mx-auto space-y-6" x-data="{ tab: 'general' }">
+<div class="max-w-3xl mx-auto space-y-6">
     <div class="flex items-center justify-between">
         <h2 class="text-lg font-bold text-gray-900">Settings</h2>
         @if(session('success'))
@@ -18,20 +18,15 @@
         @endif
     </div>
 
-    {{-- Tabs --}}
-    <div class="flex gap-1 p-1 bg-gray-100 rounded-lg w-fit flex-wrap">
-        <button @click="tab = 'general'" :class="tab === 'general' ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500 hover:text-gray-700'" class="px-4 py-2 rounded-md text-sm font-medium transition-all">General</button>
-        <button @click="tab = 'calling'" :class="tab === 'calling' ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500 hover:text-gray-700'" class="px-4 py-2 rounded-md text-sm font-medium transition-all">Calling</button>
-        <button @click="tab = 'companion'" :class="tab === 'companion' ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500 hover:text-gray-700'" class="px-4 py-2 rounded-md text-sm font-medium transition-all">AI Voice</button>
-        <button @click="tab = 'billing'" :class="tab === 'billing' ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500 hover:text-gray-700'" class="px-4 py-2 rounded-md text-sm font-medium transition-all">Billing</button>
-    </div>
-
     <form action="{{ route('settings.update') }}" method="POST" class="space-y-6">
         @csrf
 
-        {{-- General Tab --}}
-        <div x-show="tab === 'general'" class="bg-white rounded-xl border border-gray-200 shadow-sm p-6 space-y-5">
-            <h3 class="text-base font-semibold text-gray-900">General Information</h3>
+        {{-- General Information --}}
+        <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-6 space-y-5">
+            <div class="flex items-center gap-2.5 pb-4 border-b border-gray-100">
+                <span class="material-symbols-outlined text-[22px] text-primary">person</span>
+                <h3 class="text-base font-semibold text-gray-900">General Information</h3>
+            </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div class="space-y-1.5">
                     <label class="text-xs font-medium text-gray-500">Full Name</label>
@@ -42,11 +37,27 @@
                     <input type="email" name="email" value="{{ old('email', $user->email) }}" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm">
                 </div>
             </div>
+
+            <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-100">
+                <div>
+                    <p class="text-sm font-medium text-gray-900">Private Profile</p>
+                    <p class="text-xs text-gray-500">When private, others can follow you but won't see your details until accepted.</p>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" name="profile_privacy" value="private" class="sr-only peer"
+                           {{ old('profile_privacy', $user->community_participation_mode === 'private' ? 'private' : 'public') === 'private' ? 'checked' : '' }}>
+                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary/20 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                </label>
+                <input type="hidden" name="profile_privacy" id="profile_privacy" value="{{ old('profile_privacy', $user->community_participation_mode === 'private' ? 'private' : 'public') }}">
+            </div>
         </div>
 
-        {{-- Calling Tab --}}
-        <div x-show="tab === 'calling'" class="bg-white rounded-xl border border-gray-200 shadow-sm p-6 space-y-5" x-cloak>
-            <h3 class="text-base font-semibold text-gray-900">Calling Preferences</h3>
+        {{-- Calling Preferences --}}
+        <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-6 space-y-5">
+            <div class="flex items-center gap-2.5 pb-4 border-b border-gray-100">
+                <span class="material-symbols-outlined text-[22px] text-primary">call</span>
+                <h3 class="text-base font-semibold text-gray-900">Calling Preferences</h3>
+            </div>
 
             {{-- Calling Preference --}}
             <div>
@@ -128,11 +139,15 @@
             </div>
         </div>
 
-        {{-- AI Voice Tab --}}
-        <div x-show="tab === 'companion'" class="bg-white rounded-xl border border-gray-200 shadow-sm p-6 space-y-5" x-cloak>
+        {{-- AI Voice --}}
+        <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-6 space-y-5">
+            <div class="flex items-center gap-2.5 pb-4 border-b border-gray-100">
+                <span class="material-symbols-outlined text-[22px] text-primary">smart_toy</span>
+                <h3 class="text-base font-semibold text-gray-900">AI Voice</h3>
+            </div>
+
             <div>
-                <h3 class="text-base font-semibold text-gray-900">AI Voice Settings</h3>
-                <p class="text-sm text-gray-500 mt-1">Choose the voice for your daily calls.</p>
+                <p class="text-sm text-gray-500">Choose the voice for your daily calls.</p>
             </div>
 
             <input type="hidden" name="voice_id" id="voice_id" value="{{ old('voice_id', $user->voice_id ?? 'cgSgspJ2msm6clMCkdW9') }}">
@@ -172,33 +187,16 @@
             @error('voice_id')
                 <p class="text-sm text-red-500">{{ $message }}</p>
             @enderror
-
-            <script>
-            function selectVoice(voiceId, el) {
-                document.querySelectorAll('.voice-card').forEach(card => {
-                    card.classList.remove('border-primary', 'bg-primary/5');
-                    card.classList.add('border-gray-100', 'bg-gray-50');
-                    const check = card.querySelector('.voice-check');
-                    check.classList.remove('border-primary', 'bg-primary');
-                    check.classList.add('border-gray-300');
-                    check.querySelector('svg').classList.add('hidden');
-                });
-                el.classList.add('border-primary', 'bg-primary/5');
-                el.classList.remove('border-gray-100', 'bg-gray-50');
-                const check = el.querySelector('.voice-check');
-                check.classList.add('border-primary', 'bg-primary');
-                check.classList.remove('border-gray-300');
-                check.querySelector('svg').classList.remove('hidden');
-                document.getElementById('voice_id').value = voiceId;
-            }
-            </script>
         </div>
 
-        {{-- Billing Tab --}}
-        <div x-show="tab === 'billing'" class="bg-white rounded-xl border border-gray-200 shadow-sm p-6 space-y-5" x-cloak>
-            <div>
+        {{-- Billing & Credits --}}
+        <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-6 space-y-5">
+            <div class="flex items-center gap-2.5 pb-4 border-b border-gray-100">
+                <span class="material-symbols-outlined text-[22px] text-primary">payments</span>
                 <h3 class="text-base font-semibold text-gray-900">Billing & Credits</h3>
-                <p class="text-sm text-gray-500 mt-1">Manage your credits and view usage.</p>
+            </div>
+            <div>
+                <p class="text-sm text-gray-500">Manage your credits and view usage.</p>
             </div>
             <div class="bg-primary/5 rounded-xl p-6 border border-primary/10">
                 <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -222,7 +220,7 @@
         </div>
 
         {{-- Save Bar --}}
-        <div class="sticky bottom-6 bg-white/90 backdrop-blur-md rounded-xl border border-gray-200 shadow-lg p-4 flex items-center justify-between gap-4 z-40">
+        <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-4 flex items-center justify-between gap-4">
             <p class="hidden md:block text-sm text-gray-500">Unsaved changes will be lost.</p>
             <button type="submit" class="w-full md:w-auto px-6 py-2.5 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-primary-container transition-all shadow-sm flex items-center justify-center gap-2">
                 <span class="material-symbols-outlined text-[18px]">save</span>
@@ -256,5 +254,25 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 });
+</script>
+
+<script>
+function selectVoice(voiceId, el) {
+    document.querySelectorAll('.voice-card').forEach(card => {
+        card.classList.remove('border-primary', 'bg-primary/5');
+        card.classList.add('border-gray-100', 'bg-gray-50');
+        const check = card.querySelector('.voice-check');
+        check.classList.remove('border-primary', 'bg-primary');
+        check.classList.add('border-gray-300');
+        check.querySelector('svg').classList.add('hidden');
+    });
+    el.classList.add('border-primary', 'bg-primary/5');
+    el.classList.remove('border-gray-100', 'bg-gray-50');
+    const check = el.querySelector('.voice-check');
+    check.classList.add('border-primary', 'bg-primary');
+    check.classList.remove('border-gray-300');
+    check.querySelector('svg').classList.remove('hidden');
+    document.getElementById('voice_id').value = voiceId;
+}
 </script>
 @endsection

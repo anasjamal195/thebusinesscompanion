@@ -74,6 +74,15 @@
                     <span class="material-symbols-outlined text-[16px]">settings</span>
                     Settings
                 </a>
+                @php
+                    $unreadNotifications = Auth::check() ? Auth::user()->notifications()->unread()->count() : 0;
+                @endphp
+                <a href="{{ route('notifications.index') }}" class="relative flex items-center justify-center rounded-lg py-2 px-3 text-xs font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-all">
+                    <span class="material-symbols-outlined text-[20px]">notifications</span>
+                    @if($unreadNotifications > 0)
+                        <span class="absolute -top-0.5 -right-0.5 inline-flex items-center justify-center w-4 h-4 text-[9px] font-bold text-white bg-red-500 rounded-full">{{ $unreadNotifications > 9 ? '9+' : $unreadNotifications }}</span>
+                    @endif
+                </a>
                 <form method="POST" action="{{ route('logout') }}" class="inline">
                     @csrf
                     <button type="submit" class="flex items-center justify-center gap-1.5 rounded-lg py-2 px-3 text-xs font-medium text-gray-500 hover:bg-red-50 hover:text-red-500 transition-all">

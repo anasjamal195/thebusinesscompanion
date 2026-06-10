@@ -52,6 +52,8 @@
                     $dateStr = $isInMonth ? $monthStart->copy()->setDay($dayNum)->toDateString() : null;
                     $dayTasks = $isInMonth && isset($tasks[$dateStr]) ? $tasks[$dateStr] : collect();
                     $isToday = $dateStr === $today;
+                    $isPast = $dateStr && $dateStr < $today;
+                    $isCompleted = $dateStr && in_array($dateStr, $completedDates ?? []);
                     $totalCount = $dayTasks->count();
                     $completedCount = $dayTasks->where('status', 'completed')->count();
 
@@ -66,11 +68,15 @@
                     } else {
                         $dotClass = '';
                     }
+
+                    $cellBg = $isToday ? 'bg-primary-fixed' : ($isInMonth ? 'bg-white' : 'bg-gray-50');
+                    $cellExtra = $isPast ? 'opacity-40' : '';
+                    $completedExtra = $isCompleted && !$isToday ? 'bg-emerald-50' : '';
                 @endphp
-                <div class="min-h-[120px] {{ $isToday ? 'bg-primary-fixed' : ($isInMonth ? 'bg-white' : 'bg-gray-50') }} {{ $i % 7 === 6 ? '' : 'border-b border-gray-100' }}">
+                <div class="min-h-[120px] {{ $cellBg }} {{ $completedExtra }} {{ $cellExtra }} {{ $i % 7 === 6 ? '' : 'border-b border-gray-100' }}">
                     @if ($isInMonth)
                         <div class="px-2 py-1.5 text-center">
-                            <span class="inline-flex items-center justify-center w-7 h-7 rounded-full text-sm font-medium {{ $isToday ? 'bg-primary text-white' : 'text-gray-700' }}">
+                            <span class="inline-flex items-center justify-center w-7 h-7 rounded-full text-sm font-medium {{ $isToday ? 'bg-primary text-white' : ($isPast ? 'text-gray-300' : 'text-gray-700') }}">
                                 {{ $dayNum }}
                             </span>
                             @if ($totalCount > 0)
@@ -80,26 +86,32 @@
                             @endif
                         </div>
 
-                        <div class="px-1.5 space-y-1">
+                        <div class="px-1.5 space-y-1 max-h-[100px] overflow-y-auto">
                             @foreach ($dayTasks as $task)
                                 @php
                                     $priorityColor = match ($task->priority) {
-                                        'high' => 'border-l-red-400',
-                                        'medium' => 'border-l-yellow-400',
-                                        'low' => 'border-l-green-400',
-                                        default => 'border-l-gray-300',
+                                        'high' => 'border-l-red-400 bg-red-50 text-red-700',
+                                        'medium' => 'border-l-amber-400 bg-amber-50 text-amber-700',
+                                        'low' => 'border-l-green-400 bg-green-50 text-green-700',
+                                        default => 'border-l-gray-300 bg-gray-50 text-gray-700',
                                     };
                                     $isDone = $task->status === 'completed';
+                                    $hiddenClass = $loop->index >= 2 ? 'hidden task-extra' : '';
                                 @endphp
                                 <div
-                                    class="px-2 py-1 rounded border-l-2 text-xs cursor-pointer hover:bg-gray-50 transition-all {{ $priorityColor }} {{ $isDone ? 'opacity-60' : '' }}"
+                                    class="px-2 py-1 rounded border-l-2 text-xs cursor-pointer hover:brightness-95 transition-all {{ $priorityColor }} {{ $isDone ? 'opacity-60' : '' }} {{ $hiddenClass }}"
                                     onclick="openModal({{ $task->id }}, '{{ addslashes($task->title) }}', '{{ $task->priority }}', '{{ $task->status }}', '{{ $task->estimated_minutes }}')"
                                 >
                                     <div class="flex items-center gap-1">
-                                        <span class="truncate font-medium {{ $isDone ? 'line-through text-gray-400' : 'text-gray-800' }}">{{ $task->title }}</span>
+                                        <span class="truncate font-medium {{ $isDone ? 'line-through text-gray-400' : '' }}">{{ $task->title }}</span>
                                     </div>
                                 </div>
                             @endforeach
+                            @if ($dayTasks->count() > 2)
+                                <button onclick="this.classList.add('hidden'); this.parentElement.querySelectorAll('.task-extra').forEach(el => el.classList.remove('hidden'))" class="text-xs text-primary font-medium hover:underline">
+                                    +{{ $dayTasks->count() - 2 }} more
+                                </button>
+                            @endif
                         </div>
                     @endif
                 </div>

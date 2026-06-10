@@ -108,6 +108,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/calls/request',           [CallController::class, 'requestCall'])->name('calls.request');
 
     // Notifications
+    Route::get('/notifications', [\App\Http\Controllers\NotificationController::class, 'index'])->name('notifications.index');
     Route::post('/notifications/{notification}/read', [\App\Http\Controllers\NotificationController::class, 'markAsRead'])->name('notifications.read');
 
     // Reports
@@ -129,6 +130,8 @@ Route::middleware('auth')->group(function () {
     // Community (Feed only)
     Route::get('/community', [CommunityController::class, 'feed'])->name('community.feed');
     Route::post('/community/posts', [CommunityController::class, 'storePost'])->name('community.posts.store');
+    Route::put('/community/{post}', [CommunityController::class, 'updatePost'])->name('community.posts.update');
+    Route::delete('/community/{post}', [CommunityController::class, 'destroyPost'])->name('community.posts.destroy');
     Route::post('/community/{post}/like', [CommunityController::class, 'like'])->name('community.like');
     Route::post('/community/{post}/comment', [CommunityController::class, 'comment'])->name('community.comment');
     Route::post('/community/follow/{user}', [CommunityController::class, 'follow'])->name('community.follow');
@@ -139,6 +142,8 @@ Route::middleware('auth')->group(function () {
     // Followers
     Route::get('/followers', [\App\Http\Controllers\FollowController::class, 'followers'])->name('followers.index');
     Route::post('/followers/{user}/remove', [\App\Http\Controllers\FollowController::class, 'removeFollower'])->name('followers.remove');
+    Route::post('/followers/{follow}/accept', [\App\Http\Controllers\FollowController::class, 'acceptFollow'])->name('followers.accept');
+    Route::post('/followers/{follow}/reject', [\App\Http\Controllers\FollowController::class, 'rejectFollow'])->name('followers.reject');
 });
 
 // ── Voice Previews ────────────────────────────────────────────────────────────

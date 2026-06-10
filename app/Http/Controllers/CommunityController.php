@@ -133,6 +133,32 @@ class CommunityController extends Controller
         return back()->with('success', 'Comment added!');
     }
 
+    public function updatePost(Request $request, CommunityPost $post)
+    {
+        if ($post->user_id !== Auth::id()) {
+            abort(404);
+        }
+
+        $validated = $request->validate([
+            'content' => 'required|string|max:5000',
+        ]);
+
+        $post->update(['content' => $validated['content']]);
+
+        return back()->with('success', 'Post updated.');
+    }
+
+    public function destroyPost(CommunityPost $post)
+    {
+        if ($post->user_id !== Auth::id()) {
+            abort(404);
+        }
+
+        $post->delete();
+
+        return back()->with('success', 'Post deleted.');
+    }
+
     public function follow(Request $request, User $user)
     {
         $authUser = Auth::user();

@@ -16,6 +16,29 @@
         </div>
     @endif
 
+    {{-- Private Profile Notice --}}
+    @if($user->community_participation_mode === 'private' && $authUser && $authUser->id !== $user->id && !$isFollowing)
+        <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-6 text-center">
+            <div class="w-16 h-16 rounded-xl bg-primary/10 text-primary flex items-center justify-center font-bold text-2xl mx-auto mb-4">
+                {{ substr($user->name, 0, 1) }}
+            </div>
+            <h2 class="text-xl font-bold text-gray-900">{{ $user->name }}</h2>
+            <p class="text-sm text-gray-500 mt-1">This profile is private. Follow to see their content.</p>
+            @if($authUser)
+                <form action="{{ route('community.follow', $user) }}" method="POST" class="mt-4">
+                    @csrf
+                    <button type="submit" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-primary text-white text-sm font-semibold shadow-sm">
+                        <span class="material-symbols-outlined text-[18px]">person_add</span>
+                        Send Follow Request
+                    </button>
+                </form>
+            @else
+                <a href="{{ route('login') }}" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-primary text-white text-sm font-semibold shadow-sm mt-4">
+                    Sign in to follow
+                </a>
+            @endif
+        </div>
+    @else
     {{-- Profile Header --}}
     <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
         <div class="flex flex-col md:flex-row items-start gap-5">
@@ -216,7 +239,46 @@
                             </span>
                         @endif
                     </div>
-                    <p class="text-sm text-gray-700">{{ Str::limit($post->content, 300) }}</p>
+                    @if($post->type === 'progress' && $post->metadata && isset($post->metadata['score']))
+                        @php
+                            $pct = min(100, max(0, $post->metadata['score'] ?? 0));
+                            if ($pct >= 80) {
+                                $theme = ['card' => 'from-green-50 to-emerald-50', 'border' => 'border-green-200', 'text' => 'text-green-600', 'bar' => 'bg-green-500'];
+                            } elseif ($pct >= 50) {
+                                $theme = ['card' => 'from-amber-50 to-yellow-50', 'border' => 'border-amber-200', 'text' => 'text-amber-600', 'bar' => 'bg-yellow-500'];
+                            } else {
+                                $theme = ['card' => 'from-red-50 to-rose-50', 'border' => 'border-red-200', 'text' => 'text-red-600', 'bar' => 'bg-red-500'];
+                            }
+                        @endphp
+                        <div class="bg-gradient-to-br {{ $theme['card'] }} rounded-xl border {{ $theme['border'] }} p-4 space-y-3">
+                            <div class="grid grid-cols-3 gap-3">
+                                <div class="text-center">
+                                    <div class="text-xl font-bold {{ $theme['text'] }}">{{ $post->metadata['completed'] ?? 0 }}</div>
+                                    <div class="text-[10px] font-medium uppercase tracking-wider text-gray-400">Done</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-xl font-bold text-gray-700">{{ $post->metadata['total'] ?? 0 }}</div>
+                                    <div class="text-[10px] font-medium uppercase tracking-wider text-gray-400">Total</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-xl font-bold {{ $theme['text'] }}">{{ $pct }}%</div>
+                                    <div class="text-[10px] font-medium uppercase tracking-wider text-gray-400">Score</div>
+                                </div>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="h-2 rounded-full transition-all duration-500 {{ $theme['bar'] }}" style="width: {{ $pct }}%"></div>
+                            </div>
+                            @if($post->metadata['ai_summary'] ?? null)
+                                <div class="flex items-start gap-2 text-xs text-gray-600 bg-white/60 rounded-lg p-2.5">
+                                    <span class="material-symbols-outlined text-[14px] {{ $theme['text'] }} shrink-0 mt-0.5">auto_awesome</span>
+                                    <span>{{ $post->metadata['ai_summary'] }}</span>
+                                </div>
+                            @endif
+                            <p class="text-sm text-gray-700 text-xs">{{ Str::limit($post->content, 300) }}</p>
+                        </div>
+                    @else
+                        <p class="text-sm text-gray-700">{{ Str::limit($post->content, 300) }}</p>
+                    @endif
                     <div class="flex items-center gap-3 mt-2 text-[11px] text-gray-400">
                         <span class="flex items-center gap-0.5">
                             <span class="material-symbols-outlined text-[14px]">favorite</span>
@@ -234,6 +296,7 @@
             {{ $allPosts->links() }}
         </div>
     </div>
+    @endif
     @endif
 </div>
 @endsection

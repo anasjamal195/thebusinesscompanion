@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DailyReport;
 use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -26,12 +27,28 @@ class CalendarController extends Controller
             ->get()
             ->groupBy(fn ($t) => $t->date);
 
+        $taskCompletedDates = Task::where('user_id', $user->id)
+            ->whereBetween('date', [$monthStart->toDateString(), $monthEnd->toDateString()])
+            ->selectRaw('date, SUM(CASE WHEN status = "completed" THEN 1 ELSE 0 END) as completed_count, COUNT(*) as total_count')
+            ->groupBy('date')
+            ->havingRaw('completed_count = total_count')
+            ->pluck('date')
+            ->toArray();
+
+        $reportDates = DailyReport::where('user_id', $user->id)
+            ->whereBetween('report_date', [$monthStart->toDateString(), $monthEnd->toDateString()])
+            ->pluck('report_date')
+            ->map(fn ($d) => $d->toDateString())
+            ->toArray();
+
+        $completedDates = array_values(array_unique(array_merge($taskCompletedDates, $reportDates)));
+
         $prevMonth = $monthStart->copy()->subMonth()->month;
         $prevYear = $monthStart->copy()->subMonth()->year;
         $nextMonth = $monthStart->copy()->addMonth()->month;
         $nextYear = $monthStart->copy()->addMonth()->year;
 
-        return view('calendar.index', compact('tasks', 'monthStart', 'monthEnd', 'prevMonth', 'nextMonth', 'prevYear', 'nextYear'));
+        return view('calendar.index', compact('tasks', 'monthStart', 'monthEnd', 'prevMonth', 'nextMonth', 'prevYear', 'nextYear', 'completedDates'));
     }
 
     public function data()

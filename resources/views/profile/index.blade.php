@@ -55,10 +55,14 @@
                 </div>
                 @endif
 
-                <div class="mt-4 pt-4 border-t border-gray-100">
+                <div class="mt-4 pt-4 border-t border-gray-100 flex items-center gap-2 flex-wrap">
                     <a href="{{ route('settings.index') }}" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-gray-200 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-all shadow-sm">
                         <span class="material-symbols-outlined text-[16px]">edit</span>
                         Edit Profile
+                    </a>
+                    <a href="{{ route('profiles.public', auth()->user()) }}" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-gray-200 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-all shadow-sm">
+                        <span class="material-symbols-outlined text-[18px]">public</span>
+                        View Public Profile
                     </a>
                 </div>
             </div>

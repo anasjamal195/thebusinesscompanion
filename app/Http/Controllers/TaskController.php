@@ -20,11 +20,13 @@ class TaskController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
-        $previousTasks = Task::where('user_id', $user->id)
-            ->where('date', '<', $today)
+        $allTasks = Task::where('user_id', $user->id)
             ->orderBy('date', 'desc')
             ->orderByRaw("FIELD(priority, 'high', 'medium', 'low')")
-            ->paginate(25);
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $groupedTasks = $allTasks->groupBy(fn($t) => $t->date ? \Carbon\Carbon::parse($t->date)->format('Y-m-d') : 'no-date');
 
         $stats = [
             'total' => Task::where('user_id', $user->id)->count(),
@@ -39,8 +41,11 @@ class TaskController extends Controller
             'low' => ['bg' => 'bg-green-50', 'text' => 'text-green-700', 'dot' => 'bg-green-500'],
         ];
 
+        $todayCarbon = now()->setTimezone($tz);
+        $yesterdayCarbon = now()->setTimezone($tz)->subDay();
+
         return view('tasks.index', compact(
-            'currentTasks', 'previousTasks', 'stats', 'priorityColors', 'today'
+            'currentTasks', 'groupedTasks', 'stats', 'priorityColors', 'today', 'todayCarbon', 'yesterdayCarbon'
         ));
     }
 

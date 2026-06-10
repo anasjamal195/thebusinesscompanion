@@ -44,7 +44,9 @@ class CallController extends Controller
      */
     public function show(Call $call)
     {
-        $this->authorize('view', $call);
+        if ($call->user_id !== Auth::id()) {
+            abort(404);
+        }
 
         return view('calls.show', [
             'call' => $call,
@@ -119,7 +121,9 @@ class CallController extends Controller
 
     public function downloadTranscript(Call $call)
     {
-        $this->authorize('view', $call);
+        if ($call->user_id !== Auth::id()) {
+            abort(404);
+        }
 
         $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('calls.pdf', [
             'call' => $call,

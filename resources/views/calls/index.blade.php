@@ -17,7 +17,7 @@
     {{-- Stats Row --}}
     <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
         <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-4 flex items-center gap-4">
-            <div class="w-10 h-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
+            <div class="w-10 h-10 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center">
                 <span class="material-symbols-outlined">call</span>
             </div>
             <div>
@@ -73,7 +73,7 @@
                     <tr class="group hover:bg-gray-50 transition-colors">
                         <td class="px-5 py-4">
                             <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform">
+                                <div class="w-10 h-10 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform">
                                     <span class="material-symbols-outlined text-[22px]">smart_toy</span>
                                 </div>
                                 <div>
@@ -117,14 +117,14 @@
                             <div class="flex items-center justify-end gap-1.5">
                                 @if($call->recording_url)
                                     <a href="{{ $call->recording_url }}" target="_blank"
-                                       class="w-8 h-8 rounded-lg bg-white border border-gray-200 shadow-sm flex items-center justify-center text-gray-500 hover:text-primary hover:border-primary/30 transition-all"
+                                       class="w-8 h-8 rounded-lg bg-white border border-gray-200 shadow-sm flex items-center justify-center text-gray-500 hover:text-teal-600 hover:border-teal-300 transition-all"
                                        title="Download Audio">
                                         <span class="material-symbols-outlined text-[16px]">download</span>
                                     </a>
                                 @endif
                                 @if($call->transcript)
                                     <a href="{{ route('calls.transcript', $call) }}"
-                                       class="w-8 h-8 rounded-lg bg-white border border-gray-200 shadow-sm flex items-center justify-center text-gray-500 hover:text-primary hover:border-primary/30 transition-all"
+                                       class="w-8 h-8 rounded-lg bg-white border border-gray-200 shadow-sm flex items-center justify-center text-gray-500 hover:text-teal-600 hover:border-teal-300 transition-all"
                                        title="Download PDF Transcript">
                                         <span class="material-symbols-outlined text-[16px]">picture_as_pdf</span>
                                     </a>
@@ -177,7 +177,7 @@
             </div>
             <div class="flex items-center gap-2">
                 <a id="modal-pdf-link" href="#" target="_blank"
-                   class="hidden text-[10px] font-semibold uppercase tracking-wider text-primary hover:underline flex items-center gap-1">
+                   class="hidden text-[10px] font-semibold uppercase tracking-wider text-teal-600 hover:underline flex items-center gap-1">
                     <span class="material-symbols-outlined text-[14px]">picture_as_pdf</span>
                     Generate PDF Transcript
                 </a>
@@ -189,33 +189,24 @@
 
         {{-- Body --}}
         <div class="flex-grow overflow-y-auto p-6 space-y-6 scrollbar-thin">
-            {{-- WhatsApp-style Voice Note Player --}}
+            {{-- Audio Player --}}
             <div id="modal-audio-container" class="hidden">
                 <div class="bg-gray-50 rounded-2xl p-4 border border-gray-100">
                     <div class="flex items-center gap-3">
-                        <button id="wave-play-btn" onclick="togglePlay()"
-                                class="w-11 h-11 rounded-full bg-primary text-white flex items-center justify-center hover:bg-primary-container transition-colors shadow-sm shrink-0">
-                            <span id="wave-play-icon" class="material-symbols-outlined text-[22px]">play_arrow</span>
-                        </button>
-                        <div class="flex-1 min-w-0">
-                            <div class="flex items-center gap-0.5 h-10" id="waveform-bars">
-                                {{-- Bars injected by JS --}}
-                            </div>
-                            <div class="relative mt-1.5 h-1 bg-gray-200 rounded-full cursor-pointer" id="wave-progress-track" onclick="seekAudio(event)">
-                                <div class="absolute left-0 top-0 h-full bg-primary rounded-full transition-all duration-100" id="wave-progress-fill" style="width: 0%"></div>
-                            </div>
-                        </div>
-                        <span class="text-xs font-mono text-gray-500 tabular-nums shrink-0" id="wave-time">0:00</span>
+                        <span class="text-xs font-semibold uppercase tracking-wider text-teal-600 shrink-0">Listen to Recording</span>
+                    </div>
+                    <div class="mt-2">
+                        <audio id="modal-audio" controls
+                               class="w-full h-10 rounded-lg"></audio>
                     </div>
                 </div>
-                <audio id="modal-audio" preload="metadata" style="display:none"></audio>
             </div>
 
             {{-- Transcript --}}
             <div class="space-y-3">
                 <div class="flex items-center justify-between">
                     <div class="text-[10px] font-semibold uppercase tracking-wider text-gray-400">Transcript</div>
-                    <button onclick="copyTranscript()" class="text-[10px] font-medium text-primary hover:underline uppercase tracking-wider flex items-center gap-1">
+                    <button onclick="copyTranscript()" class="text-[10px] font-medium text-teal-600 hover:underline uppercase tracking-wider flex items-center gap-1">
                         <span class="material-symbols-outlined text-[14px]">content_copy</span>
                         Copy
                     </button>
@@ -233,8 +224,6 @@
 <script>
     const calls = {!! json_encode($calls->items()) !!};
     let currentAudio = null;
-    let waveformBars = [];
-    let animationId = null;
 
     function showDetails(id) {
         const call = calls.find(c => c.id === id);
@@ -258,10 +247,8 @@
         if (call.recording_url) {
             audio.src = call.recording_url;
             audioContainer.classList.remove('hidden');
-            setupWaveform(call.id);
         } else {
             audioContainer.classList.add('hidden');
-            cleanupWaveform();
         }
 
         // Transcript
@@ -276,102 +263,6 @@
         document.body.style.overflow = '';
         const audio = document.getElementById('modal-audio');
         audio.pause();
-        cleanupWaveform();
-    }
-
-    // ── Waveform Player ───────────────────────────────────────────────────────
-
-    function setupWaveform(callId) {
-        cleanupWaveform();
-        const container = document.getElementById('waveform-bars');
-        container.innerHTML = '';
-
-        // Deterministic "random" heights based on call id (for visual consistency)
-        const seed = callId || Math.floor(Math.random() * 10000);
-        const bars = 45;
-        const heights = [];
-        for (let i = 0; i < bars; i++) {
-            const pseudoRand = ((seed * (i + 1) * 13) % 100) / 100;
-            heights.push(15 + pseudoRand * 75);
-        }
-
-        heights.forEach((h, i) => {
-            const bar = document.createElement('div');
-            bar.className = 'wf-bar';
-            bar.style.height = h + '%';
-            bar.style.animationDelay = (i * 0.04) + 's';
-            container.appendChild(bar);
-        });
-
-        waveformBars = container.querySelectorAll('.wf-bar');
-        waveformBars.forEach(b => b.classList.remove('playing'));
-
-        const audio = document.getElementById('modal-audio');
-        audio.ontimeupdate = updateWaveProgress;
-        audio.onended = () => {
-            document.getElementById('wave-play-icon').textContent = 'play_arrow';
-            waveformBars.forEach(b => b.classList.remove('playing'));
-            if (animationId) cancelAnimationFrame(animationId);
-        };
-        audio.onloadedmetadata = () => {
-            updateWaveTime();
-        };
-
-        updateWaveTime();
-        document.getElementById('wave-play-icon').textContent = 'play_arrow';
-    }
-
-    function cleanupWaveform() {
-        waveformBars.forEach(b => b.classList.remove('playing'));
-        if (animationId) cancelAnimationFrame(animationId);
-        animationId = null;
-    }
-
-    function togglePlay() {
-        const audio = document.getElementById('modal-audio');
-        const icon = document.getElementById('wave-play-icon');
-
-        if (audio.paused) {
-            audio.play().then(() => {
-                icon.textContent = 'pause';
-                waveformBars.forEach(b => b.classList.add('playing'));
-            }).catch(() => {});
-        } else {
-            audio.pause();
-            icon.textContent = 'play_arrow';
-            waveformBars.forEach(b => b.classList.remove('playing'));
-            if (animationId) cancelAnimationFrame(animationId);
-        }
-    }
-
-    function updateWaveProgress() {
-        const audio = document.getElementById('modal-audio');
-        if (!audio.duration) return;
-        const pct = (audio.currentTime / audio.duration) * 100;
-        document.getElementById('wave-progress-fill').style.width = pct + '%';
-        updateWaveTime();
-    }
-
-    function updateWaveTime() {
-        const audio = document.getElementById('modal-audio');
-        const t = audio.duration ? audio.currentTime : 0;
-        document.getElementById('wave-time').textContent = formatTime(t);
-    }
-
-    function seekAudio(e) {
-        const track = document.getElementById('wave-progress-track');
-        const rect = track.getBoundingClientRect();
-        const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-        const audio = document.getElementById('modal-audio');
-        if (audio.duration) {
-            audio.currentTime = pct * audio.duration;
-        }
-    }
-
-    function formatTime(secs) {
-        const m = Math.floor(secs / 60);
-        const s = Math.floor(secs % 60);
-        return m + ':' + (s < 10 ? '0' : '') + s;
     }
 
     // ── Chat Transcript ──────────────────────────────────────────────────────
@@ -396,7 +287,7 @@
             const bubble = document.createElement('div');
             bubble.className = 'max-w-[80%] px-3.5 py-2.5 text-sm leading-relaxed rounded-2xl ' +
                 (msg.type === 'user'
-                    ? 'bg-primary text-white rounded-br-md'
+                    ? 'bg-teal-600 text-white rounded-br-md'
                     : msg.type === 'system'
                         ? 'bg-gray-100 text-gray-500 italic text-xs text-center max-w-full rounded-lg'
                         : 'bg-gray-100 text-gray-800 rounded-bl-md'
@@ -470,28 +361,9 @@
     .scrollbar-thin::-webkit-scrollbar { width: 5px; }
     .scrollbar-thin::-webkit-scrollbar-thumb { background: #f1f5f9; border-radius: 99px; }
 
-    /* ── Waveform Bars ────────────────────────────────────────────────────── */
-    #waveform-bars {
-        display: flex;
-        align-items: center;
-        gap: 2px;
-    }
-    .wf-bar {
-        width: 4px;
-        min-height: 4px;
-        border-radius: 3px;
-        background: #00AFF0;
-        opacity: 0.5;
-        transition: opacity 0.2s;
-        transform-origin: bottom;
-    }
-    .wf-bar.playing {
-        opacity: 1;
-        animation: wave-bounce 0.55s ease-in-out infinite alternate;
-    }
-    @keyframes wave-bounce {
-        0%   { transform: scaleY(0.3); }
-        100% { transform: scaleY(1); }
+    /* ── Audio Player ──────────────────────────────────────────────────────── */
+    #modal-audio::-webkit-media-controls-panel {
+        background: #f9fafb;
     }
 
     /* ── Chat Bubbles ──────────────────────────────────────────────────────── */

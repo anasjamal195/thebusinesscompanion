@@ -29,6 +29,7 @@ class SettingsController extends Controller
             'timezone' => 'sometimes|timezone',
             'default_delay_minutes' => 'nullable|integer|min:1',
             'phone_number' => 'nullable|string|regex:/^(\+1\d{10})?$/',
+            'profile_privacy' => 'sometimes|in:public,private',
         ]);
 
         $user->update([
@@ -39,6 +40,7 @@ class SettingsController extends Controller
             'morning_call_time' => $validated['morning_call_time'] ?? $user->morning_call_time,
             'timezone' => $validated['timezone'] ?? $user->timezone,
             'default_delay_minutes' => $validated['default_delay_minutes'] ?? $user->default_delay_minutes,
+            'community_participation_mode' => $validated['profile_privacy'] ?? $user->community_participation_mode,
         ]);
 
         if ($request->has('phone_number')) {
