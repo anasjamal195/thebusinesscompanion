@@ -93,9 +93,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/settings', [SettingsController::class, 'update'])->name('settings.update');
 
     // Tasks
+    Route::get('/tasks',                   [TaskController::class, 'index'])->name('tasks.index');
     Route::post('/tasks',                  [TaskController::class, 'store'])->name('tasks.store');
     Route::put('/tasks/{task}',            [TaskController::class, 'update'])->name('tasks.update');
     Route::post('/tasks/{task}/complete',  [TaskController::class, 'complete'])->name('tasks.complete');
+    Route::delete('/tasks/{task}',         [TaskController::class, 'destroy'])->name('tasks.destroy');
 
     // Calls
     Route::get('/calls',         [CallController::class, 'index'])->name('calls.index');

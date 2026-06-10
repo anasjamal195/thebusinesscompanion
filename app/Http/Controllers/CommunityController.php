@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Services\CommunityReputationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class CommunityController extends Controller
 {
@@ -34,22 +35,36 @@ class CommunityController extends Controller
 
         $posts->loadCount('comments', 'likes');
 
-        return view('community.feed', compact('posts', 'user'));
+        $userAchievements = $user->achievements()
+            ->wherePivot('is_earned', true)
+            ->get();
+
+        return view('community.feed', compact('posts', 'user', 'userAchievements'));
     }
 
     public function storePost(Request $request)
     {
         $validated = $request->validate([
-            'type' => 'required|in:progress,success_story',
+            'type' => 'required|in:progress,success_story,milestone,achievement,challenge_result,tip,question',
             'content' => 'required|string|max:5000',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240',
+            'achievement_id' => 'nullable|exists:achievements,id',
         ]);
 
         $user = Auth::user();
+
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('community-images', 'public');
+        }
 
         CommunityPost::create([
             'user_id' => $user->id,
             'type' => $validated['type'],
             'content' => $validated['content'],
+            'image' => $imagePath,
+            'achievement_id' => $validated['achievement_id'] ?? null,
+            'metadata' => $request->input('metadata', []),
         ]);
 
         return back()->with('success', 'Post shared with the community!');

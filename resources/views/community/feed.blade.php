@@ -8,12 +8,22 @@
 
     $featuredMentors = Mentor::with('user')->inRandomOrder()->take(3)->get();
     $activeChallenges = Challenge::where('end_date', '>=', now())->take(3)->get();
+
+    $postTypeMeta = [
+        'progress' => ['label' => 'Progress', 'icon' => 'trending_up', 'color' => 'bg-blue-50 text-blue-700'],
+        'success_story' => ['label' => 'Success Story', 'icon' => 'emoji_events', 'color' => 'bg-purple-50 text-purple-700'],
+        'milestone' => ['label' => 'Milestone', 'icon' => 'flag', 'color' => 'bg-green-50 text-green-700'],
+        'achievement' => ['label' => 'Achievement', 'icon' => 'stars', 'color' => 'bg-yellow-50 text-yellow-700'],
+        'challenge_result' => ['label' => 'Challenge', 'icon' => 'flag', 'color' => 'bg-orange-50 text-orange-700'],
+        'tip' => ['label' => 'Tip', 'icon' => 'lightbulb', 'color' => 'bg-teal-50 text-teal-700'],
+        'question' => ['label' => 'Question', 'icon' => 'help', 'color' => 'bg-indigo-50 text-indigo-700'],
+    ];
 @endphp
 
 @extends('layouts.app')
 
 @section('content')
-<div class="flex gap-6" x-data="{ showNewPost: false, commentPost: null }">
+<div class="flex gap-6" x-data="{ showNewPost: false, commentPost: null, selectedType: 'progress' }">
     {{-- Left Sidebar --}}
     <div class="hidden lg:block w-56 shrink-0">
         <div class="sticky top-20 space-y-1">
@@ -45,7 +55,7 @@
         <div class="space-y-4">
             {{-- New Post Button --}}
             <div class="bg-white rounded-xl border border-gray-200 shadow-sm">
-                <button @click="showNewPost = !showNewPost" class="w-full flex items-center gap-3 px-4 py-3 text-left">
+                <button @click="showNewPost = !showNewPost; if(!showNewPost) selectedType='progress'" class="w-full flex items-center gap-3 px-4 py-3 text-left">
                     <div class="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center font-semibold text-xs shrink-0">
                         {{ substr(auth()->user()->name, 0, 1) }}
                     </div>
@@ -56,17 +66,44 @@
 
                 {{-- New Post Form --}}
                 <div x-show="showNewPost" x-cloak class="border-t border-gray-100 px-4 py-4">
-                    <form action="{{ route('community.posts.store') }}" method="POST" class="space-y-3">
+                    <form action="{{ route('community.posts.store') }}" method="POST" enctype="multipart/form-data" class="space-y-3">
                         @csrf
-                        <div>
-                            <select name="type" class="text-sm rounded-lg border-gray-200 bg-gray-50 focus:border-primary focus:ring-2 focus:ring-primary/20 w-auto">
-                                <option value="progress">Progress Update</option>
-                                <option value="success_story">Success Story</option>
-                            </select>
+                        <div class="flex items-center gap-2 flex-wrap">
+                            @foreach($postTypeMeta as $typeKey => $typeMeta)
+                            <label class="cursor-pointer">
+                                <input type="radio" name="type" value="{{ $typeKey }}" x-model="selectedType" class="sr-only">
+                                <span class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
+                                      :class="selectedType === '{{ $typeKey }}' ? '{{ $typeMeta['color'] }} ring-1 ring-inset' : 'bg-gray-100 text-gray-500 hover:bg-gray-200'">
+                                    <span class="material-symbols-outlined text-[14px]">{{ $typeMeta['icon'] }}</span>
+                                    {{ $typeMeta['label'] }}
+                                </span>
+                            </label>
+                            @endforeach
                         </div>
+
                         <div>
                             <textarea name="content" rows="4" required maxlength="5000" class="w-full rounded-lg border-gray-200 bg-gray-50 focus:border-primary focus:ring-2 focus:ring-primary/20 text-sm resize-none" placeholder="What's on your mind?"></textarea>
                         </div>
+
+                        {{-- Achievement selector --}}
+                        <template x-if="selectedType === 'achievement'">
+                            <div>
+                                <label class="block text-xs font-medium text-gray-500 mb-1">Select Achievement</label>
+                                <select name="achievement_id" class="w-full rounded-lg border-gray-200 bg-gray-50 focus:border-primary focus:ring-2 focus:ring-primary/20 text-sm">
+                                    <option value="">Choose...</option>
+                                    @foreach($userAchievements as $ach)
+                                        <option value="{{ $ach->id }}">{{ $ach->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </template>
+
+                        {{-- Image upload --}}
+                        <div>
+                            <label class="block text-xs font-medium text-gray-500 mb-1">Add Image (optional)</label>
+                            <input type="file" name="image" accept="image/jpeg,image/png,image/gif,image/webp" class="w-full text-sm text-gray-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-medium file:bg-primary/10 file:text-primary hover:file:bg-primary/20 transition-colors">
+                        </div>
+
                         <div class="flex items-center justify-between">
                             <p class="text-xs text-gray-400">Share your journey with the community</p>
                             <button type="submit" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-primary-container transition-all shadow-sm">
@@ -81,6 +118,9 @@
             {{-- Feed --}}
             <div class="space-y-4">
                 @forelse ($posts as $post)
+                    @php
+                        $pt = $postTypeMeta[$post->type] ?? ['label' => ucfirst($post->type), 'icon' => 'article', 'color' => 'bg-gray-50 text-gray-700'];
+                    @endphp
                     <div class="bg-white rounded-xl border border-gray-200 shadow-sm">
                         {{-- Post Header --}}
                         <div class="flex items-center justify-between px-4 pt-4 pb-2">
@@ -93,13 +133,9 @@
                                     <p class="text-xs text-gray-400">{{ $post->created_at->diffForHumans() }}</p>
                                 </div>
                             </a>
-                            <span class="text-[11px] font-medium px-2 py-0.5 rounded-md {{ $post->type === 'achievement' ? 'bg-yellow-50 text-yellow-700' : ($post->type === 'success_story' ? 'bg-purple-50 text-purple-700' : ($post->type === 'challenge_result' ? 'bg-green-50 text-green-700' : 'bg-blue-50 text-blue-700')) }}">
-                                @switch($post->type)
-                                    @case('achievement') Achievement @break
-                                    @case('progress') Progress @break
-                                    @case('success_story') Success Story @break
-                                    @case('challenge_result') Challenge @break
-                                @endswitch
+                            <span class="inline-flex items-center gap-0.5 text-[11px] font-medium px-2 py-0.5 rounded-md {{ $pt['color'] }}">
+                                <span class="material-symbols-outlined text-[14px]">{{ $pt['icon'] }}</span>
+                                {{ $pt['label'] }}
                             </span>
                         </div>
 
@@ -115,6 +151,13 @@
                         <div class="px-4 py-2">
                             <p class="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">{{ $post->content }}</p>
                         </div>
+
+                        {{-- Post Image --}}
+                        @if($post->image)
+                            <div class="px-4 pb-2">
+                                <img src="{{ asset('storage/' . $post->image) }}" alt="Post image" class="rounded-lg w-full max-h-96 object-cover border border-gray-100" loading="lazy">
+                            </div>
+                        @endif
 
                         {{-- Actions --}}
                         <div class="flex items-center gap-1 px-4 py-2.5 border-t border-gray-50">
@@ -186,7 +229,6 @@
     {{-- Right Sidebar --}}
     <div class="hidden xl:block w-72 shrink-0">
         <div class="sticky top-20 space-y-5">
-            {{-- Suggested Mentors --}}
             @if($featuredMentors->isNotEmpty())
             <div class="bg-white rounded-xl border border-gray-200 shadow-sm">
                 <div class="px-4 py-3 border-b border-gray-100">
@@ -211,7 +253,6 @@
             </div>
             @endif
 
-            {{-- Active Challenges --}}
             @if($activeChallenges->isNotEmpty())
             <div class="bg-white rounded-xl border border-gray-200 shadow-sm">
                 <div class="px-4 py-3 border-b border-gray-100">
@@ -236,7 +277,6 @@
             </div>
             @endif
 
-            {{-- Quick Links --}}
             <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-4">
                 <h3 class="text-sm font-semibold text-gray-900 mb-3">Discover</h3>
                 <div class="space-y-2">
@@ -255,7 +295,6 @@
                 </div>
             </div>
 
-            {{-- Community Guidelines --}}
             <div class="text-xs text-gray-400 px-1 space-y-1">
                 <p>Be respectful and supportive. Share your journey and help others grow.</p>
             </div>

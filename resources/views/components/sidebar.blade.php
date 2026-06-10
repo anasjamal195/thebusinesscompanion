@@ -23,7 +23,6 @@
                 'Main' => [
                     ['key' => 'dashboard', 'label' => 'Dashboard', 'icon' => 'grid_view', 'href' => route('dashboard')],
                     ['key' => 'feed', 'label' => 'Feed', 'icon' => 'dynamic_feed', 'href' => route('community.feed')],
-                    ['key' => 'community', 'label' => 'Community', 'icon' => 'groups', 'href' => route('community.feed')],
                 ],
                 'Growth' => [
                     ['key' => 'challenges', 'label' => 'Challenges', 'icon' => 'flag', 'href' => route('challenges.index')],
@@ -32,7 +31,7 @@
                     ['key' => 'hall-of-fame', 'label' => 'Hall of Fame', 'icon' => 'military_tech', 'href' => route('hall-of-fame.index')],
                 ],
                 'Productivity' => [
-                    ['key' => 'tasks', 'label' => 'Tasks', 'icon' => 'checklist', 'href' => route('dashboard')],
+                    ['key' => 'tasks', 'label' => 'Tasks', 'icon' => 'checklist', 'href' => route('tasks.index')],
                     ['key' => 'calls', 'label' => 'Call Logs', 'icon' => 'call_log', 'href' => route('calls.index')],
                     ['key' => 'reports', 'label' => 'Reports', 'icon' => 'summarize', 'href' => route('reports.index')],
                 ],

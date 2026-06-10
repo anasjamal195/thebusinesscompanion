@@ -11,7 +11,7 @@ class CommunityPost extends Model
     protected $table = 'community_posts';
 
     protected $fillable = [
-        'user_id', 'type', 'content', 'achievement_id', 'metadata', 'is_pinned',
+        'user_id', 'type', 'content', 'image', 'achievement_id', 'metadata', 'is_pinned',
     ];
 
     protected $casts = [
