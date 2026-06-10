@@ -140,7 +140,7 @@
                                     <p class="text-xs text-gray-400">{{ $post->created_at->diffForHumans() }}</p>
                                 </div>
                             </a>
-                            <div>
+                            <div style="display: flex;width: 9rem;justify-content: space-between;">
                             @if(Auth::user()->id === $post->user_id)
                                 <div class="flex items-center gap-1">
                                     <button @click="openEdit({{ $post->id }}, $el)" data-content="{{ $post->content }}" class="text-xs text-gray-400 hover:text-primary p-1 rounded hover:bg-gray-50 transition-colors">
