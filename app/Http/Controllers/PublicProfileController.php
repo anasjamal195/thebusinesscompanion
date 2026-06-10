@@ -19,9 +19,7 @@ class PublicProfileController extends Controller
         }
 
         $achievements = $user->achievements()
-            ->withPivot('earned_at', 'is_shared')
-            ->wherePivot('is_shared', true)
-            ->orWhere('user_id', $user->id)
+            ->withPivot(['earned_at', 'is_shared', 'shared_at'])
             ->get();
 
         $streak = $this->achievementService->calculateStreak($user);
@@ -32,13 +30,16 @@ class PublicProfileController extends Controller
         $sharedAchievements = $user->achievements()
             ->wherePivot('is_shared', true)
             ->count();
+        $totalPosts = \App\Models\CommunityPost::where('user_id', $user->id)->count();
+        $mentorInfo = $user->mentor;
 
         $followersCount = $user->followers()->count();
         $followingCount = $user->following()->count();
-        $recentPosts = \App\Models\CommunityPost::where('user_id', $user->id)
+
+        $allPosts = \App\Models\CommunityPost::with(['comments', 'likes'])
+            ->where('user_id', $user->id)
             ->latest()
-            ->take(5)
-            ->get();
+            ->paginate(10);
 
         $authUser = Auth::user();
         $isFollowing = false;
@@ -52,7 +53,7 @@ class PublicProfileController extends Controller
             'user', 'achievements', 'streak', 'tasksCompleted',
             'reportsGenerated', 'callsAnswered', 'badgesEarned',
             'sharedAchievements', 'followersCount', 'followingCount',
-            'recentPosts', 'authUser', 'isFollowing'
+            'allPosts', 'authUser', 'isFollowing', 'mentorInfo', 'totalPosts'
         ));
     }
 }

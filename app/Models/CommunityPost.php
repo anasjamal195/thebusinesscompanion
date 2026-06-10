@@ -12,11 +12,13 @@ class CommunityPost extends Model
 
     protected $fillable = [
         'user_id', 'type', 'content', 'image', 'achievement_id', 'metadata', 'is_pinned',
+        'visibility', 'hidden_tasks', 'daily_report_id',
     ];
 
     protected $casts = [
         'metadata' => 'array',
         'is_pinned' => 'boolean',
+        'hidden_tasks' => 'array',
     ];
 
     public function user(): BelongsTo
@@ -27,6 +29,11 @@ class CommunityPost extends Model
     public function achievement(): BelongsTo
     {
         return $this->belongsTo(Achievement::class);
+    }
+
+    public function dailyReport(): BelongsTo
+    {
+        return $this->belongsTo(DailyReport::class);
     }
 
     public function comments(): HasMany

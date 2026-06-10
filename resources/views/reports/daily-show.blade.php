@@ -8,16 +8,22 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="max-w-3xl mx-auto space-y-6">
+<div class="max-w-3xl mx-auto space-y-6" x-data="{ showShareModal: false, hiddenTasks: [], visibility: 'public' }">
     <div class="flex items-center justify-between">
         <div>
             <h2 class="text-lg font-bold text-gray-900">Daily Summary</h2>
             <p class="text-sm text-gray-500 mt-0.5">{{ $report->report_date->format('l, F j, Y') }}</p>
         </div>
-        <a href="{{ route('reports.index') }}" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-gray-200 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-all shadow-sm">
-            <span class="material-symbols-outlined text-[16px]">arrow_back</span>
-            Back
-        </a>
+        <div class="flex items-center gap-2">
+            <button @click="showShareModal = true" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-primary-container transition-all shadow-sm">
+                <span class="material-symbols-outlined text-[16px]">share</span>
+                Share Progress
+            </button>
+            <a href="{{ route('reports.index') }}" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-gray-200 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-all shadow-sm">
+                <span class="material-symbols-outlined text-[16px]">arrow_back</span>
+                Back
+            </a>
+        </div>
     </div>
 
     {{-- Stats Cards --}}
@@ -37,6 +43,82 @@
         <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-4 text-center">
             <div class="text-2xl font-bold text-gray-400">{{ $report->discarded_tasks }}</div>
             <div class="text-[10px] font-medium uppercase tracking-wider text-gray-400 mt-1">Discarded</div>
+        </div>
+    </div>
+
+    {{-- Share Modal --}}
+    <div x-show="showShareModal" x-cloak class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/20 backdrop-blur-sm" @click.away="showShareModal = false">
+        <div class="bg-white rounded-xl shadow-xl max-w-lg w-full relative border border-gray-200" @click.stop>
+            <div class="flex items-center justify-between px-5 py-4 border-b border-gray-100">
+                <h3 class="font-semibold text-gray-900">Share Your Progress</h3>
+                <button @click="showShareModal = false" class="text-gray-400 hover:text-gray-600 p-1 rounded hover:bg-gray-100 transition-colors">
+                    <span class="material-symbols-outlined text-[20px]">close</span>
+                </button>
+            </div>
+            <form action="{{ route('reports.share', $report) }}" method="POST" class="p-5 space-y-4">
+                @csrf
+
+                <div>
+                    <label class="block text-xs font-medium text-gray-500 mb-1.5">Visibility</label>
+                    <div class="flex gap-2">
+                        <label class="flex-1 flex items-center gap-2.5 p-3 rounded-lg border cursor-pointer transition-colors"
+                               :class="visibility === 'public' ? 'border-primary bg-primary/5' : 'border-gray-200 bg-gray-50 hover:bg-gray-100'">
+                            <input type="radio" name="visibility" value="public" x-model="visibility" class="sr-only">
+                            <span class="material-symbols-outlined text-[20px]" :class="visibility === 'public' ? 'text-primary' : 'text-gray-400'">public</span>
+                            <div>
+                                <p class="text-sm font-medium" :class="visibility === 'public' ? 'text-gray-900' : 'text-gray-600'">Public</p>
+                                <p class="text-[10px] text-gray-400">Visible to everyone</p>
+                            </div>
+                        </label>
+                        <label class="flex-1 flex items-center gap-2.5 p-3 rounded-lg border cursor-pointer transition-colors"
+                               :class="visibility === 'followers' ? 'border-primary bg-primary/5' : 'border-gray-200 bg-gray-50 hover:bg-gray-100'">
+                            <input type="radio" name="visibility" value="followers" x-model="visibility" class="sr-only">
+                            <span class="material-symbols-outlined text-[20px]" :class="visibility === 'followers' ? 'text-primary' : 'text-gray-400'">people</span>
+                            <div>
+                                <p class="text-sm font-medium" :class="visibility === 'followers' ? 'text-gray-900' : 'text-gray-600'">Followers Only</p>
+                                <p class="text-[10px] text-gray-400">Only your followers</p>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-medium text-gray-500 mb-1.5">Tasks (uncheck to hide as asterisks)</label>
+                    <div class="space-y-1.5 max-h-48 overflow-y-auto">
+                        @foreach ($tasksData as $task)
+                            @php $taskId = $task['id'] ?? 'task_' . $loop->index; @endphp
+                            <label class="flex items-center gap-2.5 p-2 rounded-lg border border-gray-100 cursor-pointer hover:bg-gray-50 transition-colors">
+                                <input type="checkbox" name="hidden_task_ids[]" value="{{ $taskId }}"
+                                       class="rounded border-gray-300 text-primary focus:ring-primary/20">
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-sm font-medium text-gray-900">{{ $task['title'] ?? 'Task' }}</p>
+                                    <p class="text-[11px] text-gray-400">
+                                        <span class="capitalize">{{ $task['status'] ?? 'pending' }}</span>
+                                        @if($task['priority'] ?? null)
+                                            &middot; {{ $task['priority'] }}
+                                        @endif
+                                    </p>
+                                </div>
+                                <span class="text-xs font-medium text-gray-400">Hide</span>
+                            </label>
+                        @endforeach
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 rounded-lg p-3">
+                    <p class="text-xs text-gray-500">Your progress will be shared as a post on the Feed. Hidden tasks will appear as asterisks.</p>
+                </div>
+
+                <div class="flex items-center gap-3 pt-2">
+                    <button type="button" @click="showShareModal = false" class="flex-1 px-4 py-2 rounded-lg border border-gray-200 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-all">
+                        Cancel
+                    </button>
+                    <button type="submit" class="flex-1 px-4 py-2 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-primary-container transition-all shadow-sm flex items-center justify-center gap-1.5">
+                        <span class="material-symbols-outlined text-[18px]">dynamic_feed</span>
+                        Share to Feed
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 

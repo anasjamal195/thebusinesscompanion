@@ -1,13 +1,7 @@
 @php
-    use App\Models\Mentor;
-    use App\Models\Challenge;
-
     $title = 'Feed';
     $pageTitle = 'Community Feed';
     $activeNav = 'feed';
-
-    $featuredMentors = Mentor::with('user')->inRandomOrder()->take(3)->get();
-    $activeChallenges = Challenge::where('end_date', '>=', now())->take(3)->get();
 
     $postTypeMeta = [
         'progress' => ['label' => 'Progress', 'icon' => 'trending_up', 'color' => 'bg-blue-50 text-blue-700'],
@@ -30,22 +24,6 @@
             <a href="{{ route('community.feed') }}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-semibold bg-primary/10 text-primary">
                 <span class="material-symbols-outlined text-[20px]">dynamic_feed</span>
                 Feed
-            </a>
-            <a href="{{ route('challenges.index') }}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-colors">
-                <span class="material-symbols-outlined text-[20px]">flag</span>
-                Challenges
-            </a>
-            <a href="{{ route('mentors.index') }}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-colors">
-                <span class="material-symbols-outlined text-[20px]">school</span>
-                Mentors
-            </a>
-            <a href="{{ route('hall-of-fame.index') }}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-colors">
-                <span class="material-symbols-outlined text-[20px]">military_tech</span>
-                Hall of Fame
-            </a>
-            <a href="{{ route('achievements.index') }}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-colors">
-                <span class="material-symbols-outlined text-[20px]">emoji_events</span>
-                Achievements
             </a>
         </div>
     </div>
@@ -139,6 +117,26 @@
                             </span>
                         </div>
 
+                        {{-- Visibility Badge --}}
+                        @if($post->visibility && $post->visibility !== 'public')
+                            <div class="px-4 pb-1">
+                                <span class="inline-flex items-center gap-0.5 text-[10px] font-medium text-gray-400 bg-gray-100 px-1.5 py-0.5 rounded">
+                                    <span class="material-symbols-outlined text-[12px]">people</span>
+                                    Followers only
+                                </span>
+                            </div>
+                        @endif
+
+                        {{-- Report metadata badge --}}
+                        @if($post->daily_report_id && $post->metadata)
+                            <div class="px-4 pb-1">
+                                <span class="inline-flex items-center gap-0.5 text-[10px] font-medium text-primary bg-primary/5 px-1.5 py-0.5 rounded">
+                                    <span class="material-symbols-outlined text-[12px]">summarize</span>
+                                    Daily Report &middot; {{ $post->metadata['completed'] ?? 0 }}/{{ $post->metadata['total'] ?? 0 }} tasks
+                                </span>
+                            </div>
+                        @endif
+
                         {{-- Achievement Badge --}}
                         @if($post->achievement)
                             <div class="px-4 mb-2 inline-flex items-center gap-1.5 px-3 py-1 rounded-lg" style="background: {{ $post->achievement->badge_color }}12; color: {{ $post->achievement->badge_color }}">
@@ -229,71 +227,31 @@
     {{-- Right Sidebar --}}
     <div class="hidden xl:block w-72 shrink-0">
         <div class="sticky top-20 space-y-5">
-            @if($featuredMentors->isNotEmpty())
+            @auth
             <div class="bg-white rounded-xl border border-gray-200 shadow-sm">
                 <div class="px-4 py-3 border-b border-gray-100">
-                    <h3 class="text-sm font-semibold text-gray-900">Featured Mentors</h3>
+                    <h3 class="text-sm font-semibold text-gray-900">Quick Links</h3>
                 </div>
-                <div class="p-3 space-y-2">
-                    @foreach($featuredMentors as $mentor)
-                        <a href="{{ route('mentors.show', $mentor->user) }}" class="flex items-center gap-2.5 px-2 py-2 rounded-lg hover:bg-gray-50 transition-colors group">
-                            <div class="w-8 h-8 rounded-md bg-purple-100 text-purple-600 flex items-center justify-center font-semibold text-xs">
-                                {{ substr($mentor->user->name, 0, 1) }}
-                            </div>
-                            <div class="min-w-0 flex-1">
-                                <p class="text-sm font-medium text-gray-900 group-hover:text-primary transition-colors truncate">{{ $mentor->user->name }}</p>
-                                <p class="text-[11px] text-gray-400">{{ $mentor->specialties[0] ?? 'Mentor' }}</p>
-                            </div>
-                        </a>
-                    @endforeach
-                </div>
-                <div class="px-4 py-2.5 border-t border-gray-100">
-                    <a href="{{ route('mentors.index') }}" class="text-xs font-medium text-primary hover:text-primary-container transition-colors">View all mentors →</a>
-                </div>
-            </div>
-            @endif
-
-            @if($activeChallenges->isNotEmpty())
-            <div class="bg-white rounded-xl border border-gray-200 shadow-sm">
-                <div class="px-4 py-3 border-b border-gray-100">
-                    <h3 class="text-sm font-semibold text-gray-900">Active Challenges</h3>
-                </div>
-                <div class="p-3 space-y-2">
-                    @foreach($activeChallenges as $challenge)
-                        <a href="{{ route('challenges.show', $challenge) }}" class="flex items-center gap-2.5 px-2 py-2 rounded-lg hover:bg-gray-50 transition-colors group">
-                            <span class="w-8 h-8 rounded-md bg-primary/10 text-primary flex items-center justify-center">
-                                <span class="material-symbols-outlined text-[18px]">{{ $challenge->icon }}</span>
-                            </span>
-                            <div class="min-w-0 flex-1">
-                                <p class="text-sm font-medium text-gray-900 group-hover:text-primary transition-colors truncate">{{ $challenge->name }}</p>
-                                <p class="text-[11px] text-gray-400">{{ $challenge->participants_count }} participants</p>
-                            </div>
-                        </a>
-                    @endforeach
-                </div>
-                <div class="px-4 py-2.5 border-t border-gray-100">
-                    <a href="{{ route('challenges.index') }}" class="text-xs font-medium text-primary hover:text-primary-container transition-colors">View all challenges →</a>
-                </div>
-            </div>
-            @endif
-
-            <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-4">
-                <h3 class="text-sm font-semibold text-gray-900 mb-3">Discover</h3>
-                <div class="space-y-2">
-                    <a href="{{ route('hall-of-fame.index') }}" class="flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900 transition-colors">
-                        <span class="material-symbols-outlined text-[18px] text-yellow-500">military_tech</span>
-                        Hall of Fame
+                <div class="p-3 space-y-1">
+                    <a href="{{ route('profile.index') }}" class="flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900 transition-colors">
+                        <span class="material-symbols-outlined text-[18px] text-primary">person</span>
+                        My Profile
                     </a>
-                    <a href="{{ route('achievements.index') }}" class="flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900 transition-colors">
-                        <span class="material-symbols-outlined text-[18px] text-primary">emoji_events</span>
-                        Achievements
+                    <a href="{{ route('calendar.index') }}" class="flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900 transition-colors">
+                        <span class="material-symbols-outlined text-[18px] text-primary">calendar_month</span>
+                        Calendar
                     </a>
                     <a href="{{ route('calls.index') }}" class="flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900 transition-colors">
                         <span class="material-symbols-outlined text-[18px] text-green-500">call_log</span>
                         Call History
                     </a>
+                    <a href="{{ route('reports.index') }}" class="flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900 transition-colors">
+                        <span class="material-symbols-outlined text-[18px] text-primary">summarize</span>
+                        Reports
+                    </a>
                 </div>
             </div>
+            @endauth
 
             <div class="text-xs text-gray-400 px-1 space-y-1">
                 <p>Be respectful and supportive. Share your journey and help others grow.</p>

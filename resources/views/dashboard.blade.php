@@ -265,13 +265,13 @@
                         <span class="material-symbols-outlined text-[20px] text-primary">post_add</span>
                         Share Progress
                     </a>
-                    <a href="{{ route('challenges.index') }}" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors">
-                        <span class="material-symbols-outlined text-[20px] text-primary">flag</span>
-                        Join a Challenge
+                    <a href="{{ route('calendar.index') }}" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors">
+                        <span class="material-symbols-outlined text-[20px] text-primary">calendar_month</span>
+                        View Calendar
                     </a>
-                    <a href="{{ route('mentors.index') }}" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors">
-                        <span class="material-symbols-outlined text-[20px] text-primary">school</span>
-                        Find a Mentor
+                    <a href="{{ route('profile.index') }}" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors">
+                        <span class="material-symbols-outlined text-[20px] text-primary">person</span>
+                        My Profile
                     </a>
                     <a href="{{ route('reports.index') }}" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors">
                         <span class="material-symbols-outlined text-[20px] text-primary">summarize</span>

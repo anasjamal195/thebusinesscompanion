@@ -25,7 +25,7 @@
             <div class="flex-1">
                 <div class="flex items-center gap-2 flex-wrap">
                     <h2 class="text-xl font-bold text-gray-900">{{ $user->name }}</h2>
-                    @if($user->mentor && $user->mentor->is_active)
+                    @if($mentorInfo && $mentorInfo->is_active)
                         <span class="inline-flex items-center gap-0.5 text-[10px] font-medium text-purple-600 bg-purple-100 px-1.5 py-0.5 rounded-md tracking-wider">
                             <span class="material-symbols-outlined text-[14px]">verified</span>
                             Mentor
@@ -35,6 +35,13 @@
                 <p class="text-sm text-gray-500 mt-0.5">Member since {{ $user->created_at->format('M Y') }}</p>
                 @if($user->profile && $user->profile->business_name)
                     <p class="text-sm font-medium text-gray-700 mt-1">{{ $user->profile->business_name }}</p>
+                @endif
+                @if($mentorInfo && $mentorInfo->specialties)
+                    <div class="flex flex-wrap gap-1 mt-2">
+                        @foreach ($mentorInfo->specialties as $specialty)
+                            <span class="text-[10px] font-medium text-purple-600 bg-purple-100 px-1.5 py-0.5 rounded">{{ $specialty }}</span>
+                        @endforeach
+                    </div>
                 @endif
             </div>
             <div class="shrink-0">
@@ -46,12 +53,17 @@
                             {{ $isFollowing ? 'Following' : 'Follow' }}
                         </button>
                     </form>
+                @elseif($authUser && $authUser->id === $user->id)
+                    <a href="{{ route('profile.index') }}" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-gray-200 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-all">
+                        <span class="material-symbols-outlined text-[18px]">edit</span>
+                        Edit Profile
+                    </a>
                 @endif
             </div>
         </div>
 
         {{-- Stats Grid --}}
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6 pt-6 border-t border-gray-100">
+        <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 mt-6 pt-6 border-t border-gray-100">
             <div class="text-center p-3 bg-gray-50 rounded-lg">
                 <p class="text-xl font-bold text-gray-900">{{ $streak }}</p>
                 <p class="text-[10px] font-medium text-gray-400 uppercase tracking-wider">Day Streak</p>
@@ -67,6 +79,10 @@
             <div class="text-center p-3 bg-gray-50 rounded-lg">
                 <p class="text-xl font-bold text-gray-900">{{ $callsAnswered }}</p>
                 <p class="text-[10px] font-medium text-gray-400 uppercase tracking-wider">AI Calls</p>
+            </div>
+            <div class="text-center p-3 bg-gray-50 rounded-lg">
+                <p class="text-xl font-bold text-gray-900">{{ $totalPosts }}</p>
+                <p class="text-[10px] font-medium text-gray-400 uppercase tracking-wider">Posts</p>
             </div>
         </div>
     </div>
@@ -172,25 +188,50 @@
     </div>
     @endif
 
-    {{-- Recent Posts --}}
-    @if($recentPosts->isNotEmpty())
+    {{-- All Posts --}}
+    @if($allPosts->isNotEmpty())
     <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
         <h3 class="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
             <span class="material-symbols-outlined text-[20px] text-primary">forum</span>
-            Recent Activity
+            Posts ({{ $totalPosts }})
         </h3>
         <div class="space-y-3">
-            @foreach ($recentPosts as $post)
+            @foreach ($allPosts as $post)
                 <div class="p-3 bg-gray-50 rounded-lg border border-gray-100">
                     <div class="flex items-center gap-2 mb-1.5">
-                        <span class="text-[10px] font-semibold px-1.5 py-0.5 rounded {{ $post->type === 'achievement' ? 'bg-yellow-50 text-yellow-700' : ($post->type === 'success_story' ? 'bg-purple-50 text-purple-700' : 'bg-blue-50 text-blue-700') }}">
+                        <span class="text-[10px] font-semibold px-1.5 py-0.5 rounded {{ $post->type === 'achievement' ? 'bg-yellow-50 text-yellow-700' : ($post->type === 'success_story' ? 'bg-purple-50 text-purple-700' : ($post->type === 'progress' ? 'bg-blue-50 text-blue-700' : 'bg-gray-100 text-gray-600')) }}">
                             {{ $post->type }}
                         </span>
                         <span class="text-[10px] text-gray-400">{{ $post->created_at->diffForHumans() }}</span>
+                        @if($post->daily_report_id)
+                            <span class="inline-flex items-center gap-0.5 text-[10px] font-medium text-primary bg-primary/5 px-1.5 py-0.5 rounded">
+                                <span class="material-symbols-outlined text-[12px]">summarize</span>
+                                Report
+                            </span>
+                        @endif
+                        @if($post->visibility === 'followers')
+                            <span class="inline-flex items-center gap-0.5 text-[10px] font-medium text-gray-400 bg-gray-100 px-1.5 py-0.5 rounded">
+                                <span class="material-symbols-outlined text-[12px]">people</span>
+                                Followers
+                            </span>
+                        @endif
                     </div>
-                    <p class="text-sm text-gray-700">{{ Str::limit($post->content, 200) }}</p>
+                    <p class="text-sm text-gray-700">{{ Str::limit($post->content, 300) }}</p>
+                    <div class="flex items-center gap-3 mt-2 text-[11px] text-gray-400">
+                        <span class="flex items-center gap-0.5">
+                            <span class="material-symbols-outlined text-[14px]">favorite</span>
+                            {{ $post->likes->count() }}
+                        </span>
+                        <span class="flex items-center gap-0.5">
+                            <span class="material-symbols-outlined text-[14px]">comment</span>
+                            {{ $post->comments->count() }}
+                        </span>
+                    </div>
                 </div>
             @endforeach
+        </div>
+        <div class="mt-4">
+            {{ $allPosts->links() }}
         </div>
     </div>
     @endif

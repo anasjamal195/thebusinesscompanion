@@ -24,20 +24,18 @@ class CommunityController extends Controller
         $followedIds = $user->following()->pluck('follows.following_id')->toArray();
 
         $posts = CommunityPost::with(['user', 'achievement', 'comments.user', 'likes'])
-            ->whereIn('user_id', array_merge($followedIds, [$user->id]))
-            ->orWhere(function ($q) {
-                $q->whereHas('user', function ($uq) {
-                    $uq->where('community_participation_mode', 'social');
-                });
+            ->where(function ($q) use ($user, $followedIds) {
+                $q->whereNull('visibility')
+                  ->orWhere('visibility', 'public')
+                  ->orWhere('user_id', $user->id)
+                  ->orWhereIn('user_id', $followedIds);
             })
             ->latest()
             ->paginate(20);
 
         $posts->loadCount('comments', 'likes');
 
-        $userAchievements = $user->achievements()
-            ->wherePivot('is_earned', true)
-            ->get();
+        $userAchievements = $user->achievements()->get();
 
         return view('community.feed', compact('posts', 'user', 'userAchievements'));
     }
@@ -64,6 +62,7 @@ class CommunityController extends Controller
             'content' => $validated['content'],
             'image' => $imagePath,
             'achievement_id' => $validated['achievement_id'] ?? null,
+            'visibility' => 'public',
             'metadata' => $request->input('metadata', []),
         ]);
 

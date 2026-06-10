@@ -24,14 +24,9 @@
                     ['key' => 'dashboard', 'label' => 'Dashboard', 'icon' => 'grid_view', 'href' => route('dashboard')],
                     ['key' => 'feed', 'label' => 'Feed', 'icon' => 'dynamic_feed', 'href' => route('community.feed')],
                 ],
-                'Growth' => [
-                    ['key' => 'challenges', 'label' => 'Challenges', 'icon' => 'flag', 'href' => route('challenges.index')],
-                    ['key' => 'mentors', 'label' => 'Mentors', 'icon' => 'school', 'href' => route('mentors.index')],
-                    ['key' => 'achievements', 'label' => 'Achievements', 'icon' => 'emoji_events', 'href' => route('achievements.index')],
-                    ['key' => 'hall-of-fame', 'label' => 'Hall of Fame', 'icon' => 'military_tech', 'href' => route('hall-of-fame.index')],
-                ],
                 'Productivity' => [
                     ['key' => 'tasks', 'label' => 'Tasks', 'icon' => 'checklist', 'href' => route('tasks.index')],
+                    ['key' => 'calendar', 'label' => 'Calendar', 'icon' => 'calendar_month', 'href' => route('calendar.index')],
                     ['key' => 'calls', 'label' => 'Call Logs', 'icon' => 'call_log', 'href' => route('calls.index')],
                     ['key' => 'reports', 'label' => 'Reports', 'icon' => 'summarize', 'href' => route('reports.index')],
                 ],
@@ -57,19 +52,24 @@
 
     <div class="border-t border-gray-100 p-3">
         @auth
-            <div class="flex items-center gap-3 px-2 py-2">
+            <a href="{{ route('profile.index') }}" class="flex items-center gap-3 px-2 py-2 rounded-lg hover:bg-gray-50 transition-colors group">
                 <div class="h-8 w-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center font-semibold text-xs shrink-0">
                     {{ substr(auth()->user()->name, 0, 1) }}
                 </div>
                 <div class="min-w-0 flex-1">
-                    <div class="truncate text-sm font-medium text-gray-900">{{ auth()->user()->name }}</div>
+                    <div class="truncate text-sm font-medium text-gray-900 group-hover:text-primary transition-colors">{{ auth()->user()->name }}</div>
                     <div class="flex items-center gap-1 text-[11px] text-gray-400">
                         <span class="material-symbols-outlined text-[12px]">account_balance_wallet</span>
                         {{ number_format(auth()->user()->credits, 2) }}
                     </div>
                 </div>
-            </div>
+                <span class="material-symbols-outlined text-[16px] text-gray-300 group-hover:text-primary transition-colors">chevron_right</span>
+            </a>
             <div class="mt-1 flex items-center gap-1">
+                <a href="{{ route('profile.index') }}" class="flex-1 flex items-center justify-center gap-1.5 rounded-lg py-2 text-xs font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-all">
+                    <span class="material-symbols-outlined text-[16px]">person</span>
+                    Profile
+                </a>
                 <a href="{{ route('settings.index') }}" class="flex-1 flex items-center justify-center gap-1.5 rounded-lg py-2 text-xs font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-all">
                     <span class="material-symbols-outlined text-[16px]">settings</span>
                     Settings
