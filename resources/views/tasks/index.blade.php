@@ -200,8 +200,8 @@
                                 estimated_minutes: {{ $task->estimated_minutes ?? 30 }},
                                 priority: '{{ $task->priority }}',
                                 status: '{{ $task->status }}'
-                            })" class="text-[11px] font-medium text-gray-400 hover:text-primary transition-colors">Edit</button>
-                            <button @click="openDelete({{ $task->id }}, '{{ addslashes($task->title) }}', '{{ route('tasks.destroy', $task) }}')" class="text-[11px] font-medium text-gray-400 hover:text-red-500 transition-colors">Delete</button>
+                            })" class="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[11px] font-medium bg-primary/10 text-primary hover:bg-primary hover:text-white transition-all">Edit</button>
+                            <button @click="openDelete({{ $task->id }}, '{{ addslashes($task->title) }}', '{{ route('tasks.destroy', $task) }}')" class="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[11px] font-medium bg-red-50 text-red-600 hover:bg-red-600 hover:text-white transition-all">Delete</button>
                         </div>
                     </div>
                 </div>
@@ -290,8 +290,8 @@
                                     estimated_minutes: {{ $task->estimated_minutes ?? 30 }},
                                     priority: '{{ $task->priority }}',
                                     status: '{{ $task->status }}'
-                                })" class="text-[11px] font-medium text-gray-400 hover:text-primary transition-colors">Edit</button>
-                                <button @click="openDelete({{ $task->id }}, '{{ addslashes($task->title) }}', '{{ route('tasks.destroy', $task) }}')" class="text-[11px] font-medium text-gray-400 hover:text-red-500 transition-colors">Delete</button>
+                                })" class="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[11px] font-medium bg-primary/10 text-primary hover:bg-primary hover:text-white transition-all">Edit</button>
+                                <button @click="openDelete({{ $task->id }}, '{{ addslashes($task->title) }}', '{{ route('tasks.destroy', $task) }}')" class="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[11px] font-medium bg-red-50 text-red-600 hover:bg-red-600 hover:text-white transition-all">Delete</button>
                             </div>
                         </div>
                     </div>

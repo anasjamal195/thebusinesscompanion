@@ -353,7 +353,7 @@
                 <span class="material-symbols-outlined text-[24px]">delete</span>
             </span>
             <div>
-                <h3 class="text-base font-semibold text-gray-900">Delete {{ deleteTarget === 'post' ? 'Post' : '' }}?</h3>
+                <h3 class="text-base font-semibold text-gray-900">Delete <span x-text="deleteTarget === 'post' ? 'Post' : ''"></span>?</h3>
                 <p class="text-sm text-gray-500">This action cannot be undone.</p>
             </div>
         </div>
