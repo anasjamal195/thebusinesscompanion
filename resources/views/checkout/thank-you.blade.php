@@ -5,17 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Payment &mdash; dialer.best</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: { primary: "#00AFF0" },
-                    fontFamily: { sans: ["Inter", "sans-serif"] },
-                },
-            },
-        }
-    </script>
+    @vite(['resources/css/app.css'])
 </head>
 <body class="bg-gray-50 text-gray-900 font-sans antialiased min-h-screen flex items-center justify-center p-6">
     <div class="w-full max-w-sm text-center">

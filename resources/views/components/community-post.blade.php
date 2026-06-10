@@ -31,7 +31,7 @@
                         @if($interactive)
                             @click="editPostId === {{ $post->id }} ? cancelEdit() : openEdit({{ $post->id }}, $el)"
                         @else
-                            @click="editing = !editing; if(editing) editContent = '{{ addslashes($post->content) }}'"
+                            @click="editing = !editing; if(editing) editContent = $el.getAttribute('data-content')"
                         @endif
                         data-content="{{ $post->content }}"
                         class="text-xs text-gray-400 hover:text-primary p-1 rounded hover:bg-gray-50 transition-colors"

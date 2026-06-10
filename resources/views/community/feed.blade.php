@@ -200,7 +200,7 @@
             <button @click="confirmDelete = null" class="flex-1 px-4 py-2 rounded-lg border border-gray-200 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-all">
                 Cancel
             </button>
-            <form @submit.prevent="submitDelete()" method="POST" class="flex-1">
+            <form :action="`/community/${confirmDelete}/delete`" method="POST" class="flex-1">
                 @csrf
                 <button type="submit" class="w-full px-4 py-2 rounded-lg bg-red-600 text-white text-sm font-semibold hover:bg-red-700 transition-all shadow-sm">
                     Delete
@@ -295,19 +295,6 @@ document.addEventListener('alpine:init', function () {
             cancelEdit() {
                 this.editPostId = null;
                 this.editContent = '';
-            },
-            submitDelete() {
-                if (!this.confirmDelete) return;
-                const form = document.createElement('form');
-                form.method = 'POST';
-                form.action = `/community/${this.confirmDelete}/delete`;
-                const csrf = document.createElement('input');
-                csrf.type = 'hidden';
-                csrf.name = '_token';
-                csrf.value = document.querySelector('meta[name="csrf-token"]').content;
-                form.appendChild(csrf);
-                document.body.appendChild(form);
-                form.submit();
             },
             async toggleFollow(userId, btn) {
                 this.loading.follow = userId;

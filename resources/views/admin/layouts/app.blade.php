@@ -11,29 +11,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
 
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-
-    <script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        "primary": "#00AFF0",
-                        "primary-container": "#0095cc",
-                        "background": "#f6f8fa",
-                        "surface": "#ffffff",
-                        "on-surface": "#17191c",
-                        "on-surface-variant": "#454a51",
-                        "on-background": "#17191c",
-                    },
-                    fontFamily: {
-                        sans: ["Inter", "sans-serif"],
-                    }
-                },
-            },
-        }
-    </script>
 
     <style>
         .material-symbols-outlined {

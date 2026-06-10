@@ -5,53 +5,9 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>{{ $title ?? config('app.name', 'dialer.best') }}</title>
     
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    @vite(['resources/css/app.css'])
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
-    
-    <script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        primary: "#00AFF0",
-                        blue: {
-                            600: "#00AFF0",
-                        },
-                        "on-primary": "#ffffff",
-                        "primary-fixed": "#dbe1ff",
-                        "on-primary-fixed": "#00174b",
-                        "primary-container": "#2563eb",
-                        "on-primary-fixed-variant": "#003ea8",
-                        secondary: "#006e2f",
-                        "on-secondary": "#ffffff",
-                        "secondary-fixed": "#6bff8f",
-                        "on-secondary-fixed": "#002109",
-                        "secondary-fixed-dim": "#4ae176",
-                        "on-secondary-fixed-variant": "#005321",
-                        background: "#f7f9fb",
-                        "on-background": "#191c1e",
-                        surface: "#f7f9fb",
-                        "on-surface": "#191c1e",
-                        "surface-variant": "#e0e3e5",
-                        "on-surface-variant": "#434655",
-                        outline: "#737686",
-                        "outline-variant": "#c3c6d7",
-                    },
-                    fontFamily: {
-                        "headline-lg": ["Inter"],
-                        "headline-xl": ["Inter"],
-                        "headline-md": ["Inter"],
-                        "body-lg": ["Inter"],
-                        "body-md": ["Inter"],
-                        "label-xs": ["Inter"],
-                        "label-sm": ["Inter"]
-                    }
-                }
-            }
-        }
-    </script>
     <style>
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;

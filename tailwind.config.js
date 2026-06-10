@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+    darkMode: 'class',
     content: [
         './resources/views/**/*.blade.php',
         './resources/js/**/*.js',
@@ -10,6 +11,26 @@ export default {
         extend: {
             colors: {
                 primary: '#00AFF0',
+                'primary-container': '#0095cc',
+                'primary-fixed': '#dbe1ff',
+                'on-primary': '#ffffff',
+                'on-primary-fixed': '#00174b',
+                'on-primary-fixed-variant': '#003ea8',
+                background: '#f6f8fa',
+                surface: '#ffffff',
+                'on-surface': '#17191c',
+                'on-surface-variant': '#454a51',
+                'on-background': '#17191c',
+                subtle: '#f0f2f4',
+                'surface-variant': '#e0e3e5',
+                outline: '#737686',
+                'outline-variant': '#c3c6d7',
+                secondary: '#006e2f',
+                'on-secondary': '#ffffff',
+                'secondary-fixed': '#6bff8f',
+                'on-secondary-fixed': '#002109',
+                'secondary-fixed-dim': '#4ae176',
+                'on-secondary-fixed-variant': '#005321',
                 blue: {
                     50: '#E1F5FE',
                     100: '#B3E5FC',
@@ -17,12 +38,27 @@ export default {
                     300: '#4FC3F7',
                     400: '#29B6F6',
                     500: '#03A9F4',
-                    600: '#00AFF0', // Skype Blue as 600
+                    600: '#00AFF0',
                     700: '#0288D1',
                     800: '#0277BD',
                     900: '#01579B',
-                }
-            }
+                },
+            },
+            fontFamily: {
+                sans: ['Inter', 'sans-serif'],
+                'headline-lg': ['Inter'],
+                'headline-xl': ['Inter'],
+                'headline-md': ['Inter'],
+                'body-lg': ['Inter'],
+                'body-md': ['Inter'],
+                'label-xs': ['Inter'],
+                'label-sm': ['Inter'],
+            },
+            spacing: {
+                '18': '4.5rem',
+                '88': '22rem',
+                '240': '60rem',
+            },
         },
     },
     plugins: [],
