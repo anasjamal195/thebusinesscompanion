@@ -131,7 +131,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/community', [CommunityController::class, 'feed'])->name('community.feed');
     Route::post('/community/posts', [CommunityController::class, 'storePost'])->name('community.posts.store');
     Route::put('/community/{post}', [CommunityController::class, 'updatePost'])->name('community.posts.update');
-    Route::delete('/community/{post}', [CommunityController::class, 'destroyPost'])->name('community.posts.destroy');
+    Route::post('/community/{post}/delete', [CommunityController::class, 'destroyPost'])->name('community.posts.destroy');
     Route::post('/community/{post}/like', [CommunityController::class, 'like'])->name('community.like');
     Route::post('/community/{post}/comment', [CommunityController::class, 'comment'])->name('community.comment');
     Route::post('/community/follow/{user}', [CommunityController::class, 'follow'])->name('community.follow');

@@ -145,11 +145,11 @@
                                 {{ $pt['label'] }}
                             </span>
                             @if(Auth::user()->id === $post->user_id)
-                                <div class="flex items-center gap-1 ml-auto">
-                                    <button @click="openEdit({{ $post->id }}, {{ json_encode($post->content) }})" class="text-xs text-gray-400 hover:text-primary p-1 rounded hover:bg-gray-50 transition-colors">
+                                <div class="flex items-center gap-1">
+                                    <button @click="openEdit({{ $post->id }}, $el)" data-content="{{ $post->content }}" class="text-xs text-gray-400 hover:text-primary p-1 rounded hover:bg-gray-50 transition-colors">
                                         <span class="material-symbols-outlined text-[16px]">edit</span>
                                     </button>
-                                    <button @click="deletePost({{ $post->id }})" class="text-xs text-gray-400 hover:text-red-500 p-1 rounded hover:bg-red-50 transition-colors">
+                                    <button @click="confirmDelete = {{ $post->id }}; deleteTarget = 'post'" class="text-xs text-gray-400 hover:text-red-500 p-1 rounded hover:bg-red-50 transition-colors">
                                         <span class="material-symbols-outlined text-[16px]">delete</span>
                                     </button>
                                 </div>
@@ -345,6 +345,29 @@
     </div>
 </div>
 
+{{-- Delete Confirmation Modal --}}
+<div x-show="confirmDelete" x-cloak class="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/20 backdrop-blur-sm" @click.away="confirmDelete = null">
+    <div class="bg-white rounded-xl shadow-xl max-w-sm w-full p-6 space-y-4" @click.stop>
+        <div class="flex items-center gap-3">
+            <span class="w-10 h-10 rounded-full bg-red-50 text-red-500 flex items-center justify-center shrink-0">
+                <span class="material-symbols-outlined text-[24px]">delete</span>
+            </span>
+            <div>
+                <h3 class="text-base font-semibold text-gray-900">Delete {{ deleteTarget === 'post' ? 'Post' : '' }}?</h3>
+                <p class="text-sm text-gray-500">This action cannot be undone.</p>
+            </div>
+        </div>
+        <div class="flex gap-3 pt-2">
+            <button @click="confirmDelete = null" class="flex-1 px-4 py-2 rounded-lg border border-gray-200 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-all">
+                Cancel
+            </button>
+            <button @click="confirmDeleteAction()" class="flex-1 px-4 py-2 rounded-lg bg-red-600 text-white text-sm font-semibold hover:bg-red-700 transition-all shadow-sm">
+                Delete
+            </button>
+        </div>
+    </div>
+</div>
+
 <script>
 document.addEventListener('alpine:init', function () {
     Alpine.data('feedComponent', function () {
@@ -354,6 +377,8 @@ document.addEventListener('alpine:init', function () {
             selectedType: 'progress',
             editPostId: null,
             editContent: '',
+            confirmDelete: null,
+            deleteTarget: null,
             userName: @json(Auth::user()->name),
             userInitial: @json(substr(Auth::user()->name, 0, 1)),
             escapeHtml(str) {
@@ -407,9 +432,9 @@ document.addEventListener('alpine:init', function () {
                 const countEl = document.querySelector(`[data-comment-count="${postId}"]`);
                 if (countEl) countEl.textContent = data.comments_count;
             },
-            openEdit(postId, content) {
+            openEdit(postId, btn) {
                 this.editPostId = postId;
-                this.editContent = content;
+                this.editContent = btn.getAttribute('data-content') || '';
             },
             cancelEdit() {
                 this.editPostId = null;
@@ -431,14 +456,16 @@ document.addEventListener('alpine:init', function () {
                     location.reload();
                 }
             },
-            async deletePost(postId) {
-                if (!confirm('Delete this post?')) return;
-                const res = await fetch(`/community/${postId}`, {
-                    method: 'DELETE',
+            async confirmDeleteAction() {
+                if (!this.confirmDelete) return;
+                const res = await fetch(`/community/${this.confirmDelete}/delete`, {
+                    method: 'POST',
                     headers: {
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
                     },
                 });
+                this.confirmDelete = null;
+                this.deleteTarget = null;
                 if (res.ok) location.reload();
             },
             async toggleFollow(userId, btn) {
