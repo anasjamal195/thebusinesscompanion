@@ -256,7 +256,7 @@
                                     <button @click="showEdit = !showEdit" class="text-xs text-gray-400 hover:text-primary p-1 rounded hover:bg-gray-50 transition-colors">
                                         <span class="material-symbols-outlined text-[16px]">edit</span>
                                     </button>
-                                    <form action="{{ route('community.destroy', $post) }}" method="POST" onsubmit="return confirm('Delete this post?')">
+                                    <form action="{{ route('community.posts.destroy', $post) }}" method="POST" onsubmit="return confirm('Delete this post?')">
                                         @csrf
                                         <button type="submit" class="text-xs text-gray-400 hover:text-red-500 p-1 rounded hover:bg-red-50 transition-colors">
                                             <span class="material-symbols-outlined text-[16px]">delete</span>
@@ -281,7 +281,7 @@
                     <div class="px-4 py-2">
                         @if($isOwner)
                             <div x-show="showEdit" x-cloak class="space-y-2">
-                                <form action="{{ route('community.update', $post) }}" method="POST">
+                                <form action="{{ route('community.posts.update', $post) }}" method="POST">
                                     @csrf
                                     @method('PUT')
                                     <textarea name="content" x-model="editContent" class="w-full rounded-lg border-gray-200 bg-gray-50 text-sm" rows="3">{{ $post->content }}</textarea>

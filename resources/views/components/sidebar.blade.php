@@ -66,10 +66,7 @@
                 <span class="material-symbols-outlined text-[16px] text-gray-300 group-hover:text-primary transition-colors">chevron_right</span>
             </a>
             <div class="mt-1 flex items-center gap-1">
-                <a href="{{ route('profile.index') }}" class="flex-1 flex items-center justify-center gap-1.5 rounded-lg py-2 text-xs font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-all">
-                    <span class="material-symbols-outlined text-[16px]">person</span>
-                    Profile
-                </a>
+
                 <a href="{{ route('settings.index') }}" class="flex-1 flex items-center justify-center gap-1.5 rounded-lg py-2 text-xs font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-all">
                     <span class="material-symbols-outlined text-[16px]">settings</span>
                     Settings

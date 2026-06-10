@@ -181,7 +181,10 @@
                                 <div x-show="editPostId === {{ $post->id }}" x-cloak class="space-y-2">
                                     <textarea x-model="editContent" class="w-full rounded-lg border-gray-200 bg-gray-50 text-sm" rows="3"></textarea>
                                     <div class="flex gap-2">
-                                        <button @click="saveEdit({{ $post->id }})" class="px-3 py-1.5 rounded-lg bg-primary text-white text-xs font-semibold">Save</button>
+                                        <button @click="saveEdit({{ $post->id }})" class="px-3 py-1.5 rounded-lg bg-primary text-white text-xs font-semibold flex items-center gap-1" :disabled="loading.edit === {{ $post->id }}">
+                                            <span x-show="loading.edit === {{ $post->id }}" class="material-symbols-outlined text-[14px] animate-spin">progress_activity</span>
+                                            <span x-show="loading.edit !== {{ $post->id }}">Save</span>
+                                        </button>
                                         <button @click="cancelEdit()" class="px-3 py-1.5 rounded-lg border border-gray-200 text-xs font-medium text-gray-600">Cancel</button>
                                     </div>
                                 </div>
@@ -249,8 +252,9 @@
                         {{-- Actions --}}
                         <div class="flex items-center gap-1 px-4 py-2.5 border-t border-gray-50">
                             <button @click.prevent="toggleLike({{ $post->id }}, $el)"
-                                class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors {{ $post->isLikedBy($user) ? 'text-red-500 bg-red-50' : 'text-gray-400 hover:text-red-500 hover:bg-red-50' }}">
-                                <span class="material-symbols-outlined text-[18px] like-icon">{{ $post->isLikedBy($user) ? 'favorite' : 'favorite_border' }}</span>
+                                class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors {{ $post->isLikedBy($user) ? 'text-red-500 bg-red-50' : 'text-gray-400 hover:text-red-500 hover:bg-red-50' }}" :disabled="loading.like === {{ $post->id }}">
+                                <span x-show="loading.like === {{ $post->id }}" class="material-symbols-outlined text-[18px] animate-spin">progress_activity</span>
+                                <span x-show="loading.like !== {{ $post->id }}" class="material-symbols-outlined text-[18px] like-icon">{{ $post->isLikedBy($user) ? 'favorite' : 'favorite_border' }}</span>
                                 <span class="like-count">{{ $post->likes_count ?? $post->likes->count() }}</span>
                             </button>
 
@@ -261,8 +265,9 @@
 
                             @if(Auth::user()->id !== $post->user_id)
                                 <button @click.prevent="toggleFollow({{ $post->user->id }}, $el)"
-                                    class="text-xs font-medium text-primary hover:text-primary-container transition-colors flex items-center gap-1 px-2 py-1 rounded hover:bg-blue-50 ml-auto">
-                                    <span class="material-symbols-outlined text-[14px]">{{ $user->following()->where('following_id', $post->user->id)->exists() ? 'check' : 'person_add' }}</span>
+                                    class="text-xs font-medium text-primary hover:text-primary-container transition-colors flex items-center gap-1 px-2 py-1 rounded hover:bg-blue-50 ml-auto" :disabled="loading.follow === {{ $post->user->id }}">
+                                    <span x-show="loading.follow === {{ $post->user->id }}" class="material-symbols-outlined text-[14px] animate-spin">progress_activity</span>
+                                    <span x-show="loading.follow !== {{ $post->user->id }}" class="material-symbols-outlined text-[14px]">{{ $user->following()->where('following_id', $post->user->id)->exists() ? 'check' : 'person_add' }}</span>
                                     <span class="follow-text">{{ $user->following()->where('following_id', $post->user->id)->exists() ? 'Following' : 'Follow' }}</span>
                                 </button>
                             @endif
@@ -288,8 +293,9 @@
                             <form @submit.prevent="submitComment({{ $post->id }})" class="flex items-center gap-2">
                                 @csrf
                                 <input type="text" name="content" required maxlength="2000" placeholder="Write a comment..." data-comment-input="{{ $post->id }}" class="flex-1 rounded-lg border-gray-200 bg-gray-50 focus:border-primary focus:ring-2 focus:ring-primary/20 text-sm">
-                                <button type="submit" class="px-3 py-2 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-primary-container transition-all shadow-sm">
-                                    <span class="material-symbols-outlined text-[18px]">send</span>
+                                <button type="submit" class="px-3 py-2 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-primary-container transition-all shadow-sm flex items-center gap-1" :disabled="loading.comment === {{ $post->id }}">
+                                    <span x-show="loading.comment === {{ $post->id }}" class="material-symbols-outlined text-[18px] animate-spin">progress_activity</span>
+                                    <span x-show="loading.comment !== {{ $post->id }}" class="material-symbols-outlined text-[18px]">send</span>
                                 </button>
                             </form>
                         </div>
@@ -361,8 +367,9 @@
             <button @click="confirmDelete = null" class="flex-1 px-4 py-2 rounded-lg border border-gray-200 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-all">
                 Cancel
             </button>
-            <button @click="confirmDeleteAction()" class="flex-1 px-4 py-2 rounded-lg bg-red-600 text-white text-sm font-semibold hover:bg-red-700 transition-all shadow-sm">
-                Delete
+            <button @click="confirmDeleteAction()" class="flex-1 px-4 py-2 rounded-lg bg-red-600 text-white text-sm font-semibold hover:bg-red-700 transition-all shadow-sm flex items-center justify-center gap-1" :disabled="loading.delete">
+                <span x-show="loading.delete" class="material-symbols-outlined text-[18px] animate-spin">progress_activity</span>
+                <span x-show="!loading.delete">Delete</span>
             </button>
         </div>
     </div>
@@ -379,6 +386,13 @@ document.addEventListener('alpine:init', function () {
             editContent: '',
             confirmDelete: null,
             deleteTarget: null,
+            loading: {
+                like: null,
+                comment: null,
+                edit: null,
+                delete: null,
+                follow: null,
+            },
             userName: @json(Auth::user()->name),
             userInitial: @json(substr(Auth::user()->name, 0, 1)),
             escapeHtml(str) {
@@ -387,50 +401,60 @@ document.addEventListener('alpine:init', function () {
                 return el.innerHTML;
             },
             async toggleLike(postId, btn) {
-                const res = await fetch(`/community/${postId}/like`, {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                        'Accept': 'application/json',
-                    },
-                });
-                if (!res.ok) return;
-                const data = await res.json();
-                const icon = btn.querySelector('.like-icon');
-                const count = btn.querySelector('.like-count');
-                if (icon) icon.textContent = data.liked ? 'favorite' : 'favorite_border';
-                if (count) count.textContent = data.likes_count;
-                btn.classList.toggle('text-red-500', data.liked);
-                btn.classList.toggle('bg-red-50', data.liked);
-                btn.classList.toggle('text-gray-400', !data.liked);
-                btn.classList.toggle('hover:text-red-500', !data.liked);
-                btn.classList.toggle('hover:bg-red-50', !data.liked);
+                this.loading.like = postId;
+                try {
+                    const res = await fetch(`/community/${postId}/like`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                            'Accept': 'application/json',
+                        },
+                    });
+                    if (!res.ok) return;
+                    const data = await res.json();
+                    const icon = btn.querySelector('.like-icon');
+                    const count = btn.querySelector('.like-count');
+                    if (icon) icon.textContent = data.liked ? 'favorite' : 'favorite_border';
+                    if (count) count.textContent = data.likes_count;
+                    btn.classList.toggle('text-red-500', data.liked);
+                    btn.classList.toggle('bg-red-50', data.liked);
+                    btn.classList.toggle('text-gray-400', !data.liked);
+                    btn.classList.toggle('hover:text-red-500', !data.liked);
+                    btn.classList.toggle('hover:bg-red-50', !data.liked);
+                } finally {
+                    this.loading.like = null;
+                }
             },
             async submitComment(postId) {
                 const input = document.querySelector(`[data-comment-input="${postId}"]`);
                 if (!input || !input.value.trim()) return;
-                const content = input.value.trim();
-                const res = await fetch(`/community/${postId}/comment`, {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                    },
-                    body: JSON.stringify({ content }),
-                });
-                if (!res.ok) return;
-                const data = await res.json();
-                input.value = '';
-                const section = document.querySelector(`[data-comments-section="${postId}"]`);
-                if (section && data.comment) {
-                    const div = document.createElement('div');
-                    div.className = 'flex items-start gap-2.5';
-                    div.innerHTML = `<div class='w-7 h-7 rounded-md bg-gray-100 text-gray-500 flex items-center justify-center font-semibold text-xs shrink-0 mt-0.5'>${this.userInitial}</div><div class='flex-1 min-w-0'><div class='bg-gray-50 rounded-lg px-3 py-2'><p class='text-xs font-medium text-gray-900'>${this.escapeHtml(this.userName)}</p><p class='text-sm text-gray-600 mt-0.5'>${this.escapeHtml(data.comment.content)}</p></div><p class='text-[11px] text-gray-400 mt-0.5'>${data.comment.created_at}</p></div>`;
-                    section.insertBefore(div, section.lastElementChild);
+                this.loading.comment = postId;
+                try {
+                    const content = input.value.trim();
+                    const res = await fetch(`/community/${postId}/comment`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                        },
+                        body: JSON.stringify({ content }),
+                    });
+                    if (!res.ok) return;
+                    const data = await res.json();
+                    input.value = '';
+                    const section = document.querySelector(`[data-comments-section="${postId}"]`);
+                    if (section && data.comment) {
+                        const div = document.createElement('div');
+                        div.className = 'flex items-start gap-2.5';
+                        div.innerHTML = `<div class='w-7 h-7 rounded-md bg-gray-100 text-gray-500 flex items-center justify-center font-semibold text-xs shrink-0 mt-0.5'>${this.userInitial}</div><div class='flex-1 min-w-0'><div class='bg-gray-50 rounded-lg px-3 py-2'><p class='text-xs font-medium text-gray-900'>${this.escapeHtml(this.userName)}</p><p class='text-sm text-gray-600 mt-0.5'>${this.escapeHtml(data.comment.content)}</p></div><p class='text-[11px] text-gray-400 mt-0.5'>${data.comment.created_at}</p></div>`;
+                        section.insertBefore(div, section.lastElementChild);
+                    }
+                    const countEl = document.querySelector(`[data-comment-count="${postId}"]`);
+                    if (countEl) countEl.textContent = data.comments_count;
+                } finally {
+                    this.loading.comment = null;
                 }
-                const countEl = document.querySelector(`[data-comment-count="${postId}"]`);
-                if (countEl) countEl.textContent = data.comments_count;
             },
             openEdit(postId, btn) {
                 this.editPostId = postId;
@@ -442,50 +466,67 @@ document.addEventListener('alpine:init', function () {
             },
             async saveEdit(postId) {
                 if (!this.editContent.trim()) return;
-                const res = await fetch(`/community/${postId}`, {
-                    method: 'PUT',
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                    },
-                    body: JSON.stringify({ content: this.editContent }),
-                });
-                if (res.ok) {
-                    this.editPostId = null;
-                    location.reload();
+                this.loading.edit = postId;
+                try {
+                    const res = await fetch(`/community/${postId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                        },
+                        body: JSON.stringify({ content: this.editContent }),
+                    });
+                    if (res.ok) {
+                        this.editPostId = null;
+                        location.reload();
+                    }
+                } finally {
+                    this.loading.edit = null;
                 }
             },
             async confirmDeleteAction() {
                 if (!this.confirmDelete) return;
-                const res = await fetch(`/community/${this.confirmDelete}/delete`, {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                    },
-                });
-                this.confirmDelete = null;
-                this.deleteTarget = null;
-                if (res.ok) location.reload();
+                this.loading.delete = this.confirmDelete;
+                try {
+                    const res = await fetch(`/community/${this.confirmDelete}/delete`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                            'Accept': 'application/json',
+                        },
+                    });
+                    const postId = this.confirmDelete;
+                    this.confirmDelete = null;
+                    this.deleteTarget = null;
+                    if (res.ok) location.reload();
+                } finally {
+                    this.loading.delete = null;
+                }
             },
             async toggleFollow(userId, btn) {
-                const res = await fetch(`/community/follow/${userId}`, {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                        'Accept': 'application/json',
-                    },
-                });
-                if (!res.ok) return;
-                const data = await res.json();
-                const icon = btn.querySelector('.material-symbols-outlined');
-                const text = btn.querySelector('.follow-text');
-                if (data.following) {
-                    icon.textContent = 'check';
-                    text.textContent = 'Following';
-                } else {
-                    icon.textContent = 'person_add';
-                    text.textContent = 'Follow';
+                this.loading.follow = userId;
+                try {
+                    const res = await fetch(`/community/follow/${userId}`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                            'Accept': 'application/json',
+                        },
+                    });
+                    if (!res.ok) return;
+                    const data = await res.json();
+                    const icon = btn.querySelector('.material-symbols-outlined');
+                    const text = btn.querySelector('.follow-text');
+                    if (data.following) {
+                        icon.textContent = 'check';
+                        text.textContent = 'Following';
+                    } else {
+                        icon.textContent = 'person_add';
+                        text.textContent = 'Follow';
+                    }
+                } finally {
+                    this.loading.follow = null;
                 }
             },
         };
