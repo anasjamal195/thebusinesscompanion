@@ -19,9 +19,9 @@
     </div>
 
     {{-- Tabs --}}
-    <div class="flex gap-1 p-1 bg-gray-100 rounded-lg w-fit">
+    <div class="flex gap-1 p-1 bg-gray-100 rounded-lg w-fit flex-wrap">
         <button @click="tab = 'general'" :class="tab === 'general' ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500 hover:text-gray-700'" class="px-4 py-2 rounded-md text-sm font-medium transition-all">General</button>
-        <button @click="tab = 'community'" :class="tab === 'community' ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500 hover:text-gray-700'" class="px-4 py-2 rounded-md text-sm font-medium transition-all">Community</button>
+        <button @click="tab = 'calling'" :class="tab === 'calling' ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500 hover:text-gray-700'" class="px-4 py-2 rounded-md text-sm font-medium transition-all">Calling</button>
         <button @click="tab = 'companion'" :class="tab === 'companion' ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500 hover:text-gray-700'" class="px-4 py-2 rounded-md text-sm font-medium transition-all">AI Voice</button>
         <button @click="tab = 'billing'" :class="tab === 'billing' ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500 hover:text-gray-700'" class="px-4 py-2 rounded-md text-sm font-medium transition-all">Billing</button>
     </div>
@@ -44,47 +44,88 @@
             </div>
         </div>
 
-        {{-- Community Tab --}}
-        <div x-show="tab === 'community'" class="bg-white rounded-xl border border-gray-200 shadow-sm p-6 space-y-5" x-cloak>
+        {{-- Calling Tab --}}
+        <div x-show="tab === 'calling'" class="bg-white rounded-xl border border-gray-200 shadow-sm p-6 space-y-5" x-cloak>
+            <h3 class="text-base font-semibold text-gray-900">Calling Preferences</h3>
+
+            {{-- Calling Preference --}}
             <div>
-                <h3 class="text-base font-semibold text-gray-900">Community Participation</h3>
-                <p class="text-sm text-gray-500 mt-1">Choose how you participate. Your activity data remains private by default.</p>
+                <label class="block text-xs font-medium text-gray-500 mb-2">Receive calls via</label>
+                <div class="flex gap-2">
+                    <label class="flex-1 flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-colors
+                          {{ old('calling_preference', $user->calling_preference ?? 'app') === 'app' ? 'border-primary bg-primary/5' : 'border-gray-200 bg-gray-50 hover:bg-gray-100' }}">
+                        <input type="radio" name="calling_preference" value="app" class="sr-only"
+                               {{ old('calling_preference', $user->calling_preference ?? 'app') === 'app' ? 'checked' : '' }}>
+                        <span class="material-symbols-outlined text-[22px] {{ old('calling_preference', $user->calling_preference ?? 'app') === 'app' ? 'text-primary' : 'text-gray-400' }}">globe</span>
+                        <div>
+                            <p class="text-sm font-medium text-gray-900">In-Browser App</p>
+                            <p class="text-[11px] text-gray-400">Call via your browser</p>
+                        </div>
+                    </label>
+                    <label class="flex-1 flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-colors
+                          {{ old('calling_preference', $user->calling_preference ?? 'app') === 'phone' ? 'border-primary bg-primary/5' : 'border-gray-200 bg-gray-50 hover:bg-gray-100' }}">
+                        <input type="radio" name="calling_preference" value="phone" class="sr-only"
+                               {{ old('calling_preference', $user->calling_preference ?? 'app') === 'phone' ? 'checked' : '' }}>
+                        <span class="material-symbols-outlined text-[22px] {{ old('calling_preference', $user->calling_preference ?? 'app') === 'phone' ? 'text-primary' : 'text-gray-400' }}">phone_in_talk</span>
+                        <div>
+                            <p class="text-sm font-medium text-gray-900">Phone Number</p>
+                            <p class="text-[11px] text-gray-400">Call via your phone</p>
+                        </div>
+                    </label>
+                </div>
             </div>
 
-            <div class="space-y-3">
-                @php $mode = old('community_participation_mode', $user->community_participation_mode ?? 'private'); @endphp
-                @foreach ([
-                    ['value' => 'private', 'icon' => 'lock', 'title' => 'Private Mode', 'desc' => 'Your activity stays private. Achievements earned internally. Nothing visible to others.'],
-                    ['value' => 'social', 'icon' => 'public', 'title' => 'Social Mode', 'desc' => 'Share achievements and interact with the community. Follow others and see progress.'],
-                    ['value' => 'hybrid', 'icon' => 'manage_accounts', 'title' => 'Hybrid Mode', 'desc' => 'Selectively share individual achievements. Best of both worlds.', 'recommended' => true],
-                ] as $option)
-                <label class="block cursor-pointer">
-                    <div class="flex items-center gap-3 p-4 rounded-lg border transition-all duration-200 {{ $mode === $option['value'] ? 'border-primary bg-primary/5' : 'border-gray-100 bg-gray-50 hover:border-gray-200' }}">
-                        <span class="w-9 h-9 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0">
-                            <span class="material-symbols-outlined text-[20px]">{{ $option['icon'] }}</span>
-                        </span>
-                        <div class="flex-1 min-w-0">
-                            <div class="flex items-center gap-2">
-                                <span class="text-sm font-medium text-gray-900">{{ $option['title'] }}</span>
-                                @if(!empty($option['recommended']))
-                                    <span class="text-[10px] font-semibold text-green-600 bg-green-100 px-1.5 py-0.5 rounded-md uppercase">Recommended</span>
-                                @endif
-                            </div>
-                            <p class="text-xs text-gray-500 mt-0.5">{{ $option['desc'] }}</p>
-                        </div>
-                        <div class="shrink-0">
-                            <div class="w-4 h-4 rounded-full border-2 flex items-center justify-center {{ $mode === $option['value'] ? 'border-primary bg-primary' : 'border-gray-300' }}">
-                                @if($mode === $option['value'])
-                                    <span class="material-symbols-outlined text-[12px] text-white font-bold">check</span>
-                                @endif
-                            </div>
-                        </div>
-                        <input type="radio" name="community_participation_mode" value="{{ $option['value'] }}" class="absolute inset-0 opacity-0 cursor-pointer" {{ $mode === $option['value'] ? 'checked' : '' }}>
-                    </div>
-                </label>
-                @endforeach
+            {{-- Phone Number --}}
+            <div>
+                <label class="block text-xs font-medium text-gray-500 mb-1.5">Phone Number</label>
+                <p class="text-xs text-gray-400 mb-2">Only US numbers supported. Required if "Phone Number" is selected above.</p>
+                <div class="flex rounded-lg border border-gray-200 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 bg-gray-50 overflow-hidden">
+                    <span class="inline-flex items-center px-3 text-sm font-medium text-gray-500 bg-gray-100 border-r border-gray-200 select-none">+1</span>
+                    <input type="text" name="phone_number_display" id="phone_number_display"
+                           value="{{ old('phone_number') ? substr(old('phone_number'), 2) : ($profile->phone_number ? substr($profile->phone_number, 2) : '') }}"
+                           placeholder="(234) 567 8900" maxlength="14"
+                           class="flex-1 border-0 focus:ring-0 bg-transparent py-2 px-3 text-sm">
+                    <input type="hidden" name="phone_number" id="phone_number"
+                           value="{{ old('phone_number', $profile->phone_number ?? '') }}">
+                </div>
+                @error('phone_number')
+                    <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                @enderror
             </div>
-            <input type="hidden" name="community_participation_mode" id="community_mode" value="{{ $mode }}">
+
+            <hr class="border-gray-100">
+
+            {{-- Morning Call Time --}}
+            <div>
+                <label class="block text-xs font-medium text-gray-500 mb-1.5">Morning Call Time</label>
+                <input type="time" name="morning_call_time" value="{{ old('morning_call_time', $user->morning_call_time ?? '09:00') }}"
+                       class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm">
+            </div>
+
+            {{-- Timezone --}}
+            <div>
+                <label class="block text-xs font-medium text-gray-500 mb-1.5">Timezone</label>
+                <select name="timezone" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm">
+                    @foreach (timezone_identifiers_list() as $tz)
+                        <option value="{{ $tz }}" {{ old('timezone', $user->timezone ?? 'UTC') === $tz ? 'selected' : '' }}>{{ $tz }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            {{-- Follow-up Interval --}}
+            <div>
+                <label class="block text-xs font-medium text-gray-500 mb-1.5">
+                    Follow-up Interval <span class="text-gray-400 font-normal">(Optional)</span>
+                </label>
+                <p class="text-xs text-gray-400 mb-2">Gap between follow-up calls. Leave blank for AI to estimate.</p>
+                <div class="relative">
+                    <input type="number" name="default_delay_minutes"
+                           value="{{ old('default_delay_minutes', $user->default_delay_minutes) }}"
+                           min="1" placeholder="e.g. 120"
+                           class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm pr-20">
+                    <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-400 font-medium pointer-events-none">minutes</span>
+                </div>
+            </div>
         </div>
 
         {{-- AI Voice Tab --}}
@@ -189,13 +230,31 @@
             </button>
         </div>
     </form>
-
-    <script>
-    document.querySelectorAll('input[name="community_participation_mode"]').forEach(radio => {
-        radio.addEventListener('change', function() {
-            document.getElementById('community_mode').value = this.value;
-        });
-    });
-    </script>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // Phone number formatting
+    const display = document.getElementById('phone_number_display');
+    const hidden = document.getElementById('phone_number');
+    if (display && hidden) {
+        display.addEventListener('input', function () {
+            let val = this.value.replace(/\D/g, '');
+            if (val.length > 10) val = val.slice(0, 10);
+            let formatted = '';
+            if (val.length > 0) {
+                if (val.length <= 3) {
+                    formatted = val;
+                } else if (val.length <= 6) {
+                    formatted = '(' + val.slice(0, 3) + ') ' + val.slice(3);
+                } else {
+                    formatted = '(' + val.slice(0, 3) + ') ' + val.slice(3, 6) + ' ' + val.slice(6);
+                }
+            }
+            this.value = formatted;
+            hidden.value = val ? '+1' + val : '';
+        });
+    }
+});
+</script>
 @endsection

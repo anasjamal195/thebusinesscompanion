@@ -13,8 +13,8 @@ class CalendarController extends Controller
         $user = Auth::user();
         $tz = $user->timezone;
 
-        $month = request('month', now()->setTimezone($tz)->month);
-        $year = request('year', now()->setTimezone($tz)->year);
+        $month = (int) request('month', now()->setTimezone($tz)->month);
+        $year = (int) request('year', now()->setTimezone($tz)->year);
 
         $monthStart = now()->setTimezone($tz)->setDay(1)->setMonth($month)->setYear($year)->startOfMonth();
         $monthEnd = $monthStart->copy()->endOfMonth();
@@ -39,8 +39,8 @@ class CalendarController extends Controller
         $user = Auth::user();
         $tz = $user->timezone;
 
-        $month = request('month', now()->month);
-        $year = request('year', now()->year);
+        $month = (int) request('month', now()->month);
+        $year = (int) request('year', now()->year);
 
         $start = now()->setTimezone($tz)->setDay(1)->setMonth($month)->setYear($year)->startOfMonth();
         $end = $start->copy()->endOfMonth();

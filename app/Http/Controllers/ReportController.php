@@ -192,15 +192,19 @@ AI summary: {$aiSummary}
 PROMPT;
 
             $messages = [
-                ['role' => 'system', 'content' => 'You write short, warm, first-person productivity posts. Output only the post text, no JSON, no extra commentary.'],
+                ['role' => 'system', 'content' => 'You write short, warm, first-person productivity posts. Output ONLY plain text — NO markdown, NO asterisks, NO bold, NO italics, NO JSON, NO extra commentary. Just plain sentences.'],
                 ['role' => 'user', 'content' => $prompt],
             ];
 
             $response = $openRouter->chatCompletion($messages, false, 300);
             if ($response && $response->successful()) {
                 $aiContent = trim($response->json('choices.0.message.content', ''));
+                $aiContent = preg_replace('/\*+/', '', $aiContent);
+                $aiContent = preg_replace('/#+/', '', $aiContent);
+                $aiContent = preg_replace('/`+/', '', $aiContent);
+                $aiContent = preg_replace('/~~+/', '', $aiContent);
                 if ($aiContent !== '') {
-                    return $aiContent;
+                    return trim($aiContent);
                 }
             }
         } catch (\Throwable $e) {

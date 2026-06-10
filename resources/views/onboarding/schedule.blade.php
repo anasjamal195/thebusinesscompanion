@@ -66,6 +66,32 @@
             @enderror
         </div>
 
+        {{-- Calling Preference --}}
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1.5">Calling Preference</label>
+            <p class="text-xs text-gray-500 mb-3">How would you like to receive your daily calls?</p>
+            <div class="flex gap-2">
+                <label class="flex-1 flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-colors"
+                       x-data @click="$refs.appPref.checked = true">
+                    <input type="radio" name="calling_preference" value="app" x-ref="appPref" class="sr-only" checked>
+                    <span class="material-symbols-outlined text-[22px] text-primary">globe</span>
+                    <div>
+                        <p class="text-sm font-medium text-gray-900">In-Browser App</p>
+                        <p class="text-[11px] text-gray-400">Call via your browser</p>
+                    </div>
+                </label>
+                <label class="flex-1 flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-colors"
+                       x-data @click="$refs.phonePref.checked = true">
+                    <input type="radio" name="calling_preference" value="phone" x-ref="phonePref" class="sr-only">
+                    <span class="material-symbols-outlined text-[22px] text-gray-400">phone_in_talk</span>
+                    <div>
+                        <p class="text-sm font-medium text-gray-900">Phone Number</p>
+                        <p class="text-[11px] text-gray-400">Call via your phone</p>
+                    </div>
+                </label>
+            </div>
+        </div>
+
         {{-- Voice Selection --}}
         <div>
             <label class="block text-sm font-medium text-gray-700 mb-1.5">Choose Your AI Voice</label>

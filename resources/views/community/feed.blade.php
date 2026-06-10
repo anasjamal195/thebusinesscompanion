@@ -21,6 +21,8 @@
     showNewPost: false,
     commentPost: null,
     selectedType: 'progress',
+    userName: @json(Auth::user()->name),
+    userInitial: @json(substr(Auth::user()->name, 0, 1)),
     escapeHtml(str) {
         const el = document.createElement('span');
         el.textContent = str;
@@ -66,7 +68,7 @@
         if (section && data.comment) {
             const div = document.createElement('div');
             div.className = 'flex items-start gap-2.5';
-            div.innerHTML = `<div class='w-7 h-7 rounded-md bg-gray-100 text-gray-500 flex items-center justify-center font-semibold text-xs shrink-0 mt-0.5'>{{ substr(Auth::user()->name, 0, 1) }}</div><div class='flex-1 min-w-0'><div class='bg-gray-50 rounded-lg px-3 py-2'><p class='text-xs font-medium text-gray-900'>${this.escapeHtml('{{ Auth::user()->name }}')}</p><p class='text-sm text-gray-600 mt-0.5'>${this.escapeHtml(data.comment.content)}</p></div><p class='text-[11px] text-gray-400 mt-0.5'>${data.comment.created_at}</p></div>`;
+            div.innerHTML = `<div class='w-7 h-7 rounded-md bg-gray-100 text-gray-500 flex items-center justify-center font-semibold text-xs shrink-0 mt-0.5'>${this.userInitial}</div><div class='flex-1 min-w-0'><div class='bg-gray-50 rounded-lg px-3 py-2'><p class='text-xs font-medium text-gray-900'>${this.escapeHtml(this.userName)}</p><p class='text-sm text-gray-600 mt-0.5'>${this.escapeHtml(data.comment.content)}</p></div><p class='text-[11px] text-gray-400 mt-0.5'>${data.comment.created_at}</p></div>`;
             section.insertBefore(div, section.lastElementChild);
         }
         const countEl = document.querySelector(`[data-comment-count=\"${postId}\"]`);
@@ -242,13 +244,23 @@
                         {{-- Post Content --}}
                         <div class="px-4 py-2">
                             @if($post->type === 'progress' && $post->metadata)
+                                @php
+                                    $pct = min(100, max(0, $post->metadata['score'] ?? 0));
+                                    if ($pct >= 80) {
+                                        $theme = ['card' => 'from-green-50 to-emerald-50', 'border' => 'border-green-200', 'text' => 'text-green-600', 'bar' => 'bg-green-500', 'icon' => 'check_circle'];
+                                    } elseif ($pct >= 50) {
+                                        $theme = ['card' => 'from-amber-50 to-yellow-50', 'border' => 'border-amber-200', 'text' => 'text-amber-600', 'bar' => 'bg-yellow-500', 'icon' => 'trending_up'];
+                                    } else {
+                                        $theme = ['card' => 'from-red-50 to-rose-50', 'border' => 'border-red-200', 'text' => 'text-red-600', 'bar' => 'bg-red-500', 'icon' => 'fiber_manual_record'];
+                                    }
+                                @endphp
                                 {{-- Infographic Layout for Progress Posts --}}
                                 <p class="text-sm text-gray-800 leading-relaxed mb-4">{{ $post->content }}</p>
-                                <div class="bg-gradient-to-br from-primary/5 to-blue-50 rounded-xl border border-primary/10 p-4 space-y-4">
+                                <div class="bg-gradient-to-br {{ $theme['card'] }} rounded-xl border {{ $theme['border'] }} p-4 space-y-4">
                                     {{-- Stats Row --}}
                                     <div class="grid grid-cols-3 gap-3">
                                         <div class="text-center">
-                                            <div class="text-2xl font-bold text-primary">{{ $post->metadata['completed'] ?? 0 }}</div>
+                                            <div class="text-2xl font-bold {{ $theme['text'] }}">{{ $post->metadata['completed'] ?? 0 }}</div>
                                             <div class="text-[10px] font-medium uppercase tracking-wider text-gray-400">Done</div>
                                         </div>
                                         <div class="text-center">
@@ -256,23 +268,22 @@
                                             <div class="text-[10px] font-medium uppercase tracking-wider text-gray-400">Total</div>
                                         </div>
                                         <div class="text-center">
-                                            <div class="text-2xl font-bold {{ ($post->metadata['score'] ?? 0) >= 80 ? 'text-green-600' : (($post->metadata['score'] ?? 0) >= 50 ? 'text-yellow-600' : 'text-red-500') }}">
-                                                {{ $post->metadata['score'] ?? 0 }}%
+                                            <div class="text-2xl font-bold {{ $theme['text'] }}">
+                                                {{ $pct }}%
                                             </div>
                                             <div class="text-[10px] font-medium uppercase tracking-wider text-gray-400">Score</div>
                                         </div>
                                     </div>
 
                                     {{-- Progress Bar --}}
-                                    @php $pct = min(100, max(0, $post->metadata['score'] ?? 0)); @endphp
                                     <div class="w-full bg-gray-200 rounded-full h-2.5">
-                                        <div class="h-2.5 rounded-full transition-all duration-500 {{ $pct >= 80 ? 'bg-green-500' : ($pct >= 50 ? 'bg-yellow-500' : 'bg-red-500') }}" style="width: {{ $pct }}%"></div>
+                                        <div class="h-2.5 rounded-full transition-all duration-500 {{ $theme['bar'] }}" style="width: {{ $pct }}%"></div>
                                     </div>
 
                                     {{-- AI Summary --}}
                                     @if($post->metadata['ai_summary'] ?? null)
                                         <div class="flex items-start gap-2 text-xs text-gray-600 bg-white/60 rounded-lg p-3">
-                                            <span class="material-symbols-outlined text-[16px] text-primary shrink-0 mt-0.5">auto_awesome</span>
+                                            <span class="material-symbols-outlined text-[16px] {{ $theme['text'] }} shrink-0 mt-0.5">auto_awesome</span>
                                             <span>{{ $post->metadata['ai_summary'] }}</span>
                                         </div>
                                     @endif
