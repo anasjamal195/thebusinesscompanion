@@ -202,9 +202,8 @@
                 <span
                     @if($interactive)
                         x-show="loading.like !== {{ $post->id }}"
-                        class="like-icon"
                     @endif
-                    class="material-symbols-outlined text-[18px]"
+                    class="{{ $interactive ? 'like-icon ' : '' }}material-symbols-outlined text-[18px]"
                 >{{ $post->isLikedBy($user) ? 'favorite' : 'favorite_border' }}</span>
                 <span class="like-count">{{ $post->likes_count ?? $post->likes->count() }}</span>
             </button>
@@ -241,9 +240,8 @@
                     <span
                         @if($interactive)
                             x-show="loading.follow !== {{ $post->user->id }}"
-                            class="follow-icon"
                         @endif
-                        class="material-symbols-outlined text-[14px]"
+                        class="{{ $interactive ? 'follow-icon ' : '' }}material-symbols-outlined text-[14px]"
                     >{{ $user && $user->following()->where('following_id', $post->user->id)->exists() ? 'check' : 'person_add' }}</span>
                     <span class="follow-text">{{ $user && $user->following()->where('following_id', $post->user->id)->exists() ? 'Following' : 'Follow' }}</span>
                 </button>
