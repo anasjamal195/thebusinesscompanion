@@ -230,130 +230,14 @@
         </h3>
         <div class="space-y-4">
             @foreach ($allPosts as $post)
-                @php
-                    $pt = $postTypeMeta[$post->type] ?? ['label' => ucfirst($post->type), 'icon' => 'article', 'color' => 'bg-gray-100 text-gray-600'];
-                    $isOwner = $authUser && $authUser->id === $post->user_id;
-                @endphp
-                <div class="bg-white rounded-xl border border-gray-100 shadow-sm" x-data="{ showEdit: false, editContent: '{{ addslashes($post->content) }}' }">
-                    {{-- Post Header --}}
-                    <div class="flex items-center justify-between px-4 pt-4 pb-2">
-                        <div class="flex items-center gap-2.5">
-                            <div class="w-9 h-9 rounded-lg bg-primary/10 text-primary flex items-center justify-center font-semibold text-sm">
-                                {{ substr($post->user->name, 0, 1) }}
-                            </div>
-                            <div>
-                                <p class="text-sm font-medium text-gray-900">{{ $post->user->name }}</p>
-                                <p class="text-xs text-gray-400">{{ $post->created_at->diffForHumans() }}</p>
-                            </div>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            @if($isOwner)
-                                <div class="flex items-center gap-1">
-                                    <button @click="showEdit = !showEdit" class="text-xs text-gray-400 hover:text-primary p-1 rounded hover:bg-gray-50 transition-colors">
-                                        <span class="material-symbols-outlined text-[16px]">edit</span>
-                                    </button>
-                                    <form action="{{ route('community.posts.destroy', $post) }}" method="POST" onsubmit="return confirm('Delete this post?')">
-                                        @csrf
-                                        <button type="submit" class="text-xs text-gray-400 hover:text-red-500 p-1 rounded hover:bg-red-50 transition-colors">
-                                            <span class="material-symbols-outlined text-[16px]">delete</span>
-                                        </button>
-                                    </form>
-                                </div>
-                            @endif
-                            <span class="inline-flex items-center gap-0.5 text-[11px] font-medium px-2 py-0.5 rounded-md {{ $pt['color'] }}">
-                                <span class="material-symbols-outlined text-[14px]">{{ $pt['icon'] }}</span>
-                                {{ $pt['label'] }}
-                            </span>
-                        </div>
-                    </div>
-
-                    {{-- Visibility Badge --}}
-                    @if($post->visibility && $post->visibility !== 'public')
-                        <div class="px-4 pb-1">
-                            <span class="inline-flex items-center gap-0.5 text-[10px] font-medium text-gray-400 bg-gray-100 px-1.5 py-0.5 rounded">
-                                <span class="material-symbols-outlined text-[12px]">people</span>
-                                Followers only
-                            </span>
-                        </div>
-                    @endif
-
-                    {{-- Post Content --}}
-                    <div class="px-4 py-2">
-                        @if($isOwner)
-                            <div x-show="showEdit" x-cloak class="space-y-2">
-                                <form action="{{ route('community.posts.update', $post) }}" method="POST">
-                                    @csrf
-                                    @method('PUT')
-                                    <textarea name="content" x-model="editContent" class="w-full rounded-lg border-gray-200 bg-gray-50 text-sm" rows="3">{{ $post->content }}</textarea>
-                                    <div class="flex gap-2 mt-2">
-                                        <button type="submit" class="px-3 py-1.5 rounded-lg bg-primary text-white text-xs font-semibold">Save</button>
-                                        <button type="button" @click="showEdit = false" class="px-3 py-1.5 rounded-lg border border-gray-200 text-xs font-medium text-gray-600">Cancel</button>
-                                    </div>
-                                </form>
-                            </div>
-                        @endif
-
-                        @if($post->type === 'progress' && $post->metadata && isset($post->metadata['score']))
-                            @php
-                                $pct = min(100, max(0, $post->metadata['score'] ?? 0));
-                                if ($pct >= 80) {
-                                    $theme = ['card' => 'from-green-50 to-emerald-50', 'border' => 'border-green-200', 'text' => 'text-green-600', 'bar' => 'bg-green-500', 'icon' => 'check_circle'];
-                                } elseif ($pct >= 50) {
-                                    $theme = ['card' => 'from-amber-50 to-yellow-50', 'border' => 'border-amber-200', 'text' => 'text-amber-600', 'bar' => 'bg-yellow-500', 'icon' => 'trending_up'];
-                                } else {
-                                    $theme = ['card' => 'from-red-50 to-rose-50', 'border' => 'border-red-200', 'text' => 'text-red-600', 'bar' => 'bg-red-500', 'icon' => 'fiber_manual_record'];
-                                }
-                            @endphp
-                            <p class="text-sm text-gray-800 leading-relaxed mb-4" x-show="!showEdit">{{ $post->content }}</p>
-                            <div x-show="!showEdit" class="bg-gradient-to-br {{ $theme['card'] }} rounded-xl border {{ $theme['border'] }} p-4 space-y-4">
-                                <div class="grid grid-cols-3 gap-3">
-                                    <div class="text-center">
-                                        <div class="text-2xl font-bold {{ $theme['text'] }}">{{ $post->metadata['completed'] ?? 0 }}</div>
-                                        <div class="text-[10px] font-medium uppercase tracking-wider text-gray-400">Done</div>
-                                    </div>
-                                    <div class="text-center">
-                                        <div class="text-2xl font-bold text-gray-700">{{ $post->metadata['total'] ?? 0 }}</div>
-                                        <div class="text-[10px] font-medium uppercase tracking-wider text-gray-400">Total</div>
-                                    </div>
-                                    <div class="text-center">
-                                        <div class="text-2xl font-bold {{ $theme['text'] }}">{{ $pct }}%</div>
-                                        <div class="text-[10px] font-medium uppercase tracking-wider text-gray-400">Score</div>
-                                    </div>
-                                </div>
-                                <div class="w-full bg-gray-200 rounded-full h-2.5">
-                                    <div class="h-2.5 rounded-full transition-all duration-500 {{ $theme['bar'] }}" style="width: {{ $pct }}%"></div>
-                                </div>
-                                @if($post->metadata['ai_summary'] ?? null)
-                                    <div class="flex items-start gap-2 text-xs text-gray-600 bg-white/60 rounded-lg p-3">
-                                        <span class="material-symbols-outlined text-[16px] {{ $theme['text'] }} shrink-0 mt-0.5">auto_awesome</span>
-                                        <span>{{ $post->metadata['ai_summary'] }}</span>
-                                    </div>
-                                @endif
-                            </div>
-                        @else
-                            <p class="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap" x-show="!showEdit">{{ $post->content }}</p>
-                        @endif
-                    </div>
-
-                    {{-- Post Image --}}
-                    @if($post->image)
-                        <div class="px-4 pb-2">
-                            <img src="{{ asset('storage/' . $post->image) }}" alt="Post image" class="rounded-lg w-full max-h-96 object-cover border border-gray-100" loading="lazy">
-                        </div>
-                    @endif
-
-                    {{-- Actions --}}
-                    <div class="flex items-center gap-1 px-4 py-2.5 border-t border-gray-50">
-                        <span class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-sm font-medium text-gray-400">
-                            <span class="material-symbols-outlined text-[18px]">favorite</span>
-                            <span>{{ $post->likes_count ?? $post->likes->count() }}</span>
-                        </span>
-                        <span class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-sm font-medium text-gray-400">
-                            <span class="material-symbols-outlined text-[18px]">comment</span>
-                            <span>{{ $post->comments_count ?? $post->comments->count() }}</span>
-                        </span>
-                    </div>
-                </div>
+                <x-community-post
+                    :post="$post"
+                    :postTypeMeta="$postTypeMeta"
+                    :user="$authUser"
+                    :showActions="true"
+                    :showFollow="false"
+                    :interactive="false"
+                />
             @endforeach
         </div>
         <div class="mt-4">
