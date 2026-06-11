@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-  <link rel="icon" type="image/png" href="{{ asset('assets/logo-small-light.png') }}">
+  <link rel="icon" type="image/png" href="{{ asset('assets/logo/logo-small-light.png') }}">
   <title>Dialer.best - Your AI Todo Assistant</title>
   @vite(['resources/css/app.css'])
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900&display=swap"
@@ -88,7 +88,7 @@
     <div class="flex justify-between items-center h-20 px-6 md:px-12 max-w-[1600px] mx-auto">
       <div class="flex items-center gap-12">
         <a href="/" class="font-bold tracking-tight text-white flex items-center">
-          <img src="{{ asset('assets/logo-full-dark.png') }}" alt="dialer.best" class="h-20 w-auto">
+          <img src="{{ asset('assets/logo/logo-full-dark.png') }}" alt="dialer.best" class="h-20 w-auto">
         </a>
         <div class="hidden lg:flex items-center space-x-10 text-[15px] font-semibold text-white/70">
           <a class="hover:text-white transition-colors" href="#how-it-works">How It Works</a>
@@ -1160,7 +1160,7 @@
         <!-- Left Column (Logo & address) -->
         <div class="col-span-2 md:col-span-2 space-y-6">
           <a href="/" class="block">
-            <img src="{{ asset('assets/logo-full-light.png') }}" alt="dialer.best" class="h-40 w-auto">
+            <img src="{{ asset('assets/logo/logo-full-light.png') }}" alt="dialer.best" class="h-40 w-auto">
           </a>
           <p class="text-sm text-[#4A7B9E] max-w-xs leading-relaxed">
             The AI todo assistant that calls you — schedules tasks, follows up, and keeps you accountable. Kill procrastination with human-like voice interactions.

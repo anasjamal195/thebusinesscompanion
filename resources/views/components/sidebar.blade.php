@@ -7,7 +7,7 @@
 <aside class="hidden lg:flex fixed inset-y-0 left-0 z-30 w-60 flex-col border-r border-gray-200 bg-white">
     <div class="flex h-14 items-center gap-3 px-5 border-b border-gray-100">
         <a href="{{ url('/dashboard') }}" class="flex items-center">
-            <img src="{{ asset('assets/logo-full-light.png') }}" alt="dialer.best" class="h-10 w-auto">
+            <img src="{{ asset('assets/logo/logo-full-light.png') }}" alt="dialer.best" class="h-10 w-auto">
         </a>
     </div>
 
