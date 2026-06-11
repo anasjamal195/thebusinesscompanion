@@ -108,7 +108,7 @@ class ScheduleCallsCommand extends Command
 
         if ($shouldCall && $user->default_delay_minutes) {
             $lastCall   = $user->last_call_time ? Carbon::parse($user->last_call_time, 'UTC') : now('UTC')->startOfDay();
-            $nextCallAt = $lastCall->copy()->addMinutes($user->default_delay_minutes);
+            $nextCallAt = $lastCall->copy()->addMinutes((int) $user->default_delay_minutes);
 
             $this->line("[User {$user->id}] min-gap={$user->default_delay_minutes}min: last_call={$lastCall->format('Y-m-d H:i:s')} next_allowed={$nextCallAt->format('Y-m-d H:i:s')} now_utc=".now('UTC')->format('Y-m-d H:i:s'));
 

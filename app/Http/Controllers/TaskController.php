@@ -66,7 +66,7 @@ class TaskController extends Controller
             'status' => 'pending',
             'date' => now()->setTimezone($request->user()->timezone)->toDateString(),
             'estimated_minutes' => $validated['estimated_minutes'],
-            'scheduled_followup_time' => now()->addMinutes($validated['estimated_minutes']),
+            'scheduled_followup_time' => now()->addMinutes((int) $validated['estimated_minutes']),
         ]);
 
         return back()->with('success', 'Task added successfully.');
