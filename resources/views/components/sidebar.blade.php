@@ -6,14 +6,8 @@
 
 <aside class="hidden lg:flex fixed inset-y-0 left-0 z-30 w-60 flex-col border-r border-gray-200 bg-white">
     <div class="flex h-14 items-center gap-3 px-5 border-b border-gray-100">
-        <a href="{{ url('/dashboard') }}" class="flex items-center gap-2.5">
-            <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-white shadow-sm">
-                <span class="material-symbols-outlined text-[18px]">smart_toy</span>
-            </span>
-            <div class="leading-tight">
-                <div class="text-sm font-bold text-gray-900 tracking-tight">dialer</div>
-                <div class="text-[9px] font-semibold text-primary uppercase tracking-[0.2em]">.best</div>
-            </div>
+        <a href="{{ url('/dashboard') }}" class="flex items-center">
+            <img src="{{ asset('assets/logo-full-light.png') }}" alt="dialer.best" class="h-10 w-auto">
         </a>
     </div>
 
