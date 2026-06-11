@@ -78,13 +78,11 @@
   <nav class="bg-[#25224A] w-full border-b border-white/5">
     <div class="flex justify-between items-center h-20 px-6 md:px-12 max-w-[1600px] mx-auto">
       <div class="flex items-center gap-12">
-        <div class="font-bold tracking-tight text-white flex items-center">
-          <svg class="w-7 h-7 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 2L2 22H22L12 2Z" stroke="#3E50F7" stroke-width="2" stroke-linecap="round"
-              stroke-linejoin="round" />
-            <path d="M12 10L6.5 21H17.5L12 10Z" fill="#3E50F7" />
-          </svg>
-          <span class="text-xl font-extrabold tracking-tight">The Business Companion</span>
+        <div class="flex items-center gap-3">
+          <span class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-[#3E50F7] text-white shadow-lg shadow-[#3E50F7]/30">
+            <span class="text-sm font-black tracking-tight">TBC</span>
+          </span>
+          <span class="text-xl font-extrabold tracking-tight text-white">The Business Companion</span>
         </div>
         <div class="hidden lg:flex items-center space-x-10 text-[15px] font-semibold text-white/70">
           <a class="hover:text-white transition-colors" href="#evolution">The Big Picture</a>
@@ -1626,9 +1624,11 @@
       <div class="grid grid-cols-2 md:grid-cols-5 gap-8 mb-16">
         <!-- Left Column (Logo & address) -->
         <div class="col-span-2 md:col-span-2 space-y-6">
-          <div class="font-black tracking-tighter text-[#25224A] flex items-baseline">
-            <span class="material-symbols-outlined text-[#3E50F7] mr-2">change_history</span>
-            <span class="text-xl">The Business Companion</span>
+          <div class="flex items-center gap-3">
+            <span class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-[#3E50F7] text-white shadow-lg shadow-[#3E50F7]/20">
+              <span class="text-sm font-black tracking-tight">TBC</span>
+            </span>
+            <span class="text-xl font-bold text-[#25224A]">The Business Companion</span>
           </div>
           <p class="text-sm text-[#7F798D] max-w-xs leading-relaxed">
             Revolutionizing professional productivity through autonomous cloud computers, contextual intelligence, and
