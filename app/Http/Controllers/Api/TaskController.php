@@ -96,6 +96,15 @@ class TaskController extends Controller
         return response()->json(['history' => $tasks]);
     }
 
+    public function destroy(Request $request, Task $task)
+    {
+        abort_unless($task->user_id === $request->user()->id, 404);
+
+        $task->delete();
+
+        return response()->json(['message' => 'Task deleted.']);
+    }
+
     public function complete(Request $request, Task $task, DailyReportService $dailyService)
     {
         abort_unless($task->user_id === $request->user()->id, 404);
