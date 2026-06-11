@@ -8,7 +8,11 @@ use App\Http\Controllers\Api\CallController;
 use App\Http\Controllers\Api\ReportController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\SettingsController;
+use App\Http\Controllers\Api\CommunityController;
+use App\Http\Controllers\Api\FollowController;
+use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\OnboardingController;
+use App\Http\Controllers\Api\PublicProfileController;
 use App\Http\Controllers\Api\StripeCheckoutController as ApiStripeCheckoutController;
 
 /*
@@ -65,6 +69,31 @@ Route::middleware('auth:sanctum')->group(function () {
     // Settings
     Route::get('/settings', [SettingsController::class, 'index']);
     Route::post('/settings', [SettingsController::class, 'update']);
+
+    // Community
+    Route::get('/community', [CommunityController::class, 'feed']);
+    Route::post('/community/posts', [CommunityController::class, 'storePost']);
+    Route::put('/community/{post}', [CommunityController::class, 'updatePost']);
+    Route::post('/community/{post}/delete', [CommunityController::class, 'destroyPost']);
+    Route::post('/community/{post}/like', [CommunityController::class, 'likePost']);
+    Route::post('/community/{post}/comment', [CommunityController::class, 'comment']);
+    Route::post('/community/follow/{user}', [CommunityController::class, 'follow']);
+
+    // Public Profiles
+    Route::get('/profiles/{user}', [PublicProfileController::class, 'show']);
+
+    // Notifications
+    Route::get('/notifications', [NotificationController::class, 'index']);
+    Route::post('/notifications/{notification}/read', [NotificationController::class, 'markAsRead']);
+
+    // Followers
+    Route::get('/followers', [FollowController::class, 'followers']);
+    Route::post('/followers/{user}/remove', [FollowController::class, 'removeFollower']);
+    Route::post('/followers/{follow}/accept', [FollowController::class, 'acceptFollow']);
+    Route::post('/followers/{follow}/reject', [FollowController::class, 'rejectFollow']);
+
+    // Share Report
+    Route::post('/reports/{dailyReport}/share', [\App\Http\Controllers\Api\ReportController::class, 'shareReport']);
 
     // Stripe Checkout
     Route::post('/stripe/checkout', [ApiStripeCheckoutController::class, 'createCheckoutSession']);
