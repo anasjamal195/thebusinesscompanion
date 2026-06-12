@@ -1201,7 +1201,7 @@
       <div
         class="border-t border-[#B8D8EC] pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-[#4A7B9E]">
         <p>© {{ date('Y') }} dialer.best. All rights reserved.</p>
-        <p>Engineered for Excellence.</p>
+        <p>Powered by <a href="https://egeniuscare.com" target="_blank" class="font-semibold text-[#00AFF0] hover:underline">eGeniusCare</a></p>
       </div>
     </div>
   </footer>
