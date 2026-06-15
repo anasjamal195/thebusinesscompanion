@@ -19,6 +19,10 @@ class ContactController extends Controller
 
         Inquiry::create($validated);
 
+        if ($request->ajax()) {
+            return response()->json(['message' => 'Thank you for your inquiry! We will get back to you soon.']);
+        }
+
         return redirect()->back()->with('success', 'Thank you for your inquiry! We will get back to you soon.');
     }
 }

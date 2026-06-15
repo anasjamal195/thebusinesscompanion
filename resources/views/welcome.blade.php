@@ -1863,13 +1863,11 @@
       <p class="section-sub">Fill out the form below and our team will get back to you within 24 hours.</p>
     </div>
 
-    @if (session('success'))
-      <div class="form-success show">
-        <div class="check">✓</div>
-        <h3>Thank you!</h3>
-        <p>{{ session('success') }}</p>
-      </div>
-    @endif
+    <div class="form-success @if(session('success')) show @endif" id="formSuccess">
+      <div class="check">✓</div>
+      <h3>Thank you!</h3>
+      <p id="formSuccessMessage">{{ session('success') ?? 'Thank you for your inquiry! We will get back to you soon.' }}</p>
+    </div>
 
     <form method="POST" action="{{ route('contact.store') }}" class="contact-form" id="contactForm">
       @csrf
@@ -2036,12 +2034,47 @@
   }
 
   const formSuccess = document.querySelector('.form-success');
-  if (formSuccess) {
+  if (formSuccess && formSuccess.classList.contains('show')) {
     setTimeout(() => {
       formSuccess.style.transition = 'opacity 0.5s';
       formSuccess.style.opacity = '0';
       setTimeout(() => formSuccess.classList.remove('show'), 500);
     }, 5000);
+  }
+
+  const contactForm = document.getElementById('contactForm');
+  if (contactForm) {
+    contactForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const formData = new FormData(this);
+      const submitBtn = this.querySelector('button[type="submit"]');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending...';
+      fetch(this.action, {
+        method: 'POST',
+        body: formData,
+        headers: { 'X-Requested-With': 'XMLHttpRequest' },
+      })
+        .then(r => r.json().then(data => ({ ok: r.ok, status: r.status, data })))
+        .then(({ ok, status, data }) => {
+          if (ok) {
+            this.style.display = 'none';
+            formSuccess.classList.add('show');
+            formSuccess.style.opacity = '1';
+            document.getElementById('formSuccessMessage').textContent = data.message;
+          } else if (status === 422 && data.errors) {
+            let msg = Object.values(data.errors).flat().join('\n');
+            alert(msg);
+          } else {
+            alert('Something went wrong. Please try again.');
+          }
+        })
+        .catch(() => alert('Network error. Please try again.'))
+        .finally(() => {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Send Inquiry →';
+        });
+    });
   }
 </script>
 </body>
