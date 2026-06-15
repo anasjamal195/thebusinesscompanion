@@ -20,6 +20,7 @@ use App\Http\Controllers\CommunityController;
 // use App\Http\Controllers\MentorController;
 use App\Http\Controllers\PublicProfileController;
 use App\Http\Controllers\CalendarController;
+use App\Http\Controllers\ContactController;
 
 // ── Public ────────────────────────────────────────────────────────────────────
 
@@ -52,6 +53,8 @@ Route::post('/waitlist', function (\Illuminate\Http\Request $request) {
 
     return response()->json(['message' => 'Success']);
 })->name('waitlist.store');
+
+Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 
 // ── Guest ─────────────────────────────────────────────────────────────────────
 
@@ -162,6 +165,7 @@ use App\Http\Controllers\Admin\AdminCallController;
 use App\Http\Controllers\Admin\AdminPaymentController;
 use App\Http\Controllers\Admin\AdminMonetizationController;
 use App\Http\Controllers\Admin\AdminWaitlistController;
+use App\Http\Controllers\Admin\AdminInquiryController;
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/',                         [AdminController::class, 'index'])->name('dashboard');
@@ -174,6 +178,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::post('/monetization',            [AdminMonetizationController::class, 'update'])->name('monetization.update');
     Route::get('/waitlist',                 [AdminWaitlistController::class, 'index'])->name('waitlist.index');
     Route::delete('/waitlist/{entry}',      [AdminWaitlistController::class, 'destroy'])->name('waitlist.destroy');
+    Route::get('/inquiries',                [AdminInquiryController::class, 'index'])->name('inquiries.index');
+    Route::delete('/inquiries/{inquiry}',   [AdminInquiryController::class, 'destroy'])->name('inquiries.destroy');
 });
 
 // ── Webhooks (unauthenticated, verified by signature) ─────────────────────────

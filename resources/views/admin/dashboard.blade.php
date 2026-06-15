@@ -1,7 +1,7 @@
 @extends('admin.layouts.app', ['title' => 'Admin Dashboard', 'activeNav' => 'dashboard', 'pageTitle' => 'Dashboard'])
 
 @section('content')
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
     <div class="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
         <div class="flex items-center gap-4">
             <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
@@ -34,6 +34,18 @@
             <div>
                 <div class="text-xl font-bold text-gray-900">{{ number_format($total_waitlist) }}</div>
                 <div class="text-xs font-medium text-gray-500 uppercase tracking-wider">Waitlist</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
+        <div class="flex items-center gap-4">
+            <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-rose-50 text-rose-600">
+                <span class="material-symbols-outlined text-[24px]">contact_mail</span>
+            </div>
+            <div>
+                <div class="text-xl font-bold text-gray-900">{{ number_format($total_inquiries) }}</div>
+                <div class="text-xs font-medium text-gray-500 uppercase tracking-wider">Inquiries</div>
             </div>
         </div>
     </div>

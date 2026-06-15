@@ -65,6 +65,7 @@
                         ['key' => 'payments', 'label' => 'Payments', 'icon' => 'payments', 'route' => 'admin.payments.index'],
                         ['key' => 'monetization', 'label' => 'Monetization', 'icon' => 'tune', 'route' => 'admin.monetization.index'],
                         ['key' => 'waitlist', 'label' => 'Waitlist', 'icon' => 'list_alt', 'route' => 'admin.waitlist.index'],
+                        ['key' => 'inquiries', 'label' => 'Inquiries', 'icon' => 'contact_mail', 'route' => 'admin.inquiries.index'],
                     ];
                     $currentKey = $activeNav ?? 'dashboard';
                 @endphp

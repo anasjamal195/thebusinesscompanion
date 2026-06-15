@@ -10,6 +10,11 @@
 
     :root {
       --accent: #00aff0;
+      --accent-light: #E6F7FF;
+      --accent-border: #99E6FF;
+      --secondary: #0eb647;
+      --secondary-light: #E6F7EA;
+      --secondary-border: #A8E6B8;
       --ink: #2D3748;
       --slate: #475569;
       --muted: #64748B;
@@ -43,12 +48,58 @@
       transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
       border-bottom: 1px solid transparent;
     }
+    nav .nav-logo { color: var(--white); }
+    nav .nav-logo span { color: #00aff0; }
+    nav .nav-links a {
+      color: rgba(255,255,255,0.75);
+      font-size: 0.875rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    nav .nav-links a:hover { color: var(--white); }
+    nav .btn-ghost {
+      color: rgba(255,255,255,0.75);
+      font-size: 0.875rem;
+      font-weight: 700;
+      transition: color 0.2s;
+    }
+    nav .btn-ghost:hover { color: var(--white); }
+    nav .btn-primary {
+      background: var(--white);
+      color: var(--ink);
+    }
+    nav .btn-primary:hover { background: #f1f5f9; }
+    nav .nav-hamburger svg { stroke: var(--white); }
     nav.scrolled {
       background: rgba(255,255,255,0.97);
       border-bottom-color: var(--border);
       box-shadow: 0 1px 16px rgba(45,55,72,0.05);
       backdrop-filter: blur(12px);
     }
+    nav.scrolled .nav-logo { color: var(--ink); }
+    nav.scrolled .nav-logo span { color: var(--accent); }
+    nav.scrolled .nav-links a {
+      color: var(--slate);
+      font-size: 0.875rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    nav.scrolled .nav-links a:hover { color: var(--accent); }
+    nav.scrolled .btn-ghost {
+      color: var(--slate);
+      font-size: 0.875rem;
+      font-weight: 700;
+      transition: color 0.2s;
+    }
+    nav.scrolled .btn-ghost:hover { color: var(--accent); }
+    nav.scrolled .btn-primary {
+      background: var(--ink);
+      color: var(--white);
+    }
+    nav.scrolled .btn-primary:hover { background: var(--accent); }
+    nav.scrolled .nav-hamburger svg { stroke: var(--ink); }
     .nav-inner {
       max-width: 1200px;
       margin: 0 auto;
@@ -60,25 +111,15 @@
     .nav-logo {
       font-size: 1.375rem;
       font-weight: 900;
-      color: var(--ink);
       text-decoration: none;
       letter-spacing: -0.5px;
     }
-    .nav-logo span { color: var(--accent); }
     .nav-links {
       display: flex;
       align-items: center;
       gap: 2rem;
       list-style: none;
     }
-    .nav-links a {
-      font-size: 0.875rem;
-      font-weight: 700;
-      color: var(--slate);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-    .nav-links a:hover { color: var(--accent); }
     .nav-actions {
       display: flex;
       align-items: center;
@@ -88,14 +129,12 @@
       font-family: 'Nunito', sans-serif;
       font-size: 0.875rem;
       font-weight: 700;
-      color: var(--slate);
       background: none;
       border: none;
       cursor: pointer;
       text-decoration: none;
       transition: color 0.2s;
     }
-    .btn-ghost:hover { color: var(--accent); }
     .btn-primary {
       font-family: 'Nunito', sans-serif;
       font-size: 0.875rem;
@@ -198,7 +237,7 @@
     #hero {
       padding-top: 10rem;
       padding-bottom: 7rem;
-      background: url('/assets/bavoground.png'), linear-gradient(135deg, #F0F9FF 0%, #E6F7FF 50%, #F8FAFC 100%);
+      background: url('/assets/background.png'), linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
       background-size: cover, auto;
       background-position: center, center;
       position: relative;
@@ -208,7 +247,7 @@
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(135deg, rgba(15,23,42,0.3) 0%, rgba(0,175,240,0.15) 100%);
+      background: linear-gradient(135deg, rgba(15,23,42,0.88) 0%, rgba(15,23,42,0.6) 100%);
       z-index: 0;
     }
     .hero-grid {
@@ -221,14 +260,14 @@
       font-weight: 900;
       line-height: 1.07;
       letter-spacing: -1.5px;
-      color: var(--ink);
+      color: var(--white);
       margin-bottom: 1.5rem;
     }
-    .hero-h1 .accent { color: var(--accent); }
+    .hero-h1 .accent { color: #00aff0; }
     .hero-lead {
       font-size: 1.0625rem;
       font-weight: 500;
-      color: var(--muted);
+      color: rgba(255,255,255,0.7);
       line-height: 1.7;
       max-width: 480px;
       margin-bottom: 2.25rem;
@@ -249,24 +288,29 @@
       gap: 1.5rem;
       margin-top: 3.5rem;
       padding-top: 2.5rem;
-      border-top: 1px solid var(--border);
+      border-top: 1px solid rgba(255,255,255,0.1);
     }
     .hero-stat-label {
       font-size: 0.6875rem;
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.1em;
-      color: var(--dim);
+      color: rgba(255,255,255,0.4);
       margin-top: 0.25rem;
     }
     .hero-stat-value {
       font-size: 1.25rem;
       font-weight: 900;
-      color: var(--ink);
+      color: var(--white);
       letter-spacing: -0.5px;
     }
-    .hero-stat-value.accent { color: var(--accent); }
-    .hero-stat-value.blue { color: var(--accent); }
+    .hero-stat-value.accent { color: #00aff0; }
+    .hero-stat-value.blue { color: var(--secondary); }
+    #hero .btn-outline {
+      color: var(--white);
+      border-color: rgba(255,255,255,0.25);
+    }
+    #hero .btn-outline:hover { border-color: var(--white); }
 
     /* ── SECTION HEADERS ── */
     .section-header {
@@ -282,7 +326,7 @@
       margin-bottom: 1rem;
     }
     .section-title .accent { color: var(--accent); }
-    .section-title .blue { color: var(--accent); }
+    .section-title .blue { color: var(--secondary); }
     .section-sub {
       font-size: 1.0625rem;
       font-weight: 500;
@@ -309,7 +353,7 @@
     .overview-card:hover {
       transform: translateY(-4px);
       box-shadow: 0 12px 32px rgba(45,55,72,0.07);
-      border-color: #B3ECFF;
+      border-color: #CBD5E1;
     }
     .overview-icon {
       width: 48px;
@@ -321,8 +365,8 @@
       margin-bottom: 1.25rem;
       font-size: 1.375rem;
     }
-    .overview-icon.accent { background: #E6F7FF; }
-    .overview-icon.mixed { background: #E6F7FF; }
+    .overview-icon.accent { background: var(--accent-light); }
+    .overview-icon.mixed { background: var(--secondary-light); }
     .overview-card h3 {
       font-size: 1.0625rem;
       font-weight: 800;
@@ -358,7 +402,7 @@
       border-radius: 4px;
       margin-bottom: 1.25rem;
     }
-    .product-tag.blue-tag { background: var(--accent); }
+    .product-tag.blue-tag { background: var(--secondary); }
     .product-name {
       font-size: clamp(2rem, 3.5vw, 2.75rem);
       font-weight: 900;
@@ -367,7 +411,7 @@
       line-height: 1.05;
     }
     .product-name .accent { color: var(--accent); }
-    .product-name .blue { color: var(--accent); }
+    .product-name .blue { color: var(--secondary); }
     .product-tagline {
       font-size: 1rem;
       font-weight: 600;
@@ -402,16 +446,16 @@
       width: 18px;
       height: 18px;
       border-radius: 50%;
-      background: #E6F7FF;
-      border: 1.5px solid #99E6FF;
+      background: var(--accent-light);
+      border: 1.5px solid var(--accent-border);
       flex-shrink: 0;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18' fill='none'%3E%3Cpath d='M4.5 9l3 3 6-6' stroke='%2300aff0' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
       background-size: cover;
     }
     .feature-list.blue-checks li::before {
-      background-color: #E6F7FF;
-      border-color: #99E6FF;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18' fill='none'%3E%3Cpath d='M4.5 9l3 3 6-6' stroke='%2300aff0' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-color: var(--secondary-light);
+      border-color: var(--secondary-border);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18' fill='none'%3E%3Cpath d='M4.5 9l3 3 6-6' stroke='%230eb647' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
     }
     .btn-accent {
       background: var(--accent);
@@ -435,7 +479,7 @@
       height: 3px;
     }
     .flow-card.accent-top::before { background: var(--accent); }
-    .flow-card.blue-top::before { background: var(--accent); }
+    .flow-card.blue-top::before { background: var(--secondary); }
     .flow-step {
       display: flex;
       align-items: flex-start;
@@ -458,7 +502,7 @@
       flex-shrink: 0;
     }
     .num-accent { background: var(--accent); }
-    .num-blue { background: var(--accent); }
+    .num-blue { background: var(--secondary); }
     .num-ink { background: var(--ink); }
     .flow-step-text { flex: 1; }
     .flow-step-title {
@@ -485,6 +529,8 @@
       gap: 1rem;
     }
     .service-card {
+      position: relative;
+      overflow: hidden;
       background: var(--white);
       border: 1px solid var(--border);
       border-radius: var(--radius-md);
@@ -494,8 +540,8 @@
     }
     .service-card:hover {
       transform: translateY(-3px);
-      box-shadow: 0 8px 24px rgba(0,175,240,0.06);
-      border-color: #99E6FF;
+      box-shadow: 0 8px 24px rgba(45,55,72,0.06);
+      border-color: var(--border);
     }
     .service-card-icon {
       width: 38px;
@@ -507,8 +553,8 @@
       font-size: 1rem;
       margin-bottom: 0.875rem;
     }
-    .service-card-icon.accent { background: #E6F7FF; }
-    .service-card-icon.b { background: #E6F7FF; }
+    .service-card-icon.accent { background: var(--accent-light); }
+    .service-card-icon.b { background: var(--secondary-light); }
     .service-card h4 {
       font-size: 0.8125rem;
       font-weight: 800;
@@ -521,6 +567,34 @@
       color: var(--dim);
       line-height: 1.5;
     }
+    .badge-ribbon {
+      position: absolute;
+      top: 0;
+      right: 0;
+      font-size: 0.5rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--white);
+      padding: 0.25rem 0.75rem 0.25rem 0.6rem;
+      border-radius: 0 0 0 var(--radius-sm);
+      z-index: 1;
+    }
+    .ribbon-1 { background: #0eb647; }
+    .ribbon-2 { background: #00aff0; }
+    .ribbon-3 { background: #7C3AED; }
+    .ribbon-4 { background: #F59E0B; }
+    .ribbon-5 { background: #EC4899; }
+    .ribbon-6 { background: #14B8A6; }
+    .ribbon-7 { background: #EF4444; }
+    .ribbon-8 { background: #6366F1; }
+    .ribbon-9 { background: #D97706; }
+    .ribbon-10 { background: #06B6D4; }
+    .ribbon-11 { background: #65A30D; }
+    .ribbon-12 { background: #F43F5E; }
+    .ribbon-13 { background: #8B5CF6; }
+    .ribbon-14 { background: #059669; }
+    .ribbon-15 { background: #0284C7; }
 
     /* ── ARCH DIAGRAM ── */
     .arch-box {
@@ -590,7 +664,7 @@
       color: var(--white);
     }
     .arch-tag.accent { background: var(--accent); }
-    .arch-tag.b { background: var(--accent); }
+    .arch-tag.b { background: var(--secondary); }
     .arch-tag.i { background: var(--ink); }
 
     /* ── SOLUTIONS ── */
@@ -611,8 +685,8 @@
     }
     .solution-card:hover {
       transform: translateY(-4px);
-      box-shadow: 0 8px 24px rgba(0,175,240,0.08);
-      border-color: #99E6FF;
+      box-shadow: 0 8px 24px rgba(45,55,72,0.06);
+      border-color: var(--border);
     }
     .solution-card .icon { font-size: 1.75rem; margin-bottom: 0.75rem; }
     .solution-card h4 { font-size: 0.8125rem; font-weight: 800; color: var(--ink); margin-bottom: 0.25rem; }
@@ -647,8 +721,8 @@
       margin: 0 auto 1rem;
       font-size: 1.25rem;
     }
-    .why-icon.accent { background: #E6F7FF; }
-    .why-icon.b { background: #E6F7FF; }
+    .why-icon.accent { background: var(--accent-light); }
+    .why-icon.b { background: var(--secondary-light); }
     .why-card h4 { font-size: 0.875rem; font-weight: 800; color: var(--ink); margin-bottom: 0.375rem; }
     .why-card p { font-size: 0.8125rem; font-weight: 600; color: var(--muted); line-height: 1.5; }
 
@@ -687,7 +761,11 @@
     }
     .process-step:hover .process-step-num {
       border-color: var(--accent);
-      box-shadow: 0 0 0 4px #E6F7FF;
+      box-shadow: 0 0 0 4px var(--accent-light);
+    }
+    .process-step:nth-child(even):hover .process-step-num {
+      border-color: var(--secondary);
+      box-shadow: 0 0 0 4px var(--secondary-light);
     }
     .process-step-label {
       font-size: 0.6875rem;
@@ -697,7 +775,7 @@
       color: var(--accent);
       margin-bottom: 0.5rem;
     }
-    .process-step:nth-child(even) .process-step-label { color: var(--accent); }
+    .process-step:nth-child(even) .process-step-label { color: var(--secondary); }
     .process-step h4 {
       font-size: 1.0625rem;
       font-weight: 900;
@@ -765,7 +843,7 @@
       color: var(--white);
       margin-bottom: 1.75rem;
     }
-    .vision-title .accent { color: #00aff0; }
+    .vision-title .accent { color: var(--accent); }
     .vision-lead {
       font-size: 1.0625rem;
       font-weight: 500;
@@ -845,7 +923,7 @@
       color: var(--white);
     }
     .eco-leaf.accent { background: var(--accent); }
-    .eco-leaf.b { background: var(--accent); }
+    .eco-leaf.b { background: var(--secondary); }
     .eco-leaf.i { background: var(--ink); }
 
     /* ── CTA ── */
@@ -992,6 +1070,130 @@
       .why-grid { grid-template-columns: 1fr 1fr; }
       .process-timeline { grid-template-columns: 1fr; }
       .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+    }
+
+    /* ── MODAL ── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15,23,42,0.6);
+      backdrop-filter: blur(4px);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-box {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      padding: 2.5rem 2rem;
+      max-width: 380px;
+      width: 90%;
+      text-align: center;
+      position: relative;
+      animation: modalIn 0.25s ease-out;
+    }
+    @keyframes modalIn {
+      from { opacity: 0; transform: scale(0.92) translateY(12px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .modal-close {
+      position: absolute;
+      top: 0.75rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--dim);
+      cursor: pointer;
+      line-height: 1;
+    }
+    .modal-close:hover { color: var(--ink); }
+    .modal-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+    .modal-box h3 {
+      font-size: 1.25rem;
+      font-weight: 900;
+      color: var(--ink);
+      margin-bottom: 0.5rem;
+    }
+    .modal-box p {
+      font-size: 0.9375rem;
+      font-weight: 500;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* ── CONTACT FORM ── */
+    #contact { background: var(--surface); }
+    .contact-form {
+      max-width: 580px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+    }
+    .contact-form label {
+      font-size: 0.8125rem;
+      font-weight: 800;
+      color: var(--ink);
+      display: block;
+      margin-bottom: 0.375rem;
+    }
+    .contact-form input,
+    .contact-form select,
+    .contact-form textarea {
+      width: 100%;
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: var(--ink);
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 0.75rem 1rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .contact-form input:focus,
+    .contact-form select:focus,
+    .contact-form textarea:focus {
+      border-color: var(--accent);
+    }
+    .contact-form textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+    .contact-form .btn-primary {
+      align-self: flex-start;
+    }
+    .form-success {
+      display: none;
+      text-align: center;
+      padding: 2rem;
+    }
+    .form-success.show { display: block; }
+    .form-success .check {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+    .form-success h3 {
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: var(--ink);
+      margin-bottom: 0.5rem;
+    }
+    .form-success p {
+      font-size: 1rem;
+      color: var(--muted);
     }
 
     /* Scrollbar */
@@ -1208,7 +1410,7 @@
     <div class="product-block">
       <div class="reveal">
         <span class="product-tag">Product 01</span>
-        <div class="product-name"><span class="accent">AI task planner</span></div>
+        <div class="product-name">AI <span class="accent">task </span>planner</div>
         <div class="product-tagline">Your AI accountability partner</div>
         <p class="product-desc">AI task planner uses AI voice interactions to keep users focused on priorities, follow through on commitments, and maintain daily productivity — without the noise.</p>
         <ul class="feature-list">
@@ -1322,7 +1524,7 @@
       </div>
       <div class="reveal reveal-delay-1">
         <span class="product-tag blue-tag">Product 02</span>
-        <div class="product-name"><span class="blue">AI Team Manager</span></div>
+        <div class="product-name">AI <span class="blue">Team</span> Manager</div>
         <div class="product-tagline">AI workforce management platform</div>
         <p class="product-desc">AI Team Manager automates team follow-ups, task assignments, employee reporting, and productivity monitoring through intelligent AI voice interactions.</p>
         <ul class="feature-list blue-checks">
@@ -1352,101 +1554,96 @@
         <div class="service-card-icon accent"><svg class="icon"><use href="#icon-phone"/></svg></div>
         <h4>Hosted VICIdial</h4>
         <p>Enterprise dialer platform with full support.</p>
+        <span class="badge-ribbon ribbon-1">Coming Soon</span>
       </div>
       <div class="service-card reveal reveal-delay-1">
         <div class="service-card-icon b"><svg class="icon"><use href="#icon-zap"/></svg></div>
         <h4>Predictive Dialers</h4>
         <p>AI-powered predictive calling algorithms.</p>
+        <span class="badge-ribbon ribbon-2">Coming Soon</span>
       </div>
       <div class="service-card reveal reveal-delay-2">
         <div class="service-card-icon accent"><svg class="icon"><use href="#icon-rocket"/></svg></div>
         <h4>Power Dialers</h4>
         <p>High-velocity dialing for maximum connects.</p>
+        <span class="badge-ribbon ribbon-3">Coming Soon</span>
       </div>
       <div class="service-card reveal reveal-delay-3">
         <div class="service-card-icon b"><svg class="icon"><use href="#icon-zap"/></svg></div>
         <h4>Progressive Dialers</h4>
         <p>Agent-based progressive call distribution.</p>
+        <span class="badge-ribbon ribbon-4">Coming Soon</span>
       </div>
       <div class="service-card reveal">
         <div class="service-card-icon accent"><svg class="icon"><use href="#icon-eye"/></svg></div>
         <h4>Preview Dialers</h4>
         <p>Agent review before connecting calls.</p>
+        <span class="badge-ribbon ribbon-5">Coming Soon</span>
       </div>
       <div class="service-card reveal reveal-delay-1">
         <div class="service-card-icon b"><svg class="icon"><use href="#icon-cloud"/></svg></div>
         <h4>Cloud PBX</h4>
         <p>Full-featured cloud phone system.</p>
+        <span class="badge-ribbon ribbon-6">Coming Soon</span>
       </div>
       <div class="service-card reveal reveal-delay-2">
         <div class="service-card-icon accent"><svg class="icon"><use href="#icon-link"/></svg></div>
         <h4>SIP Trunking</h4>
         <p>Scalable SIP connectivity worldwide.</p>
+        <span class="badge-ribbon ribbon-7">Coming Soon</span>
       </div>
       <div class="service-card reveal reveal-delay-3">
         <div class="service-card-icon b"><svg class="icon"><use href="#icon-antenna"/></svg></div>
         <h4>VoIP Termination</h4>
         <p>High-quality VoIP termination routes.</p>
+        <span class="badge-ribbon ribbon-8">Coming Soon</span>
       </div>
       <div class="service-card reveal">
         <div class="service-card-icon accent"><svg class="icon"><use href="#icon-megaphone"/></svg></div>
         <h4>Voice Broadcasting</h4>
         <p>Mass notification and broadcast system.</p>
+        <span class="badge-ribbon ribbon-9">Coming Soon</span>
       </div>
       <div class="service-card reveal reveal-delay-1">
         <div class="service-card-icon b"><svg class="icon"><use href="#icon-zap"/></svg></div>
         <h4>Click-to-Call</h4>
         <p>One-click calling from any platform.</p>
+        <span class="badge-ribbon ribbon-10">Coming Soon</span>
       </div>
       <div class="service-card reveal reveal-delay-2">
         <div class="service-card-icon accent"><svg class="icon"><use href="#icon-ai"/></svg></div>
         <h4>AI Voice Agents</h4>
         <p>Intelligent AI-powered voice assistants.</p>
+        <span class="badge-ribbon ribbon-11">Coming Soon</span>
       </div>
       <div class="service-card reveal reveal-delay-3">
         <div class="service-card-icon b"><svg class="icon"><use href="#icon-link"/></svg></div>
         <h4>CRM Integrations</h4>
         <p>Seamless CRM and tool integrations.</p>
+        <span class="badge-ribbon ribbon-12">Coming Soon</span>
       </div>
       <div class="service-card reveal">
         <div class="service-card-icon accent"><svg class="icon"><use href="#icon-tools"/></svg></div>
         <h4>Custom Solutions</h4>
         <p>Tailored telecom solutions for your needs.</p>
+        <span class="badge-ribbon ribbon-13">Coming Soon</span>
       </div>
       <div class="service-card reveal reveal-delay-1">
         <div class="service-card-icon b"><svg class="icon"><use href="#icon-monitor"/></svg></div>
         <h4>Managed Infrastructure</h4>
         <p>Fully managed voice infrastructure.</p>
+        <span class="badge-ribbon ribbon-14">Coming Soon</span>
       </div>
       <div class="service-card reveal reveal-delay-2">
         <div class="service-card-icon accent"><svg class="icon"><use href="#icon-antenna"/></svg></div>
         <h4>Carrier Services</h4>
         <p>Direct carrier relationships and routes.</p>
+        <span class="badge-ribbon ribbon-15">Coming Soon</span>
       </div>
       <div class="service-card reveal reveal-delay-3">
         <div class="service-card-icon b"><svg class="icon"><use href="#icon-headset"/></svg></div>
         <h4>Technical Support</h4>
         <p>24/7 expert technical support team.</p>
-      </div>
-    </div>
-    <!-- Architecture diagram -->
-    <div class="arch-box reveal">
-      <div class="arch-box-title">Enterprise Architecture</div>
-      <div class="arch-flow">
-        <div class="arch-pill dark">Businesses</div>
-        <div class="arch-arrow">↓</div>
-        <div class="arch-layer">
-          <div class="arch-layer-label">Dialer.best Infrastructure Layer</div>
-          <div class="arch-tags">
-            <span class="arch-tag accent">Dialers</span>
-            <span class="arch-tag b">PBX</span>
-            <span class="arch-tag accent">SIP</span>
-            <span class="arch-tag i">AI Agents</span>
-            <span class="arch-tag b">CRM</span>
-          </div>
-        </div>
-        <div class="arch-arrow">↓</div>
-        <div class="arch-pill bordered">Customers</div>
       </div>
     </div>
   </div>
@@ -1657,6 +1854,63 @@
   </div>
 </section>
 
+<!-- ══ CONTACT ══ -->
+<section id="contact">
+  <div class="container">
+    <div class="section-header">
+      <div class="eyebrow">Contact Us</div>
+      <h2 class="section-title">Have a question? <span class="blue">Reach out</span></h2>
+      <p class="section-sub">Fill out the form below and our team will get back to you within 24 hours.</p>
+    </div>
+
+    @if (session('success'))
+      <div class="form-success show">
+        <div class="check">✓</div>
+        <h3>Thank you!</h3>
+        <p>{{ session('success') }}</p>
+      </div>
+    @endif
+
+    <form method="POST" action="{{ route('contact.store') }}" class="contact-form" id="contactForm">
+      @csrf
+      <div class="form-row">
+        <div>
+          <label for="name">Full Name</label>
+          <input type="text" name="name" id="name" required placeholder="John Doe" value="{{ old('name') }}">
+        </div>
+        <div>
+          <label for="email">Email</label>
+          <input type="email" name="email" id="email" required placeholder="john@example.com" value="{{ old('email') }}">
+        </div>
+      </div>
+      <div class="form-row">
+        <div>
+          <label for="phone">Phone</label>
+          <input type="tel" name="phone" id="phone" placeholder="+1 (555) 000-0000" value="{{ old('phone') }}">
+        </div>
+        <div>
+          <label for="service">Service Interested In</label>
+          <select name="service" id="service">
+            <option value="">— Select a service —</option>
+            <option value="Hosted VICIdial" @selected(old('service') === 'Hosted VICIdial')>Hosted VICIdial</option>
+            <option value="Predictive Dialers" @selected(old('service') === 'Predictive Dialers')>Predictive Dialers</option>
+            <option value="Cloud PBX" @selected(old('service') === 'Cloud PBX')>Cloud PBX</option>
+            <option value="SIP Trunking" @selected(old('service') === 'SIP Trunking')>SIP Trunking</option>
+            <option value="AI Voice Agents" @selected(old('service') === 'AI Voice Agents')>AI Voice Agents</option>
+            <option value="Technical Support" @selected(old('service') === 'Technical Support')>Technical Support</option>
+            <option value="Other" @selected(old('service') === 'Other')>Other</option>
+          </select>
+        </div>
+      </div>
+      <div>
+        <label for="message">Message</label>
+        <textarea name="message" id="message" required placeholder="Tell us about your needs...">{{ old('message') }}</textarea>
+      </div>
+      <button type="submit" class="btn-primary btn-lg">Send Inquiry →</button>
+    </form>
+  </div>
+</section>
+
 <!-- ══ FOOTER ══ -->
 <footer>
   <div class="container">
@@ -1703,6 +1957,15 @@
   </div>
 </footer>
 
+<div class="modal-overlay" id="comingSoonModal">
+  <div class="modal-box">
+    <button class="modal-close" id="modalClose">&times;</button>
+    <div class="modal-icon">🚀</div>
+    <h3>Coming Soon</h3>
+    <p>This service is currently in development. We'll announce it here as soon as it launches!</p>
+  </div>
+</div>
+
 <script>
   const navbar = document.getElementById('navbar');
   const hamburger = document.getElementById('hamburger');
@@ -1740,6 +2003,46 @@
       }
     });
   });
+
+  const modal = document.getElementById('comingSoonModal');
+  const modalClose = document.getElementById('modalClose');
+
+  document.querySelectorAll('.service-card').forEach(card => {
+    card.addEventListener('click', function(e) {
+      if (this.querySelector('.badge-ribbon')) {
+        e.preventDefault();
+        modal.classList.add('open');
+      }
+    });
+  });
+
+  modal.addEventListener('click', function(e) {
+    if (e.target === this || e.target === modalClose) {
+      this.classList.remove('open');
+    }
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') modal.classList.remove('open');
+  });
+
+  const techSupport = document.querySelector('.service-card:last-child');
+  if (techSupport) {
+    techSupport.style.cursor = 'pointer';
+    techSupport.addEventListener('click', function() {
+      const contact = document.getElementById('contact');
+      if (contact) contact.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }
+
+  const formSuccess = document.querySelector('.form-success');
+  if (formSuccess) {
+    setTimeout(() => {
+      formSuccess.style.transition = 'opacity 0.5s';
+      formSuccess.style.opacity = '0';
+      setTimeout(() => formSuccess.classList.remove('show'), 500);
+    }, 5000);
+  }
 </script>
 </body>
 </html>
