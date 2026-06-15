@@ -27,6 +27,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/task-planner', function () {
+    return view('task-planner');
+})->name('task.planner');
+
 Route::get('/mobile-app', function () {
     return view('mobile-app');
 })->name('mobile.app');
