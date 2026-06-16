@@ -1,1274 +1,1429 @@
 <!DOCTYPE html>
-<html class="light scroll-smooth" lang="en">
-
+<html lang="en" class="scroll-smooth">
 <head>
-  <meta charset="utf-8" />
-  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-  <link rel="icon" type="image/png" href="{{ asset('assets/logo/logo-small-light.png') }}">
-  <title>Dialer.best - Your AI Todo Assistant</title>
-  @vite(['resources/css/app.css'])
-  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900&display=swap"
-    rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
-    rel="stylesheet" />
-  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>stride.best — Your AI Project Manager</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@400,0..1&display=swap" rel="stylesheet" />
   <style>
-    body {
-      font-family: 'Inter', sans-serif;
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy:#1A253A; --navy2:#223048; --navy3:#2E3F5B; --navy4:#3C5072;
+      --cyan:#00AFF0; --cyan2:#0091C8;
+      --green:#0EB647; --green2:#0A9A3B;
+      --purple:#7C3AED; --orange:#EA580C;
+      --white:#FFFFFF;
+      --s1:#F8FAFC; --s2:#F1F5F9; --s3:#E2E8F0; --s4:#CBD5E1;
+      --s5:#94A3B8; --s6:#64748B; --s7:#475569; --s8:#475569; --s9:#334155;
+    }
+    html { font-size:16px; }
+    body { font-family:'Nunito',sans-serif; background:#fff; color:var(--s9); -webkit-font-smoothing:antialiased; overflow-x:hidden; }
+
+    /* ─── NAV ─── */
+    nav { position:sticky; top:0; z-index:100; height:72px; display:flex; align-items:center; padding:0 2rem; background:transparent; border-bottom:1px solid transparent; transition:background .35s,border-color .35s,box-shadow .35s; }
+    nav.scrolled { background:rgba(255,255,255,.95); backdrop-filter:blur(20px); border-bottom-color:rgba(0,0,0,.08); box-shadow:0 4px 24px rgba(0,0,0,.06); }
+    .nav-inner { max-width:1280px; margin:0 auto; width:100%; display:flex; align-items:center; justify-content:space-between; }
+    .logo { display:flex; align-items:center; gap:.6rem; text-decoration:none; }
+    .logo-icon { width:38px; height:38px; border-radius:10px; background:var(--cyan); display:flex; align-items:center; justify-content:center; box-shadow:0 4px 14px rgba(0,175,240,.35); }
+    .logo-icon svg { width:18px; height:18px; }
+    .logo-text { font-family:'Nunito',sans-serif; font-weight:900; font-size:1.35rem; color:#fff; letter-spacing:-.03em; transition:color .35s; }
+    nav.scrolled .logo-text { color:var(--s9); }
+    .logo-text span { color:var(--cyan); }
+    .nav-links { display:flex; align-items:center; gap:2rem; }
+    .nav-links a { color:rgba(255,255,255,.7); text-decoration:none; font-size:.875rem; font-weight:600; transition:color .2s; }
+    nav.scrolled .nav-links a { color:var(--s6); }
+    .nav-links a:hover { color:var(--cyan); }
+    .nav-cta { padding:.55rem 1.4rem; background:var(--cyan); color:#fff; font-weight:700; font-size:.875rem; border-radius:999px; text-decoration:none; transition:background .2s,transform .15s; box-shadow:0 4px 14px rgba(0,175,240,.3); }
+    .nav-cta:hover { background:var(--cyan2); transform:translateY(-1px); }
+    .nav-login { color:rgba(255,255,255,.9); text-decoration:none; font-size:.875rem; font-weight:700; transition:color .2s; margin-right:.5rem; }
+    nav.scrolled .nav-login { color:var(--s9); }
+    .nav-login:hover { color:var(--cyan); }
+
+    /* ─── HERO ─── */
+    .hero { position:relative; min-height:100vh; display:flex; align-items:center; overflow:hidden; margin-top:-72px; padding-top:72px; background-image:url('assets/background.png'); background-size:cover; background-position:center; }
+    .hero-overlay { position:absolute; inset:0; background:linear-gradient(135deg,rgba(10,15,25,.95) 0%,rgba(15,20,30,.90) 50%,rgba(5,10,15,.85) 100%); }
+    .hero-glow1 { position:absolute; top:25%; left:25%; width:384px; height:384px; border-radius:50%; background:radial-gradient(circle,rgba(0,175,240,.12),transparent 70%); filter:blur(40px); pointer-events:none; }
+    .hero-glow2 { position:absolute; bottom:25%; right:25%; width:320px; height:320px; border-radius:50%; background:radial-gradient(circle,rgba(14,182,71,.10),transparent 70%); filter:blur(40px); pointer-events:none; }
+    .hero-glow3 { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:600px; height:600px; border-radius:50%; background:radial-gradient(circle,rgba(124,58,237,.05),transparent 70%); filter:blur(60px); pointer-events:none; }
+
+    .hero-inner { max-width:1280px; margin:0 auto; padding:5rem 2rem; width:100%; position:relative; z-index:1; display:grid; grid-template-columns:50% 50%; gap:2rem; align-items:center; }
+
+    /* hero text */
+    .hero-eyebrow { display:inline-flex; align-items:center; gap:.5rem; padding:.35rem .9rem; border:1px solid rgba(0,175,240,.3); background:rgba(0,175,240,.08); border-radius:999px; font-size:.7rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--cyan); margin-bottom:1.5rem; }
+    .eyebrow-dot { width:6px; height:6px; border-radius:50%; background:var(--green); animation:blink 1.8s ease-in-out infinite; }
+    @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:.4;} }
+
+    .hero-toggle { display:inline-flex; align-items:center; padding:4px; background:rgba(255,255,255,.10); border:1px solid rgba(255,255,255,.2); border-radius:999px; margin-bottom:1.5rem; }
+    .hero-toggle-opt { padding:.35rem 1rem; border-radius:999px; font-size:.75rem; font-weight:700; cursor:pointer; transition:all .2s; color:rgba(255,255,255,.6); }
+    .hero-toggle-opt.active { background:var(--cyan); color:#fff; }
+
+    .hero-h1 { font-family:'Nunito',sans-serif; font-size:clamp(2.2rem,4.5vw,3.6rem); font-weight:900; color:#fff; line-height:1.05; letter-spacing:-.04em; margin-bottom:1.5rem; }
+    .hero-h1 .c1 { color:var(--cyan); }
+    .hero-h1 .c2 { color:var(--green); }
+
+    .hero-sub-big { color:rgba(255,255,255,.9); font-size:1.1rem; font-weight:600; max-width:500px; line-height:1.6; margin-bottom:.75rem; }
+    .hero-sub { color:rgba(255,255,255,.65); font-size:.95rem; max-width:480px; line-height:1.7; margin-bottom:2rem; }
+
+    .hero-actions { display:flex; gap:1rem; flex-wrap:wrap; margin-bottom:2.5rem; }
+    .btn-primary { display:inline-flex; align-items:center; gap:.5rem; padding:.85rem 2rem; background:linear-gradient(135deg,var(--cyan),var(--cyan2)); color:#fff; font-weight:700; font-size:.95rem; border-radius:12px; text-decoration:none; border:none; cursor:pointer; box-shadow:0 6px 24px rgba(0,175,240,.35); transition:transform .2s,box-shadow .2s; font-family:inherit; }
+    .btn-primary:hover { transform:translateY(-2px); box-shadow:0 10px 32px rgba(0,175,240,.45); }
+    .btn-ghost { display:inline-flex; align-items:center; gap:.75rem; padding:.85rem 2rem; background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.18); color:#fff; font-weight:700; font-size:.95rem; border-radius:12px; text-decoration:none; cursor:pointer; backdrop-filter:blur(8px); transition:background .2s; font-family:inherit; }
+    .btn-ghost:hover { background:rgba(255,255,255,.13); }
+    .play-ring { width:32px; height:32px; border-radius:50%; background:rgba(14,182,71,.2); border:1px solid rgba(14,182,71,.4); display:flex; align-items:center; justify-content:center; }
+
+    .hero-chips { display:flex; flex-wrap:wrap; gap:.6rem; }
+    .chip { display:flex; align-items:center; gap:.4rem; padding:.35rem .85rem; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12); border-radius:999px; font-size:.75rem; color:rgba(255,255,255,.75); font-weight:600; }
+    .chip .material-symbols-outlined { font-size:15px; }
+
+    /* ─── HERO VISUAL (original sliding cards) ─── */
+    .hero-visual { position:relative; width:100%; height:700px; display:flex; justify-content:flex-start; align-items:center; overflow:hidden; mask-image:linear-gradient(to bottom,transparent 0%,black 2%,black 98%,transparent 100%); -webkit-mask-image:linear-gradient(to bottom,transparent 0%,black 2%,black 98%,transparent 100%); }
+    .cards-wrap { position:relative; width:130%; height:100%; display:flex; }
+
+    /* SVG connecting lines */
+    .hero-svg { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; z-index:0; transition:opacity .5s; }
+    @keyframes heroPulse { from{stroke-dashoffset:400;} to{stroke-dashoffset:0;} }
+    @keyframes heroPulseRev { from{stroke-dashoffset:-400;} to{stroke-dashoffset:0;} }
+    .hp-base { stroke:rgba(255,255,255,.15); stroke-width:2.5; fill:none; stroke-dasharray:4 4; }
+    .hp-flow { stroke:var(--cyan); stroke-width:4; fill:none; stroke-linecap:round; stroke-dasharray:40 360; animation:heroPulse 3s linear infinite; filter:drop-shadow(0 0 6px rgba(0,175,240,.5)); }
+    .hp-flow-rev { stroke:var(--green); stroke-width:4; fill:none; stroke-linecap:round; stroke-dasharray:40 360; animation:heroPulseRev 3s linear infinite; filter:drop-shadow(0 0 6px rgba(14,182,71,.5)); }
+    .hn { fill:#fff; stroke:var(--cyan); stroke-width:2; }
+    .hn-p { fill:var(--cyan); opacity:.35; }
+
+    /* card columns */
+    .card-col { position:relative; width:50%; padding:0 1rem; height:100%; transition:transform 700ms ease-in-out; }
+    .card-col-2 { transition-duration:1000ms; }
+
+    .hcard { position:absolute; left:1rem; right:1rem; height:380px; border-radius:14px; border:1px solid; overflow:hidden; transition:all .5s; }
+
+    /* ghost cards */
+    .hcard-ghost { background:var(--navy4); border-color:rgba(255,255,255,.1); opacity:.4; padding:1.5rem; display:flex; flex-direction:column; gap:1rem; }
+    .gh-row { display:flex; align-items:center; gap:.75rem; }
+    .gh-av { width:40px; height:40px; border-radius:50%; background:rgba(255,255,255,.1); flex-shrink:0; }
+    .gh-lines { display:flex; flex-direction:column; gap:.5rem; flex:1; }
+    .gh-line { height:8px; background:rgba(255,255,255,.1); border-radius:4px; }
+    .gh-box { height:96px; background:rgba(255,255,255,.05); border-radius:12px; margin-top:1rem; }
+    .gh-foot { display:flex; flex-direction:column; gap:.5rem; margin-top:auto; }
+
+    /* active white card */
+    .hcard-active { background:#fff; border-color:rgba(255,255,255,.2); box-shadow:0 20px 60px rgba(0,0,0,.35); z-index:20; overflow:visible; }
+    .hcard-dim { background:var(--navy4); border-color:rgba(255,255,255,.1); opacity:.6; z-index:10; transform:scale(.95); overflow:hidden; }
+
+    /* CARD 1 content — live call */
+    .card1-inner { padding:2rem; display:flex; flex-direction:column; height:100%; color:var(--navy2); }
+    .card1-caller { display:flex; align-items:center; gap:.75rem; margin-bottom:1.25rem; }
+    .caller-av { width:48px; height:48px; border-radius:50%; background:linear-gradient(135deg,var(--cyan),var(--green)); display:flex; align-items:center; justify-content:center; color:#fff; box-shadow:0 4px 12px rgba(0,175,240,.3); }
+    .caller-av .material-symbols-outlined { font-size:1.5rem; }
+    .caller-label { font-size:.6rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--cyan); }
+    .caller-name { font-size:1.05rem; font-weight:800; color:var(--navy2); }
+    .live-pill { display:flex; align-items:center; gap:.3rem; padding:.25rem .6rem; background:rgba(34,197,94,.12); border:1px solid rgba(34,197,94,.3); border-radius:999px; font-size:.6rem; font-weight:700; color:#16a34a; animation:livefade 2s ease-in-out infinite; }
+    @keyframes livefade { 0%,100%{opacity:1;} 50%{opacity:.6;} }
+    .live-dot { width:5px; height:5px; border-radius:50%; background:#16a34a; }
+    .card1-bubble { flex:1; background:linear-gradient(to bottom,#EBF8FF,#F0FFF4); border:1px solid rgba(0,175,240,.2); border-radius:16px; padding:1.25rem; }
+    .bubble-row { display:flex; align-items:flex-start; gap:.6rem; margin-bottom:.75rem; }
+    .bubble-av { width:30px; height:30px; border-radius:50%; background:rgba(0,175,240,.1); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .bubble-av .material-symbols-outlined { font-size:1rem; color:var(--cyan); }
+    .bubble-text { font-size:.75rem; font-weight:700; color:var(--navy2); }
+    .bubble-time { font-size:.6rem; color:#4A7B9E; font-weight:500; margin-top:2px; }
+    .wave-row { display:flex; align-items:center; gap:2px; padding:.5rem 0; }
+    .wb { width:3px; border-radius:999px; animation:wv 1.2s ease-in-out infinite; }
+    .wb:nth-child(1){height:8px;animation-delay:0s;background:var(--cyan);}
+    .wb:nth-child(2){height:14px;animation-delay:.2s;background:var(--cyan);}
+    .wb:nth-child(3){height:6px;animation-delay:.4s;background:var(--cyan);}
+    .wb:nth-child(4){height:18px;animation-delay:.6s;background:var(--cyan);}
+    .wb:nth-child(5){height:10px;animation-delay:.0s;background:var(--cyan);}
+    .wb:nth-child(6){height:16px;animation-delay:.2s;background:var(--green);}
+    .wb:nth-child(7){height:8px;animation-delay:.4s;background:var(--green);}
+    .wb:nth-child(8){height:20px;animation-delay:.6s;background:var(--cyan);}
+    @keyframes wv { 0%,100%{transform:scaleY(.4);} 50%{transform:scaleY(1);} }
+    .wave-label { font-size:.6rem; font-weight:700; color:var(--cyan); margin-left:.4rem; }
+    .card1-foot { display:flex; align-items:center; gap:.5rem; margin-top:auto; padding-top:.75rem; }
+    .status-dot { width:8px; height:8px; border-radius:50%; background:var(--green); animation:blink 1.8s ease-in-out infinite; }
+    .status-text { font-size:.65rem; font-weight:700; color:var(--green); }
+    .live-badge { position:absolute; top:-1rem; right:-2rem; background:#22c55e; border-radius:12px; padding:.35rem .8rem; display:flex; align-items:center; gap:.4rem; z-index:30; animation:blink 2s ease-in-out infinite; }
+    .live-badge span { font-size:.6rem; color:#fff; font-weight:700; letter-spacing:.08em; }
+
+    /* CARD 2 — progress check */
+    .card2-inner { padding:2rem; display:flex; flex-direction:column; height:100%; }
+    .card2-header { display:flex; align-items:center; gap:1rem; margin-bottom:1.5rem; }
+    .card2-av-wrap { position:relative; }
+    .card2-av { width:48px; height:48px; border-radius:50%; background:rgba(59,122,158,.1); display:flex; align-items:center; justify-content:center; }
+    .card2-av .material-symbols-outlined { color:#3B7A9E; }
+    .card2-online { position:absolute; bottom:0; right:0; width:12px; height:12px; background:#22c55e; border:2px solid #fff; border-radius:50%; animation:blink 1.8s ease-in-out infinite; }
+    .card2-title-row .sub { font-size:.65rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:#2C5F8A; }
+    .card2-title-row .main { font-size:1.1rem; font-weight:800; }
+    .task-list { background:rgba(255,255,255,.4); border:1px solid rgba(255,255,255,.4); border-radius:12px; padding:1rem; flex:1; display:flex; flex-direction:column; gap:.6rem; margin-bottom:1rem; }
+    .task-row { display:flex; align-items:center; gap:.6rem; font-size:.8rem; }
+    .task-row .material-symbols-outlined { font-size:1.1rem; }
+    .task-row .task-label { flex:1; font-weight:700; color:var(--navy2); }
+    .task-status { font-size:.6rem; font-weight:700; }
+    .ts-done { color:#22c55e; }
+    .ts-prog { color:#3B7A9E; }
+    .ts-over { color:#EF4444; }
+    .card2-foot { display:flex; align-items:center; gap:.5rem; font-size:.7rem; font-weight:700; color:#3B7A9E; }
+    .ping-dot { width:8px; height:8px; border-radius:50%; background:#3B7A9E; animation:ping2 1.5s ease-in-out infinite; }
+    @keyframes ping2 { 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:.3;transform:scale(1.5);} }
+
+    /* CARD 3 — call logs */
+    .card3-inner { padding:2rem; display:flex; flex-direction:column; height:100%; }
+    .card3-title { font-size:1.05rem; font-weight:800; display:flex; align-items:center; gap:.5rem; margin-bottom:1rem; }
+    .log-item { background:rgba(255,255,255,.6); border:1px solid #B8D8EC; border-radius:12px; padding:.75rem 1rem; display:flex; align-items:center; gap:.75rem; margin-bottom:.5rem; }
+    .log-item.dim { opacity:.7; }
+    .log-icon { width:32px; height:32px; border-radius:50%; background:rgba(59,122,158,.1); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .log-icon .material-symbols-outlined { font-size:1rem; color:#3B7A9E; }
+    .log-label { font-size:.75rem; font-weight:700; color:var(--navy2); }
+    .log-time { font-size:.6rem; color:#4A7B9E; }
+    .log-badge { font-size:.6rem; font-weight:700; flex-shrink:0; }
+    .lb-done { color:#22c55e; }
+    .lb-miss { color:#EF4444; }
+    .card3-foot { display:flex; justify-content:space-between; font-size:.6rem; font-weight:700; color:#3B7A9E; margin-top:.5rem; }
+    .card3-foot .count { background:rgba(59,122,158,.1); padding:.25rem .6rem; border-radius:999px; }
+
+    /* RIGHT column cards */
+    .card-r1 { padding:2rem; display:flex; flex-direction:column; height:100%; }
+    .sched-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:1.5rem; }
+    .sched-label { font-size:.65rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:#2C5F8A; }
+    .sched-num { font-size:1.6rem; font-weight:900; color:var(--navy2); }
+    .sched-pct { font-size:1.05rem; font-weight:800; color:#3B7A9E; }
+    .task-items { flex:1; display:flex; flex-direction:column; gap:.5rem; }
+    .ti { display:flex; align-items:center; gap:.6rem; background:#E8F4FC; padding:.65rem .85rem; border-radius:12px; border:1px solid #B8D8EC; }
+    .ti .material-symbols-outlined { font-size:1.1rem; flex-shrink:0; }
+    .ti-text .ti-name { font-size:.8rem; font-weight:700; color:var(--navy2); }
+    .ti-text .ti-meta { font-size:.6rem; color:#4A7B9E; }
+    .ti.dim { opacity:.6; background:transparent; border:none; }
+    .sched-foot { border-top:1px solid #B8D8EC; padding-top:.75rem; display:flex; justify-content:space-between; font-size:.65rem; font-weight:700; color:#4A7B9E; margin-top:auto; }
+
+    /* card r2 — daily report */
+    .rpt-inner { padding:2rem; display:flex; flex-direction:column; height:100%; }
+    .rpt-title { font-size:1.1rem; font-weight:800; display:flex; align-items:center; gap:.5rem; margin-bottom:1rem; }
+    .rpt-box { background:rgba(255,255,255,.4); border:1px solid rgba(255,255,255,.4); border-radius:16px; padding:1rem; margin-bottom:.75rem; }
+    .rpt-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:.5rem; }
+    .rpt-row .rl { font-size:.65rem; font-weight:700; color:#2C5F8A; }
+    .rpt-row .rv { font-size:1.1rem; font-weight:900; color:#22c55e; }
+    .progress-bar { height:8px; background:#B8D8EC; border-radius:4px; overflow:hidden; margin-bottom:.5rem; }
+    .progress-fill { height:100%; width:60%; background:#22c55e; border-radius:4px; }
+    .rpt-meta { display:flex; justify-content:space-between; font-size:.6rem; color:#4A7B9E; }
+    .rpt-preview { background:rgba(255,255,255,.3); border:1px solid rgba(255,255,255,.4); border-radius:12px; padding:.75rem; margin-bottom:.75rem; }
+    .rpt-preview .rp-label { font-size:.65rem; font-weight:700; color:var(--navy2); margin-bottom:.3rem; }
+    .rpt-preview .rp-text { font-size:.7rem; color:#4A7B9E; font-style:italic; }
+    .rpt-btn { background:#3B7A9E; color:#fff; border:none; border-radius:12px; padding:.75rem; font-size:.65rem; font-weight:700; cursor:pointer; letter-spacing:.05em; text-align:center; }
+
+    /* card r3 — stats */
+    .stats-inner-card { padding:2rem; display:flex; flex-direction:column; height:100%; }
+    .stats-grid { display:grid; grid-template-columns:1fr 1fr; gap:.75rem; flex:1; }
+    .stat-box { background:rgba(255,255,255,.6); border:1px solid #B8D8EC; border-radius:12px; padding:1rem; text-align:center; }
+    .stat-box .sn { font-size:1.5rem; font-weight:900; color:var(--navy2); font-family:'Nunito',sans-serif; }
+    .stat-box .sl { font-size:.6rem; font-weight:700; color:#4A7B9E; margin-top:.2rem; }
+    .stat-box .sn.green { color:#22c55e; }
+    .stat-box .sn.blue { color:#3B7A9E; }
+    .procrastination { background:rgba(59,122,158,.05); border:1px solid rgba(59,122,158,.2); border-radius:12px; padding:.75rem; text-align:center; font-size:.65rem; font-weight:700; color:#3B7A9E; letter-spacing:.05em; margin-top:.75rem; }
+
+    /* ─── STATS BAR ─── */
+    .stats-bar { background:linear-gradient(90deg,var(--navy) 0%,#001432 50%,var(--navy) 100%); border-top:1px solid rgba(255,255,255,.05); border-bottom:1px solid rgba(255,255,255,.05); padding:2rem; }
+    .sb-inner { max-width:1280px; margin:0 auto; display:flex; justify-content:space-around; flex-wrap:wrap; gap:1.5rem; }
+    .sb-item { text-align:center; }
+    .sb-num { font-family:'Nunito',sans-serif; font-size:1.6rem; font-weight:900; color:#fff; letter-spacing:-.03em; }
+    .sb-label { font-size:.7rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--cyan); margin-top:.2rem; }
+
+    /* ─── SECTION COMMONS ─── */
+    .section { padding:7rem 2rem; }
+    .sec-inner { max-width:1280px; margin:0 auto; }
+    .eyebrow { display:inline-flex; align-items:center; gap:.5rem; padding:.35rem .9rem; background:#fff; border:1px solid var(--s3); border-radius:8px; font-size:.7rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--cyan); margin-bottom:1.5rem; box-shadow:0 1px 4px rgba(0,0,0,.06); }
+    .eyebrow .material-symbols-outlined { font-size:16px; }
+    .eyebrow-dark { background:rgba(255,255,255,.07); border-color:rgba(255,255,255,.12); color:var(--cyan); }
+    .sec-h2 { font-family:'Nunito',sans-serif; font-size:clamp(2rem,4vw,3rem); font-weight:900; letter-spacing:-.04em; color:var(--s9); margin-bottom:1rem; }
+    .sec-h2 span { color:var(--cyan); }
+    .sec-h2.light { color:#fff; }
+    .sec-sub { font-size:1.05rem; color:var(--s6); line-height:1.7; max-width:640px; }
+    .sec-sub.cx { margin:0 auto; }
+    .tc { text-align:center; }
+    .mb12 { margin-bottom:3rem; }
+    .mb16 { margin-bottom:4rem; }
+    .mb20 { margin-bottom:5rem; }
+
+    /* ─── HOW IT WORKS ─── */
+    .how-bg { background:linear-gradient(160deg,#f8fafc 0%,#f0f9ff 50%,#f5f3ff 100%); }
+    .steps-row { display:grid; grid-template-columns:repeat(4,1fr); gap:1.5rem; }
+    .step-card { background:#fff; border:1px solid var(--s3); border-radius:20px; padding:2rem 1.5rem; display:flex; flex-direction:column; align-items:center; text-align:center; transition:border-color .3s,box-shadow .3s,transform .3s; }
+    .step-card:hover { box-shadow:0 12px 40px rgba(0,0,0,.08); transform:translateY(-4px); }
+    .step-icon { width:72px; height:72px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin-bottom:1.25rem; }
+    .step-icon .material-symbols-outlined { font-size:2.2rem; }
+    .step-num { font-size:.65rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; padding:.25rem .7rem; border-radius:999px; margin-bottom:.85rem; }
+    .step-title { font-size:1rem; font-weight:800; color:var(--s9); margin-bottom:.75rem; }
+    .step-desc { font-size:.85rem; color:var(--s6); line-height:1.65; }
+    .s1 .step-icon{background:#EFF9FF;color:var(--cyan);} .s1:hover{border-color:rgba(0,175,240,.3);} .s1 .step-num{background:rgba(0,175,240,.1);color:var(--cyan);}
+    .s2 .step-icon{background:#F0FDF4;color:var(--green);} .s2:hover{border-color:rgba(14,182,71,.3);} .s2 .step-num{background:rgba(14,182,71,.1);color:var(--green);}
+    .s3 .step-icon{background:#FAF5FF;color:var(--purple);} .s3:hover{border-color:rgba(124,58,237,.3);} .s3 .step-num{background:rgba(124,58,237,.1);color:var(--purple);}
+    .s4 .step-icon{background:#FFF7ED;color:var(--orange);} .s4:hover{border-color:rgba(234,88,12,.3);} .s4 .step-num{background:rgba(234,88,12,.1);color:var(--orange);}
+
+    /* ─── VS SECTION ─── */
+    .vs-bg { background:#fff; }
+    .ba-grid { display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; max-width:900px; margin:0 auto 4rem; }
+    .ba-card { border-radius:20px; padding:2rem; }
+    .ba-before { background:var(--s1); border:1px solid var(--s3); }
+    .ba-after { background:#EFF9FF; border:1px solid rgba(0,175,240,.2); box-shadow:0 8px 32px rgba(0,175,240,.08); }
+    .ba-head { display:flex; align-items:center; gap:.85rem; margin-bottom:1.5rem; }
+    .ba-ico { width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; }
+    .ba-before .ba-ico { background:#FEE2E2; color:#EF4444; }
+    .ba-after .ba-ico { background:var(--cyan); color:#fff; }
+    .ba-title { font-size:1rem; font-weight:800; }
+    .ba-list { list-style:none; }
+    .ba-list li { display:flex; align-items:flex-start; gap:.7rem; padding:.6rem 0; font-size:.875rem; border-bottom:1px solid rgba(0,0,0,.05); color:var(--s7); }
+    .ba-list li:last-child { border:none; }
+    .ba-list .material-symbols-outlined { margin-top:2px; flex-shrink:0; }
+
+    /* ─── AI FEATURES GRID ─── */
+    .feat-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:1.25rem; }
+    .feat-card { background:#fff; border:1px solid var(--s2); border-radius:18px; padding:1.75rem 1.5rem; display:flex; flex-direction:column; align-items:center; text-align:center; box-shadow:0 1px 6px rgba(0,0,0,.04); transition:border-color .3s,box-shadow .3s,transform .3s; }
+    .feat-card:hover { transform:translateY(-3px); box-shadow:0 8px 28px rgba(0,0,0,.08); }
+    .feat-ico { width:52px; height:52px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin-bottom:1rem; }
+    .feat-ico .material-symbols-outlined { font-size:1.5rem; }
+    .feat-title { font-size:.9rem; font-weight:800; color:var(--s9); margin-bottom:.5rem; }
+    .feat-desc { font-size:.8rem; color:var(--s6); line-height:1.6; }
+    .fc1 .feat-ico{background:rgba(0,175,240,.1);color:var(--cyan);} .fc1:hover{border-color:rgba(0,175,240,.3);}
+    .fc2 .feat-ico{background:rgba(14,182,71,.1);color:var(--green);} .fc2:hover{border-color:rgba(14,182,71,.3);}
+    .fc3 .feat-ico{background:rgba(124,58,237,.1);color:var(--purple);} .fc3:hover{border-color:rgba(124,58,237,.3);}
+    .fc4 .feat-ico{background:rgba(234,88,12,.1);color:var(--orange);} .fc4:hover{border-color:rgba(234,88,12,.3);}
+
+    /* ─── AI MANAGER SECTION (dark) ─── */
+    .ai-mgr-bg { background:var(--navy); position:relative; overflow:hidden; }
+    .ai-mgr-bg::before { content:''; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:800px; height:800px; background:radial-gradient(circle,rgba(0,175,240,.07),transparent 70%); pointer-events:none; }
+    .ai-mgr-grid { display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:center; }
+    .ai-mgr-text h3 { font-family:'Nunito',sans-serif; font-size:clamp(1.6rem,3vw,2.4rem); font-weight:900; color:#fff; letter-spacing:-.04em; margin-bottom:1rem; }
+    .ai-mgr-text h3 span { color:var(--cyan); }
+    .ai-mgr-text p { font-size:.95rem; color:rgba(255,255,255,.65); line-height:1.75; margin-bottom:1rem; }
+    .ai-mgr-bullets { display:flex; flex-direction:column; gap:.75rem; margin-top:1.5rem; }
+    .ai-bullet { display:flex; align-items:flex-start; gap:.75rem; font-size:.875rem; color:rgba(255,255,255,.75); }
+    .ai-bullet-icon { width:32px; height:32px; border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
+    .ai-bullet-icon .material-symbols-outlined { font-size:1rem; }
+    .bi-cyan { background:rgba(0,175,240,.15); color:var(--cyan); }
+    .bi-green { background:rgba(14,182,71,.15); color:var(--green); }
+    .bi-purple { background:rgba(124,58,237,.15); color:var(--purple); }
+    .bi-orange { background:rgba(234,88,12,.15); color:var(--orange); }
+
+    /* ─── CALL UI REPLACING CONVO-CARD ─── */
+    .call-card { background:linear-gradient(180deg, rgba(26,37,58,0.95), rgba(11,20,38,0.98)); border:1px solid rgba(255,255,255,.08); border-radius:24px; padding:2rem; position:relative; overflow:hidden; display:flex; flex-direction:column; align-items:center; box-shadow:0 24px 48px rgba(0,0,0,0.4); }
+    .call-header { width:100%; display:flex; justify-content:space-between; align-items:center; margin-bottom:2.5rem; }
+    .call-status { display:flex; align-items:center; gap:6px; font-size:0.75rem; font-weight:800; color:var(--green); background:rgba(14,182,71,.15); border:1px solid rgba(14,182,71,.3); padding:4px 12px; border-radius:999px; letter-spacing:.05em; text-transform:uppercase; }
+    .call-status .live-dot { width:6px; height:6px; border-radius:50%; background:var(--green); animation:blink 1.5s infinite; }
+    .call-time { font-size:0.9rem; font-weight:800; color:rgba(255,255,255,.7); font-variant-numeric: tabular-nums; letter-spacing:.05em; }
+    
+    .call-center { display:flex; flex-direction:column; align-items:center; margin-bottom:2.5rem; }
+    .call-avatar-wrapper { position:relative; width:100px; height:100px; display:flex; align-items:center; justify-content:center; margin-bottom:1.5rem; }
+    .call-avatar { position:relative; z-index:2; width:84px; height:84px; border-radius:50%; background:linear-gradient(135deg,var(--cyan),var(--green)); display:flex; align-items:center; justify-content:center; box-shadow:0 0 24px rgba(0,175,240,.5); }
+    .call-avatar .material-symbols-outlined { font-size:2.8rem; color:#fff; }
+    .pulse-ring { position:absolute; inset:0; border-radius:50%; background:rgba(0,175,240,.25); animation:callPulse 2.5s cubic-bezier(0.215, 0.61, 0.355, 1) infinite; }
+    .pr2 { animation-delay: 1.25s; }
+    @keyframes callPulse { 0% { transform:scale(0.8); opacity:1; } 100% { transform:scale(2.2); opacity:0; } }
+    
+    .call-name { font-size:1.4rem; font-weight:900; color:#fff; margin-bottom:0.25rem; }
+    .call-role { font-size:0.85rem; color:rgba(255,255,255,.5); font-weight:600; }
+    
+    .call-waveform { display:flex; align-items:center; gap:5px; height:48px; margin-bottom:2.5rem; }
+    .wave-bar { width:5px; border-radius:999px; background:var(--cyan); animation:waveBounce 1s ease-in-out infinite alternate; }
+    .wave-bar:nth-child(1) { height:16px; animation-delay:0.0s; }
+    .wave-bar:nth-child(2) { height:32px; animation-delay:0.1s; }
+    .wave-bar:nth-child(3) { height:48px; animation-delay:0.2s; background:var(--green); }
+    .wave-bar:nth-child(4) { height:24px; animation-delay:0.3s; background:var(--green); }
+    .wave-bar:nth-child(5) { height:40px; animation-delay:0.4s; }
+    .wave-bar:nth-child(6) { height:28px; animation-delay:0.5s; background:var(--cyan); }
+    .wave-bar:nth-child(7) { height:16px; animation-delay:0.6s; }
+    @keyframes waveBounce { 0% { transform:scaleY(0.2); opacity:0.5; } 100% { transform:scaleY(1); opacity:1; } }
+
+    .call-transcript { width:100%; background:rgba(255,255,255,.05); border-radius:16px; padding:1.25rem; height:84px; overflow:hidden; position:relative; margin-bottom:2rem; border:1px solid rgba(255,255,255,.08); }
+    .transcript-line { position:absolute; width:calc(100% - 2.5rem); text-align:center; font-size:0.9rem; line-height:1.5; font-weight:700; color:rgba(255,255,255,.9); opacity:0; transform:translateY(15px); animation:transcriptCycle 12s infinite; }
+    .tl-1 { animation-delay:0s; }
+    .tl-2 { animation-delay:4s; color:var(--cyan); }
+    .tl-3 { animation-delay:8s; }
+    @keyframes transcriptCycle { 
+      0%, 5% { opacity:0; transform:translateY(15px); }
+      10%, 25% { opacity:1; transform:translateY(0); }
+      30%, 100% { opacity:0; transform:translateY(-15px); }
     }
 
-    [x-cloak] {
-      display: none !important;
+    .call-controls { display:flex; gap:1.5rem; align-items:center; }
+    .cc-btn { width:52px; height:52px; border-radius:50%; background:rgba(255,255,255,.1); display:flex; align-items:center; justify-content:center; color:#fff; cursor:pointer; transition:background .2s, transform .2s; border:1px solid rgba(255,255,255,.15); }
+    .cc-btn:hover { background:rgba(255,255,255,.2); transform:scale(1.05); }
+    .cc-btn .material-symbols-outlined { font-size:1.5rem; }
+    .cc-btn.end-call { background:#EF4444; box-shadow:0 8px 24px rgba(239,68,68,.3); border:none; width:60px; height:60px; }
+    .cc-btn.end-call .material-symbols-outlined { font-size:2rem; }
+    .cc-btn.end-call:hover { background:#DC2626; }
+
+    /* ─── PERFORMANCE WATCH ─── */
+    .pw-section { background:var(--s1); border-top:1px solid var(--s3); border-bottom:1px solid var(--s3); }
+    .pw-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem; }
+    .pw-card { background:#fff; border:1px solid var(--s3); border-radius:20px; padding:2rem; transition:border-color .3s,box-shadow .3s; }
+    .pw-card:hover { border-color:rgba(0,175,240,.2); box-shadow:0 8px 28px rgba(0,0,0,.06); }
+    .pw-ico-wrap { width:52px; height:52px; border-radius:14px; display:flex; align-items:center; justify-content:center; margin-bottom:1.25rem; }
+    .pw-ico-wrap .material-symbols-outlined { font-size:1.5rem; }
+    .pw-icon-c { background:rgba(0,175,240,.1); color:var(--cyan); }
+    .pw-icon-g { background:rgba(14,182,71,.1); color:var(--green); }
+    .pw-icon-p { background:rgba(124,58,237,.1); color:var(--purple); }
+    .pw-title { font-size:1rem; font-weight:800; color:var(--s9); margin-bottom:.6rem; }
+    .pw-desc { font-size:.875rem; color:var(--s6); line-height:1.65; }
+
+    .watch-flow { display:grid; grid-template-columns:1fr auto 1fr auto 1fr; gap:1rem; align-items:center; margin-top:3rem; }
+    .wf-item { background:#fff; border:1px solid var(--s3); border-radius:16px; padding:1.5rem; text-align:center; }
+    .wf-num { font-family:'Nunito',sans-serif; font-size:1.5rem; font-weight:900; margin-bottom:.4rem; }
+    .wf-label { font-size:.75rem; font-weight:700; color:var(--s6); }
+    .wf-arrow { color:var(--s4); font-size:1.5rem; text-align:center; }
+    .wf1 { color:var(--cyan); }
+    .wf2 { color:var(--purple); }
+    .wf3 { color:var(--green); }
+
+    /* ─── EXEC PULSE (dark) ─── */
+    .exec-bg { background:var(--navy2); }
+    .exec-tiers { display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem; margin-bottom:4rem; }
+    .exec-tier { border-radius:20px; padding:2rem; border:1px solid; }
+    .et1 { background:rgba(0,175,240,.06); border-color:rgba(0,175,240,.2); }
+    .et2 { background:rgba(14,182,71,.06); border-color:rgba(14,182,71,.2); }
+    .et3 { background:rgba(124,58,237,.06); border-color:rgba(124,58,237,.2); }
+    .tier-header { display:flex; align-items:center; gap:.75rem; margin-bottom:1rem; }
+    .tier-icon { width:40px; height:40px; border-radius:10px; display:flex; align-items:center; justify-content:center; }
+    .ti-c { background:rgba(0,175,240,.2); color:var(--cyan); }
+    .ti-g { background:rgba(14,182,71,.2); color:var(--green); }
+    .ti-p { background:rgba(124,58,237,.2); color:var(--purple); }
+    .tier-title { font-size:.9rem; font-weight:800; color:#fff; }
+    .tier-sub { font-size:.65rem; color:rgba(255,255,255,.5); margin-top:.1rem; }
+    .tier-list { list-style:none; }
+    .tier-list li { padding:.45rem 0; font-size:.82rem; color:rgba(255,255,255,.65); border-bottom:1px solid rgba(255,255,255,.06); display:flex; align-items:center; gap:.5rem; }
+    .tier-list li:last-child { border:none; }
+    .tier-list .material-symbols-outlined { font-size:.9rem; flex-shrink:0; }
+
+    .exec-metrics { display:grid; grid-template-columns:repeat(2,1fr); gap:1.5rem; }
+    .exec-metric { background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08); border-radius:16px; padding:1.75rem; }
+    .em-label { font-size:.65rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:rgba(255,255,255,.4); margin-bottom:.5rem; }
+    .em-title { font-size:1rem; font-weight:800; color:#fff; margin-bottom:.5rem; }
+    .em-desc { font-size:.85rem; color:rgba(255,255,255,.55); line-height:1.6; }
+
+    /* ─── INTEGRATIONS ─── */
+    .int-section { background:#fff; }
+    .int-categories { display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem; margin-bottom:3rem; }
+    .int-cat { background:var(--s1); border:1px solid var(--s3); border-radius:18px; padding:1.75rem; }
+    .int-cat-title { font-size:.75rem; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:var(--s6); margin-bottom:1rem; }
+    .int-logos-row { display:flex; flex-wrap:wrap; gap:.65rem; }
+    .int-chip { display:flex; align-items:center; gap:.5rem; padding:.4rem .8rem; background:#fff; border:1px solid var(--s3); border-radius:999px; font-size:.8rem; font-weight:700; color:var(--s7); }
+    .int-chip img { width:18px; height:18px; }
+    .int-chip .material-symbols-outlined { font-size:1rem; }
+
+    /* ─── RETRO ─── */
+    .retro-section { background:linear-gradient(160deg,#f8fafc,#f0f9ff); }
+    .retro-grid { display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:center; }
+    .retro-items { display:flex; flex-direction:column; gap:1rem; }
+    .retro-item { display:flex; align-items:flex-start; gap:1rem; padding:1.25rem; background:#fff; border:1px solid var(--s3); border-radius:16px; transition:border-color .3s,box-shadow .3s; }
+    .retro-item:hover { border-color:rgba(0,175,240,.25); box-shadow:0 6px 20px rgba(0,0,0,.06); }
+    .retro-icon { width:40px; height:40px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .retro-icon .material-symbols-outlined { font-size:1.2rem; }
+    .ri-c { background:rgba(0,175,240,.1); color:var(--cyan); }
+    .ri-g { background:rgba(14,182,71,.1); color:var(--green); }
+    .ri-p { background:rgba(124,58,237,.1); color:var(--purple); }
+    .ri-o { background:rgba(234,88,12,.1); color:var(--orange); }
+    .retro-content h4 { font-size:.9rem; font-weight:800; color:var(--s9); margin-bottom:.3rem; }
+    .retro-content p { font-size:.82rem; color:var(--s6); line-height:1.6; }
+
+    /* ─── ROLES ─── */
+    .roles-section { background:var(--s9); }
+    .roles-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; }
+    .role-card { background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.08); border-radius:16px; padding:1.5rem; transition:background .3s,border-color .3s; }
+    .role-card:hover { background:rgba(255,255,255,.08); border-color:rgba(255,255,255,.15); }
+    .role-badge { display:inline-block; padding:.2rem .65rem; border-radius:999px; font-size:.65rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; margin-bottom:.85rem; }
+    .rb-c { background:rgba(0,175,240,.15); color:var(--cyan); }
+    .rb-g { background:rgba(14,182,71,.15); color:var(--green); }
+    .rb-p { background:rgba(124,58,237,.15); color:var(--purple); }
+    .rb-o { background:rgba(234,88,12,.15); color:var(--orange); }
+    .rb-y { background:rgba(251,191,36,.15); color:#FBBF24; }
+    .rb-s { background:rgba(148,163,184,.15); color:var(--s5); }
+    .role-title { font-size:.95rem; font-weight:800; color:#fff; margin-bottom:.5rem; }
+    .role-desc { font-size:.8rem; color:rgba(255,255,255,.55); line-height:1.6; }
+
+    /* ─── VOICE / VOIP ─── */
+    .voip-bg { background:var(--navy); }
+    .voip-steps { display:grid; grid-template-columns:repeat(4,1fr); gap:1.5rem; }
+    .voip-card { background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08); border-radius:20px; padding:2rem 1.5rem; display:flex; flex-direction:column; align-items:center; text-align:center; transition:border-color .3s,background .3s; }
+    .voip-card:hover { background:rgba(255,255,255,.07); border-color:rgba(0,175,240,.25); }
+    .voip-card.feat { background:rgba(0,175,240,.08); border-color:rgba(0,175,240,.25); box-shadow:0 0 40px rgba(0,175,240,.1); }
+    .voip-icon { width:72px; height:72px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin-bottom:1.25rem; }
+    .voip-icon .material-symbols-outlined { font-size:2rem; }
+    .vi1{background:rgba(0,175,240,.15);color:var(--cyan);}
+    .vi2{background:var(--green);color:#fff;box-shadow:0 0 0 4px rgba(14,182,71,.15);}
+    .vi3{background:rgba(124,58,237,.15);color:var(--purple);}
+    .vi4{background:rgba(234,88,12,.15);color:var(--orange);}
+    .voip-title { font-size:1rem; font-weight:800; color:#fff; margin-bottom:.75rem; }
+    .voip-desc { font-size:.85rem; color:rgba(255,255,255,.55); line-height:1.65; }
+
+    /* US banner */
+    .us-banner { margin-top:4rem; padding:2rem; border-radius:20px; background:#EFF9FF; border:1px solid rgba(0,175,240,.2); display:flex; align-items:center; gap:2rem; }
+    .us-ico { width:56px; height:56px; border-radius:50%; background:rgba(0,175,240,.1); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .us-ico .material-symbols-outlined { font-size:2rem; color:var(--cyan); }
+    .us-text h4 { font-size:1rem; font-weight:800; color:var(--s9); margin-bottom:.3rem; }
+    .us-text p { font-size:.9rem; color:var(--s6); line-height:1.6; }
+    .us-badge { margin-left:auto; white-space:nowrap; padding:.6rem 1.2rem; background:rgba(0,175,240,.1); border:1px solid rgba(0,175,240,.25); color:var(--cyan); font-size:.8rem; font-weight:700; border-radius:12px; }
+
+    /* ─── FAQ ─── */
+    .faq-bg { background:var(--s1); }
+    .faq-list { max-width:760px; margin:0 auto; }
+    .faq-item { border:1px solid var(--s3); border-radius:14px; overflow:hidden; margin-bottom:.75rem; background:#fff; box-shadow:0 1px 4px rgba(0,0,0,.04); }
+    .faq-q { width:100%; padding:1.4rem 1.75rem; display:flex; align-items:center; justify-content:space-between; background:none; border:none; cursor:pointer; text-align:left; font-size:1rem; font-weight:700; color:var(--s9); font-family:'Nunito',sans-serif; }
+    .faq-q .material-symbols-outlined { color:var(--cyan); transition:transform .3s; flex-shrink:0; }
+    .faq-q.open .material-symbols-outlined { transform:rotate(45deg); }
+    .faq-a { padding:0 1.75rem 1.4rem; font-size:.9rem; color:var(--s6); line-height:1.7; display:none; }
+    .faq-a.open { display:block; }
+
+    /* ─── CTA ─── */
+    .cta-bg { background:var(--navy); text-align:center; position:relative; overflow:hidden; }
+    .cta-bg::before { content:''; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:600px; height:600px; background:radial-gradient(circle,rgba(0,175,240,.12),transparent 70%); pointer-events:none; }
+    .cta-inner { position:relative; z-index:1; }
+    .cta-h2 { font-family:'Nunito',sans-serif; font-size:clamp(2rem,4vw,3.25rem); font-weight:900; color:#fff; letter-spacing:-.04em; margin-bottom:1rem; }
+    .cta-h2 span { color:var(--cyan); }
+    .cta-sub { font-size:1.05rem; color:rgba(255,255,255,.6); margin-bottom:2.5rem; }
+    .cta-actions { display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; }
+
+    /* ─── FOOTER ─── */
+    footer { background:var(--navy2); color:rgba(255,255,255,.85); border-top:1px solid rgba(255,255,255,.08); padding:4rem 2rem 2rem; }
+    .footer-inner { max-width:1280px; margin:0 auto; }
+    .footer-grid { display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:3rem; margin-bottom:3rem; }
+    .footer-grid > div > p { color:rgba(255,255,255,.7); line-height:1.7; max-width:280px; }
+    .footer-col h5 { font-size:.7rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:rgba(255,255,255,.7); margin-bottom:1rem; }
+    .footer-col ul { list-style:none; }
+    .footer-col ul li { margin-bottom:.6rem; }
+    .footer-col ul li a { font-size:.875rem; color:rgba(255,255,255,.85); text-decoration:none; transition:color .2s; }
+    .footer-col ul li a:hover { color:var(--cyan); }
+    .footer-bottom { border-top:1px solid rgba(255,255,255,.07); padding-top:1.5rem; display:flex; justify-content:space-between; align-items:center; font-size:.8rem; color:rgba(255,255,255,.7); }
+    .footer-bottom a { color:rgba(255,255,255,.85); text-decoration:none; }
+    .footer-bottom a:hover { color:var(--cyan); }
+
+    /* ─── MODAL ─── */
+    .modal-overlay { position:fixed; inset:0; z-index:200; background:rgba(5,14,30,.7); backdrop-filter:blur(8px); display:none; align-items:center; justify-content:center; padding:1rem; }
+    .modal-overlay.open { display:flex; }
+    .modal { background:#fff; border-radius:24px; padding:3rem; max-width:480px; width:100%; position:relative; box-shadow:0 40px 80px rgba(0,0,0,.3); animation:modal-in .3s ease; }
+    @keyframes modal-in { from{opacity:0;transform:scale(.96) translateY(8px);} to{opacity:1;transform:none;} }
+    .modal-close { position:absolute; top:1.25rem; right:1.25rem; background:var(--s2); border:none; border-radius:8px; cursor:pointer; width:36px; height:36px; display:flex; align-items:center; justify-content:center; color:var(--s6); transition:background .2s; }
+    .modal-close:hover { background:var(--s3); }
+    .modal-icon { width:60px; height:60px; border-radius:16px; background:rgba(0,175,240,.1); display:flex; align-items:center; justify-content:center; margin-bottom:1.5rem; }
+    .modal-icon .material-symbols-outlined { font-size:1.75rem; color:var(--cyan); }
+    .modal h3 { font-size:1.6rem; font-weight:900; color:var(--s9); margin-bottom:.5rem; font-family:'Nunito',sans-serif; letter-spacing:-.03em; }
+    .modal p { font-size:.9rem; color:var(--s6); line-height:1.6; margin-bottom:1.5rem; }
+    .modal input[type=email] { width:100%; padding:.85rem 1.1rem; background:var(--s1); border:1px solid var(--s3); border-radius:12px; font-size:.95rem; font-family:inherit; color:var(--s9); margin-bottom:1rem; outline:none; transition:border-color .2s,box-shadow .2s; }
+    .modal input[type=email]:focus { border-color:var(--cyan); box-shadow:0 0 0 3px rgba(0,175,240,.1); }
+    .modal-submit { width:100%; padding:.9rem; background:var(--cyan); color:#fff; font-weight:700; font-size:.95rem; border:none; border-radius:12px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:.5rem; font-family:inherit; transition:background .2s,transform .15s; box-shadow:0 4px 16px rgba(0,175,240,.3); }
+    .modal-submit:hover { background:var(--cyan2); transform:translateY(-1px); }
+    .success-state { text-align:center; padding:2rem 0; display:none; }
+    .success-icon { width:72px; height:72px; border-radius:50%; background:#DCFCE7; display:flex; align-items:center; justify-content:center; margin:0 auto 1.5rem; }
+    .success-icon .material-symbols-outlined { font-size:2.2rem; color:var(--green); }
+
+    /* ─── RESPONSIVE ─── */
+    @media(max-width:1024px) {
+      .hero-inner { grid-template-columns:1fr; }
+      .hero-visual { display:none; }
+      .steps-row,.feat-grid,.voip-steps,.pw-grid,.exec-tiers,.exec-metrics,.int-categories,.roles-grid { grid-template-columns:1fr 1fr; }
+      .ai-mgr-grid,.retro-grid { grid-template-columns:1fr; }
+      .ba-grid,.footer-grid { grid-template-columns:1fr; }
+      .watch-flow { grid-template-columns:1fr; }
+      .wf-arrow { display:none; }
+      .teams-grid { grid-template-columns:1fr 1fr; }
     }
-
-    @keyframes pulse-horizontal {
-      0% {
-        left: -50%;
-      }
-
-      100% {
-        left: 100%;
-      }
+    @media(max-width:640px) {
+      nav { padding:0 1rem; }
+      .nav-links { display:none; }
+      .section { padding:4rem 1.25rem; }
+      .steps-row,.feat-grid,.voip-steps,.pw-grid,.exec-tiers,.exec-metrics,.int-categories,.roles-grid { grid-template-columns:1fr; }
+      .footer-grid { grid-template-columns:1fr; }
+      .hero-actions { flex-direction:column; }
+      .footer-bottom { flex-direction:column; gap:.5rem; text-align:center; }
+      .us-banner { flex-direction:column; text-align:center; }
+      .us-badge { margin:0 auto; }
     }
+    @media(prefers-reduced-motion:reduce) { *,*::before,*::after { animation-duration:.001ms !important; } }
 
-    .animate-pulse-horizontal {
-      position: absolute;
-      top: 0;
-      width: 50%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, #00AFF0, transparent);
-      animation: pulse-horizontal 2.5s infinite linear;
-    }
-
-    @keyframes text-slide {
-
-      0%,
-      20% {
-        transform: translateY(0);
-      }
-
-      25%,
-      45% {
-        transform: translateY(-20%);
-      }
-
-      50%,
-      70% {
-        transform: translateY(-40%);
-      }
-
-      75%,
-      95% {
-        transform: translateY(-60%);
-      }
-
-      100% {
-        transform: translateY(-80%);
-      }
-    }
-
-    .animate-text-slide {
-      animation: text-slide 10s infinite cubic-bezier(0.4, 0, 0.2, 1);
-    }
+    /* teams section */
+    .teams-bg { background:#fff; border-top:1px solid var(--s3); border-bottom:1px solid var(--s3); }
+    .teams-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:1.5rem; }
+    .team-card { background:var(--s1); border:1px solid var(--s3); border-radius:20px; padding:2rem 1.5rem; display:flex; flex-direction:column; align-items:center; text-align:center; transition:border-color .3s,box-shadow .3s,transform .3s; }
+    .team-card:hover { transform:translateY(-3px); box-shadow:0 8px 28px rgba(0,0,0,.07); }
+    .team-card.feat { border-color:rgba(14,182,71,.3); box-shadow:0 0 30px rgba(14,182,71,.07); background:#fff; }
+    .team-icon { width:72px; height:72px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin-bottom:1.25rem; }
+    .team-icon .material-symbols-outlined { font-size:2rem; }
+    .tc1{background:rgba(0,175,240,.1);color:var(--cyan);}
+    .tc2{background:var(--green);color:#fff;}
+    .tc3{background:rgba(124,58,237,.1);color:var(--purple);}
+    .tc4{background:rgba(234,88,12,.1);color:var(--orange);}
+    .team-title { font-size:1rem; font-weight:800; color:var(--s9); margin-bottom:.75rem; }
+    .team-desc { font-size:.85rem; color:var(--s6); line-height:1.65; }
+    .int-logos-hero { display:flex; justify-content:center; align-items:center; flex-wrap:wrap; gap:2rem; }
+    .int-logo { display:flex; align-items:center; gap:.5rem; font-size:1rem; font-weight:800; color:var(--s7); opacity:.5; transition:opacity .3s; }
+    .int-logo:hover { opacity:1; }
+    .int-logo img { width:28px; height:28px; }
   </style>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-J7LP5YXVEH"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-J7LP5YXVEH');
-    </script>
 </head>
+<body>
 
-<body class="antialiased text-[#0A1628]" x-data="{ waitlistModalOpen: false, waitlistSubmitted: false, email: '' }">
+<!-- NAV -->
+<nav id="main-nav">
+  <div class="nav-inner">
+    <a href="/" class="logo">
+      <div class="logo-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+      </div>
+      <span class="logo-text">stride<span>.best</span></span>
+    </a>
+    <div class="nav-links">
+      <a href="#how-it-works">How It Works</a>
+      <a href="#ai-manager">AI Manager</a>
+      <a href="#features">Features</a>
+      <a href="#exec-pulse">Exec Pulse</a>
+      <a href="#teams">For Teams</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <div style="display:flex; align-items:center; gap:1.5rem; margin-left:1rem;">
+      <a href="/login" class="nav-login">Log in</a>
+      <a href="/login" class="nav-cta">Sign up</a>
+    </div>
+  </div>
+</nav>
 
-  <!-- Navbar -->
-  <nav class="bg-[#0A1628] w-full border-b border-white/5">
-    <div class="flex justify-between items-center h-20 px-6 md:px-12 max-w-[1600px] mx-auto">
-      <div class="flex items-center gap-12">
-        <a href="/" class="font-bold tracking-tight text-white flex items-center">
-          <img src="{{ asset('assets/logo/logo-full-dark.png') }}" alt="dialer.best" class="h-20 w-auto">
+<!-- HERO -->
+<section class="hero" id="hero-section"
+  x-data="{ active:0, scrolling:false }"
+  x-init="setInterval(()=>{ scrolling=true; setTimeout(()=>{ active=(active+1)%3; setTimeout(()=>{ scrolling=false; },1000); },300); },4000)">
+  <div class="hero-overlay"></div>
+  <div class="hero-glow1"></div>
+  <div class="hero-glow2"></div>
+  <div class="hero-glow3"></div>
+
+  <div class="hero-inner">
+    <!-- LEFT: text -->
+    <div>
+      
+      <div class="hero-toggle">
+        <span class="hero-toggle-opt active">For you</span>
+        <span class="hero-toggle-opt">For your team</span>
+      </div>
+
+      <h1 class="hero-h1">
+        An <span class="c1">AI Manager</span><br>
+        for you and your team
+      </h1>
+
+      <p class="hero-sub-big">Get more done today, together.</p>
+      <p class="hero-sub">Stride keeps you on track with friendly voice check-ins. It helps individuals stay focused and seamlessly scales to coordinate entire teams—no complicated dashboards required.</p>
+
+      <div class="hero-actions">
+        <a href="/login" class="btn-primary" style="text-decoration:none;">
+          Start for Free
+          <span class="material-symbols-outlined" style="font-size:20px;">arrow_forward</span>
         </a>
-        <div class="hidden lg:flex items-center space-x-10 text-[15px] font-semibold text-white/70">
-          <a class="hover:text-white transition-colors" href="#how-it-works">How It Works</a>
-          <a class="hover:text-white transition-colors" href="#features">Features</a>
-          <a class="hover:text-white transition-colors" href="#voice">Call System</a>
-          <a class="hover:text-white transition-colors" href="{{ route('mobile.app') }}">Mobile App</a>
-          <a class="hover:text-white transition-colors" href="#faq">FAQ</a>
-        </div>
-      </div>
-      <div class="flex items-center gap-8">
-        @auth
-          <a href="{{ route('dashboard') }}"
-            class="hidden md:block text-[15px] font-semibold text-white/70 hover:text-white transition-colors">Dashboard</a>
-          <form method="POST" action="{{ route('logout') }}" class="inline">
-            @csrf
-            <button type="submit" class="hidden md:block text-[15px] font-semibold text-white/70 hover:text-white transition-colors">Sign out</button>
-          </form>
-        @else
-          <a href="{{ route('login') }}"
-            class="hidden md:block text-[15px] font-semibold text-white/70 hover:text-white transition-colors">Sign in</a>
-        @endauth
-        <a href="{{ Auth::check() ? route('dashboard') : route('register') }}"
-          class="px-6 py-2.5 bg-[#00AFF0] hover:bg-[#00AFF0]/90 text-white font-bold rounded-full transition-all text-sm shadow-lg shadow-[#00AFF0]/20">
-          {{ Auth::check() ? 'Dashboard' : 'Get started' }}
+        <a href="#how-it-works" class="btn-ghost">
+          <div class="play-ring">
+            <span class="material-symbols-outlined" style="font-size:18px;color:#0EB647;margin-left:2px;">play_arrow</span>
+          </div>
+          See how it works
         </a>
       </div>
-    </div>
-  </nav>
 
-  <!-- Hero Section -->
-  <section class="bg-[#0A1628] pt-14 pb-0 lg:pt-20 overflow-hidden min-h-[600px] lg:min-h-[700px] flex items-center">
-    <div
-      class="w-full max-w-[1600px] mx-auto px-6 md:px-12 grid grid-cols-1 lg:grid-cols-[50%_50%] gap-0 lg:gap-8 items-center"
-      x-data="{ activeSlide: 0, isScrolling: false }"
-      x-init="setInterval(() => { isScrolling = true; setTimeout(() => { activeSlide = (activeSlide + 1) % 3; setTimeout(() => { isScrolling = false; }, 1000); }, 300); }, 4000)">
-      <!-- Hero Graphics (Right Section) -->
-      <div
-        class="order-2 lg:order-2 relative w-full h-[500px] lg:h-[700px] flex justify-start items-center overflow-hidden"
-        style="mask-image: linear-gradient(to bottom, transparent 0%, black 2%, black 98%, transparent 100%); -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 2%, black 98%, transparent 100%);">
-
-        <div class="relative w-[130%] md:w-[130%] h-full flex">
-
-          <!-- Hero Connecting Lines (Fixed in Active Slots) -->
-          <div class="absolute inset-0 pointer-events-none z-0 transition-opacity duration-500 ease-in-out"
-            :class="!isScrolling ? 'opacity-100' : 'opacity-0'">
-            <svg class="w-full h-full" viewBox="0 0 1000 700" preserveAspectRatio="none">
-              <style>
-                @keyframes heroPulse {
-                  from {
-                    stroke-dashoffset: 400;
-                  }
-
-                  to {
-                    stroke-dashoffset: 0;
-                  }
-                }
-
-                @keyframes heroPulseRev {
-                  from {
-                    stroke-dashoffset: -400;
-                  }
-
-                  to {
-                    stroke-dashoffset: 0;
-                  }
-                }
-
-                .hero-path-base {
-                  stroke: rgba(255, 255, 255, 0.15);
-                  stroke-width: 2.5;
-                  fill: none;
-                  stroke-dasharray: 4 4;
-                }
-
-                .hero-path-flow {
-                  stroke: #00AFF0;
-                  stroke-width: 4;
-                  fill: none;
-                  stroke-linecap: round;
-                  stroke-dasharray: 40 360;
-                  animation: heroPulse 3s linear infinite;
-                }
-
-                .hero-path-flow-rev {
-                  stroke: #00AFF0;
-                  stroke-width: 4;
-                  fill: none;
-                  stroke-linecap: round;
-                  stroke-dasharray: 40 360;
-                  animation: heroPulseRev 3s linear infinite;
-                }
-
-                .hero-node {
-                  fill: white;
-                  stroke: #00AFF0;
-                  stroke-width: 2;
-                }
-
-                .hero-node-pulse {
-                  fill: #00AFF0;
-                  opacity: 0.4;
-                }
-              </style>
-
-              <!-- Line 1: SaaS Right Top Slot -> Buyer Top Middle Slot -->
-              <path class="hero-path-base" d="M 480 105 L 730 105 Q 750 105 750 125 L 750 255" />
-              <path class="hero-path-flow" d="M 480 105 L 730 105 Q 750 105 750 125 L 750 255" />
-
-              <!-- Line 2: SaaS Bottom Middle Slot -> Buyer Left Bottom Slot -->
-              <path class="hero-path-base" d="M 250 435 L 250 565 Q 250 585 270 585 L 520 585" />
-              <path class="hero-path-flow-rev" d="M 250 435 L 250 565 Q 250 585 270 585 L 520 585" />
-
-              <!-- Slot Nodes -->
-              <g>
-                <circle class="hero-node-pulse" cx="480" cy="105" r="8">
-                  <animate attributeName="r" values="6;10;6" dur="2s" repeatCount="indefinite" />
-                </circle>
-                <circle class="hero-node" cx="480" cy="105" r="4" />
-              </g>
-              <g>
-                <circle class="hero-node-pulse" cx="750" cy="255" r="8">
-                  <animate attributeName="r" values="6;10;6" dur="2s" repeatCount="indefinite" />
-                </circle>
-                <circle class="hero-node" cx="750" cy="255" r="4" />
-              </g>
-              <g>
-                <circle class="hero-node-pulse" cx="250" cy="435" r="8">
-                  <animate attributeName="r" values="6;10;6" dur="2s" repeatCount="indefinite" />
-                </circle>
-                <circle class="hero-node" cx="250" cy="435" r="4" />
-              </g>
-              <g>
-                <circle class="hero-node-pulse" cx="520" cy="585" r="8">
-                  <animate attributeName="r" values="6;10;6" dur="2s" repeatCount="indefinite" />
-                </circle>
-                <circle class="hero-node" cx="520" cy="585" r="4" />
-              </g>
-            </svg>
-          </div>
-
-          <!-- Col 1 -->
-          <div class="relative w-1/2 px-4 h-full transition-transform duration-[700ms] ease-in-out"
-            :style="`transform: translateY(-${activeSlide * 410}px)`">
-            <div class="absolute left-4 right-4 h-[380px] top-[calc(50%-95px-1230px)] -translate-y-1/2">
-              <div
-                class="w-full h-full rounded-3xl bg-[#162D4F] border border-white/10 opacity-40 p-6 flex flex-col gap-4 shadow-lg">
-                <div class="flex items-center gap-3">
-                  <div class="w-10 h-10 rounded-full bg-white/10"></div>
-                  <div class="space-y-2 flex-1">
-                    <div class="h-2 w-1/3 bg-white/10 rounded"></div>
-                    <div class="h-2 w-1/2 bg-white/10 rounded"></div>
-                  </div>
-                </div>
-                <div class="h-24 w-full bg-white/5 rounded-xl mt-4"></div>
-                <div class="h-2 w-full bg-white/10 rounded mt-auto"></div>
-                <div class="h-2 w-3/4 bg-white/10 rounded"></div>
-              </div>
-            </div>
-            <div class="absolute left-4 right-4 h-[380px] top-[calc(50%-95px-820px)] -translate-y-1/2">
-              <div
-                class="w-full h-full rounded-3xl bg-[#162D4F] border border-white/10 opacity-40 p-6 flex flex-col gap-4 shadow-lg">
-                <div class="flex items-center gap-3">
-                  <div class="w-10 h-10 rounded-full bg-white/10"></div>
-                  <div class="space-y-2 flex-1">
-                    <div class="h-2 w-1/3 bg-white/10 rounded"></div>
-                    <div class="h-2 w-1/2 bg-white/10 rounded"></div>
-                  </div>
-                </div>
-                <div class="h-24 w-full bg-white/5 rounded-xl mt-4"></div>
-                <div class="h-2 w-full bg-white/10 rounded mt-auto"></div>
-                <div class="h-2 w-3/4 bg-white/10 rounded"></div>
-              </div>
-            </div>
-            <div class="absolute left-4 right-4 h-[380px] top-[calc(50%-95px-410px)] -translate-y-1/2">
-              <div
-                class="w-full h-full rounded-3xl bg-[#162D4F] border border-white/10 opacity-40 p-6 flex flex-col gap-4 shadow-lg">
-                <div class="flex items-center gap-3">
-                  <div class="w-10 h-10 rounded-full bg-white/10"></div>
-                  <div class="space-y-2 flex-1">
-                    <div class="h-2 w-1/3 bg-white/10 rounded"></div>
-                    <div class="h-2 w-1/2 bg-white/10 rounded"></div>
-                  </div>
-                </div>
-                <div class="h-24 w-full bg-white/5 rounded-xl mt-4"></div>
-                <div class="h-2 w-full bg-white/10 rounded mt-auto"></div>
-                <div class="h-2 w-3/4 bg-white/10 rounded"></div>
-              </div>
-            </div>
-
-            <div class="absolute left-4 right-4 h-[380px] top-[calc(50%-95px)] -translate-y-1/2">
-              <div class="relative w-full h-full rounded-3xl overflow-visible transition-all duration-500 border"
-                :class="(activeSlide === 0 && !isScrolling) ? 'bg-white border-white/20 shadow-2xl z-20 scale-100' : 'bg-[#162D4F] border-white/10 opacity-60 z-10 scale-95 overflow-hidden'">
-
-                <!-- Background Content for inactive state -->
-                <div class="absolute inset-0 p-6 flex flex-col gap-4 transition-opacity duration-300"
-                  :class="(activeSlide === 0 && !isScrolling) ? 'opacity-0 pointer-events-none' : 'opacity-100'">
-                  <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-full bg-white/10"></div>
-                    <div class="space-y-2 flex-1">
-                      <div class="h-2 w-1/3 bg-white/10 rounded"></div>
-                      <div class="h-2 w-1/2 bg-white/10 rounded"></div>
-                    </div>
-                  </div>
-                  <div class="h-24 w-full bg-white/5 rounded-xl mt-4"></div>
-                </div>
-
-                <!-- Active Content (Morning Call) -->
-                <div class="absolute inset-0 flex flex-col transition-opacity duration-300"
-                  :class="(activeSlide === 0 && !isScrolling) ? 'opacity-100' : 'opacity-0 pointer-events-none'">
-
-                  <!-- Incoming Call Badge -->
-                  <div
-                    class="absolute -right-8 -top-4 bg-green-500 rounded-xl px-4 py-2 shadow-2xl z-30 flex items-center gap-2 animate-pulse">
-                    <span class="w-2 h-2 bg-white rounded-full"></span>
-                    <span class="text-[10px] text-white font-bold uppercase tracking-wider">Live Call</span>
-                  </div>
-
-                  <div class="p-8 flex flex-col h-full text-[#0F2440]">
-                    <div class="flex items-center gap-3 mb-6">
-                      <div class="w-12 h-12 rounded-full bg-[#00AFF0] flex items-center justify-center text-white shadow-lg">
-                        <span class="material-symbols-outlined text-2xl">call</span>
-                      </div>
-                      <div>
-                        <div class="text-[10px] text-[#2C5F8A] font-bold uppercase tracking-wider">Incoming Call</div>
-                        <div class="text-lg font-extrabold">dialer.best AI</div>
-                      </div>
-                    </div>
-
-                    <div class="flex-1 bg-[#E8F4FC] rounded-2xl p-5 border border-[#B8D8EC] space-y-3">
-                      <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 rounded-full bg-[#00AFF0]/10 flex items-center justify-center">
-                          <span class="material-symbols-outlined text-[#00AFF0] text-lg">schedule</span>
-                        </div>
-                        <div class="flex-1">
-                          <div class="text-[11px] font-bold text-[#0A1628]">"Good morning! Ready to plan your day?"</div>
-                          <div class="text-[9px] text-[#4A7B9E] font-medium mt-0.5">AI Assistant • Just now</div>
-                        </div>
-                      </div>
-                      <div class="h-px bg-[#B8D8EC]"></div>
-                      <div class="flex items-center gap-2 text-[11px] text-[#4A7B9E]">
-                        <span class="w-2 h-2 rounded-full bg-[#22C55E] animate-pulse"></span>
-                        <span>AI is speaking...</span>
-                      </div>
-                    </div>
-
-                    <div class="mt-auto flex gap-2">
-                      <div class="flex-1 h-2 bg-[#00AFF0]/10 rounded-full"></div>
-                      <div class="flex-1 h-2 bg-[#00AFF0]/10 rounded-full w-2/3"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="absolute left-4 right-4 h-[380px] top-[calc(50%-95px+410px)] -translate-y-1/2">
-              <div class="relative w-full h-full rounded-3xl overflow-hidden transition-all duration-500 border"
-                :class="(activeSlide === 1 && !isScrolling) ? 'bg-white border-white/20 shadow-2xl z-20 scale-100' : 'bg-[#162D4F] border-white/10 opacity-60 z-10 scale-95'">
-                <div class="absolute inset-0 p-6 flex flex-col gap-4 transition-opacity duration-300"
-                  :class="(activeSlide === 1 && !isScrolling) ? 'opacity-0' : 'opacity-100'">
-                  <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-full bg-white/10"></div>
-                  </div>
-                </div>
-                <div class="absolute inset-0 p-8 flex flex-col transition-opacity duration-300 text-[#0F2440]"
-                  :class="(activeSlide === 1 && !isScrolling) ? 'opacity-100' : 'opacity-0 pointer-events-none'">
-                  <div class="flex items-center gap-4 mb-6">
-                    <div class="w-12 h-12 rounded-full bg-white p-1 shadow-sm relative shrink-0">
-                      <div class="w-full h-full rounded-full bg-[#00AFF0]/10 flex items-center justify-center">
-                        <span class="material-symbols-outlined text-[#00AFF0]">notifications_active</span>
-                      </div>
-                      <div
-                        class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full animate-pulse">
-                      </div>
-                    </div>
-                    <div>
-                      <div class="text-[10px] text-[#2C5F8A] uppercase font-bold tracking-wider">Follow-up</div>
-                      <div class="font-extrabold text-lg">Progress Check</div>
-                    </div>
-                  </div>
-                  <div
-                    class="bg-white/40 p-4 rounded-xl border border-white/40 flex-1 space-y-3 mb-6">
-                    <div class="flex items-center gap-3 text-[13px]">
-                      <span class="material-symbols-outlined text-[#22C55E] text-lg">check_circle</span>
-                      <span class="font-bold text-[#0A1628]">Draft proposal</span>
-                      <span class="ml-auto text-[10px] text-[#22C55E] font-bold">Done</span>
-                    </div>
-                    <div class="flex items-center gap-3 text-[13px]">
-                      <span class="material-symbols-outlined text-[#00AFF0] text-lg">radio_button_unchecked</span>
-                      <span class="font-bold text-[#0A1628]">Review Q3 budget</span>
-                      <span class="ml-auto text-[10px] text-[#00AFF0] font-bold">In Progress</span>
-                    </div>
-                    <div class="flex items-center gap-3 text-[13px]">
-                      <span class="material-symbols-outlined text-[#EF4444] text-lg">radio_button_unchecked</span>
-                      <span class="font-bold text-[#0A1628]">Call client back</span>
-                      <span class="ml-auto text-[10px] text-[#EF4444] font-bold">Overdue</span>
-                    </div>
-                  </div>
-                  <div class="flex items-center gap-2 text-[11px] text-[#00AFF0] font-bold mt-auto">
-                    <span class="w-2 h-2 rounded-full bg-[#00AFF0] animate-ping"></span>
-                    AI calling back in 30 min...
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="absolute left-4 right-4 h-[380px] top-[calc(50%-95px+820px)] -translate-y-1/2">
-              <div class="relative w-full h-full rounded-3xl overflow-hidden transition-all duration-500 border"
-                :class="(activeSlide === 2 && !isScrolling) ? 'bg-white border-white/20 shadow-2xl z-20 scale-100' : 'bg-[#162D4F] border-white/10 opacity-60 z-10 scale-95'">
-                <div class="absolute inset-0 p-6 flex flex-col gap-4 transition-opacity duration-300"
-                  :class="(activeSlide === 2 && !isScrolling) ? 'opacity-0' : 'opacity-100'">
-                  <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-full bg-white/10"></div>
-                  </div>
-                </div>
-                <div class="absolute inset-0 p-8 flex flex-col transition-opacity duration-300 text-[#0F2440]"
-                  :class="(activeSlide === 2 && !isScrolling) ? 'opacity-100' : 'opacity-0 pointer-events-none'">
-                  <div class="font-extrabold text-lg mb-4 tracking-tight flex items-center gap-2">
-                    <span class="material-symbols-outlined text-[#00AFF0]">history</span> Call Logs
-                  </div>
-                  <div class="flex-1 space-y-3 overflow-hidden">
-                    <div class="bg-white/60 rounded-xl p-3 border border-[#B8D8EC] flex items-center gap-3">
-                      <div class="w-8 h-8 rounded-full bg-[#00AFF0]/10 flex items-center justify-center shrink-0">
-                        <span class="material-symbols-outlined text-[#00AFF0] text-lg">call_received</span>
-                      </div>
-                      <div class="flex-1 min-w-0">
-                        <div class="text-[11px] font-bold text-[#0A1628]">Morning Planning</div>
-                        <div class="text-[9px] text-[#4A7B9E]">Today, 8:30 AM • 12 min</div>
-                      </div>
-                      <span class="text-[9px] text-[#22C55E] font-bold shrink-0">Completed</span>
-                    </div>
-                    <div class="bg-white/60 rounded-xl p-3 border border-[#B8D8EC] flex items-center gap-3">
-                      <div class="w-8 h-8 rounded-full bg-[#00AFF0]/10 flex items-center justify-center shrink-0">
-                        <span class="material-symbols-outlined text-[#00AFF0] text-lg">call_received</span>
-                      </div>
-                      <div class="flex-1 min-w-0">
-                        <div class="text-[11px] font-bold text-[#0A1628]">Follow-up Check</div>
-                        <div class="text-[9px] text-[#4A7B9E]">Today, 11:15 AM • 5 min</div>
-                      </div>
-                      <span class="text-[9px] text-[#22C55E] font-bold shrink-0">Completed</span>
-                    </div>
-                    <div class="bg-white/60 rounded-xl p-3 border border-[#B8D8EC] flex items-center gap-3 opacity-70">
-                      <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center shrink-0">
-                        <span class="material-symbols-outlined text-[#4A7B9E] text-lg">call_missed</span>
-                      </div>
-                      <div class="flex-1 min-w-0">
-                        <div class="text-[11px] font-bold text-[#0A1628]">Afternoon Update</div>
-                        <div class="text-[9px] text-[#4A7B9E]">Today, 2:00 PM • Missed</div>
-                      </div>
-                      <span class="text-[9px] text-[#EF4444] font-bold shrink-0">Missed</span>
-                    </div>
-                  </div>
-                  <div class="mt-3 flex items-center justify-between text-[9px] text-[#00AFF0] font-bold">
-                    <span>View all transcripts →</span>
-                    <span class="bg-[#00AFF0]/10 px-2 py-0.5 rounded-full">3 calls today</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Col 2 -->
-          <div class="relative w-1/2 px-4 h-full transition-transform duration-[1000ms] ease-in-out"
-            :style="`transform: translateY(-${activeSlide * 410}px)`">
-            <div class="absolute left-4 right-4 h-[380px] top-[calc(50%+95px-1230px)] -translate-y-1/2">
-              <div
-                class="w-full h-full rounded-3xl bg-[#162D4F] border border-white/10 opacity-40 p-6 flex flex-col gap-4 shadow-lg">
-                <div class="flex items-center gap-3">
-                  <div class="w-10 h-10 rounded-full bg-white/10"></div>
-                  <div class="space-y-2 flex-1">
-                    <div class="h-2 w-1/3 bg-white/10 rounded"></div>
-                    <div class="h-2 w-1/2 bg-white/10 rounded"></div>
-                  </div>
-                </div>
-                <div class="h-24 w-full bg-white/5 rounded-xl mt-4"></div>
-                <div class="h-2 w-full bg-white/10 rounded mt-auto"></div>
-                <div class="h-2 w-3/4 bg-white/10 rounded"></div>
-              </div>
-            </div>
-            <div class="absolute left-4 right-4 h-[380px] top-[calc(50%+95px-820px)] -translate-y-1/2">
-              <div
-                class="w-full h-full rounded-3xl bg-[#162D4F] border border-white/10 opacity-40 p-6 flex flex-col gap-4 shadow-lg">
-                <div class="flex items-center gap-3">
-                  <div class="w-10 h-10 rounded-full bg-white/10"></div>
-                  <div class="space-y-2 flex-1">
-                    <div class="h-2 w-1/3 bg-white/10 rounded"></div>
-                    <div class="h-2 w-1/2 bg-white/10 rounded"></div>
-                  </div>
-                </div>
-                <div class="h-24 w-full bg-white/5 rounded-xl mt-4"></div>
-                <div class="h-2 w-full bg-white/10 rounded mt-auto"></div>
-                <div class="h-2 w-3/4 bg-white/10 rounded"></div>
-              </div>
-            </div>
-            <div class="absolute left-4 right-4 h-[380px] top-[calc(50%+95px-410px)] -translate-y-1/2">
-              <div
-                class="w-full h-full rounded-3xl bg-[#162D4F] border border-white/10 opacity-40 p-6 flex flex-col gap-4 shadow-lg">
-                <div class="flex items-center gap-3">
-                  <div class="w-10 h-10 rounded-full bg-white/10"></div>
-                  <div class="space-y-2 flex-1">
-                    <div class="h-2 w-1/3 bg-white/10 rounded"></div>
-                    <div class="h-2 w-1/2 bg-white/10 rounded"></div>
-                  </div>
-                </div>
-                <div class="h-24 w-full bg-white/5 rounded-xl mt-4"></div>
-                <div class="h-2 w-full bg-white/10 rounded mt-auto"></div>
-                <div class="h-2 w-3/4 bg-white/10 rounded"></div>
-              </div>
-            </div>
-            <div class="absolute left-4 right-4 h-[380px] top-[calc(50%+95px)] -translate-y-1/2">
-              <div class="relative w-full h-full rounded-3xl overflow-visible transition-all duration-500 border"
-                :class="(activeSlide === 0 && !isScrolling) ? 'bg-white border-white/20 shadow-2xl z-20 scale-100' : 'bg-[#162D4F] border-white/10 opacity-60 z-10 scale-95 overflow-hidden'">
-
-                <!-- Background Content for inactive state -->
-                <div class="absolute inset-0 p-6 flex flex-col gap-4 transition-opacity duration-300"
-                  :class="(activeSlide === 0 && !isScrolling) ? 'opacity-0 pointer-events-none' : 'opacity-100'">
-                  <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-full bg-white/10"></div>
-                    <div class="space-y-2 flex-1">
-                      <div class="h-2 w-1/3 bg-white/10 rounded"></div>
-                      <div class="h-2 w-1/2 bg-white/10 rounded"></div>
-                    </div>
-                  </div>
-                  <div class="h-24 w-full bg-white/5 rounded-xl mt-4"></div>
-                </div>
-
-                <!-- Active Content (Today's Tasks) -->
-                <div class="absolute inset-0 flex flex-col transition-opacity duration-300 text-[#0F2440]"
-                  :class="(activeSlide === 0 && !isScrolling) ? 'opacity-100' : 'opacity-0 pointer-events-none'">
-
-                  <div class="p-8 flex flex-col h-full">
-                    <div class="flex items-center justify-between mb-6">
-                      <div>
-                        <div class="text-[10px] text-[#2C5F8A] font-bold uppercase tracking-wider">Today's Schedule</div>
-                        <div class="text-2xl font-extrabold">5 Tasks</div>
-                      </div>
-                      <div class="text-right">
-                        <div class="text-[10px] text-[#2C5F8A] font-bold uppercase">Progress</div>
-                        <div class="text-lg font-extrabold text-[#00AFF0]">60%</div>
-                      </div>
-                    </div>
-
-                    <div class="flex-1 space-y-3">
-                      <div class="flex items-center gap-3 bg-[#E8F4FC] p-3 rounded-xl border border-[#B8D8EC]">
-                        <span class="material-symbols-outlined text-[#22C55E] text-lg">check_circle</span>
-                        <div class="flex-1">
-                          <div class="text-[13px] font-bold text-[#0A1628]">Draft Q4 proposal</div>
-                          <div class="text-[9px] text-[#4A7B9E]">Due: Today • High priority</div>
-                        </div>
-                      </div>
-                      <div class="flex items-center gap-3 bg-[#E8F4FC] p-3 rounded-xl border border-[#B8D8EC]">
-                        <span class="material-symbols-outlined text-[#00AFF0] text-lg">radio_button_unchecked</span>
-                        <div class="flex-1">
-                          <div class="text-[13px] font-bold text-[#0A1628]">Review team updates</div>
-                          <div class="text-[9px] text-[#4A7B9E]">Due: Today • Medium</div>
-                        </div>
-                      </div>
-                      <div class="flex items-center gap-3 bg-[#E8F4FC] p-3 rounded-xl border border-[#B8D8EC]">
-                        <span class="material-symbols-outlined text-[#00AFF0] text-lg">radio_button_unchecked</span>
-                        <div class="flex-1">
-                          <div class="text-[13px] font-bold text-[#0A1628]">Call Johnson & Co.</div>
-                          <div class="text-[9px] text-[#4A7B9E]">Due: Today • High priority</div>
-                        </div>
-                      </div>
-                      <div class="flex items-center gap-3 opacity-60 p-3">
-                        <span class="material-symbols-outlined text-[#4A7B9E] text-lg">radio_button_unchecked</span>
-                        <div class="flex-1">
-                          <div class="text-[13px] font-bold text-[#0A1628]">Prepare presentation</div>
-                          <div class="text-[9px] text-[#4A7B9E]">Due: Tomorrow</div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="mt-auto pt-4 border-t border-[#B8D8EC] flex justify-between text-[10px] text-[#4A7B9E] font-bold">
-                      <span>2 completed • 3 remaining</span>
-                      <span class="text-[#00AFF0]">View all →</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="absolute left-4 right-4 h-[380px] top-[calc(50%+95px+410px)] -translate-y-1/2">
-              <div class="relative w-full h-full rounded-3xl overflow-hidden transition-all duration-500 border"
-                :class="(activeSlide === 1 && !isScrolling) ? 'bg-white border-white/20 shadow-2xl z-20 scale-100' : 'bg-[#162D4F] border-white/10 opacity-60 z-10 scale-95'">
-                <div class="absolute inset-0 p-6 flex flex-col gap-4 transition-opacity duration-300"
-                  :class="(activeSlide === 1 && !isScrolling) ? 'opacity-0' : 'opacity-100'">
-                  <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-full bg-white/10"></div>
-                  </div>
-                </div>
-                <div class="absolute inset-0 p-8 flex flex-col transition-opacity duration-300 text-[#0F2440]"
-                  :class="(activeSlide === 1 && !isScrolling) ? 'opacity-100' : 'opacity-0 pointer-events-none'">
-                  <div class="font-extrabold text-xl tracking-tight mb-4 flex items-center gap-3">
-                    <span class="material-symbols-outlined text-[#22C55E] text-2xl">summarize</span> Daily Report
-                  </div>
-                  <div class="bg-white/40 p-4 rounded-2xl border border-white/40 mb-4 space-y-3">
-                    <div class="flex justify-between items-center">
-                      <span class="text-[10px] font-bold text-[#2C5F8A] uppercase">Tasks Completed</span>
-                      <span class="text-lg font-extrabold text-[#22C55E]">3/5</span>
-                    </div>
-                    <div class="h-2 bg-[#B8D8EC] rounded-full overflow-hidden">
-                      <div class="h-full w-[60%] bg-[#22C55E] rounded-full"></div>
-                    </div>
-                    <div class="flex justify-between text-[10px] text-[#4A7B9E]">
-                      <span>Hours logged: 4.5h</span>
-                      <span>Calls: 3</span>
-                    </div>
-                  </div>
-                  <div class="bg-white/30 rounded-xl p-3 border border-white/40 text-[11px]">
-                    <div class="font-bold text-[#0A1628] mb-1">Transcript Preview</div>
-                    <div class="text-[#4A7B9E] italic">"Draft proposal completed. Moving to budget review..."</div>
-                  </div>
-                  <div class="mt-auto pt-3 flex gap-2">
-                    <div
-                      class="flex-1 bg-[#00AFF0] text-white text-center py-3 rounded-xl text-[10px] font-bold cursor-pointer hover:bg-[#00AFF0]/90 shadow-lg shadow-[#00AFF0]/20 transition-all uppercase tracking-wider">
-                      View Full Report</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="absolute left-4 right-4 h-[380px] top-[calc(50%+95px+820px)] -translate-y-1/2">
-              <div class="relative w-full h-full rounded-3xl overflow-hidden transition-all duration-500 border"
-                :class="(activeSlide === 2 && !isScrolling) ? 'bg-white border-white/20 shadow-2xl z-20 scale-100' : 'bg-[#162D4F] border-white/10 opacity-60 z-10 scale-95'">
-                <div class="absolute inset-0 p-6 flex flex-col gap-4 transition-opacity duration-300"
-                  :class="(activeSlide === 2 && !isScrolling) ? 'opacity-0' : 'opacity-100'">
-                  <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-full bg-white/10"></div>
-                  </div>
-                </div>
-                <div class="absolute inset-0 p-8 flex flex-col transition-opacity duration-300 text-[#0F2440]"
-                  :class="(activeSlide === 2 && !isScrolling) ? 'opacity-100' : 'opacity-0 pointer-events-none'">
-                  <div class="font-extrabold text-xl mb-4 tracking-tight flex items-center gap-2">
-                    <span class="material-symbols-outlined text-[#00AFF0]">bar_chart</span> Your Stats
-                  </div>
-                  <div class="grid grid-cols-2 gap-3 mb-4">
-                    <div class="bg-white/60 rounded-xl p-4 border border-[#B8D8EC] text-center">
-                      <div class="text-2xl font-extrabold text-[#0A1628]">12</div>
-                      <div class="text-[9px] text-[#4A7B9E] font-bold uppercase">Tasks This Week</div>
-                    </div>
-                    <div class="bg-white/60 rounded-xl p-4 border border-[#B8D8EC] text-center">
-                      <div class="text-2xl font-extrabold text-[#22C55E]">9</div>
-                      <div class="text-[9px] text-[#4A7B9E] font-bold uppercase">Completed</div>
-                    </div>
-                    <div class="bg-white/60 rounded-xl p-4 border border-[#B8D8EC] text-center">
-                      <div class="text-2xl font-extrabold text-[#00AFF0]">75%</div>
-                      <div class="text-[9px] text-[#4A7B9E] font-bold uppercase">Completion Rate</div>
-                    </div>
-                    <div class="bg-white/60 rounded-xl p-4 border border-[#B8D8EC] text-center">
-                      <div class="text-2xl font-extrabold text-[#0A1628]">8h</div>
-                      <div class="text-[9px] text-[#4A7B9E] font-bold uppercase">Focused Time</div>
-                    </div>
-                  </div>
-                  <div
-                    class="bg-[#00AFF0]/5 text-[#00AFF0] text-[10px] font-bold text-center py-3 rounded-xl mt-auto border border-[#00AFF0]/20 uppercase tracking-widest">
-                    Procrastination Score: 15% ↓</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Hero Text (Left Section) -->
-      <div class="order-1 lg:order-1 space-y-6 lg:space-y-8 pb-10 lg:pb-20 relative z-10 flex flex-col justify-center">
-
-        <div>
-          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/10 mb-6">
-            <span class="w-2 h-2 rounded-full bg-[#22C55E] animate-pulse"></span>
-            <span class="text-[10px] font-bold text-white/80 uppercase tracking-widest">Empowering America’s Youth Through VoIP Calling</span>
-          </div>
-
-          <h1 class="text-3xl md:text-5xl lg:text-6xl font-extrabold text-white leading-[1] tracking-tight">
-            Plan your day
-            with a<br>
-            <span class="text-[#7DA5C3]">morning call</span>
-          </h1>
-        </div>
-
-        <div class="space-y-6">
-          <p class="text-white/90 text-xl font-semibold max-w-xl leading-relaxed">
-            Kill procrastination. Get more done.
-          </p>
-          <p class="text-white/70 text-base max-w-lg leading-relaxed">
-            An AI that calls you in the morning, schedules your tasks, follows up until completion, and generates your daily report. View call logs with transcripts anytime.
-          </p>
-        </div>
-
-        <!-- Buttons -->
-        <div class="flex flex-col sm:flex-row items-center gap-4 pt-4">
-          <button @click="waitlistModalOpen = true"
-            class="px-10 py-4 bg-[#00AFF0] hover:bg-[#00AFF0]/90 text-white font-bold rounded-xl transition-all text-base flex items-center justify-center gap-2 w-full sm:w-auto shadow-lg shadow-[#00AFF0]/25">
-            Join Waitlist <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
-          </button>
-          <a href="#how-it-works"
-            class="px-10 py-4 bg-white/5 border border-white/10 hover:bg-white/10 text-white font-bold rounded-xl transition-all text-base flex items-center justify-center gap-3 w-full sm:w-auto">
-            <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center">
-              <span class="material-symbols-outlined text-[#0F2440] text-[20px] ml-0.5">play_arrow</span>
-            </div>
-            How it works
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Stats Section -->
-  <section class="bg-[#162D4F] py-10 border-t border-white/5">
-    <div class="max-w-[1600px] mx-auto px-6 md:px-12">
-      <div class="grid grid-cols-2 md:grid-cols-5 gap-8 text-center divide-x divide-white/10">
-        <div class="px-4">
-          <div class="text-2xl font-bold text-white mb-1">10,000+</div>
-          <div class="text-xs text-[#7DA5C3] uppercase tracking-wider font-semibold">Active Users</div>
-        </div>
-        <div class="px-4">
-          <div class="text-2xl font-bold text-white mb-1">100K+</div>
-          <div class="text-xs text-[#7DA5C3] uppercase tracking-wider font-semibold">Tasks Completed</div>
-        </div>
-        <div class="px-4">
-          <div class="text-2xl font-bold text-white mb-1">50K+</div>
-          <div class="text-xs text-[#7DA5C3] uppercase tracking-wider font-semibold">Hours Saved</div>
-        </div>
-        <div class="px-4">
-          <div class="text-2xl font-bold text-white mb-1">24/7</div>
-          <div class="text-xs text-[#7DA5C3] uppercase tracking-wider font-semibold">AI Follow-ups</div>
-        </div>
-        <div class="px-4 hidden md:block">
-          <div class="text-2xl font-bold text-white mb-1">US</div>
-          <div class="text-xs text-[#7DA5C3] uppercase tracking-wider font-semibold">Phone Numbers</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Section 2: How dialer.best Works -->
-  <section id="how-it-works" class="bg-white py-24 relative overflow-hidden">
-    <div class="max-w-[1400px] mx-auto px-6 md:px-12">
-      <div class="text-center mb-20">
-        <h2 class="text-3xl md:text-5xl font-black text-[#0A1628] tracking-tight mb-6">How <span
-            class="text-[#00AFF0]">dialer.best</span> Works</h2>
-        <p class="text-[#4A7B9E] text-lg max-w-2xl mx-auto">It will call you in the morning, Help you plan tasks on the call, organize scheduled tasks, Set follow-up reminders for each task, Help you close a productive day with confidence.</p>
-      </div>
-
-      <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 relative">
-        <!-- Step 1: Morning Call -->
-        <div class="bg-[#E8F4FC] p-8 rounded-[2.5rem] border border-[#B8D8EC] relative group overflow-hidden">
-          <div class="relative z-10 text-center">
-            <div class="w-16 h-16 rounded-2xl bg-white shadow-sm flex items-center justify-center mb-6 text-[#00AFF0] mx-auto">
-              <span class="material-symbols-outlined text-3xl">phone_callback</span>
-            </div>
-            <div class="inline-flex items-center gap-1 px-3 py-1 bg-[#00AFF0]/10 rounded-full text-[10px] font-bold text-[#00AFF0] mb-4">Step 01</div>
-            <h3 class="text-2xl font-bold text-[#0A1628] mb-3">Morning Call</h3>
-            <p class="text-[#4A7B9E] text-sm leading-relaxed">You wake up. dialer.best calls you. A natural conversation to plan your day, set priorities, and commit to tasks.</p>
-          </div>
-        </div>
-
-        <!-- Step 2: Schedule -->
-        <div class="bg-[#0A1628] p-8 rounded-[2.5rem] border border-white/5 relative group overflow-hidden shadow-2xl -mt-4 lg:mt-8">
-          <div class="relative z-10 text-center">
-            <div class="w-16 h-16 rounded-2xl bg-[#00AFF0] shadow-lg flex items-center justify-center mb-6 text-white mx-auto">
-              <span class="material-symbols-outlined text-3xl">checklist</span>
-            </div>
-            <div class="inline-flex items-center gap-1 px-3 py-1 bg-white/10 rounded-full text-[10px] font-bold text-white/80 mb-4">Step 02</div>
-            <h3 class="text-2xl font-bold text-white mb-3">Schedule Tasks</h3>
-            <p class="text-white/60 text-sm leading-relaxed">Just talk. Your tasks are parsed, organized, and added to your schedule. Deadlines, priorities, and notes — all captured.</p>
-          </div>
-        </div>
-
-        <!-- Step 3: Follow-ups -->
-        <div class="bg-[#E8F4FC] p-8 rounded-[2.5rem] border border-[#B8D8EC] relative group overflow-hidden">
-          <div class="relative z-10 text-center">
-            <div class="w-16 h-16 rounded-2xl bg-white shadow-sm flex items-center justify-center mb-6 text-[#22C55E] mx-auto">
-              <span class="material-symbols-outlined text-3xl">notifications_active</span>
-            </div>
-            <div class="inline-flex items-center gap-1 px-3 py-1 bg-[#22C55E]/10 rounded-full text-[10px] font-bold text-[#22C55E] mb-4">Step 03</div>
-            <h3 class="text-2xl font-bold text-[#0A1628] mb-3">Smart Follow-ups</h3>
-            <p class="text-[#4A7B9E] text-sm leading-relaxed">The AI calls you back throughout the day. Not a notification — an actual conversation. "Did you finish that proposal? Need help?"</p>
-          </div>
-        </div>
-
-        <!-- Step 4: Report -->
-        <div class="bg-[#0A1628] p-8 rounded-[2.5rem] border border-white/5 relative group overflow-hidden shadow-2xl -mt-4 lg:mt-8">
-          <div class="relative z-10 text-center">
-            <div class="w-16 h-16 rounded-2xl bg-[#00AFF0] shadow-lg flex items-center justify-center mb-6 text-white mx-auto">
-              <span class="material-symbols-outlined text-3xl">summarize</span>
-            </div>
-            <div class="inline-flex items-center gap-1 px-3 py-1 bg-white/10 rounded-full text-[10px] font-bold text-white/80 mb-4">Step 04</div>
-            <h3 class="text-2xl font-bold text-white mb-3">Daily Report</h3>
-            <p class="text-white/60 text-sm leading-relaxed">End of day. You get a full report: tasks completed, hours logged, progress summary. Plus call logs with transcripts to review anytime.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Section: Kill Procrastination -->
-  <section id="features" class="bg-white py-24 relative overflow-hidden">
-    <div class="max-w-[1400px] mx-auto px-6 md:px-12">
-      <div class="text-center mb-20">
-        <h2 class="text-3xl md:text-5xl font-black text-[#0A1628] tracking-tight mb-6">Why dialer.best <span
-            class="text-[#00AFF0]">Kills Procrastination</span></h2>
-        <p class="text-[#4A7B9E] text-lg max-w-2xl mx-auto">Because notifications are too easy to ignore.</p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
-        <!-- Feature 1 -->
-        <div
-          class="group relative bg-[#E8F4FC] p-8 rounded-[2.5rem] border border-[#B8D8EC] hover:border-[#00AFF0]/30 transition-all hover:-translate-y-2 shadow-sm">
-          <div
-            class="w-16 h-16 rounded-2xl bg-white shadow-md flex items-center justify-center mb-6 text-[#00AFF0] group-hover:scale-110 transition-transform">
-            <span class="material-symbols-outlined text-[32px]">call</span>
-          </div>
-          <h3 class="text-xl font-bold text-[#0A1628] mb-3 leading-tight">Human-like Voice Calls</h3>
-          <p class="text-[15px] text-[#4A7B9E] leading-relaxed">A real voice on the line. Not another notification you can swipe away. The AI calls you with natural conversation that keeps you accountable.</p>
-        </div>
-
-        <!-- Feature 2 -->
-        <div
-          class="group relative bg-[#0A1628] p-8 rounded-[2.5rem] border border-white/10 hover:border-[#00AFF0]/30 transition-all hover:-translate-y-2 shadow-2xl">
-          <div
-            class="w-16 h-16 rounded-2xl bg-[#00AFF0] shadow-md flex items-center justify-center mb-6 text-white group-hover:scale-110 transition-transform">
-            <span class="material-symbols-outlined text-[32px]">notifications_active</span>
-          </div>
-          <h3 class="text-xl font-bold text-white mb-3 leading-tight">Persistent Follow-ups</h3>
-          <p class="text-[15px] text-white/60 leading-relaxed">The AI doesn't give up. It calls you back throughout the day — checking in, offering help, and keeping you on track until every task is done.</p>
-        </div>
-
-        <!-- Feature 3 -->
-        <div
-          class="group relative bg-[#E8F4FC] p-8 rounded-[2.5rem] border border-[#B8D8EC] hover:border-[#00AFF0]/30 transition-all hover:-translate-y-2 shadow-sm">
-          <div
-            class="w-16 h-16 rounded-2xl bg-white shadow-md flex items-center justify-center mb-6 text-[#22C55E] group-hover:scale-110 transition-transform">
-            <span class="material-symbols-outlined text-[32px]">fact_check</span>
-          </div>
-          <h3 class="text-xl font-bold text-[#0A1628] mb-3 leading-tight">Call Logs & Transcripts</h3>
-          <p class="text-[15px] text-[#4A7B9E] leading-relaxed">Every call is recorded with a full AI transcript. Review your history, track decisions, and never forget a commitment.</p>
-        </div>
-      </div>
-
-      <!-- US Only Banner -->
-      <div class="mt-20 p-8 rounded-3xl bg-gradient-to-br from-[#0A1628] to-[#00AFF0] relative overflow-hidden group">
-        <div
-          class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10">
-        </div>
-        <div class="relative z-10 flex flex-col md:flex-row items-center gap-8">
-          <div class="w-16 h-16 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center shrink-0">
-            <span class="material-symbols-outlined text-white text-[32px]">phone_in_talk</span>
-          </div>
-          <div class="flex-1 text-center md:text-left">
-            <h4 class="text-white font-bold text-xl mb-2 uppercase tracking-wider text-[12px]">US Phone Numbers Only</h4>
-            <p class="text-white/90 text-lg leading-relaxed">
-              Currently serving <span
-                class="text-white font-bold underline decoration-white/30 decoration-2 underline-offset-4">US-based phone numbers</span> with premium VOIP infrastructure. Crystal-clear calls, minimal latency, enterprise-grade reliability.
-            </p>
-          </div>
-          <span class="px-6 py-3 bg-white/10 backdrop-blur-md text-white font-bold rounded-2xl border border-white/20 text-sm whitespace-nowrap">
-            <span class="material-symbols-outlined text-[18px] align-middle mr-1">star</span> More regions coming soon
-          </span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Section: Smart VOIP Calling System -->
-  <section id="voice" class="bg-[#0F2440] py-32 border-y border-white/5 relative overflow-hidden">
-    <div class="absolute inset-0 pointer-events-none">
-      <div
-        class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#00AFF0]/10 rounded-full blur-[120px]">
-      </div>
-      <div
-        class="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10">
+      <div class="hero-chips">
+        <span class="chip"><span class="material-symbols-outlined" style="color:#00AFF0;">mic</span>AI Voice Calls</span>
+        <span class="chip"><span class="material-symbols-outlined" style="color:#0EB647;">settings_input_antenna</span>Enterprise VoIP</span>
+        <span class="chip"><span class="material-symbols-outlined" style="color:#0EB647;">check_circle</span>No dashboards needed</span>
+        <span class="chip"><span class="material-symbols-outlined" style="color:#FBBF24;">groups</span>Personal &amp; Teams</span>
       </div>
     </div>
 
-    <div class="max-w-[1400px] mx-auto px-6 relative z-10">
-      <div class="text-center mb-24">
-        <div
-          class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-[#00AFF0] text-xs font-bold uppercase tracking-widest mb-6 shadow-xl">
-          <span class="material-symbols-outlined text-[20px] animate-pulse">settings_input_antenna</span> The Technology
-        </div>
-        <h2
-          class="text-4xl md:text-6xl lg:text-7xl font-black text-white max-w-4xl mx-auto leading-[1.1] tracking-tight">
-          Smart VOIP<br><span class="text-[#00AFF0]">Calling Assistant</span>
-        </h2>
-        <p class="text-xl text-white/50 max-w-2xl mx-auto mt-8 leading-relaxed">
-          No screens, no typing — just a proactive AI that calls you to plan your day, check progress, and keeps you accountable until every task is done.
-        </p>
-      </div>
+    <!-- RIGHT: original sliding card visual -->
+    <div class="hero-visual">
+      <div class="cards-wrap">
 
-      <div class="relative w-full mx-auto">
-        <svg class="hidden md:block absolute inset-0 w-full h-[450px] pointer-events-none -z-10" viewBox="0 0 1400 450"
-          preserveAspectRatio="none">
-          <style>
-            @keyframes flowLineNew {
-              to {
-                stroke-dashoffset: -440;
-              }
-            }
-
-            .path-base-new {
-              stroke: rgba(255, 255, 255, 0.05);
-              stroke-width: 2;
-              stroke-dasharray: 8 8;
-              fill: none;
-            }
-
-            .path-flow-new {
-              stroke: #00AFF0;
-              stroke-width: 4;
-              fill: none;
-              stroke-linecap: round;
-              stroke-dasharray: 60 400;
-              animation: flowLineNew 3s linear infinite;
-              filter: drop-shadow(0 0 8px #00AFF0);
-            }
-          </style>
-          <path class="path-base-new" d="M 280 150 L 317 150 Q 327 150 327 160 L 327 300 Q 327 310 337 310 L 374 310" />
-          <path class="path-flow-new" d="M 280 150 L 317 150 Q 327 150 327 160 L 327 300 Q 327 310 337 310 L 374 310" />
-
-          <path class="path-base-new" d="M 653 310 L 690 310 Q 700 310 700 300 L 700 160 Q 700 150 710 150 L 747 150" />
-          <path class="path-flow-new" style="animation-delay: 1s;"
-            d="M 653 310 L 690 310 Q 700 310 700 300 L 700 160 Q 700 150 710 150 L 747 150" />
-
-          <path class="path-base-new"
-            d="M 1027 150 L 1064 150 Q 1074 150 1074 160 L 1074 300 Q 1074 310 1084 310 L 1121 310" />
-          <path class="path-flow-new" style="animation-delay: 2s;"
-            d="M 1027 150 L 1064 150 Q 1074 150 1074 160 L 1074 300 Q 1074 310 1084 310 L 1121 310" />
+        <!-- SVG lines -->
+        <svg class="hero-svg" viewBox="0 0 1000 700" preserveAspectRatio="none" :style="!scrolling ? 'opacity:1' : 'opacity:0'">
+          <path class="hp-base" d="M 480 105 L 730 105 Q 750 105 750 125 L 750 255"/>
+          <path class="hp-flow" d="M 480 105 L 730 105 Q 750 105 750 125 L 750 255"/>
+          <path class="hp-base" d="M 250 435 L 250 565 Q 250 585 270 585 L 520 585"/>
+          <path class="hp-flow-rev" d="M 250 435 L 250 565 Q 250 585 270 585 L 520 585"/>
+          <g><circle class="hn-p" cx="480" cy="105" r="8"><animate attributeName="r" values="6;10;6" dur="2s" repeatCount="indefinite"/></circle><circle class="hn" cx="480" cy="105" r="4"/></g>
+          <g><circle class="hn-p" cx="750" cy="255" r="8"><animate attributeName="r" values="6;10;6" dur="2s" repeatCount="indefinite"/></circle><circle class="hn" cx="750" cy="255" r="4"/></g>
+          <g><circle class="hn-p" cx="250" cy="435" r="8"><animate attributeName="r" values="6;10;6" dur="2s" repeatCount="indefinite"/></circle><circle class="hn" cx="250" cy="435" r="4"/></g>
+          <g><circle class="hn-p" cx="520" cy="585" r="8"><animate attributeName="r" values="6;10;6" dur="2s" repeatCount="indefinite"/></circle><circle class="hn" cx="520" cy="585" r="4"/></g>
         </svg>
 
-        <div class="flex flex-col md:flex-row justify-between items-start gap-8 md:gap-4 relative">
-          <!-- Step 1 -->
-          <div class="w-full md:w-[22%] h-auto relative group">
-            <div
-              class="h-full flex flex-col items-center p-8 bg-white/5 backdrop-blur-xl rounded-[2.5rem] border border-white/10 group-hover:border-[#00AFF0]/30 transition-all duration-500">
-              <div
-                class="w-20 h-20 bg-white/5 text-white/20 rounded-full flex items-center justify-center mb-6 group-hover:text-white group-hover:bg-[#00AFF0]/20 transition-all">
-                <span class="material-symbols-outlined text-4xl">alarm</span>
-              </div>
-              <h3 class="font-bold text-white text-center text-xl mb-3">Morning Call</h3>
-              <p class="text-sm text-white/40 text-center leading-relaxed">The AI calls you at your set time. Plan your day, set priorities, and commit to tasks.</p>
-            </div>
+        <!-- COL 1 -->
+        <div class="card-col" :style="`transform:translateY(-${active*410}px)`">
+          <!-- ghost before -->
+          <div class="hcard hcard-ghost" style="top:calc(50% - 95px - 820px);transform:translateY(-50%);">
+            <div class="gh-row"><div class="gh-av"></div><div class="gh-lines"><div class="gh-line" style="width:33%"></div><div class="gh-line" style="width:50%"></div></div></div>
+            <div class="gh-box"></div><div class="gh-foot"><div class="gh-line"></div><div class="gh-line" style="width:75%"></div></div>
+          </div>
+          <div class="hcard hcard-ghost" style="top:calc(50% - 95px - 410px);transform:translateY(-50%);">
+            <div class="gh-row"><div class="gh-av"></div><div class="gh-lines"><div class="gh-line" style="width:33%"></div><div class="gh-line" style="width:50%"></div></div></div>
+            <div class="gh-box"></div>
           </div>
 
-          <!-- Step 2 (Active/Grand) -->
-          <div class="w-full md:w-[24%] h-auto relative md:mt-[150px] group">
-            <div
-              class="h-full flex flex-col items-center p-10 bg-gradient-to-br from-[#00AFF0] to-[#0A1628] text-white rounded-[3rem] shadow-[0_0_60px_rgba(0,175,240,0.3)] border border-white/20 transform group-hover:scale-105 transition-all duration-500">
-              <div
-                class="w-24 h-24 bg-white text-[#00AFF0] rounded-full flex items-center justify-center mb-8 shadow-2xl relative">
-                <span class="material-symbols-outlined text-5xl">call</span>
-                <div class="absolute inset-0 rounded-full border-4 border-white/50 animate-ping"></div>
-              </div>
-              <h3 class="font-black text-center text-2xl mb-4 tracking-tight">Voice Scheduling</h3>
-              <p class="text-sm text-white/80 text-center leading-relaxed font-medium">Just talk naturally. The AI parses your tasks, deadlines, and notes — all through conversation.</p>
+          <!-- CARD 1 ACTIVE: LIVE CALL -->
+          <div class="hcard" style="top:calc(50% - 95px);transform:translateY(-50%);"
+            :class="(active===0&&!scrolling)?'hcard-active':'hcard-dim'">
+            <!-- ghost state -->
+            <div class="absolute inset-0 p-6 flex flex-col gap-4" :class="(active===0&&!scrolling)?'opacity-0':'opacity-100'" style="position:absolute;inset:0;padding:1.5rem;display:flex;flex-direction:column;gap:1rem;">
+              <div class="gh-row"><div class="gh-av"></div><div class="gh-lines"><div class="gh-line" style="width:33%"></div><div class="gh-line" style="width:50%"></div></div></div>
+              <div class="gh-box"></div>
             </div>
-          </div>
-
-          <!-- Step 3 -->
-          <div class="w-full md:w-[22%] h-auto relative group">
-            <div
-              class="h-full flex flex-col items-center p-8 bg-white/5 backdrop-blur-xl rounded-[2.5rem] border border-white/10 group-hover:border-[#00AFF0]/30 transition-all duration-500">
-              <div
-                class="w-20 h-20 bg-white/5 text-white/20 rounded-full flex items-center justify-center mb-6 group-hover:text-[#22C55E] group-hover:bg-[#22C55E]/20 transition-all">
-                <span class="material-symbols-outlined text-4xl">sync</span>
+            <!-- active state: live call -->
+            <div class="card1-inner" style="position:absolute;inset:0;" :class="(active===0&&!scrolling)?'':''" :style="(active===0&&!scrolling)?'opacity:1':'opacity:0;pointer-events:none'">
+              <div class="live-badge" style="position:absolute;top:-1rem;right:-2rem;">
+                <span style="width:8px;height:8px;border-radius:50%;background:#fff;display:inline-block;"></span>
+                <span>Live Call</span>
               </div>
-              <h3 class="font-bold text-white text-center text-xl mb-3">Smart Follow-ups</h3>
-              <p class="text-sm text-white/40 text-center leading-relaxed">The AI calls you back at intervals until tasks are completed. Persistent accountability.</p>
-            </div>
-          </div>
-
-          <!-- Step 4 -->
-          <div class="w-full md:w-[22%] h-auto relative md:mt-[150px] group">
-            <div
-              class="h-full flex flex-col items-center p-8 bg-white/5 backdrop-blur-xl rounded-[2.5rem] border border-white/10 group-hover:border-[#00AFF0]/30 transition-all duration-500">
-              <div
-                class="w-20 h-20 bg-white/5 text-white/20 rounded-full flex items-center justify-center mb-6 group-hover:text-[#7DA5C3] group-hover:bg-[#7DA5C3]/20 transition-all">
-                <span class="material-symbols-outlined text-4xl">summarize</span>
-              </div>
-              <h3 class="font-bold text-white text-center text-xl mb-3">Daily Report</h3>
-              <p class="text-sm text-white/40 text-center leading-relaxed">End-of-day summary. Tasks completed, hours logged, progress tracked. Full transcripts available.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Mobile App Section -->
-  <section id="mobile-app" class="bg-white py-24 relative overflow-hidden">
-    <div class="max-w-[1400px] mx-auto px-6 md:px-12">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-        <div class="space-y-8">
-          <div class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#00AFF0]/10 border border-[#00AFF0]/20 text-[#00AFF0] text-xs font-bold uppercase tracking-widest">
-            <span class="material-symbols-outlined text-[20px]">phone_android</span> Mobile App
-          </div>
-          <h2 class="text-3xl md:text-5xl font-black text-[#0A1628] tracking-tight leading-[1.15]">
-            Take <span class="text-[#00AFF0]">dialer.best</span><br>On the Go
-          </h2>
-          <p class="text-lg text-[#4A7B9E] leading-relaxed max-w-lg">
-            Our mobile app brings the full dialer.best experience to your pocket. Built for <strong>non-US based customers</strong> who need reliable access to receive calls and manage tasks from anywhere.
-          </p>
-          <p class="text-lg text-[#4A7B9E] leading-relaxed max-w-lg">
-            We're working hard to implement <strong>VoIP calling for international users</strong> — so you can use dialer.best no matter where you are.
-          </p>
-            <a href="{{ route('mobile.app') }}"
-            class="inline-flex items-center gap-3 px-8 py-4 bg-[#0A1628] hover:bg-[#0A1628]/90 text-white font-bold rounded-2xl transition-all text-base shadow-lg shadow-[#0A1628]/20 group">
-            <span class="material-symbols-outlined text-[22px]">phone_android</span>
-            Learn About Our App
-          </a>
-        </div>
-        <div class="relative flex items-center justify-center">
-          <div class="relative w-72 h-[500px]">
-            <!-- Phone frame mockup -->
-            <div class="absolute inset-0 bg-[#0A1628] rounded-[3rem] border-4 border-[#0A1628]/20 shadow-2xl overflow-hidden">
-              <div class="absolute top-0 left-1/2 -translate-x-1/2 w-28 h-6 bg-[#0A1628] rounded-b-xl z-10"></div>
-              <div class="absolute inset-2 bg-white rounded-[2.5rem] overflow-hidden flex flex-col">
-                <!-- App header in phone -->
-                <div class="bg-[#0A1628] px-4 pt-8 pb-4">
-                  <div class="flex items-center gap-2 mb-3">
-                    <div class="w-6 h-6 rounded-full bg-[#00AFF0] flex items-center justify-center">
-                      <span class="text-white text-[10px] font-bold">D</span>
-                    </div>
-                    <span class="text-white text-[10px] font-bold tracking-tight">dialer.best</span>
-                  </div>
-                  <div class="text-white text-lg font-black">Good morning!</div>
-                  <div class="text-white/60 text-[10px]">Ready to plan your day?</div>
-                </div>
-                <!-- App content -->
-                <div class="flex-1 p-3 space-y-2 bg-[#E8F4FC]">
-                  <div class="bg-white p-3 rounded-xl border border-[#B8D8EC] shadow-sm flex items-center gap-2">
-                    <div class="w-8 h-8 rounded-full bg-[#00AFF0]/10 flex items-center justify-center">
-                      <span class="material-symbols-outlined text-[#00AFF0] text-sm">call</span>
-                    </div>
-                    <div class="flex-1">
-                      <div class="text-[10px] font-bold text-[#0A1628]">Morning Planning Call</div>
-                      <div class="text-[8px] text-[#4A7B9E]">8:30 AM • Incoming</div>
-                    </div>
-                    <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                  </div>
-                  <div class="bg-white p-3 rounded-xl border border-[#B8D8EC] shadow-sm flex items-center gap-2">
-                    <div class="w-8 h-8 rounded-full bg-[#22C55E]/10 flex items-center justify-center">
-                      <span class="material-symbols-outlined text-[#22C55E] text-sm">check_circle</span>
-                    </div>
-                    <div class="flex-1">
-                      <div class="text-[10px] font-bold text-[#0A1628]">Draft proposal</div>
-                      <div class="text-[8px] text-[#4A7B9E]">Completed</div>
-                    </div>
-                    <span class="text-[8px] text-[#22C55E] font-bold">Done</span>
-                  </div>
-                  <div class="bg-white p-3 rounded-xl border border-[#B8D8EC] shadow-sm flex items-center gap-2">
-                    <div class="w-8 h-8 rounded-full bg-[#00AFF0]/10 flex items-center justify-center">
-                      <span class="material-symbols-outlined text-[#00AFF0] text-sm">radio_button_unchecked</span>
-                    </div>
-                    <div class="flex-1">
-                      <div class="text-[10px] font-bold text-[#0A1628]">Review budget</div>
-                      <div class="text-[8px] text-[#4A7B9E]">In Progress</div>
-                    </div>
-                    <span class="text-[8px] text-[#00AFF0] font-bold">1:30 PM</span>
-                  </div>
-                </div>
-                <!-- Bottom nav -->
-                <div class="bg-white border-t border-[#B8D8EC] px-4 py-2 flex justify-around">
-                  <span class="material-symbols-outlined text-[#00AFF0] text-lg">home</span>
-                  <span class="material-symbols-outlined text-[#4A7B9E] text-lg">list_alt</span>
-                  <span class="material-symbols-outlined text-[#4A7B9E] text-lg">history</span>
-                  <span class="material-symbols-outlined text-[#4A7B9E] text-lg">person</span>
+              <div class="card1-caller">
+                <div class="caller-av"><span class="material-symbols-outlined">call</span></div>
+                <div>
+                  <div class="caller-label">AI Voice Call · VoIP</div>
+                  <div class="caller-name">stride.best AI</div>
                 </div>
               </div>
+              <div class="card1-bubble">
+                <div class="bubble-row">
+                  <div class="bubble-av"><span class="material-symbols-outlined">smart_toy</span></div>
+                  <div>
+                    <div class="bubble-text">"Good morning! Ready to plan your day?"</div>
+                    <div class="bubble-time">Stride AI · VoIP Call · Just now</div>
+                  </div>
+                </div>
+                <div style="height:1px;background:rgba(0,175,240,.15);margin:.5rem 0;"></div>
+                <div class="wave-row">
+                  <div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div>
+                  <div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div>
+                  <span class="wave-label">AI Speaking via VoIP…</span>
+                </div>
+              </div>
+              <div class="card1-foot">
+                <span class="status-dot"></span>
+                <span class="status-text">Live VoIP · Encrypted · Crystal Clear</span>
+              </div>
             </div>
-            <!-- Glow effect -->
-            <div class="absolute -inset-4 bg-[#00AFF0]/5 rounded-[4rem] blur-2xl -z-10"></div>
           </div>
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- FAQ Section -->
-  <section id="faq" class="bg-[#E8F4FC] py-24 relative overflow-hidden" x-data="{ activeFaq: null }">
-    <div class="max-w-4xl mx-auto px-6 md:px-12">
-      <div class="text-center mb-16">
-        <h2 class="text-3xl md:text-5xl font-black text-[#0A1628] tracking-tight">Everything you <span
-            class="text-[#00AFF0]">Need to Know</span></h2>
-      </div>
-
-      <div class="space-y-4">
-        <!-- FAQ Item 1 -->
-        <div class="bg-white rounded-3xl border border-[#B8D8EC] overflow-hidden transition-all shadow-sm">
-          <button @click="activeFaq === 1 ? activeFaq = null : activeFaq = 1"
-            class="w-full px-8 py-6 text-left flex items-center justify-between group">
-            <span class="text-lg md:text-xl font-bold text-[#0A1628]">What is dialer.best?</span>
-            <span class="material-symbols-outlined text-[#00AFF0] transition-transform duration-300"
-              :class="activeFaq === 1 ? 'rotate-45' : ''">add</span>
-          </button>
-          <div x-show="activeFaq === 1" x-collapse class="px-8 pb-6 text-[#4A7B9E] leading-relaxed">
-            dialer.best is an AI todo assistant that calls you on the phone. It helps you schedule daily tasks, tracks your progress, follows up until everything is done, and generates a daily report — all through natural voice conversations.
+          <!-- CARD 2: progress check -->
+          <div class="hcard" style="top:calc(50% - 95px + 410px);transform:translateY(-50%);"
+            :class="(active===1&&!scrolling)?'hcard-active':'hcard-dim'">
+            <div style="position:absolute;inset:0;padding:1.5rem;opacity:1;" :style="(active===1&&!scrolling)?'opacity:0':'opacity:1'">
+              <div class="gh-av"></div>
+            </div>
+            <div class="card2-inner" style="position:absolute;inset:0;" :style="(active===1&&!scrolling)?'opacity:1':'opacity:0;pointer-events:none'">
+              <div class="card2-header">
+                <div class="card2-av-wrap">
+                  <div class="card2-av"><span class="material-symbols-outlined">notifications_active</span></div>
+                  <div class="card2-online"></div>
+                </div>
+                <div class="card2-title-row">
+                  <div class="sub">Follow-up</div>
+                  <div class="main">Progress Check</div>
+                </div>
+              </div>
+              <div class="task-list">
+                <div class="task-row"><span class="material-symbols-outlined" style="color:#22c55e;">check_circle</span><span class="task-label">Draft proposal</span><span class="task-status ts-done">Done</span></div>
+                <div class="task-row"><span class="material-symbols-outlined" style="color:#3B7A9E;">radio_button_unchecked</span><span class="task-label">Review Q3 budget</span><span class="task-status ts-prog">In Progress</span></div>
+                <div class="task-row"><span class="material-symbols-outlined" style="color:#EF4444;">radio_button_unchecked</span><span class="task-label">Call client back</span><span class="task-status ts-over">Overdue</span></div>
+              </div>
+              <div class="card2-foot"><span class="ping-dot"></span>AI calling back in 30 min…</div>
+            </div>
           </div>
-        </div>
 
-        <!-- FAQ Item 2 -->
-        <div class="bg-white rounded-3xl border border-[#B8D8EC] overflow-hidden transition-all shadow-sm">
-          <button @click="activeFaq === 2 ? activeFaq = null : activeFaq = 2"
-            class="w-full px-8 py-6 text-left flex items-center justify-between group">
-            <span class="text-lg md:text-xl font-bold text-[#0A1628]">How does it work?</span>
-            <span class="material-symbols-outlined text-[#00AFF0] transition-transform duration-300"
-              :class="activeFaq === 2 ? 'rotate-45' : ''">add</span>
-          </button>
-          <div x-show="activeFaq === 2" x-collapse class="px-8 pb-6 text-[#4A7B9E] leading-relaxed">
-            The AI calls you in the morning to plan your day. You talk through your tasks naturally. It schedules them, then calls you back throughout the day to check progress. At the end of the day, you get a full report with call transcripts.
+          <!-- CARD 3: call logs -->
+          <div class="hcard" style="top:calc(50% - 95px + 820px);transform:translateY(-50%);"
+            :class="(active===2&&!scrolling)?'hcard-active':'hcard-dim'">
+            <div style="position:absolute;inset:0;padding:1.5rem;" :style="(active===2&&!scrolling)?'opacity:0':'opacity:1'">
+              <div class="gh-av"></div>
+            </div>
+            <div class="card3-inner" style="position:absolute;inset:0;" :style="(active===2&&!scrolling)?'opacity:1':'opacity:0;pointer-events:none'">
+              <div class="card3-title"><span class="material-symbols-outlined" style="color:#3B7A9E;">history</span>Call Logs</div>
+              <div class="log-item"><div class="log-icon"><span class="material-symbols-outlined">call_received</span></div><div style="flex:1"><div class="log-label">Morning Planning</div><div class="log-time">Today, 8:30 AM • 12 min</div></div><span class="log-badge lb-done">Completed</span></div>
+              <div class="log-item"><div class="log-icon"><span class="material-symbols-outlined">call_received</span></div><div style="flex:1"><div class="log-label">Follow-up Check</div><div class="log-time">Today, 11:15 AM • 5 min</div></div><span class="log-badge lb-done">Completed</span></div>
+              <div class="log-item dim"><div class="log-icon"><span class="material-symbols-outlined">call_missed</span></div><div style="flex:1"><div class="log-label">Afternoon Update</div><div class="log-time">Today, 2:00 PM • Missed</div></div><span class="log-badge lb-miss">Missed</span></div>
+              <div class="card3-foot"><span>View all transcripts →</span><span class="count">3 calls today</span></div>
+            </div>
           </div>
-        </div>
 
-        <!-- FAQ Item 3 -->
-        <div class="bg-white rounded-3xl border border-[#B8D8EC] overflow-hidden transition-all shadow-sm">
-          <button @click="activeFaq === 3 ? activeFaq = null : activeFaq = 3"
-            class="w-full px-8 py-6 text-left flex items-center justify-between group">
-            <span class="text-lg md:text-xl font-bold text-[#0A1628]">Is this available internationally?</span>
-            <span class="material-symbols-outlined text-[#00AFF0] transition-transform duration-300"
-              :class="activeFaq === 3 ? 'rotate-45' : ''">add</span>
-          </button>
-          <div x-show="activeFaq === 3" x-collapse class="px-8 pb-6 text-[#4A7B9E] leading-relaxed">
-            Currently, dialer.best is available for <strong>US-based phone numbers only</strong>. We are working on expanding to more regions. Join the waitlist to get notified when your region is supported.
+          <!-- ghost after -->
+          <div class="hcard hcard-ghost" style="top:calc(50% - 95px + 1230px);transform:translateY(-50%);">
+            <div class="gh-row"><div class="gh-av"></div><div class="gh-lines"><div class="gh-line" style="width:33%"></div><div class="gh-line" style="width:50%"></div></div></div>
+            <div class="gh-box"></div>
           </div>
         </div>
 
-        <!-- FAQ Item 4 -->
-        <div class="bg-white rounded-3xl border border-[#B8D8EC] overflow-hidden transition-all shadow-sm">
-          <button @click="activeFaq === 4 ? activeFaq = null : activeFaq = 4"
-            class="w-full px-8 py-6 text-left flex items-center justify-between group">
-            <span class="text-lg md:text-xl font-bold text-[#0A1628]">Can I review past calls and transcripts?</span>
-            <span class="material-symbols-outlined text-[#00AFF0] transition-transform duration-300"
-              :class="activeFaq === 4 ? 'rotate-45' : ''">add</span>
-          </button>
-          <div x-show="activeFaq === 4" x-collapse class="px-8 pb-6 text-[#4A7B9E] leading-relaxed">
-            Yes! Every call is recorded with a full AI-generated transcript. You can browse your call history, read transcripts, and review task progress at any time from your dashboard.
+        <!-- COL 2 -->
+        <div class="card-col card-col-2" :style="`transform:translateY(-${active*410}px)`">
+          <div class="hcard hcard-ghost" style="top:calc(50% + 95px - 820px);transform:translateY(-50%);">
+            <div class="gh-row"><div class="gh-av"></div><div class="gh-lines"><div class="gh-line" style="width:33%"></div><div class="gh-line" style="width:50%"></div></div></div>
+            <div class="gh-box"></div>
+          </div>
+          <div class="hcard hcard-ghost" style="top:calc(50% + 95px - 410px);transform:translateY(-50%);">
+            <div class="gh-row"><div class="gh-av"></div><div class="gh-lines"><div class="gh-line" style="width:33%"></div><div class="gh-line" style="width:50%"></div></div></div>
+            <div class="gh-box"></div>
+          </div>
+
+          <!-- RIGHT CARD 1: today's schedule -->
+          <div class="hcard" style="top:calc(50% + 95px);transform:translateY(-50%);"
+            :class="(active===0&&!scrolling)?'hcard-active':'hcard-dim'">
+            <div style="position:absolute;inset:0;padding:1.5rem;" :style="(active===0&&!scrolling)?'opacity:0':'opacity:1'">
+              <div class="gh-av"></div><div class="gh-lines" style="margin-top:.5rem;"><div class="gh-line" style="width:50%"></div></div>
+            </div>
+            <div class="card-r1" style="position:absolute;inset:0;" :style="(active===0&&!scrolling)?'opacity:1':'opacity:0;pointer-events:none'">
+              <div class="sched-header">
+                <div><div class="sched-label">Today's Schedule</div><div class="sched-num">5 Tasks</div></div>
+                <div style="text-align:right"><div class="sched-label">Progress</div><div class="sched-pct">60%</div></div>
+              </div>
+              <div class="task-items">
+                <div class="ti"><span class="material-symbols-outlined" style="color:#22c55e;">check_circle</span><div class="ti-text"><div class="ti-name">Draft Q4 proposal</div><div class="ti-meta">Due: Today • High priority</div></div></div>
+                <div class="ti"><span class="material-symbols-outlined" style="color:#3B7A9E;">radio_button_unchecked</span><div class="ti-text"><div class="ti-name">Review team updates</div><div class="ti-meta">Due: Today • Medium</div></div></div>
+                <div class="ti"><span class="material-symbols-outlined" style="color:#3B7A9E;">radio_button_unchecked</span><div class="ti-text"><div class="ti-name">Call Johnson &amp; Co.</div><div class="ti-meta">Due: Today • High priority</div></div></div>
+                <div class="ti dim"><span class="material-symbols-outlined" style="color:#4A7B9E;">radio_button_unchecked</span><div class="ti-text"><div class="ti-name">Prepare presentation</div><div class="ti-meta">Due: Tomorrow</div></div></div>
+              </div>
+              <div class="sched-foot"><span>2 completed • 3 remaining</span><span style="color:#3B7A9E;">View all →</span></div>
+            </div>
+          </div>
+
+          <!-- RIGHT CARD 2: daily report -->
+          <div class="hcard" style="top:calc(50% + 95px + 410px);transform:translateY(-50%);"
+            :class="(active===1&&!scrolling)?'hcard-active':'hcard-dim'">
+            <div style="position:absolute;inset:0;padding:1.5rem;" :style="(active===1&&!scrolling)?'opacity:0':'opacity:1'"><div class="gh-av"></div></div>
+            <div class="rpt-inner" style="position:absolute;inset:0;" :style="(active===1&&!scrolling)?'opacity:1':'opacity:0;pointer-events:none'">
+              <div class="rpt-title"><span class="material-symbols-outlined" style="color:#22c55e;">summarize</span>Daily Report</div>
+              <div class="rpt-box">
+                <div class="rpt-row"><span class="rl">Tasks Completed</span><span class="rv">3/5</span></div>
+                <div class="progress-bar"><div class="progress-fill"></div></div>
+                <div class="rpt-meta"><span>Hours logged: 4.5h</span><span>Calls: 3</span></div>
+              </div>
+              <div class="rpt-preview">
+                <div class="rp-label">Transcript Preview</div>
+                <div class="rp-text">"Draft proposal completed. Moving to budget review…"</div>
+              </div>
+              <button class="rpt-btn">View Full Report</button>
+            </div>
+          </div>
+
+          <!-- RIGHT CARD 3: stats -->
+          <div class="hcard" style="top:calc(50% + 95px + 820px);transform:translateY(-50%);"
+            :class="(active===2&&!scrolling)?'hcard-active':'hcard-dim'">
+            <div style="position:absolute;inset:0;padding:1.5rem;" :style="(active===2&&!scrolling)?'opacity:0':'opacity:1'"><div class="gh-av"></div></div>
+            <div class="stats-inner-card" style="position:absolute;inset:0;" :style="(active===2&&!scrolling)?'opacity:1':'opacity:0;pointer-events:none'">
+              <div class="rpt-title"><span class="material-symbols-outlined" style="color:#3B7A9E;">bar_chart</span>Your Stats</div>
+              <div class="stats-grid">
+                <div class="stat-box"><div class="sn">12</div><div class="sl">Tasks This Week</div></div>
+                <div class="stat-box"><div class="sn green">9</div><div class="sl">Completed</div></div>
+                <div class="stat-box"><div class="sn blue">75%</div><div class="sl">Completion Rate</div></div>
+                <div class="stat-box"><div class="sn">8h</div><div class="sl">Focused Time</div></div>
+              </div>
+              <div class="procrastination">Procrastination Score: 15% ↓</div>
+            </div>
+          </div>
+
+          <div class="hcard hcard-ghost" style="top:calc(50% + 95px + 1230px);transform:translateY(-50%);">
+            <div class="gh-row"><div class="gh-av"></div></div>
           </div>
         </div>
 
-        <!-- FAQ Item 5 -->
-        <div class="bg-white rounded-3xl border border-[#B8D8EC] overflow-hidden transition-all shadow-sm">
-          <button @click="activeFaq === 5 ? activeFaq = null : activeFaq = 5"
-            class="w-full px-8 py-6 text-left flex items-center justify-between group">
-            <span class="text-lg md:text-xl font-bold text-[#0A1628]">What if I miss a call?</span>
-            <span class="material-symbols-outlined text-[#00AFF0] transition-transform duration-300"
-              :class="activeFaq === 5 ? 'rotate-45' : ''">add</span>
-          </button>
-          <div x-show="activeFaq === 5" x-collapse class="px-8 pb-6 text-[#4A7B9E] leading-relaxed">
-            No problem. The AI will call you back. You can also check your missed calls and transcripts in your dashboard, or simply wait for the follow-up call.
-          </div>
-        </div>
-
-        <!-- FAQ Item 6 -->
-        <div class="bg-white rounded-3xl border border-[#B8D8EC] overflow-hidden transition-all shadow-sm">
-          <button @click="activeFaq === 6 ? activeFaq = null : activeFaq = 6"
-            class="w-full px-8 py-6 text-left flex items-center justify-between group">
-            <span class="text-lg md:text-xl font-bold text-[#0A1628]">How much does it cost?</span>
-            <span class="material-symbols-outlined text-[#00AFF0] transition-transform duration-300"
-              :class="activeFaq === 6 ? 'rotate-45' : ''">add</span>
-          </button>
-          <div x-show="activeFaq === 6" x-collapse class="px-8 pb-6 text-[#4A7B9E] leading-relaxed">
-            We're currently in private beta with a free tier. Premium plans will include unlimited calls, advanced scheduling, priority follow-ups, and detailed analytics. Join the waitlist for early access pricing.
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer class="bg-white border-t border-[#B8D8EC] py-16">
-    <div class="max-w-[1600px] mx-auto px-6 md:px-12">
-      <div class="grid grid-cols-2 md:grid-cols-5 gap-8 mb-16">
-        <!-- Left Column (Logo & address) -->
-        <div class="col-span-2 md:col-span-2 space-y-6">
-          <a href="/" class="block">
-            <img src="{{ asset('assets/logo/logo-full-light.png') }}" alt="dialer.best" class="h-40 w-auto">
-          </a>
-          <p class="text-sm text-[#4A7B9E] max-w-xs leading-relaxed">
-            The AI todo assistant that calls you — schedules tasks, follows up, and keeps you accountable. Kill procrastination with human-like voice interactions.
-          </p>
-          <div class="flex gap-4 text-[#4A7B9E]">
-            <a href="#" class="hover:text-[#00AFF0]"><span
-                class="material-symbols-outlined text-[20px]">language</span></a>
-            <a href="#" class="hover:text-[#00AFF0]"><span class="material-symbols-outlined text-[20px]">mail</span></a>
-          </div>
-        </div>
-
-        <!-- Links Cols -->
-        <div>
-          <h4 class="font-bold text-[#0A1628] mb-4 text-sm">Product</h4>
-          <ul class="space-y-3 text-sm text-[#4A7B9E]">
-            <li><a href="#how-it-works" class="hover:text-[#00AFF0]">How It Works</a></li>
-            <li><a href="#voice" class="hover:text-[#00AFF0]">Call System</a></li>
-            <li><a href="#features" class="hover:text-[#00AFF0]">Features</a></li>
-            <li><a href="{{ route('mobile.app') }}" class="hover:text-[#00AFF0]">Mobile App</a></li>
-          </ul>
-        </div>
-        <div>
-          <h4 class="font-bold text-[#0A1628] mb-4 text-sm">Company</h4>
-          <ul class="space-y-3 text-sm text-[#4A7B9E]">
-            <li><a href="#" class="hover:text-[#00AFF0]">About</a></li>
-            <li><a href="#" class="hover:text-[#00AFF0]">Careers</a></li>
-            <li><a href="#faq" class="hover:text-[#00AFF0]">FAQ</a></li>
-          </ul>
-        </div>
-        <div>
-          <h4 class="font-bold text-[#0A1628] mb-4 text-sm">Legal</h4>
-          <ul class="space-y-3 text-sm text-[#4A7B9E]">
-            <li><a href="#" class="hover:text-[#00AFF0]">Privacy Policy</a></li>
-            <li><a href="#" class="hover:text-[#00AFF0]">Terms of Service</a></li>
-          </ul>
-        </div>
-      </div>
-      <div
-        class="border-t border-[#B8D8EC] pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-[#4A7B9E]">
-        <p>© {{ date('Y') }} dialer.best. All rights reserved.</p>
-        <p>Powered by <a href="https://egeniuscare.com" target="_blank" class="font-semibold text-[#00AFF0] hover:underline">eGeniusCare</a></p>
-      </div>
-    </div>
-  </footer>
-
-  <!-- Waitlist Modal -->
-  <div x-show="waitlistModalOpen" x-cloak
-    class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm"
-    x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-95"
-    x-transition:enter-end="opacity-100 scale-100" x-transition:leave="transition ease-in duration-200"
-    x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
-    @keydown.escape.window="waitlistModalOpen = false">
-    <div class="bg-white rounded-[2.5rem] p-8 md:p-12 max-w-lg w-full shadow-2xl relative border border-[#B8D8EC]"
-      @click.away="waitlistModalOpen = false">
-      <button @click="waitlistModalOpen = false"
-        class="absolute top-6 right-6 text-[#4A7B9E] hover:text-[#2C5F8A] transition">
-        <span class="material-symbols-outlined text-3xl">close</span>
-      </button>
-
-      <div x-show="!waitlistSubmitted">
-        <div class="mb-8">
-          <div class="w-16 h-16 bg-[#00AFF0]/10 rounded-2xl flex items-center justify-center text-[#00AFF0] mb-6">
-            <span class="material-symbols-outlined text-3xl">mail</span>
-          </div>
-          <h3 class="text-3xl font-black text-[#0A1628] mb-3">Join the Waitlist</h3>
-          <p class="text-[#4A7B9E]">We are currently in private beta for US phone numbers. Leave your email to get early access.</p>
-        </div>
-
-        <form @submit.prevent="
-                fetch('/waitlist', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify({ email: email })
-                })
-                .then(response => {
-                    if (response.ok) {
-                        waitlistSubmitted = true;
-                    } else {
-                        alert('Check your email address or you might already be on the list!');
-                    }
-                })
-            " class="space-y-4">
-          <input type="email" x-model="email" required placeholder="Enter your business email"
-            class="w-full px-6 py-4 bg-[#E8F4FC] border border-[#B8D8EC] rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#00AFF0]/20 focus:border-[#00AFF0] transition font-medium">
-          <button type="submit"
-            class="w-full py-4 bg-[#00AFF0] text-white font-bold rounded-2xl shadow-lg shadow-[#00AFF0]/20 hover:bg-[#00AFF0] transition-all active:scale-95 flex items-center justify-center gap-2">
-            Reserve my spot
-            <span class="material-symbols-outlined">send</span>
-          </button>
-        </form>
-      </div>
-
-      <div x-show="waitlistSubmitted" class="text-center py-8">
-        <div
-          class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center text-green-600 mx-auto mb-8 animate-bounce">
-          <span class="material-symbols-outlined text-4xl">check_circle</span>
-        </div>
-        <h3 class="text-3xl font-black text-[#0A1628] mb-4">You're on the list!</h3>
-        <p class="text-lg text-[#2C5F8A] leading-relaxed font-medium">You have been added to waitlist, we will update
-          you through email</p>
-        <button @click="waitlistModalOpen = false; waitlistSubmitted = false; email = ''"
-          class="mt-12 text-[#00AFF0] font-bold hover:underline">Close</button>
       </div>
     </div>
   </div>
-</body>
+</section>
 
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="sb-inner">
+    <div class="sb-item"><div class="sb-num">10,000+</div><div class="sb-label">Early Signups</div></div>
+    <div class="sb-item"><div class="sb-num">100K+</div><div class="sb-label">Tasks Completed</div></div>
+    <div class="sb-item"><div class="sb-num">5,000+</div><div class="sb-label">Blockers Resolved</div></div>
+    <div class="sb-item"><div class="sb-num">24/7</div><div class="sb-label">AI Follow-ups</div></div>
+    <div class="sb-item"><div class="sb-num">US</div><div class="sb-label">Phone Numbers</div></div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section class="section how-bg" id="how-it-works">
+  <div class="sec-inner">
+    <div class="tc mb16">
+      <div class="eyebrow"><span class="material-symbols-outlined">explore</span>The Workflow</div>
+      <h2 class="sec-h2">How <span>stride.best</span> Works</h2>
+      <p class="sec-sub cx">Your AI gives you a quick call, understands your goals, and follows up to help you finish them.</p>
+    </div>
+    <div class="steps-row">
+      <div class="step-card s1">
+        <div class="step-icon"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">phone_callback</span></div>
+        <div class="step-num">Step 01</div>
+        <div class="step-title">Quick Check-in</div>
+        <p class="step-desc">Stride gives you or your team a quick call to talk about what needs to be done today. No meetings needed.</p>
+      </div>
+      <div class="step-card s2">
+        <div class="step-icon"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">checklist</span></div>
+        <div class="step-num">Step 02</div>
+        <div class="step-title">Plan the Day</div>
+        <p class="step-desc">Just talk naturally. The AI organizes your goals and sets up your daily tasks automatically.</p>
+      </div>
+      <div class="step-card s3">
+        <div class="step-icon"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">notifications_active</span></div>
+        <div class="step-num">Step 03</div>
+        <div class="step-title">Friendly Reminders</div>
+        <p class="step-desc">Get helpful nudges and reminders before deadlines so you never fall behind.</p>
+      </div>
+      <div class="step-card s4">
+        <div class="step-icon"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">summarize</span></div>
+        <div class="step-num">Step 04</div>
+        <div class="step-title">Clear Updates</div>
+        <p class="step-desc">See exactly what you and your team accomplished with simple, auto-generated reports.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VS COMPARISON + FEATURES -->
+<section class="section vs-bg" id="features">
+  <div class="sec-inner">
+    <div class="tc mb16">
+      <h2 class="sec-h2">A tool that <span>works for you</span></h2>
+      <p class="sec-sub cx">Most tools just sit there waiting for you to update them. Stride actively helps you get things done.</p>
+    </div>
+
+    <div class="ba-grid">
+      <div class="ba-card ba-before">
+        <div class="ba-head">
+          <div class="ba-ico"><span class="material-symbols-outlined" style="font-size:1.2rem;">close</span></div>
+          <span class="ba-title" style="color:#1E293B;">Passive tools (Jira / Trello / Asana)</span>
+        </div>
+        <ul class="ba-list">
+          <li><span class="material-symbols-outlined" style="color:#CBD5E1;">do_not_disturb_on</span>Someone has to remember to log in and update</li>
+          <li><span class="material-symbols-outlined" style="color:#CBD5E1;">do_not_disturb_on</span>Deadlines slip silently — no one warns you</li>
+          <li><span class="material-symbols-outlined" style="color:#CBD5E1;">do_not_disturb_on</span>Zero intelligence about your team as people</li>
+          <li><span class="material-symbols-outlined" style="color:#CBD5E1;">do_not_disturb_on</span>Someone must manually write every status report</li>
+          <li><span class="material-symbols-outlined" style="color:#CBD5E1;">do_not_disturb_on</span>Blocked tasks sit unnoticed for days</li>
+        </ul>
+      </div>
+      <div class="ba-card ba-after">
+        <div class="ba-head">
+          <div class="ba-ico"><span class="material-symbols-outlined" style="font-size:1.2rem;">check</span></div>
+          <span class="ba-title" style="color:#0F172A;">stride.best — Active AI Manager</span>
+        </div>
+        <ul class="ba-list">
+          <li><span class="material-symbols-outlined" style="color:#00AFF0;">check_circle</span>AI calls your team — no login required</li>
+          <li><span class="material-symbols-outlined" style="color:#00AFF0;">check_circle</span>Pre-deadline warnings before anything slips</li>
+          <li><span class="material-symbols-outlined" style="color:#00AFF0;">check_circle</span>Baseline-aware performance monitoring per person</li>
+          <li><span class="material-symbols-outlined" style="color:#00AFF0;">check_circle</span>Reports auto-generated from call transcripts</li>
+          <li><span class="material-symbols-outlined" style="color:#00AFF0;">check_circle</span>Blockers escalated and resolved in real time</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="feat-grid">
+      <div class="feat-card fc1">
+        <div class="feat-ico"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">alarm_on</span></div>
+        <div class="feat-title">Friendly Reminders</div>
+        <p class="feat-desc">Get helpful warnings before a deadline so you have time to finish your work comfortably.</p>
+      </div>
+      <div class="feat-card fc2">
+        <div class="feat-ico"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">support_agent</span></div>
+        <div class="feat-title">Help When Stuck</div>
+        <p class="feat-desc">When you hit a roadblock, Stride can suggest solutions or connect you with the right person on your team.</p>
+      </div>
+      <div class="feat-card fc3">
+        <div class="feat-ico"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">monitoring</span></div>
+        <div class="feat-title">Personal Progress</div>
+        <p class="feat-desc">Track your own growth and productivity over time, so you can celebrate your personal wins.</p>
+      </div>
+      <div class="feat-card fc4">
+        <div class="feat-ico"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">notifications_active</span></div>
+        <div class="feat-title">Stays on Top</div>
+        <p class="feat-desc">Stride remembers everything so you don't have to, keeping tasks organized until they are done.</p>
+      </div>
+      <div class="feat-card fc1">
+        <div class="feat-ico"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">groups</span></div>
+        <div class="feat-title">Team Harmony</div>
+        <p class="feat-desc">When your work affects a teammate, Stride automatically updates them so everyone stays perfectly in sync.</p>
+      </div>
+      <div class="feat-card fc2">
+        <div class="feat-ico"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">auto_awesome</span></div>
+        <div class="feat-title">Smart Planning</div>
+        <p class="feat-desc">Stride looks at your upcoming tasks and makes sure you aren't overwhelmed before the week begins.</p>
+      </div>
+      <div class="feat-card fc3">
+        <div class="feat-ico"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">history</span></div>
+        <div class="feat-title">Clear Records</div>
+        <p class="feat-desc">Every chat is securely saved, so you can easily review what was agreed upon without taking notes.</p>
+      </div>
+      <div class="feat-card fc4">
+        <div class="feat-ico"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">import_contacts</span></div>
+        <div class="feat-title">Knows Your Style</div>
+        <p class="feat-desc">Teach Stride your personal or team guidelines, and it will adapt its check-ins to match your way of working.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AI MANAGER LAYER -->
+<section class="section ai-mgr-bg" id="ai-manager">
+  <div class="sec-inner">
+    <div class="eyebrow eyebrow-dark" style="margin-bottom:3rem;"><span class="material-symbols-outlined">smart_toy</span>The AI Manager</div>
+    <div class="ai-mgr-grid">
+      <div class="ai-mgr-text">
+        <h3>An <span>inspiring companion</span> that understands you and your work</h3>
+        <p>Stride reaches out with a friendly daily call. No forms to fill. Just a natural conversation that automatically updates your progress and notes any challenges.</p>
+        <p>If you're stuck, Stride acts as a helpful guide, offering suggestions or bringing in the right teammate so you're never blocked for long.</p>
+        <div class="ai-mgr-bullets">
+          <div class="ai-bullet">
+            <div class="ai-bullet-icon bi-cyan"><span class="material-symbols-outlined">call</span></div>
+            <span><strong style="color:#fff;">Friendly Check-ins</strong> — A quick chat to organize your day and update your to-do list.</span>
+          </div>
+          <div class="ai-bullet">
+            <div class="ai-bullet-icon bi-green"><span class="material-symbols-outlined">support_agent</span></div>
+            <span><strong style="color:#fff;">Helpful Guidance</strong> — Offers immediate solutions when you hit a roadblock.</span>
+          </div>
+          <div class="ai-bullet">
+            <div class="ai-bullet-icon bi-purple"><span class="material-symbols-outlined">escalator_warning</span></div>
+            <span><strong style="color:#fff;">Seamless Teamwork</strong> — Automatically connects you with the right person when you need extra help.</span>
+          </div>
+          <div class="ai-bullet">
+            <div class="ai-bullet-icon bi-orange"><span class="material-symbols-outlined">sync</span></div>
+            <span><strong style="color:#fff;">Steady Progress</strong> — Keeps track of longer projects so you always know where you stand.</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="call-card">
+          <div class="call-header">
+            <div class="call-status"><span class="live-dot"></span> Live</div>
+            <div class="call-time" x-data="{ time: 64 }" x-init="setInterval(() => time++, 1000)" x-text="Math.floor(time/60).toString().padStart(2, '0') + ':' + (time%60).toString().padStart(2, '0')">01:04</div>
+          </div>
+          
+          <div class="call-center">
+            <div class="call-avatar-wrapper">
+              <div class="pulse-ring pr1"></div>
+              <div class="pulse-ring pr2"></div>
+              <div class="call-avatar"><span class="material-symbols-outlined">smart_toy</span></div>
+            </div>
+            <div class="call-name">Stride AI</div>
+            <div class="call-role">Morning Check-in • Marketing Team</div>
+          </div>
+          
+          <div class="call-waveform">
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+          </div>
+
+          <div class="call-transcript">
+            <div class="transcript-line tl-1">"Hey there! Did you get a chance to finish the campaign draft?"</div>
+            <div class="transcript-line tl-2">"Yes, just wrapped it up. Moving on to the email sequence next."</div>
+            <div class="transcript-line tl-3">"Perfect, I've updated the project. Let me know if you get stuck!"</div>
+          </div>
+
+          <div class="call-controls">
+            <div class="cc-btn"><span class="material-symbols-outlined">mic_off</span></div>
+            <div class="cc-btn end-call"><span class="material-symbols-outlined">call_end</span></div>
+            <div class="cc-btn"><span class="material-symbols-outlined">volume_up</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PERFORMANCE WATCH -->
+<section class="section pw-section" id="performance">
+  <div class="sec-inner">
+    <div class="tc mb16">
+      <div class="eyebrow"><span class="material-symbols-outlined">shield</span>Performance Watch</div>
+      <h2 class="sec-h2">Fair accountability. <span>Not surveillance.</span></h2>
+      <p class="sec-sub cx">Stride learns each person's natural pace over 2–3 sprints and measures against their own baseline — not a generic company standard. One bad day changes nothing. Sustained patterns trigger a private signal.</p>
+    </div>
+    <div class="pw-grid">
+      <div class="pw-card">
+        <div class="pw-ico-wrap pw-icon-c"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">analytics</span></div>
+        <div class="pw-title">Personal Baseline Learning</div>
+        <p class="pw-desc">For the first 2–3 sprints, Stride observes — completion rate, estimate accuracy, response consistency, blocker patterns. This becomes each person's benchmark.</p>
+      </div>
+      <div class="pw-card">
+        <div class="pw-ico-wrap pw-icon-g"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">visibility</span></div>
+        <div class="pw-title">Watch State (Private)</div>
+        <p class="pw-desc">If a pattern emerges, the person enters a private Watch State. The AI gives a 5–7 day window to self-correct. If they pick back up, it clears silently with no record in management view.</p>
+      </div>
+      <div class="pw-card">
+        <div class="pw-ico-wrap pw-icon-p"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">flag</span></div>
+        <div class="pw-title">Targeted Manager Flag</div>
+        <p class="pw-desc">If performance doesn't recover, the direct manager — not HR, not the CEO — receives a flag with specific examples, likely causes (workload? blockers? burnout?), and full context to have a human conversation.</p>
+      </div>
+    </div>
+
+    <div class="watch-flow">
+      <div class="wf-item"><div class="wf-num wf1">Sprint 1–3</div><div class="wf-label">Baseline learning<br>No flags possible</div></div>
+      <div class="wf-arrow">→</div>
+      <div class="wf-item"><div class="wf-num wf2">Pattern detected</div><div class="wf-label">Watch State begins<br>Private, self-correcting</div></div>
+      <div class="wf-arrow">→</div>
+      <div class="wf-item"><div class="wf-num wf3">5–7 days</div><div class="wf-label">Self-corrects: cleared silently<br>Doesn't: manager notified</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- EXECUTIVE PULSE -->
+<section class="section exec-bg" id="exec-pulse">
+  <div class="sec-inner">
+    <div class="tc mb16">
+      <div class="eyebrow eyebrow-dark"><span class="material-symbols-outlined">leaderboard</span>Executive Pulse</div>
+      <h2 class="sec-h2 light">Leadership gets the <span>right information</span><br>at the right level</h2>
+      <p class="sec-sub cx" style="color:rgba(255,255,255,.6);">No more chasing updates. No more status meetings. No more manual reporting. The right data, pushed to the right person, automatically.</p>
+    </div>
+
+    <div class="exec-tiers">
+      <div class="exec-tier et1">
+        <div class="tier-header">
+          <div class="tier-icon ti-c"><span class="material-symbols-outlined" style="font-size:1.2rem;">person</span></div>
+          <div><div class="tier-title">Team Lead</div><div class="tier-sub">Granular task-level view</div></div>
+        </div>
+        <ul class="tier-list">
+          <li><span class="material-symbols-outlined" style="color:var(--cyan);">chevron_right</span>Individual task statuses &amp; owners</li>
+          <li><span class="material-symbols-outlined" style="color:var(--cyan);">chevron_right</span>Who is blocked and for how long</li>
+          <li><span class="material-symbols-outlined" style="color:var(--cyan);">chevron_right</span>Sprint burndown in real time</li>
+          <li><span class="material-symbols-outlined" style="color:var(--cyan);">chevron_right</span>Daily AI standup summaries</li>
+          <li><span class="material-symbols-outlined" style="color:var(--cyan);">chevron_right</span>Flags and escalations for their team</li>
+        </ul>
+      </div>
+      <div class="exec-tier et2">
+        <div class="tier-header">
+          <div class="tier-icon ti-g"><span class="material-symbols-outlined" style="font-size:1.2rem;">groups</span></div>
+          <div><div class="tier-title">Department Head</div><div class="tier-sub">Rolled-up sprint health</div></div>
+        </div>
+        <ul class="tier-list">
+          <li><span class="material-symbols-outlined" style="color:var(--green);">chevron_right</span>Sprint on-track / at-risk overview</li>
+          <li><span class="material-symbols-outlined" style="color:var(--green);">chevron_right</span>Active blockers count &amp; severity</li>
+          <li><span class="material-symbols-outlined" style="color:var(--green);">chevron_right</span>Which tasks are in danger</li>
+          <li><span class="material-symbols-outlined" style="color:var(--green);">chevron_right</span>Team member flags in department</li>
+          <li><span class="material-symbols-outlined" style="color:var(--green);">chevron_right</span>Sprint health score per team</li>
+        </ul>
+      </div>
+      <div class="exec-tier et3">
+        <div class="tier-header">
+          <div class="tier-icon ti-p"><span class="material-symbols-outlined" style="font-size:1.2rem;">domain</span></div>
+          <div><div class="tier-title">C-Level / Executive</div><div class="tier-sub">Org-wide macro view</div></div>
+        </div>
+        <ul class="tier-list">
+          <li><span class="material-symbols-outlined" style="color:var(--purple);">chevron_right</span>All projects: on track / at risk / delayed</li>
+          <li><span class="material-symbols-outlined" style="color:var(--purple);">chevron_right</span>Department delivery comparisons</li>
+          <li><span class="material-symbols-outlined" style="color:var(--purple);">chevron_right</span>Top recurring blockers org-wide</li>
+          <li><span class="material-symbols-outlined" style="color:var(--purple);">chevron_right</span>6-month delivery rate trend</li>
+          <li><span class="material-symbols-outlined" style="color:var(--purple);">chevron_right</span>Headcount productivity index</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exec-metrics">
+      <div class="exec-metric">
+        <div class="em-label">How it's delivered</div>
+        <div class="em-title">Weekly AI Digest, Every Monday</div>
+        <p class="em-desc">Plain-English summary written by the AI, with key numbers embedded. No charts to decode. Pushed to email and WhatsApp before the week begins.</p>
+      </div>
+      <div class="exec-metric">
+        <div class="em-label">Natural language queries</div>
+        <div class="em-title">"How is the payments team doing this quarter?"</div>
+        <p class="em-desc">Ask the AI directly. "Which project is most at risk?" "Show me everyone flagged in the last 30 days." Answers in plain English with data behind them.</p>
+      </div>
+      <div class="exec-metric">
+        <div class="em-label">Top recurring blockers</div>
+        <div class="em-title">Systemic issues surface automatically</div>
+        <p class="em-desc">If three teams are blocked on third-party API integrations, Stride flags it as an org-level problem — not just individual tickets.</p>
+      </div>
+      <div class="exec-metric">
+        <div class="em-label">Always-on dashboard</div>
+        <div class="em-title">Log in anytime for the current state</div>
+        <p class="em-desc">The on-demand dashboard gives a live view of every project, team, and person — no stale data, no manual refreshes needed.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAMS -->
+<section class="section teams-bg" id="teams">
+  <div class="sec-inner">
+    <div class="tc mb16">
+      <h2 class="sec-h2">Built for <span>teams</span></h2>
+      <p class="sec-sub cx">Scale from one person to an entire enterprise. The same AI that manages your day manages your sprint, your department, your org.</p>
+    </div>
+    <div class="teams-grid">
+      <div class="team-card">
+        <div class="team-icon tc1"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">groups</span></div>
+        <div class="team-title">Team Standups</div>
+        <p class="team-desc">AI calls each member individually to sync. No more long, disruptive morning meetings that pull everyone off work.</p>
+      </div>
+      <div class="team-card feat">
+        <div class="team-icon tc2"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">visibility</span></div>
+        <div class="team-title">Performance Watch</div>
+        <p class="team-desc">Personal baselines per person. Identifies sustained drops or blockers — without surveillance or micromanagement.</p>
+      </div>
+      <div class="team-card">
+        <div class="team-icon tc3"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">account_tree</span></div>
+        <div class="team-title">Manager Flags</div>
+        <p class="team-desc">If issues aren't self-corrected, team leads are alerted with task-level detail and AI-suggested causes to act on.</p>
+      </div>
+      <div class="team-card">
+        <div class="team-icon tc4"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">public</span></div>
+        <div class="team-title">Org Reporting</div>
+        <p class="team-desc">Executives get a rolled-up org health check — delivery rates, top blockers, flag summary — pushed automatically.</p>
+      </div>
+    </div>
+
+    <div style="margin-top:4rem;">
+      <p style="font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--s5);text-align:center;margin-bottom:1.5rem;">Plays well with your existing tools</p>
+      <div class="int-logos-hero">
+        <div class="int-logo"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jira/jira-original.svg" alt="Jira"> Jira</div>
+        <div class="int-logo"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/trello/trello-plain.svg" alt="Trello"> Trello</div>
+        <div class="int-logo"><span class="material-symbols-outlined" style="font-size:28px;color:#EF4444;">task_alt</span> Asana</div>
+        <div class="int-logo"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub"> GitHub</div>
+        <div class="int-logo"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/slack/slack-original.svg" alt="Slack"> Slack</div>
+        <div class="int-logo"><span class="material-symbols-outlined" style="font-size:28px;color:#7C3AED;">groups</span> Teams</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- USER ROLES -->
+<section class="section roles-section">
+  <div class="sec-inner">
+    <div class="tc mb12">
+      <div class="eyebrow eyebrow-dark"><span class="material-symbols-outlined">manage_accounts</span>User Roles</div>
+      <h2 class="sec-h2 light">The right view for <span>every level</span></h2>
+      <p class="sec-sub cx" style="color:rgba(255,255,255,.6);">Stride adapts what each person sees and receives — so everyone has exactly the context they need.</p>
+    </div>
+    <div class="roles-grid">
+      <div class="role-card">
+        <div class="role-badge rb-c">Org Admin</div>
+        <div class="role-title">Org Admin</div>
+        <p class="role-desc">Sets up the workspace, manages billing, configures tech stack, ingests SOP docs, controls global settings.</p>
+      </div>
+      <div class="role-card">
+        <div class="role-badge rb-p">C-Level / Executive</div>
+        <div class="role-title">Executive</div>
+        <p class="role-desc">Org-wide pulse, all projects, all teams, escalation summary, delivery trends, weekly AI digest.</p>
+      </div>
+      <div class="role-card">
+        <div class="role-badge rb-g">Department Head</div>
+        <div class="role-title">Department Head</div>
+        <p class="role-desc">All teams under them, department-level health score, drill-in to any team or member on request.</p>
+      </div>
+      <div class="role-card">
+        <div class="role-badge rb-o">Team Lead / PM</div>
+        <div class="role-title">Project Manager</div>
+        <p class="role-desc">Full team detail, sprint management, blocker flags, escalation inbox, individual progress reports.</p>
+      </div>
+      <div class="role-card">
+        <div class="role-badge rb-y">Developer</div>
+        <div class="role-title">Team Member</div>
+        <p class="role-desc">Receives AI check-in calls, updates tasks through conversation, sees their own tasks and progress report.</p>
+      </div>
+      <div class="role-card">
+        <div class="role-badge rb-s">Viewer</div>
+        <div class="role-title">Stakeholder Viewer</div>
+        <p class="role-desc">Read-only access for stakeholders who need visibility without managing work. No check-in calls.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RETROSPECTIVES -->
+<section class="section retro-section">
+  <div class="sec-inner">
+    <div class="retro-grid">
+      <div>
+        <div class="eyebrow"><span class="material-symbols-outlined">psychology</span>Auto Retrospectives</div>
+        <h2 class="sec-h2" style="max-width:400px;">Sprint retros, <span>written themselves</span></h2>
+        <p style="font-size:1rem;color:var(--s6);line-height:1.7;margin-bottom:1rem;">At the end of every sprint, Stride auto-generates a full retrospective from call transcripts and task data. No meeting required. No one has to write it.</p>
+        <p style="font-size:1rem;color:var(--s6);line-height:1.7;">Over time, the AI gets better at sprint planning for that specific team — because it learns their real velocity, their common blockers, and their patterns. Every sprint makes the next one smarter.</p>
+      </div>
+      <div class="retro-items">
+        <div class="retro-item">
+          <div class="retro-icon ri-c"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">fact_check</span></div>
+          <div class="retro-content"><h4>Delivery Rate</h4><p>Completed vs planned — how many tasks were finished, and what fell off and why.</p></div>
+        </div>
+        <div class="retro-item">
+          <div class="retro-icon ri-g"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">block</span></div>
+          <div class="retro-content"><h4>Blocker Analysis</h4><p>What blocked the team, how long blockers lasted, which ones were resolved on-call vs escalated.</p></div>
+        </div>
+        <div class="retro-item">
+          <div class="retro-icon ri-p"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">schedule</span></div>
+          <div class="retro-content"><h4>Estimate Accuracy</h4><p>How accurate were estimates per person and per team — and is this improving sprint over sprint?</p></div>
+        </div>
+        <div class="retro-item">
+          <div class="retro-icon ri-o"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">lightbulb</span></div>
+          <div class="retro-content"><h4>AI Recommendation</h4><p>What to carry over, what to reduce, what patterns to watch — in plain English, ready for the team.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VOIP SYSTEM -->
+<section class="section voip-bg" id="voice">
+  <div class="sec-inner">
+    <div class="tc mb16">
+      <div class="eyebrow eyebrow-dark"><span class="material-symbols-outlined">settings_input_antenna</span>The Technology</div>
+      <h2 class="sec-h2 light">Smart VoIP <span>Calling System</span></h2>
+      <p class="sec-sub cx" style="color:rgba(255,255,255,.6);">No screens, no typing — a proactive AI that calls your team to plan, check progress, resolve blockers, and drive every task to completion.</p>
+    </div>
+    <div class="voip-steps">
+      <div class="voip-card">
+        <div class="voip-icon vi1"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">alarm</span></div>
+        <div class="voip-title">Morning Call</div>
+        <p class="voip-desc">The AI calls at each person's configured time. Standup in under 5 minutes. Tasks parsed, schedule updated.</p>
+      </div>
+      <div class="voip-card feat">
+        <div class="voip-icon vi2"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">call</span></div>
+        <div class="voip-title">Voice Scheduling</div>
+        <p class="voip-desc">Just talk. The AI parses tasks, deadlines, dependencies, and notes into a live project. No typing, no dashboard.</p>
+      </div>
+      <div class="voip-card">
+        <div class="voip-icon vi3"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">sync</span></div>
+        <div class="voip-title">Smart Follow-ups</div>
+        <p class="voip-desc">Persistent accountability. Calls back at set intervals until tasks are closed. Escalates if no response after retry.</p>
+      </div>
+      <div class="voip-card">
+        <div class="voip-icon vi4"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">summarize</span></div>
+        <div class="voip-title">Daily Report</div>
+        <p class="voip-desc">End-of-day summary compiled from calls. Tasks, hours, blockers, progress. Full transcripts available instantly.</p>
+      </div>
+    </div>
+
+    <div class="us-banner" style="margin-top:4rem;">
+      <div class="us-ico"><span class="material-symbols-outlined" style="font-size:2rem;color:var(--cyan);font-variation-settings:'FILL' 1;">phone_in_talk</span></div>
+      <div class="us-text">
+        <h4>US Phone Numbers Only — For Now</h4>
+        <p>Currently serving US-based phone numbers with premium VoIP infrastructure. Crystal-clear calls, minimal latency, enterprise-grade reliability.</p>
+      </div>
+      <div class="us-badge"><span class="material-symbols-outlined" style="font-size:14px;vertical-align:middle;margin-right:4px;font-variation-settings:'FILL' 1;">star</span>More regions coming soon</div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section faq-bg" id="faq">
+  <div class="sec-inner">
+    <div class="tc mb16">
+      <h2 class="sec-h2">Everything you <span>need to know</span></h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">What is stride.best?<span class="material-symbols-outlined">add</span></button><div class="faq-a">stride.best is an active AI project manager that calls your team via VoIP. It schedules work, tracks progress, resolves blockers, auto-generates reports, and keeps leadership informed — all without anyone logging into a dashboard.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">How is this different from Jira, Trello, or Asana?<span class="material-symbols-outlined">add</span></button><div class="faq-a">Those tools are passive — they wait for someone to log in. Stride is active. It calls your team, parses their updates, flags blockers, escalates problems, and writes reports. It acts like a manager, not a noticeboard.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Does it work for teams and enterprises?<span class="material-symbols-outlined">add</span></button><div class="faq-a">Yes. Stride scales from a single person to an entire enterprise. It handles individual daily check-ins, team standups, department health monitoring, and executive-level org-wide pulse — all from the same system.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Is the performance monitoring surveillance?<span class="material-symbols-outlined">add</span></button><div class="faq-a">No. Stride measures each person against their own personal baseline — not a company-wide standard. It uses a private Watch State before any manager is notified, and flags go to the direct manager only. Stride surfaces signals; humans make decisions.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">How does the AI know about our tech stack and processes?<span class="material-symbols-outlined">add</span></button><div class="faq-a">During onboarding, you configure your tech stack (languages, frameworks, APIs, cloud providers) and upload internal SOP documents. The AI indexes all of this so it can give specific, contextual help during check-in calls — not generic advice.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Can I import projects from Jira, Trello or Asana?<span class="material-symbols-outlined">add</span></button><div class="faq-a">Yes. Stride supports full project and task import from Jira, Trello, and Asana. You don't have to start from scratch — migration is a first-class feature.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">What communication channels does Stride use?<span class="material-symbols-outlined">add</span></button><div class="faq-a">Voice calls are primary — higher response rate and harder to ignore. WhatsApp is used for async preference or as follow-up when a call isn't answered. Email handles reports, digests, and formal escalation notifications. All interactions are logged in one place.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Is it available internationally?<span class="material-symbols-outlined">add</span></button><div class="faq-a">Currently, stride.best is for US-based phone numbers only. Join the waitlist to get notified when your region is supported.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">How much does it cost?<span class="material-symbols-outlined">add</span></button><div class="faq-a">We're in private beta with a free tier. Join the waitlist for early access pricing when paid plans launch.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section cta-bg">
+  <div class="sec-inner cta-inner">
+    <h2 class="cta-h2">Interested in an <span>Enterprise Plan?</span></h2>
+    <p class="cta-sub">Reach out to scale Stride across your entire organization with dedicated support and custom integrations.</p>
+    <div class="cta-actions">
+      <button class="btn-primary" onclick="openModal(event)">
+        <span class="material-symbols-outlined" style="font-size:20px;">headset_mic</span>
+        Contact Sales
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div>
+        <a href="/" class="logo">
+          <div class="logo-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+          </div>
+          <span class="logo-text">stride<span>.best</span></span>
+        </a>
+        <p style="margin-top:1rem;">The active AI project manager that calls your team — schedules tasks, resolves blockers, monitors performance, and keeps leadership informed automatically.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Product</h5>
+        <ul>
+          <li><a href="#how-it-works">How It Works</a></li>
+          <li><a href="#ai-manager">AI Manager</a></li>
+          <li><a href="#exec-pulse">Exec Pulse</a></li>
+          <li><a href="#voice">Call System</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Company</h5>
+        <ul>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Legal</h5>
+        <ul>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 stride.best. All rights reserved.</span>
+      <span>Powered by <a href="https://egeniuscare.com" target="_blank">eGeniusCare</a></span>
+    </div>
+  </div>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="waitlist-modal" onclick="closeModalIfOutside(event)">
+  <div class="modal" id="modal-box">
+    <button class="modal-close" onclick="closeModal()"><span class="material-symbols-outlined" style="font-size:20px;">close</span></button>
+    <div id="modal-form">
+      <div class="modal-icon"><span class="material-symbols-outlined">headset_mic</span></div>
+      <h3>Contact Enterprise Sales</h3>
+      <p>Let us know your business email and our team will be in touch shortly to discuss a custom plan.</p>
+      <input type="email" id="waitlist-email" placeholder="Enter your business email" />
+      <button class="modal-submit" onclick="submitWaitlist()">Send Message <span class="material-symbols-outlined" style="font-size:18px;">send</span></button>
+    </div>
+    <div class="success-state" id="modal-success">
+      <div class="success-icon"><span class="material-symbols-outlined">check_circle</span></div>
+      <h3 style="font-size:1.6rem;font-weight:900;font-family:'Nunito',sans-serif;margin-bottom:.5rem;">Message Sent!</h3>
+      <p style="font-size:.9rem;color:#64748B;">Our enterprise team will reach out to you within 24 hours.</p>
+      <button onclick="closeModal()" style="margin-top:2rem;background:none;border:none;cursor:pointer;font-weight:700;color:#00AFF0;font-family:inherit;">Close</button>
+    </div>
+  </div>
+</div>
+
+<script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+<script>
+  const nav = document.getElementById('main-nav');
+  window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 60), {passive:true});
+
+  function toggleFaq(btn) {
+    const isOpen = btn.classList.contains('open');
+    document.querySelectorAll('.faq-q').forEach(b => { b.classList.remove('open'); b.nextElementSibling.classList.remove('open'); });
+    if (!isOpen) { btn.classList.add('open'); btn.nextElementSibling.classList.add('open'); }
+  }
+
+  function openModal(e) { e.preventDefault(); document.getElementById('waitlist-modal').classList.add('open'); }
+  function closeModal() {
+    document.getElementById('waitlist-modal').classList.remove('open');
+    setTimeout(() => { document.getElementById('modal-form').style.display=''; document.getElementById('modal-success').style.display='none'; }, 300);
+  }
+  function closeModalIfOutside(e) { if (e.target.id === 'waitlist-modal') closeModal(); }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+  async function submitWaitlist() {
+    const email = document.getElementById('waitlist-email').value;
+    if (!email || !email.includes('@')) return;
+    try { await fetch('/waitlist', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({email}) }); } catch(e) {}
+    document.getElementById('modal-form').style.display = 'none';
+    document.getElementById('modal-success').style.display = 'block';
+  }
+</script>
+</body>
 </html>
