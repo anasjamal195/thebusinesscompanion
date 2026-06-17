@@ -1366,9 +1366,9 @@
       <div class="footer-col">
         <h5>Contact</h5>
         <ul>
-          <li><a href="mailto:support@goalchaser.co">support@goalchaser.co</a></li>
-          <li><a href="mailto:info@goalchaser.co">info@goalchaser.co</a></li>
-          <li><a href="mailto:sales@goalchaser.co">sales@goalchaser.co</a></li>
+          <li><a href="mailto:support@goalchaser.co" style="display:flex;align-items:center;gap:.5rem;"><svg viewBox="0 0 24 24" fill="none" stroke="#00AFF0" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;flex-shrink:0;"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>support@goalchaser.co</a></li>
+          <li><a href="mailto:info@goalchaser.co" style="display:flex;align-items:center;gap:.5rem;"><svg viewBox="0 0 24 24" fill="none" stroke="#00AFF0" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;flex-shrink:0;"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>info@goalchaser.co</a></li>
+          <li><a href="mailto:sales@goalchaser.co" style="display:flex;align-items:center;gap:.5rem;"><svg viewBox="0 0 24 24" fill="none" stroke="#00AFF0" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;flex-shrink:0;"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>sales@goalchaser.co</a></li>
         </ul>
       </div>
       <div class="footer-col">
