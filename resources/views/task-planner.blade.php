@@ -616,6 +616,7 @@
       .stats-bar { padding:1.5rem 1rem; }
       .sb-inner { gap:1rem; }
       .sb-num { font-size:1.2rem; }
+      .teams-grid { grid-template-columns:1fr; }
     }
     @media(max-width:640px) {
       .section { padding:3rem 1.25rem; }
@@ -636,6 +637,8 @@
       .exec-tiers { gap:1rem; }
       .exec-tier { padding:1.25rem; }
       .team-card { padding:1.25rem 1rem; }
+      .team-icon { width:56px; height:56px; }
+      .team-icon .material-symbols-outlined { font-size:1.5rem; }
       .int-logos-hero { gap:.75rem; }
       .int-logo { font-size:.85rem; }
       .call-card { padding:1rem; }
