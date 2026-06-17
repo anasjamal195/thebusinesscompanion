@@ -847,7 +847,7 @@
       <div class="step-card s1">
         <div class="step-icon"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">phone_callback</span></div>
         <div class="step-num">Step 01</div>
-        <div class="step-title">Quick Check-in</div>
+        <div class="step-title">Quick Morning Call</div>
         <p class="step-desc">GoalChaser gives you or your team a quick call to talk about what needs to be done today. No meetings needed.</p>
       </div>
       <div class="step-card s2">
