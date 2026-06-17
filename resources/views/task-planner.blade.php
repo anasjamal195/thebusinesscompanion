@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>GoalChaser.co — Your AI Project Manager</title>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
   <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@400,0..1&display=swap" rel="stylesheet" />
   <style>
@@ -21,24 +22,45 @@
     body { font-family:'Nunito',sans-serif; background:#fff; color:var(--s9); -webkit-font-smoothing:antialiased; overflow-x:hidden; }
 
     /* ─── NAV ─── */
-    nav { position:sticky; top:0; z-index:100; height:72px; display:flex; align-items:center; padding:0 2rem; background:transparent; border-bottom:1px solid transparent; transition:background .35s,border-color .35s,box-shadow .35s; }
-    nav.scrolled { background:rgba(255,255,255,.95); backdrop-filter:blur(20px); border-bottom-color:rgba(0,0,0,.08); box-shadow:0 4px 24px rgba(0,0,0,.06); }
-    .nav-inner { max-width:1280px; margin:0 auto; width:100%; display:flex; align-items:center; justify-content:space-between; }
-    .logo { display:flex; align-items:center; gap:.6rem; text-decoration:none; }
-    .logo-icon { width:38px; height:38px; border-radius:10px; background:var(--cyan); display:flex; align-items:center; justify-content:center; box-shadow:0 4px 14px rgba(0,175,240,.35); }
-    .logo-icon svg { width:18px; height:18px; }
-    .logo-text { font-family:'Nunito',sans-serif; font-weight:900; font-size:1.35rem; color:#fff; letter-spacing:-.03em; transition:color .35s; }
-    nav.scrolled .logo-text { color:var(--s9); }
-    .logo-text span { color:var(--cyan); }
-    .nav-links { display:flex; align-items:center; gap:2rem; }
-    .nav-links a { color:rgba(255,255,255,.7); text-decoration:none; font-size:.875rem; font-weight:600; transition:color .2s; }
+    nav { position:fixed; top:0; left:0; right:0; z-index:100; padding:0 2rem; background:rgba(255,255,255,0); border-bottom:1px solid transparent; transition:background .3s,border-color .3s,box-shadow .3s; }
+    nav.scrolled { background:rgba(255,255,255,.97); backdrop-filter:blur(12px); border-bottom-color:var(--s3); box-shadow:0 1px 16px rgba(45,55,72,0.05); }
+    .nav-inner { max-width:1280px; margin:0 auto; height:72px; display:flex; align-items:center; justify-content:space-between; }
+    .nav-logo { font-family:'Nunito',sans-serif; font-size:1.375rem; font-weight:900; text-decoration:none; letter-spacing:-.5px; color:#fff; transition:color .35s; }
+    nav.scrolled .nav-logo { color:var(--s9); }
+    .nav-logo span { color:var(--cyan); }
+    .nav-links { display:flex; align-items:center; gap:2rem; list-style:none; }
+    .nav-links a { color:rgba(255,255,255,.75); text-decoration:none; font-size:.875rem; font-weight:700; transition:color .2s; }
     nav.scrolled .nav-links a { color:var(--s6); }
-    .nav-links a:hover { color:var(--cyan); }
-    .nav-cta { padding:.55rem 1.4rem; background:var(--cyan); color:#fff; font-weight:700; font-size:.875rem; border-radius:999px; text-decoration:none; transition:background .2s,transform .15s; box-shadow:0 4px 14px rgba(0,175,240,.3); }
-    .nav-cta:hover { background:var(--cyan2); transform:translateY(-1px); }
-    .nav-login { color:rgba(255,255,255,.9); text-decoration:none; font-size:.875rem; font-weight:700; transition:color .2s; margin-right:.5rem; }
-    nav.scrolled .nav-login { color:var(--s9); }
-    .nav-login:hover { color:var(--cyan); }
+    .nav-links a:hover { color:var(--white); }
+    nav.scrolled .nav-links a:hover { color:var(--cyan); }
+    .nav-actions { display:flex; align-items:center; gap:1rem; }
+    .nav-actions .btn-ghost { font-family:'Nunito',sans-serif; font-size:.875rem; font-weight:700; background:none; border:none; cursor:pointer; text-decoration:none; transition:color .2s; color:rgba(255,255,255,.75); }
+    nav.scrolled .nav-actions .btn-ghost { color:var(--s6); }
+    .nav-actions .btn-ghost:hover { color:var(--white); }
+    nav.scrolled .nav-actions .btn-ghost:hover { color:var(--cyan); }
+    .nav-actions .btn-primary { font-family:'Nunito',sans-serif; font-size:.875rem; font-weight:800; background:var(--cyan); border:none; padding:.625rem 1.375rem; border-radius:8px; cursor:pointer; text-decoration:none; display:inline-flex; align-items:center; gap:.5rem; transition:background .2s,transform .15s; box-shadow:0 4px 14px rgba(0,175,240,.3); color:#fff; }
+    nav.scrolled .nav-actions .btn-primary { background:var(--s9); color:#fff; box-shadow:none; }
+    nav.scrolled .nav-actions .btn-primary:hover { background:var(--cyan); }
+    .nav-actions .btn-primary:hover { background:var(--cyan2); transform:translateY(-1px); }
+
+    /* ─── HAMBURGER / MOBILE MENU ─── */
+    .nav-hamburger { display:none; background:none; border:none; cursor:pointer; padding:0.25rem; }
+    .nav-hamburger svg { width:24px; height:24px; stroke:rgba(255,255,255,.8); transition:stroke .35s; }
+    nav.scrolled .nav-hamburger svg { stroke:var(--s9); }
+    .mobile-menu { display:none; flex-direction:column; gap:1rem; padding:1.5rem 2rem; background:rgba(255,255,255,.98); backdrop-filter:blur(20px); border-top:1px solid var(--s3); }
+    .mobile-menu.open { display:flex; }
+    .mobile-menu a { font-weight:700; font-size:.9375rem; color:var(--s7); text-decoration:none; transition:color .2s; }
+    .mobile-menu a:hover { color:var(--cyan); }
+    .mobile-menu .mobile-actions { display:flex; flex-direction:column; gap:.75rem; padding-top:.75rem; border-top:1px solid var(--s3); }
+    .mobile-menu .mobile-actions a { justify-content:center; text-align:center; }
+    .mobile-menu .mobile-actions .btn-primary { background:var(--cyan); color:#fff; padding:.75rem; border-radius:12px; font-weight:800; display:flex; align-items:center; gap:.5rem; text-decoration:none; font-family:'Nunito',sans-serif; font-size:.875rem; }
+    .mobile-menu .mobile-actions .btn-ghost { background:var(--s2); color:var(--s7); padding:.75rem; border-radius:12px; font-weight:700; display:flex; align-items:center; gap:.5rem; text-decoration:none; font-family:'Nunito',sans-serif; font-size:.875rem; }
+    @media(max-width:900px) {
+      .nav-links, .nav-actions { display:none; }
+      .nav-hamburger { display:block; }
+      nav { padding:0 1rem; }
+      .nav-inner { gap:.5rem; }
+    }
 
     /* ─── HERO ─── */
     .hero { position:relative; min-height:100vh; display:flex; align-items:center; overflow:hidden; margin-top:-72px; padding-top:72px; background-image:url('assets/background.png'); background-size:cover; background-position:center; }
@@ -538,8 +560,13 @@
     /* ─── FOOTER ─── */
     footer { background:var(--navy2); color:rgba(255,255,255,.85); border-top:1px solid rgba(255,255,255,.08); padding:4rem 2rem 2rem; }
     .footer-inner { max-width:1280px; margin:0 auto; }
-    .footer-grid { display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:3rem; margin-bottom:3rem; }
+    .footer-grid { display:grid; grid-template-columns:2fr 1fr 1fr 1fr 1fr; gap:2rem; margin-bottom:3rem; }
     .footer-grid > div > p { color:rgba(255,255,255,.7); line-height:1.7; max-width:280px; }
+    .footer-brand-name { font-size:1.25rem; font-weight:900; color:#fff; letter-spacing:-.5px; text-decoration:none; display:block; margin-bottom:1rem; }
+    .footer-brand-name span { color:var(--cyan); }
+    .footer-social { display:flex; gap:.75rem; margin-top:1rem; }
+    .footer-social a { width:36px; height:36px; border-radius:8px; border:1px solid rgba(255,255,255,.15); display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,.6); text-decoration:none; font-size:1rem; transition:border-color .2s,color .2s; }
+    .footer-social a:hover { border-color:var(--cyan); color:var(--cyan); }
     .footer-col h5 { font-size:.7rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:rgba(255,255,255,.7); margin-bottom:1rem; }
     .footer-col ul { list-style:none; }
     .footer-col ul li { margin-bottom:.6rem; }
@@ -574,21 +601,47 @@
       .hero-visual { display:none; }
       .steps-row,.feat-grid,.voip-steps,.pw-grid,.exec-tiers,.exec-metrics,.int-categories,.roles-grid { grid-template-columns:1fr 1fr; }
       .ai-mgr-grid,.retro-grid { grid-template-columns:1fr; }
-      .ba-grid,.footer-grid { grid-template-columns:1fr; }
+      .ba-grid { grid-template-columns:1fr; }
+      .footer-grid { grid-template-columns:2fr 1fr 1fr; gap:2rem; }
       .watch-flow { grid-template-columns:1fr; }
       .wf-arrow { display:none; }
       .teams-grid { grid-template-columns:1fr 1fr; }
+      .hero-h1 { font-size:clamp(1.8rem,5vw,2.6rem); }
+      .hero-sub-big { font-size:1rem; }
+      .hero-inner { padding:3rem 1.5rem; }
+    }
+    @media(max-width:768px) {
+      .footer-grid { grid-template-columns:1fr 1fr; gap:2rem 1.5rem; }
+      .hero-chips { display:none; }
+      .hero-stats { display:none; }
+      .stats-bar { padding:1.5rem 1rem; }
+      .sb-inner { gap:1rem; }
+      .sb-num { font-size:1.2rem; }
     }
     @media(max-width:640px) {
-      nav { padding:0 1rem; }
-      .nav-links { display:none; }
-      .section { padding:4rem 1.25rem; }
+      .section { padding:3rem 1.25rem; }
       .steps-row,.feat-grid,.voip-steps,.pw-grid,.exec-tiers,.exec-metrics,.int-categories,.roles-grid { grid-template-columns:1fr; }
-      .footer-grid { grid-template-columns:1fr; }
-      .hero-actions { flex-direction:column; }
+      .footer-grid { grid-template-columns:1fr; gap:2rem; }
+      .hero-actions { flex-direction:column; width:100%; }
+      .hero-actions a { width:100%; justify-content:center; }
       .footer-bottom { flex-direction:column; gap:.5rem; text-align:center; }
       .us-banner { flex-direction:column; text-align:center; }
       .us-badge { margin:0 auto; }
+      .hero-inner { padding:2rem 1rem; }
+      .hero-h1 { font-size:1.75rem; }
+      .hero-sub-big { font-size:.95rem; }
+      .hero-sub { font-size:.85rem; }
+      .hero-toggle { margin-top:.5rem; }
+      .hero-toggle-opt { padding:.3rem .75rem; font-size:.7rem; }
+      .sec-h2 { font-size:1.5rem; }
+      .exec-tiers { gap:1rem; }
+      .exec-tier { padding:1.25rem; }
+      .call-card { padding:1rem; }
+      .call-name { font-size:1.1rem; }
+      .call-transcript { height:60px; }
+      .voip-card { padding:1.25rem; }
+      .pw-card { padding:1.25rem; }
+      .stats-bar { padding:1rem; }
     }
     @media(prefers-reduced-motion:reduce) { *,*::before,*::after { animation-duration:.001ms !important; } }
 
@@ -615,26 +668,41 @@
 <body>
 
 <!-- NAV -->
-<nav id="main-nav">
+<nav id="navbar">
   <div class="nav-inner">
-    <a href="/" class="logo">
-      <div class="logo-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
-      </div>
-      <span class="logo-text">Goal<span>Chaser.co</span></span>
-    </a>
-    <div class="nav-links">
-      <a href="#how-it-works">How It Works</a>
-      <a href="#ai-manager">AI Manager</a>
-      <a href="#features">Features</a>
-      <a href="#exec-pulse">Exec View</a>
-      <a href="#teams">For Teams</a>
-      <a href="#mobile-app">Mobile App</a>
-      <a href="#faq">FAQ</a>
+    <a href="/" class="nav-logo">Goal<span>Chaser.co</span></a>
+    <ul class="nav-links">
+      <li><a href="#how-it-works">How It Works</a></li>
+      <li><a href="#ai-manager">AI Manager</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#exec-pulse">Exec View</a></li>
+      <li><a href="#teams">For Teams</a></li>
+      <li><a href="#mobile-app">Mobile App</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="/login" class="btn-ghost">Sign in</a>
+      <a href="/login" class="btn-primary">Get Started →</a>
     </div>
-    <div style="display:flex; align-items:center; gap:1.5rem; margin-left:1rem;">
-      <a href="/login" class="nav-login">Log in</a>
-      <a href="/login" class="nav-cta">Sign up</a>
+    <button class="nav-hamburger" id="hamburger" aria-label="Open menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="7" x2="21" y2="7"/>
+        <line x1="3" y1="12" x2="21" y2="12"/>
+        <line x1="3" y1="17" x2="21" y2="17"/>
+      </svg>
+    </button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#how-it-works">How It Works</a>
+    <a href="#ai-manager">AI Manager</a>
+    <a href="#features">Features</a>
+    <a href="#exec-pulse">Exec View</a>
+    <a href="#teams">For Teams</a>
+    <a href="#mobile-app">Mobile App</a>
+    <a href="#faq">FAQ</a>
+    <div class="mobile-actions">
+      <a href="/login" class="btn-ghost">Sign in</a>
+      <a href="/login" class="btn-primary">Get Started →</a>
     </div>
   </div>
 </nav>
@@ -652,18 +720,18 @@
     <!-- LEFT: text -->
     <div>
 
-      <div class="hero-toggle">
-        <span class="hero-toggle-opt active">For you</span>
-        <span class="hero-toggle-opt">For your team</span>
+      <div class="hero-toggle" id="heroToggle">
+        <span class="hero-toggle-opt active" data-mode="personal">For you</span>
+        <span class="hero-toggle-opt" data-mode="team">For your team</span>
       </div>
 
-      <h1 class="hero-h1">
+      <h1 class="hero-h1" id="heroHeadline">
         An <span class="c1">AI Manager</span><br>
         for you and your team
       </h1>
 
-      <p class="hero-sub-big">Get more done today, together.</p>
-      <p class="hero-sub">GoalChaser keeps you on track with friendly voice check-ins. It helps individuals stay focused and seamlessly scales to coordinate entire teams—no complicated dashboards required.</p>
+      <p class="hero-sub-big" id="heroSubBig">Get more done today, together.</p>
+      <p class="hero-sub" id="heroSub">GoalChaser keeps you on track with friendly voice check-ins. It helps individuals stay focused and seamlessly scales to coordinate entire teams—no complicated dashboards required.</p>
 
       <div class="hero-actions">
         <a href="/login" class="btn-primary" style="text-decoration:none;">
@@ -1478,14 +1546,13 @@
 <footer>
   <div class="footer-inner">
     <div class="footer-grid">
-      <div>
-        <a href="/" class="logo">
-          <div class="logo-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
-          </div>
-          <span class="logo-text">Goal<span>Chaser.co</span></span>
-        </a>
-        <p style="margin-top:1rem;">The active AI project manager that calls your team — schedules tasks, resolves blockers, monitors performance, and keeps leadership informed automatically.</p>
+      <div class="footer-brand">
+        <a href="/" class="footer-brand-name">Goal<span>Chaser.co</span></a>
+        <p style="margin-top:0;">The active AI project manager that calls your team — schedules tasks, resolves blockers, monitors performance, and keeps leadership informed automatically.</p>
+        <div class="footer-social">
+          <a href="mailto:support@goalchaser.co" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></a>
+          <a href="https://egeniuscare.com" target="_blank" aria-label="Website"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></a>
+        </div>
       </div>
       <div class="footer-col">
         <h5>Product</h5>
@@ -1508,9 +1575,9 @@
       <div class="footer-col">
         <h5>Contact</h5>
         <ul>
-          <li><a href="mailto:support@goalchaser.co" style="display:flex;align-items:center;gap:.5rem;"><svg viewBox="0 0 24 24" fill="none" stroke="#00AFF0" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;flex-shrink:0;"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>support@goalchaser.co</a></li>
-          <li><a href="mailto:info@goalchaser.co" style="display:flex;align-items:center;gap:.5rem;"><svg viewBox="0 0 24 24" fill="none" stroke="#00AFF0" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;flex-shrink:0;"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>info@goalchaser.co</a></li>
-          <li><a href="mailto:sales@goalchaser.co" style="display:flex;align-items:center;gap:.5rem;"><svg viewBox="0 0 24 24" fill="none" stroke="#00AFF0" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;flex-shrink:0;"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>sales@goalchaser.co</a></li>
+          <li><a href="mailto:support@goalchaser.co">Email Support</a></li>
+          <li><a href="mailto:sales@goalchaser.co">Sales Inquiries</a></li>
+          <li><a href="mailto:info@goalchaser.co">General Info</a></li>
         </ul>
       </div>
       <div class="footer-col">
@@ -1522,7 +1589,7 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© 2025 GoalChaser.co. All rights reserved.</span>
+      <span>© 2026 GoalChaser.co. All rights reserved.</span>
       <span>Powered by <a href="https://egeniuscare.com" target="_blank">eGeniusCare</a></span>
     </div>
   </div>
@@ -1550,15 +1617,71 @@
 
 <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 <script>
-  const nav = document.getElementById('main-nav');
-  window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 60), {passive:true});
+  const navbar = document.getElementById('navbar');
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
 
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 40);
+  }, {passive:true});
+
+  hamburger.addEventListener('click', () => {
+    mobileMenu.classList.toggle('open');
+  });
+
+  mobileMenu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => mobileMenu.classList.remove('open'));
+  });
+
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior:'smooth', block:'start' });
+      }
+    });
+  });
+
+  /* FAQ toggle */
   function toggleFaq(btn) {
     const isOpen = btn.classList.contains('open');
     document.querySelectorAll('.faq-q').forEach(b => { b.classList.remove('open'); b.nextElementSibling.classList.remove('open'); });
     if (!isOpen) { btn.classList.add('open'); btn.nextElementSibling.classList.add('open'); }
   }
 
+  /* Hero toggle — For You / For Team */
+  const toggleOpts = document.querySelectorAll('.hero-toggle-opt');
+  const heroH1 = document.getElementById('heroHeadline');
+  const heroSubBig = document.getElementById('heroSubBig');
+  const heroSub = document.getElementById('heroSub');
+
+  const toggleContent = {
+    personal: {
+      h1: 'An <span class="c1">AI Manager</span><br>for <span class="c2">you</span>',
+      subBig: 'Your personal AI productivity companion.',
+      sub: 'GoalChaser gives you friendly voice check-ins, tracks your tasks, and helps you stay focused every day. No complicated dashboards required.'
+    },
+    team: {
+      h1: 'An <span class="c1">AI Manager</span><br>for your <span class="c2">team</span>',
+      subBig: 'Coordinate your entire team effortlessly.',
+      sub: 'GoalChaser scales from personal check-ins to full team coordination — standups, progress tracking, blocker resolution, and executive reporting, all driven by AI voice conversations.'
+    }
+  };
+
+  toggleOpts.forEach(opt => {
+    opt.addEventListener('click', function() {
+      toggleOpts.forEach(o => o.classList.remove('active'));
+      this.classList.add('active');
+      const mode = this.dataset.mode;
+      const content = toggleContent[mode];
+      heroH1.innerHTML = content.h1;
+      heroSubBig.textContent = content.subBig;
+      heroSub.textContent = content.sub;
+    });
+  });
+
+  /* Modal */
   function openModal(e) { e.preventDefault(); document.getElementById('waitlist-modal').classList.add('open'); }
   function closeModal() {
     document.getElementById('waitlist-modal').classList.remove('open');
