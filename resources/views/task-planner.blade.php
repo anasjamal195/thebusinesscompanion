@@ -307,7 +307,7 @@
     .call-status { display:flex; align-items:center; gap:6px; font-size:0.75rem; font-weight:800; color:var(--green); background:rgba(14,182,71,.15); border:1px solid rgba(14,182,71,.3); padding:4px 12px; border-radius:999px; letter-spacing:.05em; text-transform:uppercase; }
     .call-status .live-dot { width:6px; height:6px; border-radius:50%; background:var(--green); animation:blink 1.5s infinite; }
     .call-time { font-size:0.9rem; font-weight:800; color:rgba(255,255,255,.7); font-variant-numeric: tabular-nums; letter-spacing:.05em; }
-    
+
     .call-center { display:flex; flex-direction:column; align-items:center; margin-bottom:2.5rem; }
     .call-avatar-wrapper { position:relative; width:100px; height:100px; display:flex; align-items:center; justify-content:center; margin-bottom:1.5rem; }
     .call-avatar { position:relative; z-index:2; width:84px; height:84px; border-radius:50%; background:linear-gradient(135deg,var(--cyan),var(--green)); display:flex; align-items:center; justify-content:center; box-shadow:0 0 24px rgba(0,175,240,.5); }
@@ -315,10 +315,10 @@
     .pulse-ring { position:absolute; inset:0; border-radius:50%; background:rgba(0,175,240,.25); animation:callPulse 2.5s cubic-bezier(0.215, 0.61, 0.355, 1) infinite; }
     .pr2 { animation-delay: 1.25s; }
     @keyframes callPulse { 0% { transform:scale(0.8); opacity:1; } 100% { transform:scale(2.2); opacity:0; } }
-    
+
     .call-name { font-size:1.4rem; font-weight:900; color:#fff; margin-bottom:0.25rem; }
     .call-role { font-size:0.85rem; color:rgba(255,255,255,.5); font-weight:600; }
-    
+
     .call-waveform { display:flex; align-items:center; gap:5px; height:48px; margin-bottom:2.5rem; }
     .wave-bar { width:5px; border-radius:999px; background:var(--cyan); animation:waveBounce 1s ease-in-out infinite alternate; }
     .wave-bar:nth-child(1) { height:16px; animation-delay:0.0s; }
@@ -335,7 +335,7 @@
     .tl-1 { animation-delay:0s; }
     .tl-2 { animation-delay:4s; color:var(--cyan); }
     .tl-3 { animation-delay:8s; }
-    @keyframes transcriptCycle { 
+    @keyframes transcriptCycle {
       0%, 5% { opacity:0; transform:translateY(15px); }
       10%, 25% { opacity:1; transform:translateY(0); }
       30%, 100% { opacity:0; transform:translateY(-15px); }
@@ -564,7 +564,7 @@
       <div class="logo-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
       </div>
-      <span class="logo-text">stride<span>.best</span></span>
+      <span class="logo-text">Goal<span>Chaser.co</span></span>
     </a>
     <div class="nav-links">
       <a href="#how-it-works">How It Works</a>
@@ -593,7 +593,7 @@
   <div class="hero-inner">
     <!-- LEFT: text -->
     <div>
-      
+
       <div class="hero-toggle">
         <span class="hero-toggle-opt active">For you</span>
         <span class="hero-toggle-opt">For your team</span>
@@ -988,7 +988,7 @@
             <div class="call-status"><span class="live-dot"></span> Live</div>
             <div class="call-time" x-data="{ time: 64 }" x-init="setInterval(() => time++, 1000)" x-text="Math.floor(time/60).toString().padStart(2, '0') + ':' + (time%60).toString().padStart(2, '0')">01:04</div>
           </div>
-          
+
           <div class="call-center">
             <div class="call-avatar-wrapper">
               <div class="pulse-ring pr1"></div>
@@ -998,7 +998,7 @@
             <div class="call-name">GoalChaser AI</div>
             <div class="call-role">Morning Check-in • Marketing Team</div>
           </div>
-          
+
           <div class="call-waveform">
             <div class="wave-bar"></div>
             <div class="wave-bar"></div>
@@ -1342,7 +1342,7 @@
           <div class="logo-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
           </div>
-          <span class="logo-text">stride<span>.best</span></span>
+          <span class="logo-text">Goal<span>Chaser.co</span></span>
         </a>
         <p style="margin-top:1rem;">The active AI project manager that calls your team — schedules tasks, resolves blockers, monitors performance, and keeps leadership informed automatically.</p>
       </div>
