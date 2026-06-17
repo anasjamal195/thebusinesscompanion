@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>GoalChaser.co — Your AI Project Manager</title>
-  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" href="/assets/logo/logo-small-light.png" />
   <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@400,0..1&display=swap" rel="stylesheet" />
   <style>
@@ -25,9 +25,8 @@
     nav { position:fixed; top:0; left:0; right:0; z-index:100; padding:0 2rem; background:rgba(255,255,255,0); border-bottom:1px solid transparent; transition:background .3s,border-color .3s,box-shadow .3s; }
     nav.scrolled { background:rgba(255,255,255,.97); backdrop-filter:blur(12px); border-bottom-color:var(--s3); box-shadow:0 1px 16px rgba(45,55,72,0.05); }
     .nav-inner { max-width:1280px; margin:0 auto; height:72px; display:flex; align-items:center; justify-content:space-between; }
-    .nav-logo { font-family:'Nunito',sans-serif; font-size:1.375rem; font-weight:900; text-decoration:none; letter-spacing:-.5px; color:#fff; transition:color .35s; }
-    nav.scrolled .nav-logo { color:var(--s9); }
-    .nav-logo span { color:var(--cyan); }
+    .nav-logo { display:flex; align-items:center; text-decoration:none; }
+    .nav-logo img { height:32px; width:auto; display:block; }
     .nav-links { display:flex; align-items:center; gap:2rem; list-style:none; }
     .nav-links a { color:rgba(255,255,255,.75); text-decoration:none; font-size:.875rem; font-weight:700; transition:color .2s; }
     nav.scrolled .nav-links a { color:var(--s6); }
@@ -562,8 +561,8 @@
     .footer-inner { max-width:1280px; margin:0 auto; }
     .footer-grid { display:grid; grid-template-columns:2fr 1fr 1fr 1fr 1fr; gap:2rem; margin-bottom:3rem; }
     .footer-grid > div > p { color:rgba(255,255,255,.7); line-height:1.7; max-width:280px; }
-    .footer-brand-name { font-size:1.25rem; font-weight:900; color:#fff; letter-spacing:-.5px; text-decoration:none; display:block; margin-bottom:1rem; }
-    .footer-brand-name span { color:var(--cyan); }
+    .footer-brand-name { display:block; margin-bottom:1rem; text-decoration:none; }
+    .footer-brand-name img { height:32px; width:auto; display:block; }
     .footer-social { display:flex; gap:.75rem; margin-top:1rem; }
     .footer-social a { width:36px; height:36px; border-radius:8px; border:1px solid rgba(255,255,255,.15); display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,.6); text-decoration:none; font-size:1rem; transition:border-color .2s,color .2s; }
     .footer-social a:hover { border-color:var(--cyan); color:var(--cyan); }
@@ -620,7 +619,7 @@
     }
     @media(max-width:640px) {
       .section { padding:3rem 1.25rem; }
-      .steps-row,.feat-grid,.voip-steps,.pw-grid,.exec-tiers,.exec-metrics,.int-categories,.roles-grid { grid-template-columns:1fr; }
+      .steps-row,.feat-grid,.voip-steps,.pw-grid,.exec-tiers,.exec-metrics,.int-categories,.roles-grid,.teams-grid { grid-template-columns:1fr; }
       .footer-grid { grid-template-columns:1fr; gap:2rem; }
       .hero-actions { flex-direction:column; width:100%; }
       .hero-actions a { width:100%; justify-content:center; }
@@ -636,6 +635,9 @@
       .sec-h2 { font-size:1.5rem; }
       .exec-tiers { gap:1rem; }
       .exec-tier { padding:1.25rem; }
+      .team-card { padding:1.25rem 1rem; }
+      .int-logos-hero { gap:.75rem; }
+      .int-logo { font-size:.85rem; }
       .call-card { padding:1rem; }
       .call-name { font-size:1.1rem; }
       .call-transcript { height:60px; }
@@ -670,7 +672,7 @@
 <!-- NAV -->
 <nav id="navbar">
   <div class="nav-inner">
-    <a href="/" class="nav-logo">Goal<span>Chaser.co</span></a>
+    <a href="/" class="nav-logo"><img src="/assets/logo-light-new.png" alt="GoalChaser.co" style="height:32px;width:auto;display:block;" /></a>
     <ul class="nav-links">
       <li><a href="#how-it-works">How It Works</a></li>
       <li><a href="#ai-manager">AI Manager</a></li>
@@ -726,12 +728,12 @@
       </div>
 
       <h1 class="hero-h1" id="heroHeadline">
-        An <span class="c1">AI Manager</span><br>
-        for you and your team
+        Your personal <span class="c1">procrastination killer</span><br>
+        — one call at a time
       </h1>
 
-      <p class="hero-sub-big" id="heroSubBig">Get more done today, together.</p>
-      <p class="hero-sub" id="heroSub">GoalChaser keeps you on track with friendly voice check-ins. It helps individuals stay focused and seamlessly scales to coordinate entire teams—no complicated dashboards required.</p>
+      <p class="hero-sub-big" id="heroSubBig">Your AI accountability partner.</p>
+      <p class="hero-sub" id="heroSub">GoalChaser calls you daily, learns what matters, and keeps you accountable — so you stop procrastinating and start finishing. No dashboards, no distractions, just results.</p>
 
       <div class="hero-actions">
         <a href="/login" class="btn-primary" style="text-decoration:none;">
@@ -1547,7 +1549,7 @@
   <div class="footer-inner">
     <div class="footer-grid">
       <div class="footer-brand">
-        <a href="/" class="footer-brand-name">Goal<span>Chaser.co</span></a>
+        <a href="/" class="footer-brand-name"><img src="/assets/logo-dark.png" alt="GoalChaser.co" style="height:32px;width:auto;display:block;" /></a>
         <p style="margin-top:0;">The active AI project manager that calls your team — schedules tasks, resolves blockers, monitors performance, and keeps leadership informed automatically.</p>
         <div class="footer-social">
           <a href="mailto:support@goalchaser.co" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></a>
@@ -1658,14 +1660,14 @@
 
   const toggleContent = {
     personal: {
-      h1: 'An <span class="c1">AI Manager</span><br>for <span class="c2">you</span>',
-      subBig: 'Your personal AI productivity companion.',
-      sub: 'GoalChaser gives you friendly voice check-ins, tracks your tasks, and helps you stay focused every day. No complicated dashboards required.'
+      h1: 'Your personal <span class="c1">procrastination killer</span><br>— one call at a time',
+      subBig: 'Your AI accountability partner.',
+      sub: 'GoalChaser calls you daily, learns what matters, and keeps you accountable — so you stop procrastinating and start finishing. No dashboards, no distractions, just results.'
     },
     team: {
-      h1: 'An <span class="c1">AI Manager</span><br>for your <span class="c2">team</span>',
+      h1: 'Your team\'s <span class="c1">productivity engine</span><br>without the endless meetings',
       subBig: 'Coordinate your entire team effortlessly.',
-      sub: 'GoalChaser scales from personal check-ins to full team coordination — standups, progress tracking, blocker resolution, and executive reporting, all driven by AI voice conversations.'
+      sub: 'GoalChaser runs AI-powered standups, tracks every task, resolves blockers in real time, and delivers executive summaries — all through natural voice calls. Your team stays aligned without a single status meeting.'
     }
   };
 
