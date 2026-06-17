@@ -1364,6 +1364,14 @@
         </ul>
       </div>
       <div class="footer-col">
+        <h5>Contact</h5>
+        <ul>
+          <li><a href="mailto:support@goalchaser.co">support@goalchaser.co</a></li>
+          <li><a href="mailto:info@goalchaser.co">info@goalchaser.co</a></li>
+          <li><a href="mailto:sales@goalchaser.co">sales@goalchaser.co</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
         <h5>Legal</h5>
         <ul>
           <li><a href="#">Privacy Policy</a></li>
