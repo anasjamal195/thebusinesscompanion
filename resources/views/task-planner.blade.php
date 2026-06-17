@@ -459,6 +459,63 @@
     .us-text p { font-size:.9rem; color:var(--s6); line-height:1.6; }
     .us-badge { margin-left:auto; white-space:nowrap; padding:.6rem 1.2rem; background:rgba(0,175,240,.1); border:1px solid rgba(0,175,240,.25); color:var(--cyan); font-size:.8rem; font-weight:700; border-radius:12px; }
 
+    /* ─── MOBILE APP ─── */
+    .mobile-bg { background:linear-gradient(160deg,#f8fafc,#f0f9ff); }
+    .mobile-grid { display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:center; }
+    .mobile-content h2 { font-family:'Nunito',sans-serif; font-size:clamp(2rem,4vw,3rem); font-weight:900; letter-spacing:-.04em; color:var(--s9); margin-bottom:1rem; }
+    .mobile-content h2 span { color:var(--cyan); }
+    .mobile-content p { font-size:1.05rem; color:var(--s6); line-height:1.7; margin-bottom:1.5rem; max-width:500px; }
+    .mobile-dl-btn { display:inline-flex; align-items:center; gap:.5rem; padding:.85rem 2rem; background:linear-gradient(135deg,var(--cyan),var(--cyan2)); color:#fff; font-weight:700; font-size:.95rem; border-radius:12px; text-decoration:none; border:none; cursor:pointer; box-shadow:0 6px 24px rgba(0,175,240,.35); transition:transform .2s,box-shadow .2s; font-family:inherit; }
+    .mobile-dl-btn:hover { transform:translateY(-2px); box-shadow:0 10px 32px rgba(0,175,240,.45); }
+    .mobile-infographic { display:flex; flex-direction:column; align-items:center; gap:1.5rem; }
+    .phone-frame { position:relative; width:260px; height:500px; flex-shrink:0; }
+    .phone-frame-inner { position:absolute; inset:0; background:var(--navy); border-radius:2.8rem; border:4px solid rgba(255,255,255,.15); box-shadow:0 24px 60px rgba(0,0,0,.25); overflow:hidden; }
+    .phone-notch { position:absolute; top:0; left:50%; transform:translateX(-50%); width:90px; height:22px; background:var(--navy); border-radius:0 0 10px 10px; z-index:10; }
+    .phone-screen { position:absolute; inset:6px; background:#fff; border-radius:2.4rem; overflow:hidden; display:flex; flex-direction:column; }
+    .phone-hd { background:var(--navy); padding:1.25rem 1rem .75rem; }
+    .phone-brand { display:flex; align-items:center; gap:.35rem; margin-bottom:.5rem; }
+    .phone-brand-dot { width:18px; height:18px; border-radius:50%; background:var(--cyan); display:flex; align-items:center; justify-content:center; }
+    .phone-brand-dot span { color:#fff; font-size:8px; font-weight:900; }
+    .phone-brand-text { color:#fff; font-size:8px; font-weight:700; letter-spacing:-.02em; }
+    .phone-greeting { color:#fff; font-size:1rem; font-weight:900; }
+    .phone-sub { color:rgba(255,255,255,.6); font-size:9px; }
+    .phone-body { flex:1; background:#E8F4FC; padding:.65rem; display:flex; flex-direction:column; gap:.45rem; }
+    .phone-card { background:#fff; border:1px solid #B8D8EC; border-radius:10px; padding:.5rem .65rem; display:flex; align-items:center; gap:.45rem; box-shadow:0 1px 4px rgba(0,0,0,.04); }
+    .phone-ci { width:24px; height:24px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .phone-ci .material-symbols-outlined { font-size:12px; }
+    .pci-call { background:rgba(0,175,240,.1); color:var(--cyan); }
+    .pci-done { background:rgba(14,182,71,.1); color:var(--green); }
+    .pci-miss { background:rgba(239,68,68,.1); color:#EF4444; }
+    .phone-ct { flex:1; }
+    .phone-ct-title { font-size:8px; font-weight:700; color:var(--navy2); }
+    .phone-ct-meta { font-size:7px; color:#4A7B9E; }
+    .phone-cs { font-size:7px; font-weight:700; }
+    .pcs-done { color:#22c55e; }
+    .pcs-miss { color:#EF4444; }
+    .pcs-prog { color:var(--cyan); }
+    .phone-pulse { width:5px; height:5px; border-radius:50%; background:#22c55e; animation:blink 1.8s infinite; flex-shrink:0; }
+    .phone-nav { display:flex; justify-content:space-around; padding:.35rem .75rem; background:#fff; border-top:1px solid #B8D8EC; }
+    .phone-nav .material-symbols-outlined { font-size:14px; }
+    .phone-glow { position:absolute; inset:-16px; background:radial-gradient(circle,rgba(0,175,240,.1),transparent 70%); border-radius:4rem; filter:blur(24px); z-index:-1; }
+    .mobile-features { display:grid; grid-template-columns:1fr 1fr; gap:.75rem; margin-top:1.5rem; width:100%; max-width:420px; }
+    .mobile-feat { display:flex; align-items:flex-start; gap:.65rem; padding:.75rem 1rem; background:#fff; border:1px solid var(--s3); border-radius:12px; }
+    .mobile-feat .material-symbols-outlined { font-size:1.2rem; flex-shrink:0; }
+    .mobile-feat-text h4 { font-size:.75rem; font-weight:800; color:var(--s9); margin-bottom:.15rem; }
+    .mobile-feat-text p { font-size:.68rem; color:var(--s6); line-height:1.5; margin:0; max-width:none; }
+    .mfc1 { color:var(--cyan); }
+    .mfc2 { color:var(--green); }
+    .mfc3 { color:var(--purple); }
+    .mfc4 { color:var(--orange); }
+
+    @media(max-width:1024px) {
+      .mobile-grid { grid-template-columns:1fr; }
+      .mobile-infographic { order:-1; }
+    }
+    @media(max-width:640px) {
+      .mobile-features { grid-template-columns:1fr; }
+      .phone-frame { width:220px; height:440px; }
+    }
+
     /* ─── FAQ ─── */
     .faq-bg { background:var(--s1); }
     .faq-list { max-width:760px; margin:0 auto; }
@@ -572,6 +629,7 @@
       <a href="#features">Features</a>
       <a href="#exec-pulse">Exec View</a>
       <a href="#teams">For Teams</a>
+      <a href="#mobile-app">Mobile App</a>
       <a href="#faq">FAQ</a>
     </div>
     <div style="display:flex; align-items:center; gap:1.5rem; margin-left:1rem;">
@@ -1299,6 +1357,89 @@
   </div>
 </section>
 
+<!-- MOBILE APP -->
+<section class="section mobile-bg" id="mobile-app">
+  <div class="sec-inner">
+    <div class="mobile-grid">
+      <div class="mobile-content">
+        <div class="eyebrow"><span class="material-symbols-outlined">phone_android</span>Mobile App</div>
+        <h2>GoalChaser <span>On the Go</span></h2>
+        <p>The full GoalChaser experience in your pocket. Manage calls, tasks, and daily reports from anywhere in the world — no US phone number needed.</p>
+        <a href="#" class="mobile-dl-btn" style="display:inline-flex;text-decoration:none;">
+          <span class="material-symbols-outlined" style="font-size:20px;">download</span>
+          Download APK
+        </a>
+
+        <div class="mobile-features">
+          <div class="mobile-feat">
+            <span class="material-symbols-outlined mfc1" style="font-variation-settings:'FILL' 1;">call</span>
+            <div class="mobile-feat-text"><h4>Receive Calls</h4><p>Answer AI check-ins directly on your phone.</p></div>
+          </div>
+          <div class="mobile-feat">
+            <span class="material-symbols-outlined mfc2" style="font-variation-settings:'FILL' 1;">checklist</span>
+            <div class="mobile-feat-text"><h4>Manage Tasks</h4><p>View and complete tasks with a single tap.</p></div>
+          </div>
+          <div class="mobile-feat">
+            <span class="material-symbols-outlined mfc3" style="font-variation-settings:'FILL' 1;">history</span>
+            <div class="mobile-feat-text"><h4>Call Logs</h4><p>Browse transcripts and call history.</p></div>
+          </div>
+          <div class="mobile-feat">
+            <span class="material-symbols-outlined mfc4" style="font-variation-settings:'FILL' 1;">bar_chart</span>
+            <div class="mobile-feat-text"><h4>Daily Reports</h4><p>Get productivity stats on the go.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mobile-infographic">
+        <div class="phone-frame">
+          <div class="phone-glow"></div>
+          <div class="phone-frame-inner">
+            <div class="phone-notch"></div>
+            <div class="phone-screen">
+              <div class="phone-hd">
+                <div class="phone-brand">
+                  <div class="phone-brand-dot"><span>G</span></div>
+                  <span class="phone-brand-text">GoalChaser</span>
+                </div>
+                <div class="phone-greeting">Good morning!</div>
+                <div class="phone-sub">Ready to plan your day?</div>
+              </div>
+              <div class="phone-body">
+                <div class="phone-card">
+                  <div class="phone-ci pci-call"><span class="material-symbols-outlined">call</span></div>
+                  <div class="phone-ct"><div class="phone-ct-title">Morning Planning Call</div><div class="phone-ct-meta">8:30 AM &bull; Incoming</div></div>
+                  <span class="phone-pulse"></span>
+                </div>
+                <div class="phone-card">
+                  <div class="phone-ci pci-done"><span class="material-symbols-outlined">check_circle</span></div>
+                  <div class="phone-ct"><div class="phone-ct-title">Draft proposal</div><div class="phone-ct-meta">Completed</div></div>
+                  <span class="phone-cs pcs-done">Done</span>
+                </div>
+                <div class="phone-card">
+                  <div class="phone-ci pci-call"><span class="material-symbols-outlined">radio_button_unchecked</span></div>
+                  <div class="phone-ct"><div class="phone-ct-title">Review budget</div><div class="phone-ct-meta">In Progress</div></div>
+                  <span class="phone-cs pcs-prog">1:30 PM</span>
+                </div>
+                <div class="phone-card">
+                  <div class="phone-ci pci-miss"><span class="material-symbols-outlined">call_missed</span></div>
+                  <div class="phone-ct"><div class="phone-ct-title">Follow-up Check</div><div class="phone-ct-meta">Missed &bull; Will retry</div></div>
+                  <span class="phone-cs pcs-miss">Missed</span>
+                </div>
+              </div>
+              <div class="phone-nav">
+                <span class="material-symbols-outlined" style="color:var(--cyan);">home</span>
+                <span class="material-symbols-outlined" style="color:#4A7B9E;">list_alt</span>
+                <span class="material-symbols-outlined" style="color:#4A7B9E;">history</span>
+                <span class="material-symbols-outlined" style="color:#4A7B9E;">person</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- FAQ -->
 <section class="section faq-bg" id="faq">
   <div class="sec-inner">
@@ -1353,6 +1494,7 @@
           <li><a href="#ai-manager">AI Manager</a></li>
           <li><a href="#exec-pulse">Exec View</a></li>
           <li><a href="#voice">Call System</a></li>
+          <li><a href="#mobile-app">Mobile App</a></li>
         </ul>
       </div>
       <div class="footer-col">
