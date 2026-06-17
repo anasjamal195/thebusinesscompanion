@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>stride.best — Your AI Project Manager</title>
+  <title>GoalChaser.co — Your AI Project Manager</title>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@400,0..1&display=swap" rel="stylesheet" />
   <style>
@@ -605,7 +605,7 @@
       </h1>
 
       <p class="hero-sub-big">Get more done today, together.</p>
-      <p class="hero-sub">Stride keeps you on track with friendly voice check-ins. It helps individuals stay focused and seamlessly scales to coordinate entire teams—no complicated dashboards required.</p>
+      <p class="hero-sub">GoalChaser keeps you on track with friendly voice check-ins. It helps individuals stay focused and seamlessly scales to coordinate entire teams—no complicated dashboards required.</p>
 
       <div class="hero-actions">
         <a href="/login" class="btn-primary" style="text-decoration:none;">
@@ -674,7 +674,7 @@
                 <div class="caller-av"><span class="material-symbols-outlined">call</span></div>
                 <div>
                   <div class="caller-label">AI Voice Call · VoIP</div>
-                  <div class="caller-name">stride.best AI</div>
+                  <div class="caller-name">GoalChaser.co AI</div>
                 </div>
               </div>
               <div class="card1-bubble">
@@ -682,7 +682,7 @@
                   <div class="bubble-av"><span class="material-symbols-outlined">smart_toy</span></div>
                   <div>
                     <div class="bubble-text">"Good morning! Ready to plan your day?"</div>
-                    <div class="bubble-time">Stride AI · VoIP Call · Just now</div>
+                    <div class="bubble-time">GoalChaser AI · VoIP Call · Just now</div>
                   </div>
                 </div>
                 <div style="height:1px;background:rgba(0,175,240,.15);margin:.5rem 0;"></div>
@@ -840,7 +840,7 @@
   <div class="sec-inner">
     <div class="tc mb16">
       <div class="eyebrow"><span class="material-symbols-outlined">explore</span>The Workflow</div>
-      <h2 class="sec-h2">How <span>stride.best</span> Works</h2>
+      <h2 class="sec-h2">How <span>GoalChaser.co</span> Works</h2>
       <p class="sec-sub cx">Your AI gives you a quick call, understands your goals, and follows up to help you finish them.</p>
     </div>
     <div class="steps-row">
@@ -848,7 +848,7 @@
         <div class="step-icon"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">phone_callback</span></div>
         <div class="step-num">Step 01</div>
         <div class="step-title">Quick Check-in</div>
-        <p class="step-desc">Stride gives you or your team a quick call to talk about what needs to be done today. No meetings needed.</p>
+        <p class="step-desc">GoalChaser gives you or your team a quick call to talk about what needs to be done today. No meetings needed.</p>
       </div>
       <div class="step-card s2">
         <div class="step-icon"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">checklist</span></div>
@@ -877,7 +877,7 @@
   <div class="sec-inner">
     <div class="tc mb16">
       <h2 class="sec-h2">A tool that <span>works for you</span></h2>
-      <p class="sec-sub cx">Most tools just sit there waiting for you to update them. Stride actively helps you get things done.</p>
+      <p class="sec-sub cx">Most tools just sit there waiting for you to update them. GoalChaser actively helps you get things done.</p>
     </div>
 
     <div class="ba-grid">
@@ -897,7 +897,7 @@
       <div class="ba-card ba-after">
         <div class="ba-head">
           <div class="ba-ico"><span class="material-symbols-outlined" style="font-size:1.2rem;">check</span></div>
-          <span class="ba-title" style="color:#0F172A;">stride.best — Active AI Manager</span>
+          <span class="ba-title" style="color:#0F172A;">GoalChaser.co — Active AI Manager</span>
         </div>
         <ul class="ba-list">
           <li><span class="material-symbols-outlined" style="color:#00AFF0;">check_circle</span>AI calls your team — no login required</li>
@@ -918,7 +918,7 @@
       <div class="feat-card fc2">
         <div class="feat-ico"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">support_agent</span></div>
         <div class="feat-title">Help When Stuck</div>
-        <p class="feat-desc">When you hit a roadblock, Stride can suggest solutions or connect you with the right person on your team.</p>
+        <p class="feat-desc">When you hit a roadblock, GoalChaser can suggest solutions or connect you with the right person on your team.</p>
       </div>
       <div class="feat-card fc3">
         <div class="feat-ico"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">monitoring</span></div>
@@ -928,17 +928,17 @@
       <div class="feat-card fc4">
         <div class="feat-ico"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">notifications_active</span></div>
         <div class="feat-title">Stays on Top</div>
-        <p class="feat-desc">Stride remembers everything so you don't have to, keeping tasks organized until they are done.</p>
+        <p class="feat-desc">GoalChaser remembers everything so you don't have to, keeping tasks organized until they are done.</p>
       </div>
       <div class="feat-card fc1">
         <div class="feat-ico"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">groups</span></div>
         <div class="feat-title">Team Harmony</div>
-        <p class="feat-desc">When your work affects a teammate, Stride automatically updates them so everyone stays perfectly in sync.</p>
+        <p class="feat-desc">When your work affects a teammate, GoalChaser automatically updates them so everyone stays perfectly in sync.</p>
       </div>
       <div class="feat-card fc2">
         <div class="feat-ico"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">auto_awesome</span></div>
         <div class="feat-title">Smart Planning</div>
-        <p class="feat-desc">Stride looks at your upcoming tasks and makes sure you aren't overwhelmed before the week begins.</p>
+        <p class="feat-desc">GoalChaser looks at your upcoming tasks and makes sure you aren't overwhelmed before the week begins.</p>
       </div>
       <div class="feat-card fc3">
         <div class="feat-ico"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">history</span></div>
@@ -948,7 +948,7 @@
       <div class="feat-card fc4">
         <div class="feat-ico"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">import_contacts</span></div>
         <div class="feat-title">Knows Your Style</div>
-        <p class="feat-desc">Teach Stride your personal or team guidelines, and it will adapt its check-ins to match your way of working.</p>
+        <p class="feat-desc">Teach GoalChaser your personal or team guidelines, and it will adapt its check-ins to match your way of working.</p>
       </div>
     </div>
   </div>
@@ -961,8 +961,8 @@
     <div class="ai-mgr-grid">
       <div class="ai-mgr-text">
         <h3>An <span>inspiring companion</span> that understands you and your work</h3>
-        <p>Stride reaches out with a friendly daily call. No forms to fill. Just a natural conversation that automatically updates your progress and notes any challenges.</p>
-        <p>If you're stuck, Stride acts as a helpful guide, offering suggestions or bringing in the right teammate so you're never blocked for long.</p>
+        <p>GoalChaser reaches out with a friendly daily call. No forms to fill. Just a natural conversation that automatically updates your progress and notes any challenges.</p>
+        <p>If you're stuck, GoalChaser acts as a helpful guide, offering suggestions or bringing in the right teammate so you're never blocked for long.</p>
         <div class="ai-mgr-bullets">
           <div class="ai-bullet">
             <div class="ai-bullet-icon bi-cyan"><span class="material-symbols-outlined">call</span></div>
@@ -995,7 +995,7 @@
               <div class="pulse-ring pr2"></div>
               <div class="call-avatar"><span class="material-symbols-outlined">smart_toy</span></div>
             </div>
-            <div class="call-name">Stride AI</div>
+            <div class="call-name">GoalChaser AI</div>
             <div class="call-role">Morning Check-in • Marketing Team</div>
           </div>
           
@@ -1032,13 +1032,13 @@
     <div class="tc mb16">
       <div class="eyebrow"><span class="material-symbols-outlined">shield</span>Performance Watch</div>
       <h2 class="sec-h2">Fair accountability. <span>Not surveillance.</span></h2>
-      <p class="sec-sub cx">Stride learns each person's natural pace over 2–3 sprints and measures against their own baseline — not a generic company standard. One bad day changes nothing. Sustained patterns trigger a private signal.</p>
+      <p class="sec-sub cx">GoalChaser learns each person's natural pace over 2–3 sprints and measures against their own baseline — not a generic company standard. One bad day changes nothing. Sustained patterns trigger a private signal.</p>
     </div>
     <div class="pw-grid">
       <div class="pw-card">
         <div class="pw-ico-wrap pw-icon-c"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">analytics</span></div>
         <div class="pw-title">Personal Baseline Learning</div>
-        <p class="pw-desc">For the first 2–3 sprints, Stride observes — completion rate, estimate accuracy, response consistency, blocker patterns. This becomes each person's benchmark.</p>
+        <p class="pw-desc">For the first 2–3 sprints, GoalChaser observes — completion rate, estimate accuracy, response consistency, blocker patterns. This becomes each person's benchmark.</p>
       </div>
       <div class="pw-card">
         <div class="pw-ico-wrap pw-icon-g"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">visibility</span></div>
@@ -1127,7 +1127,7 @@
       <div class="exec-metric">
         <div class="em-label">Top recurring blockers</div>
         <div class="em-title">Systemic issues surface automatically</div>
-        <p class="em-desc">If three teams are blocked on third-party API integrations, Stride flags it as an org-level problem — not just individual tickets.</p>
+        <p class="em-desc">If three teams are blocked on third-party API integrations, GoalChaser flags it as an org-level problem — not just individual tickets.</p>
       </div>
       <div class="exec-metric">
         <div class="em-label">Always-on dashboard</div>
@@ -1188,7 +1188,7 @@
     <div class="tc mb12">
       <div class="eyebrow eyebrow-dark"><span class="material-symbols-outlined">manage_accounts</span>User Roles</div>
       <h2 class="sec-h2 light">The right view for <span>every level</span></h2>
-      <p class="sec-sub cx" style="color:rgba(255,255,255,.6);">Stride adapts what each person sees and receives — so everyone has exactly the context they need.</p>
+      <p class="sec-sub cx" style="color:rgba(255,255,255,.6);">GoalChaser adapts what each person sees and receives — so everyone has exactly the context they need.</p>
     </div>
     <div class="roles-grid">
       <div class="role-card">
@@ -1232,7 +1232,7 @@
       <div>
         <div class="eyebrow"><span class="material-symbols-outlined">psychology</span>Auto Retrospectives</div>
         <h2 class="sec-h2" style="max-width:400px;">Sprint retros, <span>written themselves</span></h2>
-        <p style="font-size:1rem;color:var(--s6);line-height:1.7;margin-bottom:1rem;">At the end of every sprint, Stride auto-generates a full retrospective from call transcripts and task data. No meeting required. No one has to write it.</p>
+        <p style="font-size:1rem;color:var(--s6);line-height:1.7;margin-bottom:1rem;">At the end of every sprint, GoalChaser auto-generates a full retrospective from call transcripts and task data. No meeting required. No one has to write it.</p>
         <p style="font-size:1rem;color:var(--s6);line-height:1.7;">Over time, the AI gets better at sprint planning for that specific team — because it learns their real velocity, their common blockers, and their patterns. Every sprint makes the next one smarter.</p>
       </div>
       <div class="retro-items">
@@ -1306,14 +1306,14 @@
       <h2 class="sec-h2">Everything you <span>need to know</span></h2>
     </div>
     <div class="faq-list">
-      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">What is stride.best?<span class="material-symbols-outlined">add</span></button><div class="faq-a">stride.best is an active AI project manager that calls your team via VoIP. It schedules work, tracks progress, resolves blockers, auto-generates reports, and keeps leadership informed — all without anyone logging into a dashboard.</div></div>
-      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">How is this different from Jira, Trello, or Asana?<span class="material-symbols-outlined">add</span></button><div class="faq-a">Those tools are passive — they wait for someone to log in. Stride is active. It calls your team, parses their updates, flags blockers, escalates problems, and writes reports. It acts like a manager, not a noticeboard.</div></div>
-      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Does it work for teams and enterprises?<span class="material-symbols-outlined">add</span></button><div class="faq-a">Yes. Stride scales from a single person to an entire enterprise. It handles individual daily check-ins, team standups, department health monitoring, and executive-level org-wide pulse — all from the same system.</div></div>
-      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Is the performance monitoring surveillance?<span class="material-symbols-outlined">add</span></button><div class="faq-a">No. Stride measures each person against their own personal baseline — not a company-wide standard. It uses a private Watch State before any manager is notified, and flags go to the direct manager only. Stride surfaces signals; humans make decisions.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">What is GoalChaser.co?<span class="material-symbols-outlined">add</span></button><div class="faq-a">GoalChaser.co is an active AI project manager that calls your team via VoIP. It schedules work, tracks progress, resolves blockers, auto-generates reports, and keeps leadership informed — all without anyone logging into a dashboard.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">How is this different from Jira, Trello, or Asana?<span class="material-symbols-outlined">add</span></button><div class="faq-a">Those tools are passive — they wait for someone to log in. GoalChaser is active. It calls your team, parses their updates, flags blockers, escalates problems, and writes reports. It acts like a manager, not a noticeboard.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Does it work for teams and enterprises?<span class="material-symbols-outlined">add</span></button><div class="faq-a">Yes. GoalChaser scales from a single person to an entire enterprise. It handles individual daily check-ins, team standups, department health monitoring, and executive-level org-wide pulse — all from the same system.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Is the performance monitoring surveillance?<span class="material-symbols-outlined">add</span></button><div class="faq-a">No. GoalChaser measures each person against their own personal baseline — not a company-wide standard. It uses a private Watch State before any manager is notified, and flags go to the direct manager only. GoalChaser surfaces signals; humans make decisions.</div></div>
       <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">How does the AI know about our tech stack and processes?<span class="material-symbols-outlined">add</span></button><div class="faq-a">During onboarding, you configure your tech stack (languages, frameworks, APIs, cloud providers) and upload internal SOP documents. The AI indexes all of this so it can give specific, contextual help during check-in calls — not generic advice.</div></div>
-      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Can I import projects from Jira, Trello or Asana?<span class="material-symbols-outlined">add</span></button><div class="faq-a">Yes. Stride supports full project and task import from Jira, Trello, and Asana. You don't have to start from scratch — migration is a first-class feature.</div></div>
-      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">What communication channels does Stride use?<span class="material-symbols-outlined">add</span></button><div class="faq-a">Voice calls are primary — higher response rate and harder to ignore. WhatsApp is used for async preference or as follow-up when a call isn't answered. Email handles reports, digests, and formal escalation notifications. All interactions are logged in one place.</div></div>
-      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Is it available internationally?<span class="material-symbols-outlined">add</span></button><div class="faq-a">Currently, stride.best is for US-based phone numbers only. Join the waitlist to get notified when your region is supported.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Can I import projects from Jira, Trello or Asana?<span class="material-symbols-outlined">add</span></button><div class="faq-a">Yes. GoalChaser supports full project and task import from Jira, Trello, and Asana. You don't have to start from scratch — migration is a first-class feature.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">What communication channels does GoalChaser use?<span class="material-symbols-outlined">add</span></button><div class="faq-a">Voice calls are primary — higher response rate and harder to ignore. WhatsApp is used for async preference or as follow-up when a call isn't answered. Email handles reports, digests, and formal escalation notifications. All interactions are logged in one place.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Is it available internationally?<span class="material-symbols-outlined">add</span></button><div class="faq-a">Currently, GoalChaser.co is for US-based phone numbers only. Join the waitlist to get notified when your region is supported.</div></div>
       <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">How much does it cost?<span class="material-symbols-outlined">add</span></button><div class="faq-a">We're in private beta with a free tier. Join the waitlist for early access pricing when paid plans launch.</div></div>
     </div>
   </div>
@@ -1323,7 +1323,7 @@
 <section class="section cta-bg">
   <div class="sec-inner cta-inner">
     <h2 class="cta-h2">Interested in an <span>Enterprise Plan?</span></h2>
-    <p class="cta-sub">Reach out to scale Stride across your entire organization with dedicated support and custom integrations.</p>
+    <p class="cta-sub">Reach out to scale GoalChaser across your entire organization with dedicated support and custom integrations.</p>
     <div class="cta-actions">
       <button class="btn-primary" onclick="openModal(event)">
         <span class="material-symbols-outlined" style="font-size:20px;">headset_mic</span>
@@ -1372,7 +1372,7 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© 2025 stride.best. All rights reserved.</span>
+      <span>© 2025 GoalChaser.co. All rights reserved.</span>
       <span>Powered by <a href="https://egeniuscare.com" target="_blank">eGeniusCare</a></span>
     </div>
   </div>
