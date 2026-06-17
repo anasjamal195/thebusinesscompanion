@@ -371,7 +371,7 @@
     .wf2 { color:var(--purple); }
     .wf3 { color:var(--green); }
 
-    /* ─── EXEC PULSE (dark) ─── */
+    /* ─── Exec View (dark) ─── */
     .exec-bg { background:var(--navy2); }
     .exec-tiers { display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem; margin-bottom:4rem; }
     .exec-tier { border-radius:20px; padding:2rem; border:1px solid; }
@@ -570,7 +570,7 @@
       <a href="#how-it-works">How It Works</a>
       <a href="#ai-manager">AI Manager</a>
       <a href="#features">Features</a>
-      <a href="#exec-pulse">Exec Pulse</a>
+      <a href="#exec-pulse">Exec View</a>
       <a href="#teams">For Teams</a>
       <a href="#faq">FAQ</a>
     </div>
@@ -1351,7 +1351,7 @@
         <ul>
           <li><a href="#how-it-works">How It Works</a></li>
           <li><a href="#ai-manager">AI Manager</a></li>
-          <li><a href="#exec-pulse">Exec Pulse</a></li>
+          <li><a href="#exec-pulse">Exec View</a></li>
           <li><a href="#voice">Call System</a></li>
         </ul>
       </div>
