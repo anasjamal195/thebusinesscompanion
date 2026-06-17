@@ -24,9 +24,14 @@
     /* ─── NAV ─── */
     nav { position:fixed; top:0; left:0; right:0; z-index:100; padding:0 2rem; background:rgba(255,255,255,0); border-bottom:1px solid transparent; transition:background .3s,border-color .3s,box-shadow .3s; }
     nav.scrolled { background:rgba(255,255,255,.97); backdrop-filter:blur(12px); border-bottom-color:var(--s3); box-shadow:0 1px 16px rgba(45,55,72,0.05); }
-    .nav-inner { max-width:1280px; margin:0 auto; height:72px; display:flex; align-items:center; justify-content:space-between; }
+    .nav-inner { max-width:1280px; margin:0 auto; height:110px; display:flex; align-items:center; justify-content:space-between; }
     .nav-logo { display:flex; align-items:center; text-decoration:none; }
-    .nav-logo img { height:32px; width:auto; display:block; }
+    .nav-logo img { height:100px; width:auto; display:block; }
+    @media(max-width:640px) { .nav-logo img { height:70px; } .nav-inner { height:80px; } .hero { margin-top:-80px; padding-top:80px; } }
+    .nav-logo .logo-light { display:block; }
+    .nav-logo .logo-dark { display:none; }
+    nav.scrolled .nav-logo .logo-light { display:none; }
+    nav.scrolled .nav-logo .logo-dark { display:block; }
     .nav-links { display:flex; align-items:center; gap:2rem; list-style:none; }
     .nav-links a { color:rgba(255,255,255,.75); text-decoration:none; font-size:.875rem; font-weight:700; transition:color .2s; }
     nav.scrolled .nav-links a { color:var(--s6); }
@@ -62,7 +67,7 @@
     }
 
     /* ─── HERO ─── */
-    .hero { position:relative; min-height:100vh; display:flex; align-items:center; overflow:hidden; margin-top:-72px; padding-top:72px; background-image:url('assets/background.png'); background-size:cover; background-position:center; }
+    .hero { position:relative; min-height:100vh; display:flex; align-items:center; overflow:hidden; margin-top:-110px; padding-top:110px; background-image:url('assets/background.png'); background-size:cover; background-position:center; }
     .hero-overlay { position:absolute; inset:0; background:linear-gradient(135deg,rgba(10,15,25,.95) 0%,rgba(15,20,30,.90) 50%,rgba(5,10,15,.85) 100%); }
     .hero-glow1 { position:absolute; top:25%; left:25%; width:384px; height:384px; border-radius:50%; background:radial-gradient(circle,rgba(0,175,240,.12),transparent 70%); filter:blur(40px); pointer-events:none; }
     .hero-glow2 { position:absolute; bottom:25%; right:25%; width:320px; height:320px; border-radius:50%; background:radial-gradient(circle,rgba(14,182,71,.10),transparent 70%); filter:blur(40px); pointer-events:none; }
@@ -247,7 +252,7 @@
     .sb-label { font-size:.7rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--cyan); margin-top:.2rem; }
 
     /* ─── SECTION COMMONS ─── */
-    .section { padding:7rem 2rem; }
+    .section { padding:7rem 2rem; overflow-x:hidden; }
     .sec-inner { max-width:1280px; margin:0 auto; }
     .eyebrow { display:inline-flex; align-items:center; gap:.5rem; padding:.35rem .9rem; background:#fff; border:1px solid var(--s3); border-radius:8px; font-size:.7rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--cyan); margin-bottom:1.5rem; box-shadow:0 1px 4px rgba(0,0,0,.06); }
     .eyebrow .material-symbols-outlined { font-size:16px; }
@@ -562,7 +567,8 @@
     .footer-grid { display:grid; grid-template-columns:2fr 1fr 1fr 1fr 1fr; gap:2rem; margin-bottom:3rem; }
     .footer-grid > div > p { color:rgba(255,255,255,.7); line-height:1.7; max-width:280px; }
     .footer-brand-name { display:block; margin-bottom:1rem; text-decoration:none; }
-    .footer-brand-name img { height:32px; width:auto; display:block; }
+    .footer-brand-name img { height:100px; width:auto; display:block; }
+    @media(max-width:640px) { .footer-brand-name img { height:70px; } }
     .footer-social { display:flex; gap:.75rem; margin-top:1rem; }
     .footer-social a { width:36px; height:36px; border-radius:8px; border:1px solid rgba(255,255,255,.15); display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,.6); text-decoration:none; font-size:1rem; transition:border-color .2s,color .2s; }
     .footer-social a:hover { border-color:var(--cyan); color:var(--cyan); }
@@ -640,7 +646,8 @@
       .team-icon { width:56px; height:56px; }
       .team-icon .material-symbols-outlined { font-size:1.5rem; }
       .int-logos-hero { gap:.75rem; }
-      .int-logo { font-size:.85rem; }
+      .int-logo { font-size:.8rem; }
+      .teams-bg [style*="margin-top:4rem"] { margin-top:2rem !important; }
       .call-card { padding:1rem; }
       .call-name { font-size:1.1rem; }
       .call-transcript { height:60px; }
@@ -651,9 +658,9 @@
     @media(prefers-reduced-motion:reduce) { *,*::before,*::after { animation-duration:.001ms !important; } }
 
     /* teams section */
-    .teams-bg { background:#fff; border-top:1px solid var(--s3); border-bottom:1px solid var(--s3); }
+    .teams-bg { background:#fff; border-top:1px solid var(--s3); border-bottom:1px solid var(--s3); overflow-x:hidden; }
     .teams-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:1.5rem; }
-    .team-card { background:var(--s1); border:1px solid var(--s3); border-radius:20px; padding:2rem 1.5rem; display:flex; flex-direction:column; align-items:center; text-align:center; transition:border-color .3s,box-shadow .3s,transform .3s; }
+    .team-card { background:var(--s1); border:1px solid var(--s3); border-radius:20px; padding:2rem 1.5rem; display:flex; flex-direction:column; align-items:center; text-align:center; transition:border-color .3s,box-shadow .3s,transform .3s; word-break:break-word; overflow-wrap:break-word; }
     .team-card:hover { transform:translateY(-3px); box-shadow:0 8px 28px rgba(0,0,0,.07); }
     .team-card.feat { border-color:rgba(14,182,71,.3); box-shadow:0 0 30px rgba(14,182,71,.07); background:#fff; }
     .team-icon { width:72px; height:72px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin-bottom:1.25rem; }
@@ -664,10 +671,11 @@
     .tc4{background:rgba(234,88,12,.1);color:var(--orange);}
     .team-title { font-size:1rem; font-weight:800; color:var(--s9); margin-bottom:.75rem; }
     .team-desc { font-size:.85rem; color:var(--s6); line-height:1.65; }
-    .int-logos-hero { display:flex; justify-content:center; align-items:center; flex-wrap:wrap; gap:2rem; }
-    .int-logo { display:flex; align-items:center; gap:.5rem; font-size:1rem; font-weight:800; color:var(--s7); opacity:.5; transition:opacity .3s; }
+    .int-logos-hero { display:flex; justify-content:center; align-items:center; flex-wrap:wrap; gap:2rem; max-width:100%; }
+    .int-logo { display:flex; align-items:center; gap:.5rem; font-size:1rem; font-weight:800; color:var(--s7); opacity:.5; transition:opacity .3s; flex-shrink:0; }
     .int-logo:hover { opacity:1; }
-    .int-logo img { width:28px; height:28px; }
+    .int-logo img { width:28px; height:28px; flex-shrink:0; }
+    .int-logo .material-symbols-outlined { flex-shrink:0; }
   </style>
 </head>
 <body>
@@ -675,7 +683,10 @@
 <!-- NAV -->
 <nav id="navbar">
   <div class="nav-inner">
-    <a href="/" class="nav-logo"><img src="/assets/logo-light-new.png" alt="GoalChaser.co" style="height:32px;width:auto;display:block;" /></a>
+    <a href="/" class="nav-logo">
+      <img src="/assets/logo-light-new.png" alt="GoalChaser.co" class="logo-light" />
+      <img src="/assets/logo-dark.png" alt="GoalChaser.co" class="logo-dark" />
+    </a>
     <ul class="nav-links">
       <li><a href="#how-it-works">How It Works</a></li>
       <li><a href="#ai-manager">AI Manager</a></li>
@@ -1552,7 +1563,7 @@
   <div class="footer-inner">
     <div class="footer-grid">
       <div class="footer-brand">
-        <a href="/" class="footer-brand-name"><img src="/assets/logo-dark.png" alt="GoalChaser.co" style="height:32px;width:auto;display:block;" /></a>
+        <a href="/" class="footer-brand-name"><img src="/assets/logo-light-new.png" alt="GoalChaser.co" /></a>
         <p style="margin-top:0;">The active AI project manager that calls your team — schedules tasks, resolves blockers, monitors performance, and keeps leadership informed automatically.</p>
         <div class="footer-social">
           <a href="mailto:support@goalchaser.co" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></a>
