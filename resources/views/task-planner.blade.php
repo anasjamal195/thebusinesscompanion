@@ -84,7 +84,7 @@
     .hero-toggle-opt { padding:.35rem 1rem; border-radius:999px; font-size:.75rem; font-weight:700; cursor:pointer; transition:all .2s; color:rgba(255,255,255,.6); }
     .hero-toggle-opt.active { background:var(--cyan); color:#fff; }
 
-    .hero-h1 { font-family:'Nunito',sans-serif; font-size:clamp(2.2rem,4.5vw,3.6rem); font-weight:900; color:#fff; line-height:1.05; letter-spacing:-.04em; margin-bottom:1.5rem; }
+    .hero-h1 { font-family:'Nunito',sans-serif; font-size:clamp(1.8rem,3.8vw,3rem); font-weight:900; color:#fff; line-height:1.1; letter-spacing:-.04em; margin-bottom:1.5rem; }
     .hero-h1 .c1 { color:var(--cyan); }
     .hero-h1 .c2 { color:var(--green); }
 
@@ -743,7 +743,7 @@
 
       <h1 class="hero-h1" id="heroHeadline">
         Your personal <span class="c1">procrastination killer</span><br>
-        — one call at a time
+        one call at a time
       </h1>
 
       <p class="hero-sub-big" id="heroSubBig">Your AI accountability partner.</p>
@@ -1674,12 +1674,12 @@
 
   const toggleContent = {
     personal: {
-      h1: 'Your personal <span class="c1">procrastination killer</span><br>— one call at a time',
+      h1: 'Your personal <span class="c1">procrastination killer</span><br>one call at a time',
       subBig: 'Your AI accountability partner.',
       sub: 'GoalChaser calls you daily, learns what matters, and keeps you accountable — so you stop procrastinating and start finishing. No dashboards, no distractions, just results.'
     },
     team: {
-      h1: 'Your team\'s <span class="c1">productivity engine</span><br>without the endless meetings',
+      h1: 'Your team\'s <span class="c1">productivity engine</span><br>without endless meetings',
       subBig: 'Coordinate your entire team effortlessly.',
       sub: 'GoalChaser runs AI-powered standups, tracks every task, resolves blockers in real time, and delivers executive summaries — all through natural voice calls. Your team stays aligned without a single status meeting.'
     }
