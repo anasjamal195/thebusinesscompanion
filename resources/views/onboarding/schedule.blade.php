@@ -50,6 +50,28 @@
             @enderror
         </div>
 
+        {{-- Off Days --}}
+        <div x-data="{ offDays: @json(old('off_days', [])) }">
+            <label class="block text-sm font-medium text-gray-700 mb-1.5">Off Days</label>
+            <p class="text-xs text-gray-500 mb-3">Days you'd like me to skip calling. Leave empty for calls every day.</p>
+            <div class="grid grid-cols-7 gap-2">
+                @foreach ([1 => 'Mon', 2 => 'Tue', 3 => 'Wed', 4 => 'Thu', 5 => 'Fri', 6 => 'Sat', 7 => 'Sun'] as $dayNum => $dayName)
+                <button type="button"
+                        @click="offDays.includes({{ $dayNum }}) ? offDays = offDays.filter(d => d !== {{ $dayNum }}) : offDays.push({{ $dayNum }})"
+                        class="py-2 rounded-lg border text-sm font-medium transition-colors"
+                        :class="offDays.includes({{ $dayNum }}) ? 'border-primary bg-primary/5 text-primary' : 'border-gray-200 bg-gray-50 text-gray-600 hover:bg-gray-100'">
+                    {{ $dayName }}
+                </button>
+                @endforeach
+            </div>
+            <template x-for="day in offDays" :key="day">
+                <input type="hidden" name="off_days[]" :value="day">
+            </template>
+            @error('off_days')
+                <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+            @enderror
+        </div>
+
         {{-- Phone Number --}}
         <div>
             <label for="phone_number_display" class="block text-sm font-medium text-gray-700 mb-1.5">

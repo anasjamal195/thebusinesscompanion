@@ -15,7 +15,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Cashier\Billable;
 use Laravel\Sanctum\HasApiTokens;
 
-#[Fillable(['name', 'email', 'password', 'role', 'onboarding_completed', 'voice_id', 'morning_call_time', 'timezone', 'default_delay_minutes', 'last_morning_call_date', 'last_call_time', 'credits', 'google_id', 'avatar', 'calling_preference', 'fcm_token', 'community_participation_mode', 'execution_score', 'community_reputation'])]
+#[Fillable(['name', 'email', 'password', 'role', 'onboarding_completed', 'voice_id', 'morning_call_time', 'timezone', 'default_delay_minutes', 'off_days', 'last_morning_call_date', 'last_call_time', 'credits', 'google_id', 'avatar', 'calling_preference', 'fcm_token', 'community_participation_mode', 'execution_score', 'community_reputation'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -34,6 +34,7 @@ class User extends Authenticatable
             'password' => 'hashed',
             'onboarding_completed' => 'boolean',
             'credits' => 'decimal:2',
+            'off_days' => 'array',
         ];
     }
 

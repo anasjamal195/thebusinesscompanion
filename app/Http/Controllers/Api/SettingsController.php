@@ -29,10 +29,15 @@ class SettingsController extends Controller
             'morning_call_time' => ['sometimes', 'date_format:H:i'],
             'timezone' => ['sometimes', 'timezone'],
             'default_delay_minutes' => ['nullable', 'integer', 'min:1'],
+            'off_days' => ['nullable', 'array'],
+            'off_days.*' => ['integer', 'between:1,7'],
             'calling_preference' => ['sometimes', 'in:phone,app'],
         ]);
 
-        $user->update($validated);
+        $user->update([
+            ...$validated,
+            'off_days' => $validated['off_days'] ?? ($user->off_days ?? []),
+        ]);
 
         return response()->json(['user' => $user->fresh()]);
     }

@@ -19,6 +19,8 @@ class OnboardingController extends Controller
             'morning_call_time'     => ['required', 'date_format:H:i'],
             'timezone'              => ['required', 'timezone'],
             'default_delay_minutes' => ['nullable', 'integer', 'min:1'],
+            'off_days'              => ['nullable', 'array'],
+            'off_days.*'            => ['integer', 'between:1,7'],
             'voice_id'              => ['required', 'string'],
             'phone_number'          => ['nullable', 'string', 'regex:/^(\+1\d{10})?$/'],
             'calling_preference'    => ['sometimes', 'in:app,phone'],
@@ -29,6 +31,7 @@ class OnboardingController extends Controller
             'morning_call_time'     => $validated['morning_call_time'],
             'timezone'              => $validated['timezone'],
             'default_delay_minutes' => $validated['default_delay_minutes'] ?? null,
+            'off_days'              => $validated['off_days'] ?? [],
             'voice_id'              => $validated['voice_id'],
             'calling_preference'    => $validated['calling_preference'] ?? $user->calling_preference ?? 'app',
         ]);

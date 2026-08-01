@@ -29,6 +29,7 @@ use App\Http\Controllers\Api\StripeCheckoutController as ApiStripeCheckoutContro
 // Public routes
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
+Route::post('/auth/google', [AuthController::class, 'googleLogin']);
 
 // Authenticated routes
 Route::middleware('auth:sanctum')->group(function () {

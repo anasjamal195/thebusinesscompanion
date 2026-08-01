@@ -28,6 +28,8 @@ class SettingsController extends Controller
             'morning_call_time' => 'sometimes|date_format:H:i',
             'timezone' => 'sometimes|timezone',
             'default_delay_minutes' => 'nullable|integer|min:1',
+            'off_days' => 'nullable|array',
+            'off_days.*' => 'integer|between:1,7',
             'phone_number' => 'nullable|string|regex:/^(\+1\d{10})?$/',
             'profile_privacy' => 'sometimes|in:public,private',
         ]);
@@ -40,6 +42,7 @@ class SettingsController extends Controller
             'morning_call_time' => $validated['morning_call_time'] ?? $user->morning_call_time,
             'timezone' => $validated['timezone'] ?? $user->timezone,
             'default_delay_minutes' => $validated['default_delay_minutes'] ?? $user->default_delay_minutes,
+            'off_days' => $validated['off_days'] ?? ($user->off_days ?? []),
             'community_participation_mode' => $validated['profile_privacy'] ?? $user->community_participation_mode,
         ]);
 

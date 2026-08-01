@@ -137,6 +137,25 @@
                     <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-400 font-medium pointer-events-none">minutes</span>
                 </div>
             </div>
+
+            {{-- Off Days --}}
+            <div x-data="{ offDays: @json($user->off_days ?? []) }">
+                <label class="block text-xs font-medium text-gray-500 mb-1.5">Off Days</label>
+                <p class="text-xs text-gray-400 mb-2">Days to skip calling. Leave empty for calls every day.</p>
+                <div class="grid grid-cols-7 gap-2">
+                    @foreach ([1 => 'Mon', 2 => 'Tue', 3 => 'Wed', 4 => 'Thu', 5 => 'Fri', 6 => 'Sat', 7 => 'Sun'] as $dayNum => $dayName)
+                    <button type="button"
+                            @click="offDays.includes({{ $dayNum }}) ? offDays = offDays.filter(d => d !== {{ $dayNum }}) : offDays.push({{ $dayNum }})"
+                            class="py-2 rounded-lg border text-sm font-medium transition-colors"
+                            :class="offDays.includes({{ $dayNum }}) ? 'border-primary bg-primary/5 text-primary' : 'border-gray-200 bg-gray-50 text-gray-600 hover:bg-gray-100'">
+                        {{ $dayName }}
+                    </button>
+                    @endforeach
+                </div>
+                <template x-for="day in offDays" :key="day">
+                    <input type="hidden" name="off_days[]" :value="day">
+                </template>
+            </div>
         </div>
 
         {{-- AI Voice --}}

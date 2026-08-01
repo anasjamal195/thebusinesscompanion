@@ -44,6 +44,13 @@ class ScheduleCallsCommand extends Command
 
         $this->line("[User {$user->id}] timezone={$user->timezone} now={$now->format('Y-m-d H:i:s')} today={$todayStr} morning_time={$morningTime->format('H:i')} last_morning_date={$user->last_morning_call_date} last_call={$user->last_call_time}");
 
+        // ── OFF DAYS ──
+        $offDays = $user->off_days ?? [];
+        if (!empty($offDays) && in_array((int) $now->dayOfWeekIso, array_map('intval', $offDays))) {
+            $this->line("[User {$user->id}] today (ISO weekday {$now->dayOfWeekIso}) is an off day — skipping all calls");
+            return;
+        }
+
         $rate = (float) MonetizationSetting::getInstance()->per_minute_rate;
         if (!$user->hasSufficientCredits($rate)) {
             $this->warn("[User {$user->id}] insufficient credits ({$user->credits}) — skipping all calls");
