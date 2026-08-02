@@ -86,7 +86,12 @@ class StripeCheckoutController extends Controller
             Log::error('Stripe webhook: Invalid payload');
             return response()->json(['error' => 'Invalid payload'], 400);
         } catch (\Stripe\Exception\SignatureVerificationException $e) {
-            Log::error('Stripe webhook: Invalid signature');
+            Log::error('Stripe webhook: Invalid signature', [
+                'signature_prefix' => substr((string) $sigHeader, 0, 20),
+                'endpoint_secret_prefix' => substr((string) $endpointSecret, 0, 12) . '...',
+                'payload_bytes' => strlen($payload),
+                'error' => $e->getMessage(),
+            ]);
             return response()->json(['error' => 'Invalid signature'], 400);
         }
 

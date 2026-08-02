@@ -20,9 +20,20 @@ class GoogleSocialiteController extends Controller
 
     public function callback()
     {
-        $googleUser = Socialite::driver('google')
-            ->redirectUrl(route('google.callback'))
-            ->user();
+        try {
+            $googleUser = Socialite::driver('google')
+                ->redirectUrl(route('google.callback'))
+                ->user();
+        } catch (\Laravel\Socialite\Two\InvalidStateException $e) {
+            \Illuminate\Support\Facades\Log::warning(
+                'Google OAuth invalid state',
+                ['url' => request()->fullUrl()]
+            );
+
+            return redirect()->route('login')->withErrors([
+                'google' => 'Google sign-in session expired. Please try again.',
+            ]);
+        }
 
         $user = User::where('google_id', $googleUser->getId())->first();
 
