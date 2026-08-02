@@ -88,7 +88,7 @@ class AuthController extends Controller
             ]);
         }
 
-        if (($info['email_verified'] ?? false) !== true || empty($info['email'])) {
+        if (!filter_var($info['email_verified'] ?? false, FILTER_VALIDATE_BOOLEAN) || empty($info['email'])) {
             throw ValidationException::withMessages([
                 'id_token' => ['The Google account email is not verified.'],
             ]);
