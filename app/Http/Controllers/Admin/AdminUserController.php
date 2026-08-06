@@ -34,7 +34,12 @@ class AdminUserController extends Controller
             'email' => ['required', 'email', 'max:255', Rule::unique('users', 'email')->ignore($user->id)],
             'role' => ['required', Rule::in(['user', 'admin'])],
             'credits' => ['required', 'numeric', 'min:0'],
+            'password' => ['nullable', 'string', 'min:8', 'confirmed'],
         ]);
+
+        if (empty($data['password'])) {
+            unset($data['password']);
+        }
 
         $user->update($data);
 

@@ -55,6 +55,28 @@
         </div>
     </div>
 
+    <div class="rounded-xl border border-gray-200 bg-white overflow-hidden mt-5">
+        <div class="px-6 py-5 border-b border-gray-200">
+            <h2 class="text-sm font-bold text-gray-900">Password</h2>
+            <p class="mt-0.5 text-xs text-gray-400">Leave blank to keep the current password.</p>
+        </div>
+
+        <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div>
+                <label class="text-sm font-medium text-gray-900">New Password</label>
+                <input name="password" type="password" minlength="8" autocomplete="new-password"
+                    class="mt-2 w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm focus:border-primary focus:ring-primary" />
+                @error('password') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
+            </div>
+
+            <div>
+                <label class="text-sm font-medium text-gray-900">Confirm Password</label>
+                <input name="password_confirmation" type="password" autocomplete="new-password"
+                    class="mt-2 w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm focus:border-primary focus:ring-primary" />
+            </div>
+        </div>
+    </div>
+
     <div class="mt-6 flex items-center gap-3">
         <button type="submit" class="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-white hover:bg-primary/90 transition-all">
             <span class="material-symbols-outlined text-[18px]">save</span>
