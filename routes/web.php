@@ -306,6 +306,14 @@ Route::middleware(["auth", "admin"])
         Route::get("/users/{user}", [AdminUserController::class, "show"])->name(
             "users.show",
         );
+        Route::get("/users/{user}/edit", [
+            AdminUserController::class,
+            "edit",
+        ])->name("users.edit");
+        Route::put("/users/{user}", [
+            AdminUserController::class,
+            "update",
+        ])->name("users.update");
         Route::get("/calls", [AdminCallController::class, "index"])->name(
             "calls.index",
         );

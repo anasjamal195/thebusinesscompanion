@@ -3,10 +3,16 @@
 namespace Database\Seeders;
 
 use App\Models\Voice;
+use App\Services\VoiceAvatarGenerator;
 use Illuminate\Database\Seeder;
 
 class OpenAiVoiceSeeder extends Seeder
 {
+    private const PALETTE = [
+        'Nova' => '14B8A6',
+        'Alloy' => '6366F1',
+    ];
+
     public function run(): void
     {
         $voices = [
@@ -30,11 +36,20 @@ class OpenAiVoiceSeeder extends Seeder
             ],
         ];
 
+        $avatarGenerator = app(VoiceAvatarGenerator::class);
+
         foreach ($voices as $voice) {
-            Voice::updateOrCreate(
+            $row = Voice::updateOrCreate(
                 ['vapi_voice_id' => $voice['vapi_voice_id']],
                 array_merge($voice, ['is_active' => true])
             );
+
+            if (!$row->avatar_path) {
+                $path = $avatarGenerator->generate($row, self::PALETTE[$voice['name']] ?? '6366F1');
+                if ($path) {
+                    $row->update(['avatar_path' => $path]);
+                }
+            }
         }
 
         $this->command->info(count($voices) . ' OpenAI voices seeded.');

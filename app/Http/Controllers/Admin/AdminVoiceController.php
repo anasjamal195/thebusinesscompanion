@@ -25,11 +25,17 @@ class AdminVoiceController extends Controller
     public function index()
     {
         $voices = Voice::orderBy('sort_order')->orderBy('name')->get();
+        $generator = app(VoiceSampleGenerator::class);
+
+        $engines = $voices->mapWithKeys(
+            fn (Voice $voice) => [$voice->id => $generator->engineLabel($voice)]
+        );
 
         return view('admin.voices.index', [
             'activeNav' => 'voices',
             'pageTitle' => 'Voice Library',
             'voices' => $voices,
+            'engines' => $engines,
         ]);
     }
 
@@ -121,7 +127,9 @@ class AdminVoiceController extends Controller
 
     public function generateSample(Request $request, Voice $voice)
     {
-        $path = app(VoiceSampleGenerator::class)->generate($voice);
+        $generator = app(VoiceSampleGenerator::class);
+        $engine = $generator->engineLabel($voice);
+        $path = $generator->generate($voice);
 
         if (!$path) {
             return back()->with('error', 'Could not generate a sample for this voice. Check the provider API key.');
@@ -129,7 +137,11 @@ class AdminVoiceController extends Controller
 
         $voice->update(['sample_path' => $path]);
 
-        return back()->with('success', 'Voice sample generated for "' . $voice->name . '".');
+        $note = str_contains($engine, 'fallback')
+            ? ' Free fallback voice used — add ELEVENLABS_API_KEY / OPENAI_API_KEY to .env for the real voice.'
+            : '';
+
+        return back()->with('success', 'Voice sample generated for "' . $voice->name . '" using ' . $engine . '.' . $note);
     }
 
     public function destroy(Voice $voice)

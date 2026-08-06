@@ -26,6 +26,12 @@
                     <span class="font-semibold text-gray-900">{{ $user->created_at->format('M d, Y') }}</span>
                 </div>
             </div>
+            <div class="mt-6">
+                <a href="{{ route('admin.users.edit', $user) }}" class="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-white hover:bg-primary/90 transition-all">
+                    <span class="material-symbols-outlined text-[18px]">edit</span>
+                    Edit User
+                </a>
+            </div>
         </div>
     </div>
 

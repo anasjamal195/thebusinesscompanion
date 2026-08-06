@@ -36,10 +36,16 @@
                         <td class="px-5 py-4 text-sm text-gray-600">{{ number_format($user->credits, 2) }}</td>
                         <td class="px-5 py-4 text-sm text-gray-500">{{ $user->created_at->format('M d, Y') }}</td>
                         <td class="px-5 py-4 text-right">
-                            <a href="{{ route('admin.users.show', $user) }}" class="inline-flex items-center gap-1.5 text-xs font-semibold text-primary hover:text-primary-container transition-colors">
-                                View
-                                <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
-                            </a>
+                            <div class="flex items-center justify-end gap-3">
+                                <a href="{{ route('admin.users.edit', $user) }}" title="Edit {{ $user->name }}" class="inline-flex items-center gap-1.5 text-xs font-semibold text-gray-500 hover:text-primary transition-colors">
+                                    <span class="material-symbols-outlined text-[16px]">edit</span>
+                                    Edit
+                                </a>
+                                <a href="{{ route('admin.users.show', $user) }}" class="inline-flex items-center gap-1.5 text-xs font-semibold text-primary hover:text-primary-container transition-colors">
+                                    View
+                                    <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                                </a>
+                            </div>
                         </td>
                     </tr>
                 @empty

@@ -51,7 +51,7 @@
                         <td class="px-5 py-4 text-sm text-gray-600">{{ $voice->gender ?? '—' }}</td>
                         <td class="px-5 py-4 text-sm text-gray-600">{{ $voice->accent ?? '—' }}</td>
                         <td class="px-5 py-4">
-                            <div class="flex items-center justify-center gap-2">
+                            <div class="flex flex-col items-center gap-1.5">
                                 @if ($voice->sample_path)
                                     <audio controls preload="none" class="h-8 w-36">
                                         <source src="{{ $voice->sample_url }}" type="audio/mpeg">
@@ -59,12 +59,17 @@
                                 @else
                                     <span class="text-xs text-gray-400">No sample</span>
                                 @endif
-                                <form method="POST" action="{{ route('admin.voices.sample', $voice) }}" class="inline">
-                                    @csrf
-                                    <button type="submit" title="Generate sample" class="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-gray-100 text-gray-500 hover:bg-primary/10 hover:text-primary transition-colors">
-                                        <span class="material-symbols-outlined text-[16px]">refresh</span>
-                                    </button>
-                                </form>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-[10px] font-semibold {{ str_contains($engines[$voice->id] ?? '', 'fallback') ? 'text-amber-600' : 'text-green-600' }}">
+                                        {{ $engines[$voice->id] ?? '' }}
+                                    </span>
+                                    <form method="POST" action="{{ route('admin.voices.sample', $voice) }}" class="inline">
+                                        @csrf
+                                        <button type="submit" title="Generate sample" class="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-gray-100 text-gray-500 hover:bg-primary/10 hover:text-primary transition-colors">
+                                            <span class="material-symbols-outlined text-[16px]">refresh</span>
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
                         </td>
                         <td class="px-5 py-4">
