@@ -63,6 +63,7 @@
                         ['key' => 'users', 'label' => 'Users', 'icon' => 'group', 'route' => 'admin.users.index'],
                         ['key' => 'calls', 'label' => 'Calls', 'icon' => 'history', 'route' => 'admin.calls.index'],
                         ['key' => 'payments', 'label' => 'Payments', 'icon' => 'payments', 'route' => 'admin.payments.index'],
+                        ['key' => 'voices', 'label' => 'Voices', 'icon' => 'record_voice_over', 'route' => 'admin.voices.index'],
                         ['key' => 'monetization', 'label' => 'Monetization', 'icon' => 'tune', 'route' => 'admin.monetization.index'],
                         ['key' => 'waitlist', 'label' => 'Waitlist', 'icon' => 'list_alt', 'route' => 'admin.waitlist.index'],
                         ['key' => 'inquiries', 'label' => 'Inquiries', 'icon' => 'contact_mail', 'route' => 'admin.inquiries.index'],
@@ -95,7 +96,7 @@
                         <span class="material-symbols-outlined text-[16px]">arrow_back</span>
                         App
                     </a>
-                    <form method="POST" action="{{ route('logout') }}" class="inline">
+                    <form method="POST" action="{{ route('admin.logout') }}" class="inline">
                         @csrf
                         <button type="submit" class="flex items-center justify-center gap-1.5 rounded-lg py-2 px-3 text-xs font-medium text-gray-500 hover:bg-red-50 hover:text-red-500 transition-all">
                             <span class="material-symbols-outlined text-[16px]">logout</span>

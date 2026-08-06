@@ -18,6 +18,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             AdminUserSeeder::class,
             AchievementSeeder::class,
+            VoiceSeeder::class,
+            OpenAiVoiceSeeder::class,
         ]);
 
         if (app()->environment('local', 'development')) {

@@ -6,6 +6,7 @@ use App\Models\Call;
 use App\Models\MonetizationSetting;
 use App\Models\Task;
 use App\Models\User;
+use App\Models\Voice;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -15,7 +16,7 @@ class VapiService
     protected string $apiKey;
     protected string $baseUrl = 'https://api.vapi.ai';
 
-    // Available 11labs voice IDs — mirrors the onboarding voice picker
+    // Available 11labs voice IDs — fallback map; the source of truth is the `voices` table
     const VOICES = [
         'cgSgspJ2msm6clMCkdW9' => ['name' => 'Jessica', 'provider' => '11labs'],
         'TX3LPaxmHKxFdv7VOQHJ' => ['name' => 'Liam',    'provider' => '11labs'],
@@ -35,6 +36,14 @@ class VapiService
         if (empty($this->apiKey)) {
             Log::error('VapiService: VAPI_PRIVATE_KEY is missing from configuration.');
         }
+    }
+
+    /**
+     * Resolve a voice row from the DB by its Vapi voice ID. Falls back to null.
+     */
+    protected function resolveVoice(string $voiceId): ?Voice
+    {
+        return Voice::where('vapi_voice_id', $voiceId)->first();
     }
 
     /**
@@ -147,8 +156,10 @@ class VapiService
      */
     protected function buildEphemeralAssistant(User $user, string $callType, ?Collection $tasks, ?int $localCallId = null): array
     {
-        $voiceId   = $user->voice_id ?? self::DEFAULT_VOICE_ID;
-        $voiceName = self::VOICES[$voiceId]['name'] ?? 'Jessica';
+        $voiceId = $user->voice_id ?? self::DEFAULT_VOICE_ID;
+        $voice   = $this->resolveVoice($voiceId);
+        $voiceName = $voice->name ?? (self::VOICES[$voiceId]['name'] ?? 'Jessica');
+        $voiceProvider = $voice->provider ?? (self::VOICES[$voiceId]['provider'] ?? '11labs');
 
         $systemPrompt = $this->buildSystemPrompt($user, $callType, $tasks, $voiceName);
         $firstMessage = $this->buildFirstMessage($user, $callType, $voiceName);
@@ -221,7 +232,7 @@ class VapiService
                 ],
             ],
             'voice' => [
-                'provider' => '11labs',
+                'provider' => $voiceProvider,
                 'voiceId'  => $voiceId,
                 'stability'        => 0.5,
                 'similarityBoost'  => 0.75,
@@ -405,13 +416,17 @@ INSTRUCTIONS;
             ->where('status', 'pending')
             ->get();
 
+        $voiceId = $user->voice_id ?? self::DEFAULT_VOICE_ID;
+        $voice = $this->resolveVoice($voiceId);
+        $voiceName = $voice->name ?? (self::VOICES[$voiceId]['name'] ?? 'Jessica');
+
         $assistant = $this->getWebCallAssistant($user, $callType, $tasks);
 
         return [
             'assistant'  => $assistant,
             'callType'   => $callType,
-            'voiceId'    => $user->voice_id ?? self::DEFAULT_VOICE_ID,
-            'voiceName'  => self::VOICES[$user->voice_id ?? self::DEFAULT_VOICE_ID]['name'] ?? 'Jessica',
+            'voiceId'    => $voiceId,
+            'voiceName'  => $voiceName,
         ];
     }
 

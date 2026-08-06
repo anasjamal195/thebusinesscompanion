@@ -10,18 +10,21 @@ class AdminUserSeeder extends Seeder
 {
     public function run(): void
     {
+        $email = env('ADMIN_EMAIL', 'admin@goalchaser.co');
+        $password = env('ADMIN_PASSWORD', 'ChangeMe#2026!');
+
         User::firstOrCreate(
-            ['email' => 'admink2@dialer.best'],
+            ['email' => $email],
             [
                 'name' => 'Admin',
-                'email' => 'admink2@dialer.best',
-                'password' => Hash::make('K#9mP$2vL@8xQ!nB7wE*5rT'),
+                'email' => $email,
+                'password' => Hash::make($password),
                 'role' => 'admin',
                 'credits' => 999999.99,
                 'onboarding_completed' => true,
             ]
         );
 
-        $this->command->info('Admin user seeded: admink2@dialer.best');
+        $this->command->info("Admin user seeded: {$email}");
     }
 }

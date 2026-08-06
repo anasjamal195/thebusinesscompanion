@@ -33,6 +33,9 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/auth/google', [AuthController::class, 'googleLogin']);
 Route::post('/contact', [ContactController::class, 'store']);
 
+// Voice catalog (public — needed by onboarding before auth)
+Route::get('/voices', [\App\Http\Controllers\Api\VoiceController::class, 'index']);
+
 // Authenticated routes
 Route::middleware('auth:sanctum')->group(function () {
     // Auth

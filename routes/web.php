@@ -275,12 +275,25 @@ Route::get("/api/voice-preview/{voiceId}", VoicePreviewController::class)->name(
 // ── Admin ──────────────────────────────────────────────────────────────────────
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\AdminLoginController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\AdminCallController;
 use App\Http\Controllers\Admin\AdminPaymentController;
 use App\Http\Controllers\Admin\AdminMonetizationController;
 use App\Http\Controllers\Admin\AdminWaitlistController;
 use App\Http\Controllers\Admin\AdminInquiryController;
+use App\Http\Controllers\Admin\AdminVoiceController;
+
+// ── Admin Auth (separate login) ───────────────────────────────────────────────
+
+Route::middleware("guest")->prefix("admin")->name("admin.")->group(function () {
+    Route::get("/login", [AdminLoginController::class, "create"])->name("login");
+    Route::post("/login", [AdminLoginController::class, "store"])->name("login.store");
+});
+
+Route::post("/admin/logout", [AdminLoginController::class, "destroy"])
+    ->middleware("auth")
+    ->name("admin.logout");
 
 Route::middleware(["auth", "admin"])
     ->prefix("admin")
@@ -326,6 +339,30 @@ Route::middleware(["auth", "admin"])
             AdminInquiryController::class,
             "destroy",
         ])->name("inquiries.destroy");
+        Route::get("/voices", [AdminVoiceController::class, "index"])->name(
+            "voices.index",
+        );
+        Route::get("/voices/create", [AdminVoiceController::class, "create"])->name(
+            "voices.create",
+        );
+        Route::post("/voices", [AdminVoiceController::class, "store"])->name(
+            "voices.store",
+        );
+        Route::get("/voices/{voice}", [AdminVoiceController::class, "edit"])->name(
+            "voices.edit",
+        );
+        Route::put("/voices/{voice}", [AdminVoiceController::class, "update"])->name(
+            "voices.update",
+        );
+        Route::post("/voices/{voice}/sample", [AdminVoiceController::class, "generateSample"])->name(
+            "voices.sample",
+        );
+        Route::post("/voices/{voice}/toggle", [AdminVoiceController::class, "toggle"])->name(
+            "voices.toggle",
+        );
+        Route::delete("/voices/{voice}", [AdminVoiceController::class, "destroy"])->name(
+            "voices.destroy",
+        );
     });
 
 // ── Webhooks (unauthenticated, verified by signature) ─────────────────────────
