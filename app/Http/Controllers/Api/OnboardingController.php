@@ -28,6 +28,7 @@ class OnboardingController extends Controller
             'off_days' => $validated['off_days'] ?? [],
             'voice_id' => $validated['voice_id'],
             'calling_preference' => $validated['calling_preference'] ?? 'phone',
+            'onboarding_completed' => true,
         ]);
 
         if ($request->filled('phone_number')) {
