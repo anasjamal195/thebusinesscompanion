@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-  <link rel="icon" type="image/png" href="{{ asset('assets/logo-min.png') }}">
+  <link rel="icon" type="image/png" href="{{ asset('assets/logo/logo.png') }}">
   <title>Dialer.best - Mobile App</title>
   @vite(['resources/css/app.css'])
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900&display=swap"
