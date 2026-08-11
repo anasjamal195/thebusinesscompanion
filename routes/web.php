@@ -36,6 +36,14 @@ Route::get("/mobile-app", function () {
     return view("mobile-app");
 })->name("mobile.app");
 
+Route::get("/goalchaser-for-it", function () {
+    return view("solutions.corporate-it");
+})->name("solutions.corporate-it");
+
+Route::get("/goalchaser-for-textile", function () {
+    return view("solutions.textile");
+})->name("solutions.textile");
+
 Route::get("/download-apk", function () {
     $filePath = storage_path("app/apk/dialer-best.apk");
     if (file_exists($filePath)) {

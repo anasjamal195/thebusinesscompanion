@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dialer.best — Voice Infrastructure & AI Automation</title>
+  <title>GoalChaser — AI-Powered Productivity for Individuals &amp; Teams</title>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -103,7 +103,7 @@
     .nav-inner {
       max-width: 1200px;
       margin: 0 auto;
-      height: 72px;
+      height: 56px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -255,6 +255,27 @@
       z-index: 1;
       max-width: 720px;
     }
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.6875rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #00aff0;
+      background: rgba(0,175,240,0.1);
+      border: 1px solid rgba(0,175,240,0.3);
+      padding: 0.375rem 0.875rem;
+      border-radius: 100px;
+      margin-bottom: 1.5rem;
+    }
+    .hero-tagline {
+      margin-top: 1.5rem;
+      font-size: 0.9375rem;
+      font-weight: 800;
+      color: rgba(255,255,255,0.55);
+    }
     .hero-h1 {
       font-size: clamp(2.5rem, 5vw, 3.75rem);
       font-weight: 900;
@@ -303,6 +324,12 @@
       font-weight: 900;
       color: var(--white);
       letter-spacing: -0.5px;
+    }
+    .hero-stat-sub {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.55);
+      margin-top: 0.25rem;
     }
     .hero-stat-value.accent { color: #00aff0; }
     .hero-stat-value.blue { color: var(--secondary); }
@@ -956,6 +983,12 @@
       gap: 1rem;
       flex-wrap: wrap;
     }
+    .cta-support {
+      margin-top: 1.5rem;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      color: var(--dim);
+    }
 
     /* ── FOOTER ── */
     footer {
@@ -1035,6 +1068,392 @@
     .footer-bottom a { color: var(--accent); text-decoration: none; font-weight: 700; }
     .footer-bottom a:hover { text-decoration: underline; }
 
+    /* ── AI VOICE VISUAL ── */
+    #voice { background: var(--white); }
+    .voice-visual {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .voice-call-head {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .voice-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      flex-shrink: 0;
+    }
+    .voice-call-head .vc-name { font-size: 0.9375rem; font-weight: 900; color: var(--ink); }
+    .voice-call-head .vc-status {
+      font-size: 0.6875rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+    }
+    .voice-call-head .vc-time { margin-left: auto; font-size: 0.8125rem; font-weight: 700; color: var(--dim); }
+    .chat-msg { display: flex; gap: 0.625rem; max-width: 92%; }
+    .chat-msg.ai { align-self: flex-start; }
+    .chat-msg.user { align-self: flex-end; flex-direction: row-reverse; }
+    .chat-bubble {
+      padding: 0.75rem 1rem;
+      border-radius: var(--radius-md);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      line-height: 1.5;
+    }
+    .chat-msg.ai .chat-bubble {
+      background: var(--white);
+      border: 1px solid var(--border);
+      color: var(--ink);
+    }
+    .chat-msg.user .chat-bubble {
+      background: var(--ink);
+      color: var(--white);
+    }
+    .chat-meta { font-size: 0.6875rem; font-weight: 700; color: var(--dim); }
+    .chat-label {
+      font-size: 0.625rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      margin-bottom: 0.25rem;
+    }
+    .voice-closing {
+      text-align: center;
+      font-size: 1.125rem;
+      font-weight: 900;
+      color: var(--ink);
+      margin-top: 0.5rem;
+    }
+    .voice-closing span { color: var(--accent); }
+
+    /* ── MANAGEMENT INTELLIGENCE DASHBOARD ── */
+    #intelligence { background: var(--surface); }
+    .dash-preview {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      box-shadow: 0 16px 40px rgba(45,55,72,0.08);
+    }
+    .dash-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .dash-top .dt-title { font-size: 0.8125rem; font-weight: 900; color: var(--ink); }
+    .dash-top .dt-sub { font-size: 0.6875rem; font-weight: 700; color: var(--dim); }
+    .dash-top .dt-badge {
+      font-size: 0.625rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--accent);
+      background: var(--accent-light);
+      padding: 0.25rem 0.625rem;
+      border-radius: 100px;
+    }
+    .dash-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 1.25rem;
+      padding: 1.5rem;
+    }
+    .dash-overall { border-right: 1px solid var(--border); padding-right: 1.25rem; }
+    .dash-overall .do-ring {
+      width: 128px;
+      height: 128px;
+      border-radius: 50%;
+      background: conic-gradient(var(--accent) 0 68%, var(--surface) 68% 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+    .dash-overall .do-ring-inner {
+      width: 92px;
+      height: 92px;
+      border-radius: 50%;
+      background: var(--white);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .do-ring-inner .do-num { font-size: 1.5rem; font-weight: 900; color: var(--ink); }
+    .do-ring-inner .do-cap { font-size: 0.625rem; font-weight: 800; text-transform: uppercase; color: var(--dim); }
+    .do-label { font-size: 0.8125rem; font-weight: 900; color: var(--ink); margin-bottom: 0.25rem; }
+    .do-sub { font-size: 0.75rem; font-weight: 600; color: var(--muted); }
+    .dash-cols { display: flex; flex-direction: column; gap: 0.875rem; }
+    .dash-mini {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 0.875rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .dash-mini .dm-label { font-size: 0.6875rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--dim); }
+    .dash-mini .dm-value { font-size: 0.9375rem; font-weight: 900; color: var(--ink); }
+    .dash-mini .dm-bar {
+      width: 90px;
+      height: 6px;
+      border-radius: 3px;
+      background: var(--border);
+      overflow: hidden;
+      margin-top: 0.375rem;
+    }
+    .dash-mini .dm-bar span { display: block; height: 100%; border-radius: 3px; background: var(--accent); }
+    .dash-mini .dm-bar span.green { background: var(--secondary); }
+    .dash-mini .dm-bar span.amber { background: #F59E0B; }
+    .dash-rows { grid-column: 1 / -1; border-top: 1px solid var(--border); padding-top: 1.25rem; }
+    .dash-rows .dr-title { font-size: 0.75rem; font-weight: 900; color: var(--ink); margin-bottom: 0.75rem; }
+    .dr-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.5rem 0;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      color: var(--slate);
+    }
+    .dr-item + .dr-item { border-top: 1px solid var(--surface); }
+    .dr-item .dr-status {
+      font-size: 0.625rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 0.2rem 0.5rem;
+      border-radius: 100px;
+    }
+    .dr-item .dr-status.on { background: var(--secondary-light); color: var(--secondary); }
+    .dr-item .dr-status.warn { background: #FEF3C7; color: #D97706; }
+
+    /* ── AI EMPLOYEE ANALYSIS CARD ── */
+    #analysis { background: var(--white); }
+    .analysis-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 2rem;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+    .analysis-head {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding-bottom: 1.25rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 1.25rem;
+    }
+    .analysis-avatar { width: 48px; height: 48px; border-radius: 50%; background: var(--ink); color: var(--white); display: flex; align-items: center; justify-content: center; font-weight: 900; }
+    .analysis-name { font-size: 0.9375rem; font-weight: 900; color: var(--ink); }
+    .analysis-role { font-size: 0.75rem; font-weight: 600; color: var(--muted); }
+    .analysis-status {
+      margin-left: auto;
+      font-size: 0.625rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--secondary);
+      background: var(--secondary-light);
+      padding: 0.3rem 0.7rem;
+      border-radius: 100px;
+    }
+    .analysis-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 0;
+    }
+    .analysis-row + .analysis-row { border-top: 1px solid var(--border); }
+    .analysis-row .ar-label { font-size: 0.8125rem; font-weight: 700; color: var(--slate); }
+    .analysis-row .ar-value { font-size: 0.9375rem; font-weight: 900; color: var(--ink); }
+    .analysis-row .ar-pill {
+      font-size: 0.625rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 0.25rem 0.625rem;
+      border-radius: 100px;
+      background: #FEF3C7;
+      color: #D97706;
+    }
+    .analysis-attn {
+      margin-top: 1.25rem;
+      background: #FEF3C7;
+      border: 1px solid #FDE68A;
+      border-radius: var(--radius-md);
+      padding: 0.875rem 1rem;
+      font-size: 0.8125rem;
+      font-weight: 800;
+      color: #92400E;
+      text-align: center;
+    }
+
+    /* ── MANAGERS TIME ── */
+    #managers { background: var(--surface); }
+    .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 3rem; }
+    .compare-box {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+    }
+    .compare-box .cb-title { font-size: 0.8125rem; font-weight: 900; color: var(--ink); margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.06em; }
+    .compare-box.dim { opacity: 0.6; }
+    .cb-flow { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
+    .cb-node {
+      font-size: 0.8125rem;
+      font-weight: 800;
+      padding: 0.625rem 1.25rem;
+      border-radius: var(--radius-sm);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--ink);
+      text-align: center;
+    }
+    .cb-node.hot { background: var(--secondary-light); border-color: var(--secondary-border); color: var(--secondary); }
+    .cb-node.dark { background: var(--ink); color: var(--white); }
+    .cb-node.accent { background: var(--accent); color: var(--white); }
+    .cb-arrow { color: var(--dim); font-size: 0.875rem; line-height: 1; }
+    .cb-note { font-size: 0.6875rem; font-weight: 700; color: var(--dim); margin-top: 0.5rem; }
+
+    /* ── BUILT FOR ── */
+    #built-for { background: var(--white); }
+    .industry-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+    .industry-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+    .industry-card .ic-icon { width: 48px; height: 48px; border-radius: var(--radius-sm); background: var(--accent-light); color: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 1.375rem; }
+    .industry-card .ic-icon.green { background: var(--secondary-light); color: var(--secondary); }
+    .industry-card h4 { font-size: 1.25rem; font-weight: 900; color: var(--ink); }
+    .industry-card .ic-tag { font-size: 0.8125rem; font-weight: 800; color: var(--muted); }
+    .industry-card p { font-size: 0.9375rem; font-weight: 500; color: var(--muted); line-height: 1.6; }
+    .ic-flow {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.375rem;
+    }
+    .ic-flow-step {
+      display: flex;
+      align-items: center;
+      gap: 0.625rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--slate);
+    }
+    .ic-flow-step .ifs-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+    .ic-flow-step.green .ifs-dot { background: var(--secondary); }
+    .ic-flow-step .ifs-arrow { color: var(--dim); font-size: 0.625rem; }
+    .ic-uses { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+    .ic-uses li { display: flex; align-items: center; gap: 0.625rem; font-size: 0.8125rem; font-weight: 700; color: var(--slate); }
+    .ic-uses li::before { content: ''; width: 16px; height: 16px; border-radius: 50%; background: var(--accent-light); border: 1.5px solid var(--accent-border); flex-shrink: 0; }
+    .ic-uses.green li::before { background: var(--secondary-light); border-color: var(--secondary-border); }
+
+    .ic-visual { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1rem 1rem 0.6rem; display: flex; flex-direction: column; gap: 0.3rem; }
+    .ic-visual .vnode { display: flex; align-items: center; gap: 0.6rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 0.5rem 0.6rem; font-size: 0.78rem; font-weight: 800; color: var(--ink); }
+    .ic-visual .vnode .vnic { width: 26px; height: 26px; border-radius: 8px; background: var(--accent-light); color: var(--accent); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .ic-visual .vnode .vnic svg { width: 15px; height: 15px; }
+    .ic-visual.green .vnode .vnic { background: var(--secondary-light); color: var(--secondary); }
+    .ic-visual .vnode .vst { margin-left: auto; font-size: 0.58rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; color: var(--dim); background: var(--surface); border: 1px solid var(--border); padding: 0.15rem 0.5rem; border-radius: 999px; }
+    .ic-visual .varrow { text-align: center; color: var(--dim); line-height: 0; font-size: 0.6rem; padding: 0.05rem 0; }
+    .btn-green { background: var(--secondary); }
+    .btn-green:hover { background: #0a9a3b; }
+
+    /* ── PRODUCTIVITY LOOP ── */
+    #loop { background: var(--surface); }
+    .loop-wrap {
+      max-width: 760px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      position: relative;
+    }
+    .loop-step {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem 1.5rem;
+    }
+    .loop-step .ls-phase { font-size: 0.625rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); width: 110px; flex-shrink: 0; }
+    .loop-step .ls-phase.green { color: var(--secondary); }
+    .loop-step .ls-icon { width: 40px; height: 40px; border-radius: 50%; background: var(--accent-light); color: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 1.125rem; flex-shrink: 0; }
+    .loop-step .ls-icon.green { background: var(--secondary-light); color: var(--secondary); }
+    .loop-step .ls-title { font-size: 0.9375rem; font-weight: 900; color: var(--ink); }
+    .loop-step .ls-text { font-size: 0.8125rem; font-weight: 600; color: var(--muted); }
+    .loop-arrow { align-self: center; color: var(--dim); font-size: 1rem; line-height: 1; }
+    .loop-return {
+      margin: 1rem auto 0;
+      font-size: 0.75rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    /* ── INTEGRATIONS ── */
+    #integrations { background: var(--white); }
+    .integrations-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      max-width: 760px;
+      margin: 0 auto;
+    }
+    .integration-chip {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 0.875rem 1rem;
+      font-size: 0.8125rem;
+      font-weight: 800;
+      color: var(--slate);
+    }
+
     /* ── ANIMATIONS ── */
     @keyframes revealUp {
       from { opacity: 0; transform: translateY(32px); }
@@ -1053,6 +1472,8 @@
       .services-grid { grid-template-columns: repeat(3, 1fr); }
       .solutions-grid { grid-template-columns: repeat(3, 1fr); }
       .why-grid { grid-template-columns: repeat(2, 1fr); }
+      .industry-grid { grid-template-columns: 1fr; }
+      .integrations-grid { grid-template-columns: repeat(3, 1fr); }
     }
     @media (max-width: 900px) {
       .overview-grid { grid-template-columns: 1fr; }
@@ -1062,6 +1483,10 @@
       .process-timeline::before { display: none; }
       .footer-grid { grid-template-columns: 1fr 1fr; }
       .hero-stats { grid-template-columns: repeat(2, 1fr); }
+      .compare-grid { grid-template-columns: 1fr; }
+      .dash-grid { grid-template-columns: 1fr; }
+      .dash-overall { border-right: none; padding-right: 0; border-bottom: 1px solid var(--border); padding-bottom: 1.25rem; }
+      .integrations-grid { grid-template-columns: repeat(2, 1fr); }
     }
     @media (max-width: 640px) {
       section { padding: 4rem 0; }
@@ -1070,6 +1495,8 @@
       .why-grid { grid-template-columns: 1fr 1fr; }
       .process-timeline { grid-template-columns: 1fr; }
       .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .integrations-grid { grid-template-columns: 1fr 1fr; }
+      .industry-card { padding: 1.5rem; }
     }
 
     /* ── MODAL ── */
@@ -1292,22 +1719,23 @@
   <symbol id="icon-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
   </symbol>
+  <symbol id="icon-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+  </symbol>
 </svg>
 
 <!-- ══ NAV ══ -->
 <nav id="navbar">
   <div class="nav-inner">
-    <a href="#" class="nav-logo">Dialer<span>.best</span></a>
+    <a href="#" class="nav-logo">Goal<span>Chaser</span></a>
     <ul class="nav-links">
-      <li><a href="#products">Products</a></li>
-      <li><a href="#services">Services</a></li>
-      <li><a href="#solutions">Solutions</a></li>
-      <li><a href="#about">About</a></li>
-      <li><a href="#cta">Contact</a></li>
+      <li><a href="#how-it-works">How It Works</a></li>
+      <li><a href="/goalchaser-for-textile">For Textile</a></li>
+      <li><a href="/goalchaser-for-it">For IT</a></li>
     </ul>
     <div class="nav-actions">
-      <a href="#" class="btn-ghost">Sign in</a>
-      <a href="#cta" class="btn-primary">Book Demo →</a>
+      <a href="#" class="btn-ghost">Sign In</a>
+      <a href="#cta" class="btn-primary">Get Started →</a>
     </div>
     <button class="nav-hamburger" id="hamburger" aria-label="Open menu">
       <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round">
@@ -1318,14 +1746,12 @@
     </button>
   </div>
   <div class="mobile-menu" id="mobileMenu">
-    <a href="#products">Products</a>
-    <a href="#services">Services</a>
-    <a href="#solutions">Solutions</a>
-    <a href="#about">About</a>
-    <a href="#cta">Contact</a>
+    <a href="#how-it-works">How It Works</a>
+    <a href="/goalchaser-for-textile">For Textile</a>
+    <a href="/goalchaser-for-it">For IT</a>
     <div class="mobile-actions">
-      <a href="#" class="btn-outline">Sign in</a>
-      <a href="#cta" class="btn-primary btn-lg">Book Demo →</a>
+      <a href="#" class="btn-outline">Sign In</a>
+      <a href="#cta" class="btn-primary btn-lg">Get Started →</a>
     </div>
   </div>
 </nav>
@@ -1335,466 +1761,704 @@
   <div class="container">
     <div class="hero-grid">
       <div>
+        <div class="hero-eyebrow reveal reveal-delay-1">AI-Powered Productivity</div>
         <h1 class="hero-h1 reveal reveal-delay-1">
-          The operating system for <span class="accent">voice-driven</span> businesses
+          Productivity that <span class="accent">doesn't wait for you</span>
         </h1>
         <p class="hero-lead reveal reveal-delay-2">
-          Deploy cloud dialers, AI voice agents, workforce automation, and business communication infrastructure from a single platform.
+          GoalChaser helps individuals and teams stay focused, accountable, and productive through intelligent task management, AI voice follow-ups, blocker detection, and real-time progress reporting.
         </p>
         <div class="hero-cta reveal reveal-delay-3">
-          <a href="#cta" class="btn-primary btn-lg btn-accent">Book a Demo →</a>
-          <a href="#products" class="btn-outline btn-lg">Explore Products</a>
+          <a href="#cta" class="btn-primary btn-lg btn-accent">Get Started →</a>
+          <a href="#how-it-works" class="btn-outline btn-lg">See How It Works</a>
         </div>
+        <div class="hero-tagline reveal reveal-delay-3">Plan. Follow Up. Resolve. Report. Improve.</div>
         <div class="hero-stats reveal">
           <div>
-            <div class="hero-stat-value">Enterprise</div>
-            <div class="hero-stat-label">Infrastructure</div>
+            <div class="hero-stat-value">Personal</div>
+            <div class="hero-stat-label">Productivity</div>
+            <div class="hero-stat-sub">Stay focused on what matters</div>
           </div>
           <div>
-            <div class="hero-stat-value accent">AI</div>
-            <div class="hero-stat-label">Automation</div>
+            <div class="hero-stat-value accent">AI Voice</div>
+            <div class="hero-stat-label">Follow-ups</div>
+            <div class="hero-stat-sub">Conversations that keep work moving</div>
           </div>
           <div>
-            <div class="hero-stat-value">Global</div>
-            <div class="hero-stat-label">Voice Network</div>
+            <div class="hero-stat-value">Team</div>
+            <div class="hero-stat-label">Productivity</div>
+            <div class="hero-stat-sub">Accountability without micromanagement</div>
           </div>
           <div>
-            <div class="hero-stat-value blue">24/7</div>
-            <div class="hero-stat-label">Support</div>
+            <div class="hero-stat-value blue">Intelligent</div>
+            <div class="hero-stat-label">Reporting</div>
+            <div class="hero-stat-sub">Clear visibility into real progress</div>
           </div>
         </div>
       </div>
-
     </div>
   </div>
 </section>
 
-<!-- ══ OVERVIEW ══ -->
-<section id="overview">
+<!-- ══ PRODUCTIVITY GAP ══ -->
+<section id="gap">
   <div class="container">
     <div class="section-header">
-      <div class="eyebrow">Overview</div>
-      <h2 class="section-title">More than a <span class="accent">dialer company</span></h2>
-      <p class="section-sub">Telecom infrastructure, AI-powered voice automation, and workforce productivity systems — unified in one ecosystem.</p>
+      <div class="eyebrow">The Productivity Gap</div>
+      <h2 class="section-title">Knowing what needs to be done <span class="accent">isn't the same as getting it done</span></h2>
+      <p class="section-sub">Tasks get forgotten. Follow-ups get missed. Blockers stay hidden. Managers spend valuable time chasing updates instead of focusing on growth.</p>
     </div>
     <div class="overview-grid">
       <div class="overview-card reveal">
-        <div class="overview-icon accent"><svg class="icon"><use href="#icon-antenna"/></svg></div>
-        <h3>Voice Infrastructure</h3>
-        <p>Reliable communication systems built for scale. Cloud PBX, SIP trunking, and enterprise dialer platforms that handle millions of calls.</p>
+        <div class="overview-icon accent"><svg class="icon"><use href="#icon-home"/></svg></div>
+        <h3>Personal Productivity</h3>
+        <p>Turn intentions into consistent execution. Organize priorities, receive intelligent follow-ups, and build accountability around the work that matters most.</p>
       </div>
       <div class="overview-card reveal reveal-delay-1">
-        <div class="overview-icon blue"><svg class="icon"><use href="#icon-ai"/></svg></div>
-        <h3>AI Automation</h3>
-        <p>AI-powered voice agents, intelligent call routing, and workflow automation that transform how your team communicates and operates.</p>
+        <div class="overview-icon blue"><svg class="icon"><use href="#icon-briefcase"/></svg></div>
+        <h3>Team Productivity</h3>
+        <p>Keep your team moving without constant supervision. GoalChaser communicates with employees, follows up on tasks, identifies blockers, and helps teams stay aligned with their objectives.</p>
       </div>
       <div class="overview-card reveal reveal-delay-2">
-        <div class="overview-icon mixed"><svg class="icon"><use href="#icon-chart"/></svg></div>
-        <h3>Workforce Intelligence</h3>
-        <p>Real-time visibility into productivity and execution. AI-driven reporting, task management, and performance tracking for modern teams.</p>
+        <div class="overview-icon mixed"><svg class="icon"><use href="#icon-monitor"/></svg></div>
+        <h3>Management Visibility</h3>
+        <p>Know what's actually happening. Get continuous, structured reporting on progress, blockers, productivity patterns, and areas that need human attention.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ══ PRODUCTS ══ -->
-<section id="products">
+<!-- ══ HOW IT WORKS ══ -->
+<section id="how-it-works">
   <div class="container">
     <div class="section-header">
-      <div class="eyebrow">Products</div>
-      <h2 class="section-title">AI products built for <span class="blue">execution</span></h2>
-      <p class="section-sub">Purpose-built tools designed to improve accountability, productivity, and business performance.</p>
+      <div class="eyebrow">How It Works</div>
+      <h2 class="section-title">From daily tasks to <span class="accent">measurable progress</span></h2>
+      <p class="section-sub">GoalChaser creates a continuous productivity loop that helps people execute and gives management the visibility they need.</p>
     </div>
+    <div class="loop-wrap">
+      <div class="loop-step reveal">
+        <div class="ls-phase">01 · Plan</div>
+        <div class="ls-icon"><svg class="icon"><use href="#icon-target"/></svg></div>
+        <div>
+          <div class="ls-title">Set goals and priorities</div>
+          <div class="ls-text">Define what needs to be accomplished and when.</div>
+        </div>
+      </div>
+      <div class="loop-arrow">▼</div>
+      <div class="loop-step reveal reveal-delay-1">
+        <div class="ls-phase green">02 · Communicate</div>
+        <div class="ls-icon green"><svg class="icon"><use href="#icon-phone"/></svg></div>
+        <div>
+          <div class="ls-title">GoalChaser checks in</div>
+          <div class="ls-text">AI voice conversations keep individuals and teams connected to their commitments.</div>
+        </div>
+      </div>
+      <div class="loop-arrow">▼</div>
+      <div class="loop-step reveal reveal-delay-2">
+        <div class="ls-phase">03 · Follow Up</div>
+        <div class="ls-icon"><svg class="icon"><use href="#icon-refresh"/></svg></div>
+        <div>
+          <div class="ls-title">Keep work moving</div>
+          <div class="ls-text">GoalChaser checks progress, asks the right questions, and follows up when tasks need attention.</div>
+        </div>
+      </div>
+      <div class="loop-arrow">▼</div>
+      <div class="loop-step reveal reveal-delay-3">
+        <div class="ls-phase green">04 · Resolve</div>
+        <div class="ls-icon green"><svg class="icon"><use href="#icon-check"/></svg></div>
+        <div>
+          <div class="ls-title">Surface and address blockers</div>
+          <div class="ls-text">Employees can explain what's holding them back, allowing GoalChaser to identify blockers and help move work forward.</div>
+        </div>
+      </div>
+      <div class="loop-arrow">▼</div>
+      <div class="loop-step reveal">
+        <div class="ls-phase">05 · Report</div>
+        <div class="ls-icon"><svg class="icon"><use href="#icon-chart"/></svg></div>
+        <div>
+          <div class="ls-title">Turn conversations into intelligence</div>
+          <div class="ls-text">Progress, blockers, productivity patterns, and outcomes become clear reports for the people responsible for managing them.</div>
+        </div>
+      </div>
+      <div class="loop-return reveal">↺ Back to Plan — the loop repeats</div>
+    </div>
+  </div>
+</section>
 
-    <!-- Product 01: AI task planner -->
+<!-- ══ AI VOICE ══ -->
+<section id="voice">
+  <div class="container">
     <div class="product-block">
       <div class="reveal">
-        <span class="product-tag">Product 01</span>
-        <div class="product-name">AI <span class="accent">task </span>planner</div>
-        <div class="product-tagline">Your AI accountability partner</div>
-        <p class="product-desc">AI task planner uses AI voice interactions to keep users focused on priorities, follow through on commitments, and maintain daily productivity — without the noise.</p>
+        <div class="eyebrow">Flagship Feature</div>
+        <div class="product-name">Your productivity assistant can <span class="accent">actually talk to you</span></div>
+        <p class="product-desc">GoalChaser uses intelligent voice conversations to make productivity proactive rather than passive.</p>
+        <p class="voice-closing">Less manual updating. <span>More actual communication.</span></p>
+      </div>
+      <div class="voice-visual reveal reveal-delay-1">
+        <div class="voice-call-head">
+          <div class="voice-avatar"><svg class="icon"><use href="#icon-mic"/></svg></div>
+          <div>
+            <div class="vc-name">GoalChaser AI</div>
+            <div class="vc-status">AI Voice Check-in</div>
+          </div>
+          <div class="vc-time">Morning</div>
+        </div>
+        <div class="chat-msg ai">
+          <div>
+            <div class="chat-label">AI Call</div>
+            <div class="chat-bubble">"Good morning. What are your priorities today?"</div>
+            <div class="chat-meta">GoalChaser helps establish the day's priorities.</div>
+          </div>
+        </div>
+        <div class="chat-msg user">
+          <div>
+            <div class="chat-label">Employee</div>
+            <div class="chat-bubble">"Finishing the client proposal, then the team report."</div>
+          </div>
+        </div>
+        <div class="chat-msg ai">
+          <div>
+            <div class="chat-label">During the Day</div>
+            <div class="chat-bubble">"How is the client proposal progressing?"</div>
+            <div class="chat-meta">Checks progress without another dashboard update.</div>
+          </div>
+        </div>
+        <div class="chat-msg user">
+          <div>
+            <div class="chat-label">Blocker</div>
+            <div class="chat-bubble">"I'm waiting on the final pricing from finance."</div>
+            <div class="chat-meta">The conversation identifies a problem.</div>
+          </div>
+        </div>
+        <div class="chat-msg ai">
+          <div>
+            <div class="chat-label">Follow-up</div>
+            <div class="chat-bubble">"Were you able to resolve the issue?"</div>
+            <div class="chat-meta">GoalChaser automatically follows up.</div>
+          </div>
+        </div>
+        <div class="chat-msg ai">
+          <div>
+            <div class="chat-label">Evening</div>
+            <div class="chat-bubble">"Let's review what you completed today."</div>
+            <div class="chat-meta">The conversation becomes structured productivity data.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PERSONAL PRODUCTIVITY ══ -->
+<section id="individuals">
+  <div class="container">
+    <div class="product-block">
+      <div class="reveal">
+        <span class="product-tag">For Individuals</span>
+        <div class="product-name">Stay accountable to <span class="accent">your own goals</span></div>
+        <div class="product-tagline">Your personal productivity partner</div>
+        <p class="product-desc">GoalChaser acts as your personal productivity partner, helping you plan your day, maintain focus, follow through on commitments, and reflect on your progress.</p>
         <ul class="feature-list">
-          <li>Voice follow-ups</li>
-          <li>Daily planning</li>
-          <li>Task accountability</li>
-          <li>Habit reinforcement</li>
-          <li>Performance insights</li>
+          <li>Daily Planning — start each day with clear priorities</li>
+          <li>Intelligent Follow-ups — reminded at the right time</li>
+          <li>Voice Accountability — talk through your progress</li>
+          <li>Habit &amp; Consistency — build better execution patterns</li>
+          <li>Progress Insights — understand your time and attention</li>
+          <li>Daily Reflection — review and prepare for what's next</li>
         </ul>
-        <a href="#" class="btn-primary btn-accent">Learn More →</a>
+        <a href="#cta" class="btn-primary btn-accent">Improve My Productivity →</a>
       </div>
       <div class="flow-card-col reveal reveal-delay-1">
         <div class="flow-card accent-top">
           <div class="flow-step">
             <div class="flow-step-num num-accent">1</div>
             <div class="flow-step-text">
-              <div class="flow-step-title">User creates tasks</div>
-              <div class="flow-step-sub">Voice or text input</div>
-            </div>
-            <span class="flow-step-icon"><svg class="icon"><use href="#icon-check"/></svg></span>
-          </div>
-          <div class="flow-step">
-            <div class="flow-step-num num-ink">2</div>
-            <div class="flow-step-text">
-              <div class="flow-step-title">AI schedules follow-up calls</div>
-              <div class="flow-step-sub">Intelligent timing</div>
+              <div class="flow-step-title">Plan the day</div>
+              <div class="flow-step-sub">Set clear priorities</div>
             </div>
             <span class="flow-step-icon"><svg class="icon"><use href="#icon-calendar"/></svg></span>
           </div>
           <div class="flow-step">
+            <div class="flow-step-num num-ink">2</div>
+            <div class="flow-step-text">
+              <div class="flow-step-title">AI voice check-in</div>
+              <div class="flow-step-sub">Talk through your plan</div>
+            </div>
+            <span class="flow-step-icon"><svg class="icon"><use href="#icon-mic"/></svg></span>
+          </div>
+          <div class="flow-step">
             <div class="flow-step-num num-blue">3</div>
             <div class="flow-step-text">
-              <div class="flow-step-title">AI checks progress</div>
-              <div class="flow-step-sub">Natural voice conversations</div>
+              <div class="flow-step-title">Intelligent follow-ups</div>
+              <div class="flow-step-sub">At the right time</div>
             </div>
             <span class="flow-step-icon"><svg class="icon"><use href="#icon-phone"/></svg></span>
           </div>
           <div class="flow-step">
             <div class="flow-step-num num-accent">4</div>
             <div class="flow-step-text">
-              <div class="flow-step-title">Task completion increases</div>
-              <div class="flow-step-sub">Accountability loop</div>
+              <div class="flow-step-title">Blockers surfaced</div>
+              <div class="flow-step-sub">Nothing stays hidden</div>
             </div>
-            <span class="flow-step-icon"><svg class="icon"><use href="#icon-chart"/></svg></span>
+            <span class="flow-step-icon"><svg class="icon"><use href="#icon-check"/></svg></span>
           </div>
           <div class="flow-step">
             <div class="flow-step-num num-ink">5</div>
             <div class="flow-step-text">
-              <div class="flow-step-title">Reports and insights</div>
-              <div class="flow-step-sub">Performance analytics</div>
+              <div class="flow-step-title">Daily reflection</div>
+              <div class="flow-step-sub">Review and improve</div>
             </div>
             <span class="flow-step-icon"><svg class="icon"><use href="#icon-chart"/></svg></span>
           </div>
         </div>
       </div>
     </div>
+  </div>
+</section>
 
-    <!-- Product 02: AI Team Manager -->
+<!-- ══ TEAM PRODUCTIVITY ══ -->
+<section id="teams">
+  <div class="container">
     <div class="product-block">
       <div class="flow-card-col reveal">
         <div class="flow-card blue-top">
           <div class="flow-step">
             <div class="flow-step-num num-blue">1</div>
             <div class="flow-step-text">
-              <div class="flow-step-title">Manager creates objectives</div>
-              <div class="flow-step-sub">Define goals and KPIs</div>
+              <div class="flow-step-title">Manager sets objectives</div>
+              <div class="flow-step-sub">Goals, tasks, expectations defined</div>
             </div>
             <span class="flow-step-icon"><svg class="icon"><use href="#icon-target"/></svg></span>
           </div>
           <div class="flow-step">
             <div class="flow-step-num num-ink">2</div>
             <div class="flow-step-text">
-              <div class="flow-step-title">AI distributes tasks</div>
-              <div class="flow-step-sub">Intelligent assignment</div>
-            </div>
-            <span class="flow-step-icon"><svg class="icon"><use href="#icon-check"/></svg></span>
-          </div>
-          <div class="flow-step">
-            <div class="flow-step-num num-accent">3</div>
-            <div class="flow-step-text">
-              <div class="flow-step-title">AI calls employees</div>
-              <div class="flow-step-sub">Automated check-ins</div>
+              <div class="flow-step-title">GoalChaser communicates</div>
+              <div class="flow-step-sub">AI check-ins and follow-ups</div>
             </div>
             <span class="flow-step-icon"><svg class="icon"><use href="#icon-phone"/></svg></span>
           </div>
           <div class="flow-step">
-            <div class="flow-step-num num-accent">4</div>
+            <div class="flow-step-num num-accent">3</div>
             <div class="flow-step-text">
-              <div class="flow-step-title">Updates collected</div>
-              <div class="flow-step-sub">Real-time status</div>
+              <div class="flow-step-title">Progress is collected</div>
+              <div class="flow-step-sub">What's done, what's blocking</div>
             </div>
             <span class="flow-step-icon"><svg class="icon"><use href="#icon-refresh"/></svg></span>
           </div>
           <div class="flow-step">
-            <div class="flow-step-num num-blue">5</div>
+            <div class="flow-step-num num-accent">4</div>
             <div class="flow-step-text">
-              <div class="flow-step-title">Progress analyzed</div>
-              <div class="flow-step-sub">AI-driven insights</div>
+              <div class="flow-step-title">Blockers are identified</div>
+              <div class="flow-step-sub">Issues that need attention</div>
             </div>
             <span class="flow-step-icon"><svg class="icon"><use href="#icon-search"/></svg></span>
           </div>
           <div class="flow-step">
+            <div class="flow-step-num num-blue">5</div>
+            <div class="flow-step-text">
+              <div class="flow-step-title">Follow-ups continue</div>
+              <div class="flow-step-sub">Until work progresses</div>
+            </div>
+            <span class="flow-step-icon"><svg class="icon"><use href="#icon-check"/></svg></span>
+          </div>
+          <div class="flow-step">
             <div class="flow-step-num num-ink">6</div>
             <div class="flow-step-text">
-              <div class="flow-step-title">Executive dashboard</div>
-              <div class="flow-step-sub">Full visibility</div>
+              <div class="flow-step-title">Management gets visibility</div>
+              <div class="flow-step-sub">Reports without asking everyone</div>
             </div>
             <span class="flow-step-icon"><svg class="icon"><use href="#icon-monitor"/></svg></span>
           </div>
         </div>
       </div>
       <div class="reveal reveal-delay-1">
-        <span class="product-tag blue-tag">Product 02</span>
-        <div class="product-name">AI <span class="blue">Team</span> Manager</div>
-        <div class="product-tagline">AI workforce management platform</div>
-        <p class="product-desc">AI Team Manager automates team follow-ups, task assignments, employee reporting, and productivity monitoring through intelligent AI voice interactions.</p>
+        <span class="product-tag blue-tag">For Teams</span>
+        <div class="product-name">Productivity management without <span class="blue">constant chasing</span></div>
+        <div class="product-tagline">Your AI accountability layer</div>
+        <p class="product-desc">GoalChaser takes repetitive follow-up work away from managers while keeping teams accountable and management informed.</p>
         <ul class="feature-list blue-checks">
-          <li>Automated check-ins</li>
-          <li>AI task assignment</li>
-          <li>Productivity analytics</li>
+          <li>AI check-ins and follow-ups</li>
+          <li>Automated task accountability</li>
+          <li>Blocker identification</li>
+          <li>Real-time progress collection</li>
           <li>Executive reporting</li>
-          <li>Department workflows</li>
-          <li>Performance tracking</li>
         </ul>
-        <a href="#" class="btn-primary btn-accent">Learn More →</a>
+        <p class="voice-closing" style="text-align:left">Your managers should manage people and decisions, not spend their day asking, "What's the status?"</p>
+        <a href="#cta" class="btn-primary btn-accent">Improve Team Productivity →</a>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ══ SERVICES ══ -->
-<section id="services">
+<!-- ══ MANAGEMENT INTELLIGENCE ══ -->
+<section id="intelligence">
   <div class="container">
     <div class="section-header">
-      <div class="eyebrow">Services</div>
-      <h2 class="section-title">Voice infrastructure &amp; <span class="accent">telecom services</span></h2>
-      <p class="section-sub">Enterprise-grade communication infrastructure and managed telecom services.</p>
+      <div class="eyebrow">Management Intelligence</div>
+      <h2 class="section-title">Know what's happening without <span class="blue">asking everyone</span></h2>
+      <p class="section-sub">GoalChaser continuously turns tasks, conversations, follow-ups, and progress into a clear picture of your team's productivity.</p>
     </div>
-    <div class="services-grid">
-      <div class="service-card reveal">
-        <div class="service-card-icon accent"><svg class="icon"><use href="#icon-phone"/></svg></div>
-        <h4>Hosted VICIdial</h4>
-        <p>Enterprise dialer platform with full support.</p>
-        <span class="badge-ribbon ribbon-1">Coming Soon</span>
+    <div class="overview-grid">
+      <div class="overview-card reveal">
+        <div class="overview-icon accent"><svg class="icon"><use href="#icon-eye"/></svg></div>
+        <h3>Progress Visibility</h3>
+        <p>See what has been completed, what is still pending, and where progress is slowing down.</p>
       </div>
-      <div class="service-card reveal reveal-delay-1">
-        <div class="service-card-icon b"><svg class="icon"><use href="#icon-zap"/></svg></div>
-        <h4>Predictive Dialers</h4>
-        <p>AI-powered predictive calling algorithms.</p>
-        <span class="badge-ribbon ribbon-2">Coming Soon</span>
+      <div class="overview-card reveal reveal-delay-1">
+        <div class="overview-icon blue"><svg class="icon"><use href="#icon-search"/></svg></div>
+        <h3>Blocker Intelligence</h3>
+        <p>Identify recurring blockers and the people, projects, or processes affected by them.</p>
       </div>
-      <div class="service-card reveal reveal-delay-2">
-        <div class="service-card-icon accent"><svg class="icon"><use href="#icon-rocket"/></svg></div>
-        <h4>Power Dialers</h4>
-        <p>High-velocity dialing for maximum connects.</p>
-        <span class="badge-ribbon ribbon-3">Coming Soon</span>
+      <div class="overview-card reveal reveal-delay-2">
+        <div class="overview-icon mixed"><svg class="icon"><use href="#icon-chart"/></svg></div>
+        <h3>Productivity Analysis</h3>
+        <p>Understand individual and team productivity patterns over time instead of relying only on manual status updates.</p>
       </div>
-      <div class="service-card reveal reveal-delay-3">
-        <div class="service-card-icon b"><svg class="icon"><use href="#icon-zap"/></svg></div>
-        <h4>Progressive Dialers</h4>
-        <p>Agent-based progressive call distribution.</p>
-        <span class="badge-ribbon ribbon-4">Coming Soon</span>
+    </div>
+    <div class="dash-preview reveal">
+      <div class="dash-top">
+        <div>
+          <div class="dt-title">Team Productivity</div>
+          <div class="dt-sub">Live overview · this week</div>
+        </div>
+        <div class="dt-badge">AI Intelligence</div>
       </div>
-      <div class="service-card reveal">
-        <div class="service-card-icon accent"><svg class="icon"><use href="#icon-eye"/></svg></div>
-        <h4>Preview Dialers</h4>
-        <p>Agent review before connecting calls.</p>
-        <span class="badge-ribbon ribbon-5">Coming Soon</span>
-      </div>
-      <div class="service-card reveal reveal-delay-1">
-        <div class="service-card-icon b"><svg class="icon"><use href="#icon-cloud"/></svg></div>
-        <h4>Cloud PBX</h4>
-        <p>Full-featured cloud phone system.</p>
-        <span class="badge-ribbon ribbon-6">Coming Soon</span>
-      </div>
-      <div class="service-card reveal reveal-delay-2">
-        <div class="service-card-icon accent"><svg class="icon"><use href="#icon-link"/></svg></div>
-        <h4>SIP Trunking</h4>
-        <p>Scalable SIP connectivity worldwide.</p>
-        <span class="badge-ribbon ribbon-7">Coming Soon</span>
-      </div>
-      <div class="service-card reveal reveal-delay-3">
-        <div class="service-card-icon b"><svg class="icon"><use href="#icon-antenna"/></svg></div>
-        <h4>VoIP Termination</h4>
-        <p>High-quality VoIP termination routes.</p>
-        <span class="badge-ribbon ribbon-8">Coming Soon</span>
-      </div>
-      <div class="service-card reveal">
-        <div class="service-card-icon accent"><svg class="icon"><use href="#icon-megaphone"/></svg></div>
-        <h4>Voice Broadcasting</h4>
-        <p>Mass notification and broadcast system.</p>
-        <span class="badge-ribbon ribbon-9">Coming Soon</span>
-      </div>
-      <div class="service-card reveal reveal-delay-1">
-        <div class="service-card-icon b"><svg class="icon"><use href="#icon-zap"/></svg></div>
-        <h4>Click-to-Call</h4>
-        <p>One-click calling from any platform.</p>
-        <span class="badge-ribbon ribbon-10">Coming Soon</span>
-      </div>
-      <div class="service-card reveal reveal-delay-2">
-        <div class="service-card-icon accent"><svg class="icon"><use href="#icon-ai"/></svg></div>
-        <h4>AI Voice Agents</h4>
-        <p>Intelligent AI-powered voice assistants.</p>
-        <span class="badge-ribbon ribbon-11">Coming Soon</span>
-      </div>
-      <div class="service-card reveal reveal-delay-3">
-        <div class="service-card-icon b"><svg class="icon"><use href="#icon-link"/></svg></div>
-        <h4>CRM Integrations</h4>
-        <p>Seamless CRM and tool integrations.</p>
-        <span class="badge-ribbon ribbon-12">Coming Soon</span>
-      </div>
-      <div class="service-card reveal">
-        <div class="service-card-icon accent"><svg class="icon"><use href="#icon-tools"/></svg></div>
-        <h4>Custom Solutions</h4>
-        <p>Tailored telecom solutions for your needs.</p>
-        <span class="badge-ribbon ribbon-13">Coming Soon</span>
-      </div>
-      <div class="service-card reveal reveal-delay-1">
-        <div class="service-card-icon b"><svg class="icon"><use href="#icon-monitor"/></svg></div>
-        <h4>Managed Infrastructure</h4>
-        <p>Fully managed voice infrastructure.</p>
-        <span class="badge-ribbon ribbon-14">Coming Soon</span>
-      </div>
-      <div class="service-card reveal reveal-delay-2">
-        <div class="service-card-icon accent"><svg class="icon"><use href="#icon-antenna"/></svg></div>
-        <h4>Carrier Services</h4>
-        <p>Direct carrier relationships and routes.</p>
-        <span class="badge-ribbon ribbon-15">Coming Soon</span>
-      </div>
-      <div class="service-card reveal reveal-delay-3">
-        <div class="service-card-icon b"><svg class="icon"><use href="#icon-headset"/></svg></div>
-        <h4>Technical Support</h4>
-        <p>24/7 expert technical support team.</p>
+      <div class="dash-grid">
+        <div class="dash-overall">
+          <div class="do-ring"><div class="do-ring-inner"><div class="do-num">68%</div><div class="do-cap">On Track</div></div></div>
+          <div class="do-label">Overall team progress</div>
+          <div class="do-sub">Completed vs pending tasks across the team.</div>
+        </div>
+        <div class="dash-cols">
+          <div class="dash-mini">
+            <div><div class="dm-label">Completed</div><div class="dm-value">46 tasks</div></div>
+            <div class="dm-bar"><span class="green" style="width:72%"></span></div>
+          </div>
+          <div class="dash-mini">
+            <div><div class="dm-label">Pending</div><div class="dm-value">22 tasks</div></div>
+            <div class="dm-bar"><span class="amber" style="width:34%"></span></div>
+          </div>
+          <div class="dash-mini">
+            <div><div class="dm-label">Active Blockers</div><div class="dm-value">3</div></div>
+            <div class="dm-bar"><span class="amber" style="width:12%"></span></div>
+          </div>
+        </div>
+        <div class="dash-rows">
+          <div class="dr-title">Employees requiring attention</div>
+          <div class="dr-item">Sarah M. <span class="dr-status warn">Review</span></div>
+          <div class="dr-item">James T. <span class="dr-status on">On Track</span></div>
+          <div class="dr-item">Amina R. <span class="dr-status on">On Track</span></div>
+          <div class="dr-item">Omar K. <span class="dr-status warn">Follow-up</span></div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ══ SOLUTIONS ══ -->
-<section id="solutions">
+<!-- ══ AI EMPLOYEE ANALYSIS ══ -->
+<section id="analysis">
   <div class="container">
     <div class="section-header">
-      <div class="eyebrow">Solutions</div>
-      <h2 class="section-title">Built for <span class="blue">every team</span></h2>
+      <div class="eyebrow">AI Productivity Analysis</div>
+      <h2 class="section-title">Know when someone <span class="accent">needs your attention</span></h2>
+      <p class="section-sub">GoalChaser doesn't replace management judgment. It helps management know where that judgment is needed.</p>
     </div>
-    <div class="solutions-grid">
-      <div class="solution-card reveal">
-        <div class="icon"><svg class="icon"><use href="#icon-phone"/></svg></div>
-        <h4>Call Centers</h4>
-        <p>Enterprise dialer solutions for high-volume operations.</p>
+    <div class="analysis-card reveal">
+      <div class="analysis-head">
+        <div class="analysis-avatar">SM</div>
+        <div>
+          <div class="analysis-name">Sarah M.</div>
+          <div class="analysis-role">Operations · Team Lead</div>
+        </div>
+        <div class="analysis-status">On Track</div>
       </div>
-      <div class="solution-card reveal reveal-delay-1">
-        <div class="icon"><svg class="icon"><use href="#icon-briefcase"/></svg></div>
-        <h4>Sales Teams</h4>
-        <p>Power dialers and CRM integration for sales productivity.</p>
-      </div>
-      <div class="solution-card reveal reveal-delay-2">
-        <div class="icon"><svg class="icon"><use href="#icon-plus"/></svg></div>
-        <h4>Healthcare</h4>
-        <p>HIPAA-compliant voice and communication infrastructure.</p>
-      </div>
-      <div class="solution-card reveal reveal-delay-3">
-        <div class="icon"><svg class="icon"><use href="#icon-shield"/></svg></div>
-        <h4>Insurance</h4>
-        <p>Automated dialing and compliance-ready solutions.</p>
-      </div>
-      <div class="solution-card reveal">
-        <div class="icon"><svg class="icon"><use href="#icon-home"/></svg></div>
-        <h4>Real Estate</h4>
-        <p>Voice broadcasting and lead management systems.</p>
-      </div>
-      <div class="solution-card reveal reveal-delay-1">
-        <div class="icon"><svg class="icon"><use href="#icon-search"/></svg></div>
-        <h4>Recruitment</h4>
-        <p>AI-powered candidate outreach and follow-up automation.</p>
-      </div>
-      <div class="solution-card reveal reveal-delay-2">
-        <div class="icon"><svg class="icon"><use href="#icon-globe"/></svg></div>
-        <h4>BPO Companies</h4>
-        <p>Scalable infrastructure for global BPO operations.</p>
-      </div>
-      <div class="solution-card reveal reveal-delay-3">
-        <div class="icon"><svg class="icon"><use href="#icon-cloud"/></svg></div>
-        <h4>SaaS Companies</h4>
-        <p>Voice API integration and communication platforms.</p>
-      </div>
-      <div class="solution-card reveal">
-        <div class="icon"><svg class="icon"><use href="#icon-building"/></svg></div>
-        <h4>Remote Teams</h4>
-        <p>Cloud PBX and collaboration tools for distributed teams.</p>
-      </div>
-      <div class="solution-card reveal reveal-delay-1">
-        <div class="icon"><svg class="icon"><use href="#icon-megaphone"/></svg></div>
-        <h4>Marketing Agencies</h4>
-        <p>Voice broadcasting and campaign management tools.</p>
+      <div class="analysis-row"><span class="ar-label">Task Completion</span><span class="ar-value">82%</span></div>
+      <div class="analysis-row"><span class="ar-label">Follow-up Status</span><span class="ar-value">3 completed</span></div>
+      <div class="analysis-row"><span class="ar-label">Blockers</span><span class="ar-value">1 active</span></div>
+      <div class="analysis-row"><span class="ar-label">AI Confidence</span><span class="ar-pill">Low</span></div>
+      <div class="analysis-attn">Management Attention Recommended</div>
+    </div>
+    <div class="section-header" style="margin-top:3rem; margin-bottom:2rem;">
+      <h3 style="font-size:1.375rem; font-weight:900; color:var(--ink); margin-bottom:1rem;">How the analysis is formed</h3>
+      <div class="loop-wrap" style="text-align:left;">
+        <div class="loop-step reveal">
+          <div class="ls-icon"><svg class="icon"><use href="#icon-search"/></svg></div>
+          <div>
+            <div class="ls-title">GoalChaser observes patterns</div>
+            <div class="ls-text">Task completion, follow-up conversations, blockers, commitments, and progress.</div>
+          </div>
+        </div>
+        <div class="loop-arrow">▼</div>
+        <div class="loop-step reveal reveal-delay-1">
+          <div class="ls-icon green"><svg class="icon"><use href="#icon-ai"/></svg></div>
+          <div>
+            <div class="ls-title">AI analyzes the context</div>
+            <div class="ls-text">It compares current progress against expected work and historical patterns.</div>
+          </div>
+        </div>
+        <div class="loop-arrow">▼</div>
+        <div class="loop-step reveal reveal-delay-2">
+          <div class="ls-icon"><svg class="icon"><use href="#icon-check"/></svg></div>
+          <div>
+            <div class="ls-title">Confidence matters</div>
+            <div class="ls-text">With enough context, progress is reported normally. If unclear, GoalChaser flags it for human review.</div>
+          </div>
+        </div>
+        <div class="loop-arrow">▼</div>
+        <div class="loop-step reveal reveal-delay-3">
+          <div class="ls-icon green"><svg class="icon"><use href="#icon-user"/></svg></div>
+          <div>
+            <div class="ls-title">Manager decides</div>
+            <div class="ls-text">"This employee may need a direct conversation."</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ══ WHY US ══ -->
+<!-- ══ GIVE MANAGERS THEIR TIME BACK ══ -->
+<section id="managers">
+  <div class="container">
+    <div class="section-header">
+      <div class="eyebrow">For Business Owners</div>
+      <h2 class="section-title">Spend less time chasing progress. <span class="blue">More time growing the business</span></h2>
+      <p class="section-sub">Managers and business owners shouldn't need to interrupt their teams throughout the day just to understand what's happening.</p>
+    </div>
+    <div class="overview-grid">
+      <div class="overview-card reveal">
+        <div class="overview-icon accent"><svg class="icon"><use href="#icon-check"/></svg></div>
+        <h3>Less Follow-up</h3>
+        <p>GoalChaser handles routine progress checks and reminders.</p>
+      </div>
+      <div class="overview-card reveal reveal-delay-1">
+        <div class="overview-icon blue"><svg class="icon"><use href="#icon-shield"/></svg></div>
+        <h3>Fewer Unnecessary Interruptions</h3>
+        <p>Employees can stay focused instead of constantly responding to manual status requests.</p>
+      </div>
+      <div class="overview-card reveal reveal-delay-2">
+        <div class="overview-icon mixed"><svg class="icon"><use href="#icon-chart"/></svg></div>
+        <h3>Better Decisions</h3>
+        <p>Management receives structured intelligence instead of fragmented updates.</p>
+      </div>
+    </div>
+    <div class="compare-grid">
+      <div class="compare-box dim reveal">
+        <div class="cb-title">Without GoalChaser</div>
+        <div class="cb-flow">
+          <div class="cb-node dark">Manager</div>
+          <div class="cb-arrow">→</div>
+          <div class="cb-node">Employee</div>
+          <div class="cb-arrow">→</div>
+          <div class="cb-node">Employee</div>
+          <div class="cb-arrow">→</div>
+          <div class="cb-node">Employee</div>
+          <div class="cb-arrow">→</div>
+          <div class="cb-node hot">Status Updates</div>
+          <div class="cb-note">Asking everyone, one by one.</div>
+        </div>
+      </div>
+      <div class="compare-box reveal reveal-delay-1">
+        <div class="cb-title">With GoalChaser</div>
+        <div class="cb-flow">
+          <div class="cb-node dark">Manager</div>
+          <div class="cb-arrow">→</div>
+          <div class="cb-node accent">GoalChaser</div>
+          <div class="cb-arrow">→</div>
+          <div class="cb-node">Team</div>
+          <div class="cb-arrow">↓</div>
+          <div class="cb-node hot">Progress Intelligence</div>
+          <div class="cb-note">Automated, continuous, structured.</div>
+        </div>
+      </div>
+    </div>
+    <p class="voice-closing reveal" style="margin-top:3rem;">Your team keeps working. <span>GoalChaser keeps you informed.</span></p>
+  </div>
+</section>
+
+<!-- ══ BUILT FOR ══ -->
+<section id="built-for">
+  <div class="container">
+    <div class="section-header">
+      <div class="eyebrow">Built For Real Workplaces</div>
+      <h2 class="section-title">From the factory floor to the sprint board, <span class="accent">one layer keeps everyone moving</span></h2>
+      <p class="section-sub">GoalChaser sits on top of how you already work. It keeps people executing and management informed — no matter the industry.</p>
+    </div>
+    <div class="industry-grid">
+      <div class="industry-card reveal">
+        <div class="ic-icon green"><svg class="icon"><use href="#icon-building"/></svg></div>
+        <h4>Textile Operations</h4>
+        <div class="ic-tag">Keep production moving — without chasing anyone.</div>
+        <p>AI calls every unit and shift for updates, surfaces exceptions early, coordinates recovery, and hands management a clear, up-to-date picture from purchase order to delivery.</p>
+        <div class="ic-visual green">
+          <div class="vnode"><span class="vnic"><svg class="icon"><use href="#icon-check"/></svg></span>Order enters<span class="vst">Plan</span></div>
+          <div class="varrow">▼</div>
+          <div class="vnode"><span class="vnic"><svg class="icon"><use href="#icon-ai"/></svg></span>AI plans &amp; flags risk<span class="vst">AI</span></div>
+          <div class="varrow">▼</div>
+          <div class="vnode"><span class="vnic"><svg class="icon"><use href="#icon-phone"/></svg></span>AI calls every team<span class="vst">Follow up</span></div>
+          <div class="varrow">▼</div>
+          <div class="vnode"><span class="vnic"><svg class="icon"><use href="#icon-shield"/></svg></span>Blockers resolved fast<span class="vst">Recover</span></div>
+          <div class="varrow">▼</div>
+          <div class="vnode"><span class="vnic"><svg class="icon"><use href="#icon-chart"/></svg></span>Management sees everything<span class="vst">Report</span></div>
+        </div>
+        <ul class="ic-uses green">
+          <li>Shift-by-shift follow-up calls</li>
+          <li>Early blocker &amp; machine-exception detection</li>
+          <li>Recovery coordination, not fire drills</li>
+          <li>Approvals that stay tracked, not chased</li>
+          <li>Live dashboards and daily briefings</li>
+        </ul>
+        <a href="/goalchaser-for-textile" class="btn-primary btn-green">See Textile Operations →</a>
+      </div>
+      <div class="industry-card reveal reveal-delay-1">
+        <div class="ic-icon"><svg class="icon"><use href="#icon-monitor"/></svg></div>
+        <h4>Corporate IT</h4>
+        <div class="ic-tag">Keep technology teams moving — automatically.</div>
+        <p>AI follows up on tasks and deadlines by voice, surfaces the blockers only humans can solve, and gives managers a live view of sprint and delivery progress.</p>
+        <div class="ic-visual">
+          <div class="vnode"><span class="vnic"><svg class="icon"><use href="#icon-target"/></svg></span>Work &amp; goals enter<span class="vst">Plan</span></div>
+          <div class="varrow">▼</div>
+          <div class="vnode"><span class="vnic"><svg class="icon"><use href="#icon-ai"/></svg></span>AI builds follow-ups<span class="vst">AI</span></div>
+          <div class="varrow">▼</div>
+          <div class="vnode"><span class="vnic"><svg class="icon"><use href="#icon-mic"/></svg></span>AI talks to developers<span class="vst">Talk</span></div>
+          <div class="varrow">▼</div>
+          <div class="vnode"><span class="vnic"><svg class="icon"><use href="#icon-tools"/></svg></span>Blockers surface early<span class="vst">Escalate</span></div>
+          <div class="varrow">▼</div>
+          <div class="vnode"><span class="vnic"><svg class="icon"><use href="#icon-chart"/></svg></span>Sprint progress, reported<span class="vst">Report</span></div>
+        </div>
+        <ul class="ic-uses">
+          <li>Voice check-ins instead of status meetings</li>
+          <li>Blocker detection with full context</li>
+          <li>Humans step in only when needed</li>
+          <li>Auto-written sprint reports &amp; retros</li>
+          <li>Executive visibility into every team</li>
+        </ul>
+        <a href="/goalchaser-for-it" class="btn-primary btn-accent">See Corporate IT →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PRODUCTIVITY LOOP ══ -->
+<section id="loop">
+  <div class="container">
+    <div class="section-header">
+      <div class="eyebrow">A Continuous Productivity Loop</div>
+      <h2 class="section-title">Productivity doesn't end when the <span class="accent">task is created</span></h2>
+    </div>
+    <div class="loop-wrap">
+      <div class="loop-step reveal">
+        <div class="ls-phase">Morning · PLAN</div>
+        <div class="ls-icon"><svg class="icon"><use href="#icon-calendar"/></svg></div>
+        <div>
+          <div class="ls-title">Start with priorities</div>
+          <div class="ls-text">Clear expectations for the day.</div>
+        </div>
+      </div>
+      <div class="loop-arrow">▼</div>
+      <div class="loop-step reveal reveal-delay-1">
+        <div class="ls-phase green">Midday · FOLLOW UP</div>
+        <div class="ls-icon green"><svg class="icon"><use href="#icon-phone"/></svg></div>
+        <div>
+          <div class="ls-title">Check progress</div>
+          <div class="ls-text">Identify what's getting in the way.</div>
+        </div>
+      </div>
+      <div class="loop-arrow">▼</div>
+      <div class="loop-step reveal reveal-delay-2">
+        <div class="ls-phase">Evening · REFLECT</div>
+        <div class="ls-icon"><svg class="icon"><use href="#icon-check"/></svg></div>
+        <div>
+          <div class="ls-title">Review completed work</div>
+          <div class="ls-text">Missed commitments and blockers.</div>
+        </div>
+      </div>
+      <div class="loop-arrow">▼</div>
+      <div class="loop-step reveal reveal-delay-3">
+        <div class="ls-phase green">Management · UNDERSTAND</div>
+        <div class="ls-icon green"><svg class="icon"><use href="#icon-chart"/></svg></div>
+        <div>
+          <div class="ls-title">Turn activity into intelligence</div>
+          <div class="ls-text">Actionable productivity insights.</div>
+        </div>
+      </div>
+      <div class="loop-return reveal">Plan → Work → Follow Up → Resolve → Report → Plan Again</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ WHY GOALCHASER ══ -->
 <section id="why">
   <div class="container">
     <div class="section-header">
-      <div class="eyebrow">Why Choose Us</div>
-      <h2 class="section-title">Built for scale. Designed for <span class="accent">productivity</span></h2>
+      <div class="eyebrow">Why GoalChaser</div>
+      <h2 class="section-title">Built around people, not <span class="accent">dashboards</span></h2>
     </div>
     <div class="why-grid">
       <div class="why-card reveal">
         <div class="why-icon accent"><svg class="icon"><use href="#icon-mic"/></svg></div>
-        <h4>Voice first</h4>
-        <p>Natural voice interactions drive everything we build.</p>
+        <h4>Voice First</h4>
+        <p>Communicate naturally instead of constantly updating screens.</p>
       </div>
       <div class="why-card reveal reveal-delay-1">
         <div class="why-icon b"><svg class="icon"><use href="#icon-zap"/></svg></div>
-        <h4>AI native</h4>
-        <p>Built from the ground up with AI at the core.</p>
+        <h4>Proactive</h4>
+        <p>GoalChaser follows up instead of waiting for updates.</p>
       </div>
       <div class="why-card reveal reveal-delay-2">
-        <div class="why-icon accent"><svg class="icon"><use href="#icon-check"/></svg></div>
-        <h4>Enterprise ready</h4>
-        <p>Security, compliance, and reliability built in.</p>
+        <div class="why-icon accent"><svg class="icon"><use href="#icon-user"/></svg></div>
+        <h4>Personal</h4>
+        <p>Productivity insights adapt to individual working patterns.</p>
       </div>
       <div class="why-card reveal reveal-delay-3">
-        <div class="why-icon b"><svg class="icon"><use href="#icon-globe"/></svg></div>
-        <h4>Global reach</h4>
-        <p>Worldwide voice network and global coverage.</p>
+        <div class="why-icon b"><svg class="icon"><use href="#icon-check"/></svg></div>
+        <h4>Accountable</h4>
+        <p>Commitments don't disappear after they're created.</p>
       </div>
       <div class="why-card reveal">
-        <div class="why-icon accent"><svg class="icon"><use href="#icon-sliders"/></svg></div>
-        <h4>Customizable</h4>
-        <p>Tailored solutions for any workflow.</p>
+        <div class="why-icon accent"><svg class="icon"><use href="#icon-ai"/></svg></div>
+        <h4>Intelligent</h4>
+        <p>AI understands conversations, context, and progress.</p>
       </div>
       <div class="why-card reveal reveal-delay-1">
-        <div class="why-icon b"><svg class="icon"><use href="#icon-chart"/></svg></div>
-        <h4>Actionable insights</h4>
-        <p>Data-driven decisions with real analytics.</p>
+        <div class="why-icon b"><svg class="icon"><use href="#icon-eye"/></svg></div>
+        <h4>Transparent</h4>
+        <p>Management sees meaningful progress without micromanaging.</p>
       </div>
       <div class="why-card reveal reveal-delay-2">
-        <div class="why-icon accent"><svg class="icon"><use href="#icon-rocket"/></svg></div>
-        <h4>Fast deployment</h4>
-        <p>Get up and running in days, not months.</p>
+        <div class="why-icon accent"><svg class="icon"><use href="#icon-search"/></svg></div>
+        <h4>Actionable</h4>
+        <p>Blockers and risks are surfaced when human intervention matters.</p>
       </div>
       <div class="why-card reveal reveal-delay-3">
-        <div class="why-icon b"><svg class="icon"><use href="#icon-shield"/></svg></div>
-        <h4>99.9% uptime</h4>
-        <p>Enterprise-grade reliability you can count on.</p>
+        <div class="why-icon b"><svg class="icon"><use href="#icon-target"/></svg></div>
+        <h4>Focused</h4>
+        <p>Less administrative work means more time for actual work.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ══ PROCESS ══ -->
-<section id="process">
+<!-- ══ INTEGRATIONS ══ -->
+<section id="integrations">
   <div class="container">
     <div class="section-header">
-      <div class="eyebrow">Process</div>
-      <h2 class="section-title">From infrastructure to <span class="blue">automation</span></h2>
+      <div class="eyebrow">Work With Your Workflow</div>
+      <h2 class="section-title">GoalChaser works with the tools <span class="blue">your team already uses</span></h2>
+      <p class="section-sub">Keep the project management, communication, and collaboration tools your team already relies on. GoalChaser adds an intelligent productivity layer on top.</p>
     </div>
-    <div class="process-timeline">
-      <div class="process-step reveal">
-        <div class="process-step-num"><svg class="icon"><use href="#icon-search"/></svg></div>
-        <div class="process-step-label">Step 01</div>
-        <h4>Discover</h4>
-        <p>Understand business requirements and identify the right solutions.</p>
-      </div>
-      <div class="process-step reveal reveal-delay-1">
-        <div class="process-step-num"><svg class="icon"><use href="#icon-rocket"/></svg></div>
-        <div class="process-step-label">Step 02</div>
-        <h4>Deploy</h4>
-        <p>Configure voice systems, AI workflows, and team integrations.</p>
-      </div>
-      <div class="process-step reveal reveal-delay-2">
-        <div class="process-step-num"><svg class="icon"><use href="#icon-chart"/></svg></div>
-        <div class="process-step-label">Step 03</div>
-        <h4>Optimize</h4>
-        <p>Improve productivity and communication with AI-driven insights.</p>
-      </div>
-      <div class="process-step reveal reveal-delay-3">
-        <div class="process-step-num"><svg class="icon"><use href="#icon-link"/></svg></div>
-        <div class="process-step-label">Step 04</div>
-        <h4>Scale</h4>
-        <p>Expand operations confidently with reliable infrastructure.</p>
-      </div>
+    <div class="integrations-grid">
+      <div class="integration-chip reveal">Slack</div>
+      <div class="integration-chip reveal reveal-delay-1">Microsoft Teams</div>
+      <div class="integration-chip reveal reveal-delay-2">Google Calendar</div>
+      <div class="integration-chip reveal reveal-delay-3">Zapier</div>
+      <div class="integration-chip reveal">Trello</div>
+      <div class="integration-chip reveal reveal-delay-1">Asana</div>
+      <div class="integration-chip reveal reveal-delay-2">Outlook</div>
+      <div class="integration-chip reveal reveal-delay-3">HubSpot</div>
     </div>
   </div>
 </section>
@@ -1803,14 +2467,14 @@
 <section id="vision">
   <div class="container">
     <div class="vision-inner reveal">
-      <div class="vision-eyebrow">Vision</div>
+      <div class="vision-eyebrow">Our Vision</div>
       <h2 class="vision-title">
-        The future of business communication<br>
-        is <span class="accent">autonomous</span>
+        A more productive workplace starts with<br>
+        <span class="accent">better accountability</span>
       </h2>
-      <p class="vision-lead">Businesses should not depend on endless meetings, manual follow-ups, or constant supervision.</p>
-      <p class="vision-highlight">Dialer.best is building a future where voice, AI, and automation work together to drive productivity, accountability, and growth.</p>
-      <a href="#cta" class="btn-white">Join the Future →</a>
+      <p class="vision-lead">Productivity shouldn't depend on managers constantly checking in, employees constantly updating dashboards, or business owners constantly asking for status.</p>
+      <p class="vision-highlight">GoalChaser combines tasks, communication, AI, and intelligent reporting to create a workplace where people know what they need to accomplish, teams stay accountable, and management always has a clearer picture of what's happening.</p>
+      <a href="#cta" class="btn-white">Build a More Productive Team →</a>
     </div>
   </div>
 </section>
@@ -1821,19 +2485,19 @@
     <div class="section-header">
       <div class="eyebrow">About</div>
       <h2 class="section-title">Powered by <span class="accent">eGeniusCare</span></h2>
-      <p class="section-sub">Dialer.best is the communications and automation division of eGeniusCare, focused on building innovative voice technologies, telecom infrastructure, and AI-driven productivity platforms.</p>
+      <p class="section-sub">GoalChaser is the AI productivity platform from eGeniusCare, built to help individuals and teams stay accountable through intelligent task management, AI voice communication, blocker detection, and productivity reporting.</p>
     </div>
     <div class="ecosystem reveal">
       <div class="eco-node top">eGeniusCare</div>
       <div class="eco-arrow"></div>
-      <div class="eco-node mid">Dialer.best</div>
+      <div class="eco-node mid">GoalChaser</div>
       <div class="eco-arrow"></div>
       <div class="eco-leaves">
-        <span class="eco-leaf accent">AI task planner</span>
-        <span class="eco-leaf b">AI Team Manager</span>
-        <span class="eco-leaf i">Voice Infra</span>
-        <span class="eco-leaf accent">AI Agents</span>
-        <span class="eco-leaf b">Telecom Services</span>
+        <span class="eco-leaf accent">Personal Productivity</span>
+        <span class="eco-leaf b">Team Productivity</span>
+        <span class="eco-leaf i">AI Voice</span>
+        <span class="eco-leaf accent">Reporting</span>
+        <span class="eco-leaf b">Built For</span>
       </div>
     </div>
   </div>
@@ -1843,13 +2507,14 @@
 <section id="cta">
   <div class="container">
     <div class="cta-inner reveal">
-      <div class="eyebrow" style="margin: 0 auto 1.5rem;">Get Started</div>
-      <h2 class="cta-title">Ready to modernize your<br><span class="accent">business operations?</span></h2>
-      <p class="cta-lead">Cloud dialers, telecom infrastructure, AI voice agents, workforce automation, and productivity systems — all under one ecosystem.</p>
+      <div class="eyebrow" style="margin: 0 auto 1.5rem;">Start Chasing Better Productivity</div>
+      <h2 class="cta-title">Give your team an <span class="accent">AI productivity partner</span></h2>
+      <p class="cta-lead">Keep people focused. Reduce unnecessary follow-ups. Resolve blockers faster. And know what's really happening across your organization.</p>
       <div class="cta-actions">
-        <a href="#" class="btn-primary btn-lg btn-accent">Book a Demo →</a>
-        <a href="#" class="btn-outline btn-lg">Talk to an Expert</a>
+        <a href="#" class="btn-primary btn-lg btn-accent">Get Started →</a>
+        <a href="#contact" class="btn-outline btn-lg">Talk to Us</a>
       </div>
+      <p class="cta-support">Built for individuals, teams, and growing organizations.</p>
     </div>
   </div>
 </section>
@@ -1887,15 +2552,13 @@
           <input type="tel" name="phone" id="phone" placeholder="+1 (555) 000-0000" value="{{ old('phone') }}">
         </div>
         <div>
-          <label for="service">Service Interested In</label>
+          <label for="service">I'm Interested In</label>
           <select name="service" id="service">
-            <option value="">— Select a service —</option>
-            <option value="Hosted VICIdial" @selected(old('service') === 'Hosted VICIdial')>Hosted VICIdial</option>
-            <option value="Predictive Dialers" @selected(old('service') === 'Predictive Dialers')>Predictive Dialers</option>
-            <option value="Cloud PBX" @selected(old('service') === 'Cloud PBX')>Cloud PBX</option>
-            <option value="SIP Trunking" @selected(old('service') === 'SIP Trunking')>SIP Trunking</option>
-            <option value="AI Voice Agents" @selected(old('service') === 'AI Voice Agents')>AI Voice Agents</option>
-            <option value="Technical Support" @selected(old('service') === 'Technical Support')>Technical Support</option>
+            <option value="">— Select an option —</option>
+            <option value="Personal Productivity" @selected(old('service') === 'Personal Productivity')>Personal Productivity</option>
+            <option value="Team Productivity" @selected(old('service') === 'Team Productivity')>Team Productivity</option>
+            <option value="AI Voice" @selected(old('service') === 'AI Voice')>AI Voice</option>
+            <option value="Reporting" @selected(old('service') === 'Reporting')>Reporting</option>
             <option value="Other" @selected(old('service') === 'Other')>Other</option>
           </select>
         </div>
@@ -1914,8 +2577,8 @@
   <div class="container">
     <div class="footer-grid">
       <div class="footer-brand">
-        <a href="#" class="footer-brand-name">Dialer<span>.best</span></a>
-        <p>Voice Infrastructure &amp; AI Automation Platform. Cloud dialers, AI agents, workforce automation, and telecom solutions — all under one ecosystem.</p>
+        <a href="#" class="footer-brand-name">Goal<span>Chaser</span></a>
+        <p>AI-powered productivity for individuals and teams. Intelligent task management, voice accountability, team follow-ups, blocker detection, and productivity reporting.</p>
         <div class="footer-social">
           <a href="#" aria-label="Website"><svg class="icon"><use href="#icon-globe"/></svg></a>
           <a href="#" aria-label="Email"><svg class="icon"><use href="#icon-mail"/></svg></a>
@@ -1923,33 +2586,34 @@
         </div>
       </div>
       <div class="footer-col">
-        <h4>Products</h4>
+        <h4>Product</h4>
         <ul>
-          <li><a href="#">AI task planner</a></li>
-          <li><a href="#">AI Team Manager</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Services</h4>
-        <ul>
-          <li><a href="#">Hosted VICIdial</a></li>
-          <li><a href="#">Cloud PBX</a></li>
-          <li><a href="#">SIP Trunking</a></li>
-          <li><a href="#">AI Voice Agents</a></li>
+          <li><a href="#individuals">Personal Productivity</a></li>
+          <li><a href="#teams">Team Productivity</a></li>
+          <li><a href="#voice">AI Voice</a></li>
+          <li><a href="#intelligence">Reporting</a></li>
+          <li><a href="#built-for">Built For</a></li>
         </ul>
       </div>
       <div class="footer-col">
         <h4>Company</h4>
         <ul>
-          <li><a href="#">About</a></li>
-          <li><a href="#">Contact</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#contact">Contact</a></li>
           <li><a href="#">Privacy</a></li>
           <li><a href="#">Terms</a></li>
         </ul>
       </div>
+      <div class="footer-col">
+        <h4>Account</h4>
+        <ul>
+          <li><a href="#">Sign In</a></li>
+          <li><a href="#cta">Get Started</a></li>
+        </ul>
+      </div>
     </div>
     <div class="footer-bottom">
-      <p>© 2026 Dialer.best. All rights reserved.</p>
+      <p>© 2026 GoalChaser. All rights reserved.</p>
       <p>Powered by <a href="https://egeniuscare.com" target="_blank">eGeniusCare</a></p>
     </div>
   </div>

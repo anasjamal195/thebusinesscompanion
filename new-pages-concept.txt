@@ -1,0 +1,1195 @@
+MASTER INSTRUCTION
+
+Create two new solution pages for GoalChaser.co:
+
+GoalChaser for Corporate IT
+GoalChaser for Textile Operations
+
+These pages should feel like natural extensions of the existing GoalChaser landing page, not separate websites.
+
+Use the existing GoalChaser design system, typography, colors, cards, rounded corners, spacing, animations, buttons, navigation, footer, and responsive behavior.
+
+Do not redesign the entire site.
+
+The purpose of these pages is to explain how GoalChaser is specifically applied in each environment, using simple language, visual workflows, UI mockups, infographics, and very limited text.
+
+The pages should be short, visual, and easy to understand in under 2 minutes.
+
+Avoid long paragraphs.
+
+The user should understand the solution primarily by looking at the diagrams and workflow rather than reading large amounts of text.
+
+GLOBAL DESIGN DIRECTION
+Existing GoalChaser visual identity
+
+Maintain:
+
+Nunito typography
+Cyan #00aff0
+Green #0eb647
+Dark slate #2D3748
+Muted gray #64748B
+Light background #F1F5F9
+White cards
+Rounded corners
+Subtle shadows
+Minimal gradients
+Clean 2D illustrations
+Light infographic style
+Existing reveal animations
+
+Do not introduce a completely different visual language.
+
+IMPORTANT CONTENT PRINCIPLE
+
+Do not describe GoalChaser as simply:
+
+"AI automation."
+
+Do not make these pages sound like generic AI SaaS pages.
+
+The core concept is:
+
+GoalChaser communicates with people, follows up on work, understands progress, identifies blockers, and turns those interactions into useful management intelligence.
+
+For IT:
+
+GoalChaser keeps people and projects moving.
+
+For Textile:
+
+GoalChaser keeps production moving.
+
+That distinction should drive the entire design.
+
+PAGE 1: GOALCHASER FOR CORPORATE IT
+Page purpose
+
+The Corporate IT page should explain how GoalChaser works inside a modern IT organization.
+
+The core problem:
+
+Teams already have Jira, Trello, Asana, ClickUp, Notion, GitHub, Slack, Teams, etc.
+
+The problem isn't necessarily the lack of tools.
+
+The problem is:
+
+People still have to update them, communicate progress, report blockers, attend meetings, and managers still have to chase status.
+
+GoalChaser becomes the active productivity layer around those existing tools.
+
+The original material already communicates this concept: GoalChaser connects to existing tools, reads ongoing tasks, follows up through calls, and generates employee progress reports.
+
+IT PAGE SECTION 01: HERO
+Eyebrow
+
+GOALCHASER FOR CORPORATE IT
+
+Heading
+Keep your teams moving. Without chasing them.
+
+Highlight:
+
+"moving"
+
+or
+
+"without chasing them"
+
+with cyan.
+
+Subtitle
+
+GoalChaser connects with your existing work tools, follows up with your team through AI voice conversations, understands progress and blockers, and keeps management informed.
+
+Buttons
+
+Talk to Us →
+
+See How It Works
+
+Small supporting statement
+
+Less chasing. More execution. Better visibility.
+
+Hero visual
+
+Do not use a generic stock illustration.
+
+Create a clean visual showing:
+
+        Jira / Trello / GitHub / Slack
+                    ↓
+              GOALCHASER AI
+                    ↓
+        ┌───────────┼───────────┐
+        ↓           ↓           ↓
+      Tasks      Voice       Reports
+                  Calls
+        ↓           ↓           ↓
+        └──────→ Employee ←────┘
+                    ↓
+              Progress
+                    ↓
+              Management
+
+Make this visually attractive and very simple.
+
+The AI should be the central visual node.
+
+IT PAGE SECTION 02: THE PROBLEM
+Eyebrow
+
+THE PROBLEM
+
+Heading
+Your tools track work. People still have to chase it.
+
+Use three large visual cards.
+
+Card 01
+
+Tasks get updated late
+
+Work happens, but the system doesn't always know.
+
+Card 02
+
+Blockers stay hidden
+
+Managers often discover problems after deadlines start slipping.
+
+Card 03
+
+Managers chase updates
+
+Valuable time goes into asking "What's the status?"
+
+Visual
+
+Use a simple visual:
+
+Developer
+   ↓
+Works
+   ↓
+Gets Blocked
+   ↓
+No Update
+   ↓
+Manager Asks
+   ↓
+Meeting
+   ↓
+Manual Update
+
+Then contrast it with:
+
+Developer
+   ↓
+GoalChaser AI
+   ↓
+Understands Progress
+   ↓
+Detects Blocker
+   ↓
+Updates Management
+
+Keep the comparison extremely clean.
+
+IT PAGE SECTION 03: CONNECT YOUR EXISTING TOOLS
+Eyebrow
+
+WORK WITH YOUR EXISTING STACK
+
+Heading
+GoalChaser works around the tools your team already uses.
+Subtitle
+
+Keep your existing workflow. GoalChaser adds the communication and accountability layer.
+
+Show logos:
+
+Jira
+Trello
+Asana
+ClickUp
+Notion
+Monday.com
+Microsoft Teams
+GitHub
+Google Calendar
+Slack
+Zoom
+Wrike
+
+Use the same logo-card style from the existing site.
+
+Visual
+
+Create a central GoalChaser node with the integrations around it.
+
+Jira      GitHub      Slack
+   \         |         /
+    \        |        /
+       GOALCHASER
+      /     |      \
+ Trello   Teams    Calendar
+
+Do not make it look like GoalChaser is replacing these products.
+
+The message is:
+
+GoalChaser works on top of your existing workflow.
+
+IT PAGE SECTION 04: THE PRODUCTIVITY LOOP
+Eyebrow
+
+THE GOALCHASER LOOP
+
+Heading
+From task to completion, GoalChaser keeps the loop moving.
+
+Use a large horizontal or circular infographic.
+
+01
+
+Tasks
+
+Existing tasks are pulled from connected tools.
+
+02
+
+AI Calls
+
+GoalChaser talks to employees about their work.
+
+03
+
+Progress
+
+Conversations reveal what is done and what remains.
+
+04
+
+Blockers
+
+Problems are identified before they become bigger issues.
+
+05
+
+Follow-up
+
+GoalChaser continues the conversation when needed.
+
+06
+
+Reporting
+
+Management gets a clear view of progress.
+
+Connect the final node back to Tasks.
+
+This should visually communicate:
+
+Continuous productivity loop
+
+rather than a one-time automation.
+
+IT PAGE SECTION 05: AI VOICE FOLLOW-UPS
+Eyebrow
+
+FLAGSHIP CAPABILITY
+
+Heading
+Instead of asking for updates, let GoalChaser ask.
+
+Show an actual conversation.
+
+GoalChaser
+
+"How's the API integration progressing?"
+
+Employee
+
+"The backend is done, but I'm waiting for the staging credentials."
+
+GoalChaser
+
+"Got it. I'll record that as a blocker and follow up."
+
+Then show the resulting structured information:
+
+Task: API Integration
+Progress: 80%
+Blocker: Staging Credentials
+Next Follow-up: Today, 3:00 PM
+
+Visual
+
+Use an actual smartphone/call UI similar to the existing GoalChaser mobile visual.
+
+The call should look like a productivity conversation, not a call-center interface.
+
+IT PAGE SECTION 06: BLOCKER INTELLIGENCE
+Heading
+Know what's slowing your team down.
+
+Show three blocker examples:
+
+Blocked
+
+Waiting for API credentials
+
+At Risk
+
+Client approval pending
+
+Delayed
+
+Dependency from another team
+
+Then show:
+
+Employee
+   ↓
+AI Conversation
+   ↓
+Blocker Detected
+   ↓
+Context Captured
+   ↓
+Follow-up
+   ↓
+Resolved / Escalated
+Supporting line
+
+GoalChaser helps surface problems while there is still time to act.
+
+IT PAGE SECTION 07: EMPLOYEE PRODUCTIVITY REPORTS
+
+This is one of the most important sections.
+
+The existing IT material explicitly presents employee progress reports and a dedicated reporting dashboard.
+
+Eyebrow
+
+PRODUCTIVITY INTELLIGENCE
+
+Heading
+See progress without asking everyone.
+Subtitle
+
+GoalChaser turns tasks and AI conversations into structured employee and team productivity insights.
+
+Create a large dashboard mockup.
+
+Include:
+
+Employee
+
+Sarah Khan
+
+Tasks
+
+8 / 10
+
+Progress
+
+82%
+
+Active Blockers
+
+1
+
+Follow-ups
+
+3
+
+AI Confidence
+
+High
+
+Then a small status:
+
+Overall: On Track
+
+Use several employees below this.
+
+IT PAGE SECTION 08: AI ATTENTION FLAGS
+
+This is where your more advanced concept should appear.
+
+Heading
+Know where human attention is needed.
+Subtitle
+
+GoalChaser doesn't replace management judgment. It identifies situations that may require it.
+
+Show:
+
+Employee Progress
+
+On Track
+
+AI Confidence
+
+Low
+
+Recent Activity
+
+3 missed commitments
+
+Blocker
+
+Unresolved
+
+Recommendation
+
+Manual follow-up recommended
+
+Then explain in one sentence:
+
+When progress doesn't make sense from the available context, GoalChaser flags it for management review.
+
+This is a very important distinction.
+
+Do not label employees as "bad performers."
+
+The system provides signals and context, while management makes the decision.
+
+IT PAGE SECTION 09: MANAGEMENT DASHBOARD
+Heading
+A clearer view of the entire team.
+
+Show a clean dashboard mockup with:
+
+Team Progress
+
+78%
+
+Active Tasks
+
+42
+
+Blocked
+
+6
+
+At Risk
+
+4
+
+Completed
+
+31
+
+Then employee/team rows.
+
+Add a small section:
+
+Needs Attention
+
+3 employees
+
+Major Blockers
+
+4
+
+Projects At Risk
+
+2
+
+The dashboard should be visually dominant.
+
+Keep text outside the dashboard extremely short.
+
+IT PAGE SECTION 10: THE OUTCOME
+Heading
+Less chasing. Less interruption. More execution.
+
+Three large statements:
+
+Employees
+
+Stay focused on their work.
+
+Managers
+
+Spend less time collecting updates.
+
+Leadership
+
+Gets clearer visibility into progress.
+
+Then:
+
+GoalChaser keeps the work moving while keeping everyone informed.
+
+IT PAGE SECTION 11: FINAL CTA
+Eyebrow
+
+FOR MODERN IT TEAMS
+
+Heading
+Let your team focus on the work.
+Subtitle
+
+Let GoalChaser handle the routine follow-ups, progress conversations, and reporting.
+
+Buttons:
+
+Talk to Us →
+
+Get Started
+
+PAGE 2: GOALCHASER FOR TEXTILE OPERATIONS
+
+This page should be substantially different from the IT page.
+
+Do not simply replace "IT team" with "production team."
+
+The Textile solution is a much broader operational coordination system.
+
+The Crestex material describes GoalChaser as a communication, coordination, and intelligence layer connecting the organization's production workflow.
+
+It begins with a purchase order, creates a shipment, generates hierarchical work plans, coordinates execution, conducts scheduled calls, manages blockers, escalates exceptions, and produces a traceable report.
+
+TEXTILE PAGE SECTION 01: HERO
+Eyebrow
+
+GOALCHASER FOR TEXTILE OPERATIONS
+
+Heading
+Keep production moving. Automatically.
+
+Highlight "production moving" in cyan.
+
+Subtitle
+
+GoalChaser connects production teams, managers, and leadership through AI-powered planning, communication, follow-ups, blocker resolution, and real-time operational reporting.
+
+Buttons
+
+Talk to Us →
+
+See How It Works
+
+Supporting statement
+
+Plan. Coordinate. Execute. Resolve. Report.
+
+Hero visual
+
+This should be more operational than the IT hero.
+
+Show:
+
+              PURCHASE ORDER
+                    ↓
+              GOALCHASER AI
+                    ↓
+          PRODUCTION PLAN
+                    ↓
+       ┌────────────┼────────────┐
+       ↓            ↓            ↓
+     AVP         MANAGER     UNIT MANAGER
+       ↓            ↓            ↓
+       └────── PRODUCTION ───────┘
+                    ↓
+              AI FOLLOW-UPS
+                    ↓
+          PROGRESS + BLOCKERS
+                    ↓
+             MANAGEMENT
+
+Use subtle factory/production visual cues.
+
+TEXTILE PAGE SECTION 02: THE REAL PROBLEM
+Eyebrow
+
+THE OPERATIONAL CHALLENGE
+
+Heading
+Production doesn't slow down because of one problem.
+Subtitle
+
+Hundreds of decisions happen across departments every day. Critical information can get lost between people, systems, and shifts.
+
+Three cards:
+
+Information Gets Lost
+
+Important updates happen outside the system.
+
+Managers Chase Updates
+
+Leaders spend time following up instead of making decisions.
+
+Problems Surface Late
+
+Small delays can become production-wide issues.
+
+This concept comes directly from the Crestex material.
+
+TEXTILE PAGE SECTION 03: ONE ORDER → ONE EXECUTION PLAN
+Eyebrow
+
+FROM ORDER TO EXECUTION
+
+Heading
+Turn a purchase order into an organized production plan.
+
+Create a large visual workflow.
+
+Purchase Order
+      ↓
+AI Reads Order
+      ↓
+Shipment Created
+      ↓
+AI Identifies Risks
+      ↓
+AI Creates Task Plan
+      ↓
+Approvals
+      ↓
+Production Starts
+
+The actual Crestex workflow has the CEO uploading the PO, AI extracting information and identifying risks, and generating the shipment.
+
+Keep copy minimal.
+
+Use UI mockups of:
+
+Purchase Order
+AI extraction
+Shipment creation
+Task plan
+
+This section should be mostly visual.
+
+TEXTILE PAGE SECTION 04: HIERARCHICAL EXECUTION
+Heading
+Everyone knows what they own.
+
+Show the hierarchy:
+
+             CEO
+              ↓
+             AVP
+        Milestones
+              ↓
+           Manager
+         Assignments
+              ↓
+        Unit Manager
+         Work Items
+
+Then show approval indicators.
+
+Small supporting text
+
+AI generates the work structure. Each level reviews and approves before execution continues.
+
+This reflects the actual milestone → assignment → work-item structure in the Crestex concept.
+
+Visual
+
+Make this one of the strongest infographics on the page.
+
+Use colored hierarchy nodes and connecting lines.
+
+Do not use a conventional card grid.
+
+TEXTILE PAGE SECTION 05: AI TAKES OVER DAILY COORDINATION
+Eyebrow
+
+DAILY OPERATIONS
+
+Heading
+AI becomes the operational coordinator.
+Subtitle
+
+Once the plan is approved, GoalChaser keeps the operation aligned through scheduled AI conversations.
+
+Show three large cards:
+
+START SHIFT
+
+Align
+
+Daily targets
+Important details
+Shift expectations
+MID SHIFT
+
+Monitor
+
+Current progress
+Expected closing target
+Blockers
+END SHIFT
+
+Report
+
+Daily progress
+Summary
+Next-day plan
+
+The three-call daily structure is explicitly defined in the Crestex material.
+
+Visual
+
+Use a horizontal timeline:
+
+Start Shift → Mid Shift → End Shift
+
+with a phone/call UI attached to each stage.
+
+TEXTILE PAGE SECTION 06: WHEN SOMETHING GOES WRONG
+
+This should be one of the most visually compelling sections.
+
+Eyebrow
+
+BLOCKER RESPONSE
+
+Heading
+When production hits a problem, GoalChaser reacts.
+
+Use the cutting-machine failure example.
+
+Scenario
+
+Machine breaks during production.
+
+Then animate/show:
+
+Machine Breakdown
+        ↓
+Unit Manager informs AI
+        ↓
+AI analyzes impact
+        ↓
+Recovery plan created
+        ↓
+Related managers contacted
+        ↓
+Targets redistributed
+        ↓
+Maintenance aligned
+        ↓
+Manager approval
+        ↓
+Production continues
+
+The Crestex workflow specifically describes the AI creating a recovery plan, redistributing targets, projecting delays, extending deadlines, and aligning maintenance.
+
+Visual
+
+Use a factory/machine illustration on one side and the recovery workflow on the other.
+
+This section should not look like a generic feature card.
+
+It should feel like a real operational scenario.
+
+TEXTILE PAGE SECTION 07: ESCALATION ONLY WHEN NEEDED
+Heading
+Management gets involved when it matters.
+
+Show:
+
+Normal Progress
+      ↓
+AI Handles
+      ↓
+No Escalation
+
+versus:
+
+Unexplained Delay
+      ↓
+AI Investigates
+      ↓
+Context Collected
+      ↓
+Higher Management
+      ↓
+Decision
+Supporting statement
+
+Higher management is involved only when a problem cannot be resolved at the operational level.
+
+This is an important business-owner benefit.
+
+The Crestex material explicitly describes escalation with complete context and higher management involvement only when necessary.
+
+TEXTILE PAGE SECTION 08: MANAGEMENT CADENCE
+Eyebrow
+
+MANAGEMENT WITHOUT MICROMANAGEMENT
+
+Heading
+Everyone gets the visibility they need.
+
+Create a vertical organizational diagram:
+
+Unit Manager
+
+Daily
+
+Production progress
+Pending work
+Next shift
+
+↓
+
+Manager
+
+Daily
+
+Unit performance
+Pending tasks
+Next-day plan
+
+↓
+
+AVP
+
+Weekly
+
+Milestones
+Manager performance
+Production progress
+
+↓
+
+CEO
+
+Monthly
+
+Production health
+Target projections
+Deadlines
+Key decisions
+
+This concept is directly supported by the Crestex workflow.
+
+Visual
+
+This should be a beautiful hierarchy/timeline, not four standard cards.
+
+The varying cadence should be visually obvious:
+
+Daily → Daily → Weekly → Monthly
+
+TEXTILE PAGE SECTION 09: EXECUTIVE INTELLIGENCE
+Heading
+Don't ask "What happened?"
+Highlight
+
+Know what happened. Why it happened. What to do next.
+
+Show a realistic executive dashboard.
+
+Include:
+
+Production
+
+92%
+
+On Schedule
+
+Pending Actions
+
+7
+
+Active Risks
+
+3
+
+Key Decisions
+
+2
+
+Then show a report card:
+
+AI Recommendation
+
+Issue
+
+Production delay in Unit 4
+
+Reason
+
+Machine downtime
+
+Recommended Action
+
+Redistribute 8% target to Unit 5
+
+Expected Impact
+
+Deadline maintained
+
+This directly reflects the Crestex concept of delivering decisions instead of simply reporting events.
+
+TEXTILE PAGE SECTION 10: COMPLETE AUDIT TRAIL
+Eyebrow
+
+TRACEABLE OPERATIONS
+
+Heading
+Every decision has a trail.
+
+Show a timeline:
+
+Task Created
+      ↓
+AI Call
+      ↓
+Progress Update
+      ↓
+Decision
+      ↓
+Approval
+      ↓
+Action
+      ↓
+Result
+
+Small supporting points:
+
+Call Summary
+
+Transcript
+
+Recording
+
+Decision Log
+
+Task History
+
+The Crestex concept explicitly includes logged calls, summaries, recordings, transcripts, and detailed production reports.
+
+Visual
+
+Use a vertical audit timeline with small document/call icons.
+
+Keep it very clean.
+
+TEXTILE PAGE SECTION 11: THE FACTORY IN YOUR POCKET
+Heading
+Your operations, connected wherever you are.
+
+Show the GoalChaser mobile app.
+
+Around the phone, show six small capabilities:
+
+Quick Calling
+
+Approvals
+
+Tasks
+
+Notifications
+
+Voice Assistant
+
+Reporting
+
+The Crestex material describes the mobile application as providing these operational capabilities.
+
+Visual
+
+Make the smartphone the central visual.
+
+Do not use six separate feature cards.
+
+TEXTILE PAGE SECTION 12: THE OUTCOME
+Eyebrow
+
+THE RESULT
+
+Heading
+Production stays moving. Management stays informed.
+
+Three columns:
+
+Production
+
+Fewer disruptions
+
+AI follows up and helps resolve blockers.
+
+Management
+
+Less chasing
+
+Routine coordination happens automatically.
+
+Leadership
+
+Better decisions
+
+Clear progress, risks, and recommendations.
+
+Then a strong closing line:
+
+Crestex already knows how to manufacture. GoalChaser connects the communication, coordination, and intelligence around it.
+
+This is adapted directly from the final concept of the Crestex material.
+
+TEXTILE PAGE SECTION 13: FINAL CTA
+Eyebrow
+
+MODERNIZE YOUR OPERATIONS
+
+Heading
+Let AI coordinate the work between people.
+Subtitle
+
+Give your teams a smarter way to communicate, execute, resolve problems, and keep production moving.
+
+Buttons
+
+Talk to Us →
+
+See GoalChaser
+
+IMPORTANT DIFFERENCE BETWEEN THE TWO PAGES
+
+The agent must not accidentally make both pages identical.
+
+They share the GoalChaser platform, but their stories are different.
+
+Corporate IT
+
+The central story is:
+
+Existing Tools
+      ↓
+Tasks
+      ↓
+AI Voice Follow-up
+      ↓
+Employee Progress
+      ↓
+Blockers
+      ↓
+Productivity Reports
+      ↓
+Management Visibility
+
+The key benefit:
+
+Stop chasing your team for status.
+
+The page should feel like a modern productivity SaaS product.
+
+Use:
+
+Task boards
+Software integrations
+Developer/team UI
+AI call screens
+Progress dashboards
+Employee reports
+Productivity charts
+Textile
+
+The central story is:
+
+Purchase Order
+      ↓
+AI Planning
+      ↓
+Hierarchical Approval
+      ↓
+Production Execution
+      ↓
+AI Coordination
+      ↓
+Blocker Recovery
+      ↓
+Escalation
+      ↓
+Executive Intelligence
+      ↓
+Audit Trail
+
+The key benefit:
+
+Keep production moving while reducing management workload.
+
+The page should feel like an operational intelligence and coordination system.
+
+Use:
+
+Purchase orders
+Production planning
+Factory/operations visuals
+Organizational hierarchy
+Shift calls
+Machine breakdown scenarios
+Recovery plans
+Executive dashboards
+Decision timelines
+Audit trails
+FINAL DESIGN RULE
+
+Both pages should follow one fundamental principle:
+
+Show, don't explain.
+
+Do not write:
+
+"GoalChaser provides intelligent AI-powered operational coordination and automated workforce communication."
+
+Instead show:
+
+Purchase Order
+
+↓
+
+AI creates plan
+
+↓
+
+Manager approves
+
+↓
+
+AI calls team
+
+↓
+
+Blocker detected
+
+↓
+
+AI creates recovery plan
+
+↓
+
+Management sees result
+
+The same applies to IT.
+
+The user should understand the product by following the visual workflow, not reading a wall of text.
+
+Keep each section to:
+
+1 strong heading + 1 short explanation + visual + 3 to 6 short labels.
+
+Avoid long paragraphs, generic AI buzzwords, excessive feature grids, stock photography, and unnecessary marketing claims.
+
+The two pages should ultimately communicate:
+
+GoalChaser is one productivity platform, but it adapts to the way different organizations actually work.
+
+For Corporate IT, it becomes the active productivity and accountability layer around existing tools.
+
+For Textile, it becomes the communication, coordination, and intelligence layer around production operations.

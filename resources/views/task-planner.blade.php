@@ -24,9 +24,9 @@
     /* ─── NAV ─── */
     nav { position:fixed; top:0; left:0; right:0; z-index:100; padding:0 2rem; background:rgba(255,255,255,0); border-bottom:1px solid transparent; transition:background .3s,border-color .3s,box-shadow .3s; }
     nav.scrolled { background:rgba(255,255,255,.97); backdrop-filter:blur(12px); border-bottom-color:var(--s3); box-shadow:0 1px 16px rgba(45,55,72,0.05); }
-    .nav-inner { max-width:1280px; margin:0 auto; height:110px; display:flex; align-items:center; justify-content:space-between; }
+    .nav-inner { max-width:1280px; margin:0 auto; height:80px; display:flex; align-items:center; justify-content:space-between; }
     .nav-logo { display:flex; align-items:center; text-decoration:none; }
-    .nav-logo img { height:100px; width:auto; display:block; }
+    .nav-logo img { height:70px; width:auto; display:block; }
     @media(max-width:640px) { .nav-logo img { height:70px; } .nav-inner { height:80px; } .hero { margin-top:-80px; padding-top:80px; } }
     .nav-logo .logo-light { display:block; }
     .nav-logo .logo-dark { display:none; }
@@ -307,9 +307,66 @@
     .feat-title { font-size:.9rem; font-weight:800; color:var(--s9); margin-bottom:.5rem; }
     .feat-desc { font-size:.8rem; color:var(--s6); line-height:1.6; }
     .fc1 .feat-ico{background:rgba(0,175,240,.1);color:var(--cyan);} .fc1:hover{border-color:rgba(0,175,240,.3);}
+
+    /* ─── INTEGRATIONS GRID ─── */
+    .int-bg { background:var(--s1); }
+    .int-grid { display:grid; grid-template-columns:repeat(6,1fr); gap:1.25rem; max-width:1080px; margin:0 auto; }
+    .int-card { background:#fff; border:1px solid var(--s3); border-radius:18px; padding:1.5rem 1rem; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:.85rem; text-align:center; transition:border-color .3s,box-shadow .3s,transform .3s; box-shadow:0 1px 6px rgba(0,0,0,.04); }
+    .int-card:hover { transform:translateY(-4px); box-shadow:0 10px 30px rgba(0,0,0,.08); border-color:rgba(0,175,240,.3); }
+    .ilogo { width:56px; height:56px; display:flex; align-items:center; justify-content:center; opacity:1; }
+    .ilogo svg { width:100%; height:100%; }
+    .int-name { font-size:.8rem; font-weight:800; color:var(--s7); }
     .fc2 .feat-ico{background:rgba(14,182,71,.1);color:var(--green);} .fc2:hover{border-color:rgba(14,182,71,.3);}
     .fc3 .feat-ico{background:rgba(124,58,237,.1);color:var(--purple);} .fc3:hover{border-color:rgba(124,58,237,.3);}
     .fc4 .feat-ico{background:rgba(234,88,12,.1);color:var(--orange);} .fc4:hover{border-color:rgba(234,88,12,.3);}
+
+    /* ─── BUILT FOR (INDUSTRIES) ─── */
+    .ind-bg { background:#fff; }
+    .ind-grid { display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; max-width:1100px; margin:0 auto; }
+    .ind-card { background:var(--s1); border:1px solid var(--s3); border-radius:24px; padding:2.25rem; display:flex; flex-direction:column; gap:1.25rem; transition:border-color .3s,box-shadow .3s,transform .3s; }
+    .ind-card:hover { transform:translateY(-4px); box-shadow:0 14px 40px rgba(0,0,0,.08); border-color:rgba(0,175,240,.3); }
+    .ind-head { display:flex; align-items:center; gap:.85rem; }
+    .ind-ico { width:48px; height:48px; border-radius:14px; background:var(--cyan); color:#fff; display:flex; align-items:center; justify-content:center; font-size:1.4rem; box-shadow:0 6px 16px rgba(0,175,240,.35); flex-shrink:0; }
+    .ind-ico.green { background:var(--green); box-shadow:0 6px 16px rgba(14,182,71,.35); }
+    .ind-ico .material-symbols-outlined { font-variation-settings:'FILL' 1; }
+    .ind-title { font-size:1.35rem; font-weight:900; color:var(--s9); margin:0; }
+    .ind-tag { font-size:.9rem; font-weight:800; color:var(--s6); }
+    .ind-desc { font-size:.95rem; color:var(--s6); line-height:1.7; }
+    .ind-flow { background:#fff; border:1px solid var(--s3); border-radius:14px; padding:1rem 1.25rem; font-size:.82rem; font-weight:700; color:var(--s7); display:flex; align-items:center; gap:.5rem; flex-wrap:wrap; }
+    .ind-flow .dot { width:8px; height:8px; border-radius:50%; background:var(--cyan); flex-shrink:0; }
+    .ind-flow .dot.green { background:var(--green); }
+    .ind-uses { list-style:none; display:flex; flex-direction:column; gap:.55rem; }
+    .ind-uses li { display:flex; align-items:flex-start; gap:.7rem; font-size:.88rem; color:var(--s7); font-weight:600; }
+    .ind-uses li::before { content:''; width:16px; height:16px; border-radius:50%; background:rgba(0,175,240,.15); border:1.5px solid rgba(0,175,240,.4); flex-shrink:0; margin-top:2px; }
+    .ind-uses.green li::before { background:rgba(14,182,71,.15); border-color:rgba(14,182,71,.4); }
+    .gf { position:relative; width:100%; }
+    .gf svg { display:block; width:100%; height:auto; overflow:visible; }
+    .gf .edge { fill:none; stroke:#CBD5E1; stroke-width:2; }
+    .gf .edge.alive { stroke:#00AFF0; stroke-dasharray:6 8; stroke-linecap:round; animation:gfDash 1.3s linear infinite; }
+    .gf.green .edge.alive { stroke:#0EB647; }
+    .gf .gfline { fill:none; stroke:#E2E8F0; stroke-width:2; stroke-linecap:round; }
+    .gf .gf-arr { fill:#00AFF0; }
+    .gf.green .gf-arr { fill:#0EB647; }
+    .gf-node { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:5px; width:74px; height:100px; padding:8px 6px; border-radius:20px; background:#fff; border:1.5px solid #E2E8F0; box-shadow:0 6px 16px rgba(15,23,42,.06); box-sizing:border-box; text-align:center; }
+    .gf-node .gf-ring { width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; background:rgba(0,175,240,.1); color:#00AFF0; position:relative; margin-bottom:6px; }
+    .gf.green .gf-node .gf-ring { background:rgba(14,182,71,.1); color:#0EB647; }
+    .gf-node .gf-ring::after { content:''; position:absolute; inset:-3px; border-radius:50%; border:1.5px solid rgba(0,175,240,.35); animation:gfPing 2.6s ease-out infinite; }
+    .gf.green .gf-node .gf-ring::after { border-color:rgba(14,182,71,.35); }
+    .gf-node .gf-ring .material-symbols-outlined { font-size:20px; }
+    .gf-node .gf-name { font-family:'Nunito',sans-serif; font-size:11px; font-weight:800; color:#334155; line-height:1.05; }
+    .gf-node .gf-stage { font-family:'Nunito',sans-serif; font-size:8px; font-weight:800; color:#64748B; letter-spacing:.6px; text-transform:uppercase; }
+    .gf-node.gf-hub { width:92px; height:150px; padding:18px 8px; border-radius:28px; border-width:2px; border-color:#CBD5E1; box-shadow:0 10px 26px rgba(0,175,240,.18); }
+    .gf.green .gf-node.gf-hub { box-shadow:0 10px 26px rgba(14,182,71,.18); }
+    .gf-node.gf-hub .gf-ring { width:52px; height:52px; margin-bottom:8px; }
+    .gf-node.gf-hub .gf-ring::before { content:''; position:absolute; inset:-6px; border-radius:50%; border:2px solid rgba(0,175,240,.25); animation:gfSpin 5s linear infinite; }
+    .gf.green .gf-node.gf-hub .gf-ring::before { border-top-color:#0EB647; border-left-color:#0EB647; }
+    .gf-node.gf-hub .gf-ring .material-symbols-outlined { font-size:26px; }
+    .gf-node.gf-hub .gf-name { font-size:13px; }
+    @keyframes gfDash { to { stroke-dashoffset:-14; } }
+    @keyframes gfPing { 0%{transform:scale(1);opacity:.7} 70%{transform:scale(1.4);opacity:0} 100%{opacity:0} }
+    @keyframes gfSpin { to { transform:rotate(360deg); } }
+    .btn-green { background:linear-gradient(135deg,var(--green),var(--green2)) !important; box-shadow:0 6px 24px rgba(14,182,71,.35) !important; }
+    .btn-green:hover { box-shadow:0 10px 32px rgba(14,182,71,.45) !important; }
 
     /* ─── AI MANAGER SECTION (dark) ─── */
     .ai-mgr-bg { background:var(--navy); position:relative; overflow:hidden; }
@@ -605,7 +662,9 @@
       .hero-inner { grid-template-columns:1fr; }
       .hero-visual { display:none; }
       .steps-row,.feat-grid,.voip-steps,.pw-grid,.exec-tiers,.exec-metrics,.int-categories,.roles-grid { grid-template-columns:1fr 1fr; }
+      .int-grid { grid-template-columns:repeat(4,1fr); }
       .ai-mgr-grid,.retro-grid { grid-template-columns:1fr; }
+      .ind-grid { grid-template-columns:1fr; }
       .ba-grid { grid-template-columns:1fr; }
       .footer-grid { grid-template-columns:2fr 1fr 1fr; gap:2rem; }
       .watch-flow { grid-template-columns:1fr; }
@@ -627,6 +686,7 @@
     @media(max-width:640px) {
       .section { padding:3rem 1.25rem; }
       .steps-row,.feat-grid,.voip-steps,.pw-grid,.exec-tiers,.exec-metrics,.int-categories,.roles-grid,.teams-grid { grid-template-columns:1fr; }
+      .int-grid { grid-template-columns:repeat(2,1fr); }
       .footer-grid { grid-template-columns:1fr; gap:2rem; }
       .hero-actions { flex-direction:column; width:100%; }
       .hero-actions a { width:100%; justify-content:center; }
@@ -684,16 +744,13 @@
 <nav id="navbar">
   <div class="nav-inner">
     <a href="/" class="nav-logo">
-      <img src="/assets/logo-light-new.png" alt="GoalChaser.co" class="logo-light" />
-      <img src="/assets/logo-dark.png" alt="GoalChaser.co" class="logo-dark" />
+      <img src="/assets//logo/logo-dark-full.png" alt="GoalChaser.co" class="logo-light" />
+      <img src="/assets//logo/logo-light-full.png" alt="GoalChaser.co" class="logo-dark" />
     </a>
     <ul class="nav-links">
       <li><a href="#how-it-works">How It Works</a></li>
-      <li><a href="#ai-manager">AI Manager</a></li>
-      <li><a href="#features">Features</a></li>
-      <li><a href="#exec-pulse">Exec View</a></li>
-      <li><a href="#teams">For Teams</a></li>
-      <li><a href="#mobile-app">Mobile App</a></li>
+      <li><a href="/goalchaser-for-textile">For Textile</a></li>
+      <li><a href="/goalchaser-for-it">For IT</a></li>
       <li><a href="#faq">FAQ</a></li>
     </ul>
     <div class="nav-actions">
@@ -710,11 +767,8 @@
   </div>
   <div class="mobile-menu" id="mobileMenu">
     <a href="#how-it-works">How It Works</a>
-    <a href="#ai-manager">AI Manager</a>
-    <a href="#features">Features</a>
-    <a href="#exec-pulse">Exec View</a>
-    <a href="#teams">For Teams</a>
-    <a href="#mobile-app">Mobile App</a>
+    <a href="/goalchaser-for-textile">For Textile</a>
+    <a href="/goalchaser-for-it">For IT</a>
     <a href="#faq">FAQ</a>
     <div class="mobile-actions">
       <a href="/login" class="btn-ghost">Sign in</a>
@@ -743,11 +797,8 @@
 
       <h1 class="hero-h1" id="heroHeadline">
         Your personal <span class="c1">procrastination killer</span><br>
-        one call at a time
-      </h1>
 
-      <p class="hero-sub-big" id="heroSubBig">Your AI accountability partner.</p>
-      <p class="hero-sub" id="heroSub">GoalChaser calls you daily, learns what matters, and keeps you accountable — so you stop procrastinating and start finishing. No dashboards, no distractions, just results.</p>
+      </h1>
 
       <div class="hero-actions">
         <a href="/login" class="btn-primary" style="text-decoration:none;">
@@ -765,7 +816,6 @@
       <div class="hero-chips">
         <span class="chip"><span class="material-symbols-outlined" style="color:#00AFF0;">mic</span>AI Voice Calls</span>
         <span class="chip"><span class="material-symbols-outlined" style="color:#0EB647;">settings_input_antenna</span>Enterprise VoIP</span>
-        <span class="chip"><span class="material-symbols-outlined" style="color:#0EB647;">check_circle</span>No dashboards needed</span>
         <span class="chip"><span class="material-symbols-outlined" style="color:#FBBF24;">groups</span>Personal &amp; Teams</span>
       </div>
     </div>
@@ -973,7 +1023,7 @@
     <div class="sb-item"><div class="sb-num">100K+</div><div class="sb-label">Tasks Completed</div></div>
     <div class="sb-item"><div class="sb-num">5,000+</div><div class="sb-label">Blockers Resolved</div></div>
     <div class="sb-item"><div class="sb-num">24/7</div><div class="sb-label">AI Follow-ups</div></div>
-    <div class="sb-item"><div class="sb-num">US</div><div class="sb-label">Phone Numbers</div></div>
+    <div class="sb-item"><div class="sb-num">In-App</div><div class="sb-label">Voice Calling</div></div>
   </div>
 </div>
 
@@ -1014,83 +1064,85 @@
   </div>
 </section>
 
-<!-- VS COMPARISON + FEATURES -->
-<section class="section vs-bg" id="features">
+<!-- INTEGRATIONS -->
+<section class="section int-bg" id="integrations">
   <div class="sec-inner">
     <div class="tc mb16">
-      <h2 class="sec-h2">A tool that <span>works for you</span></h2>
-      <p class="sec-sub cx">Most tools just sit there waiting for you to update them. GoalChaser actively helps you get things done.</p>
+      <h2 class="sec-h2">Connects with your <span>existing tools</span></h2>
+      <p class="sec-sub cx">Seamlessly connect with your existing tools. GoalChaser sits on top of the task management and communication platforms your team already uses — no need to change how you work.</p>
     </div>
-
-    <div class="ba-grid">
-      <div class="ba-card ba-before">
-        <div class="ba-head">
-          <div class="ba-ico"><span class="material-symbols-outlined" style="font-size:1.2rem;">close</span></div>
-          <span class="ba-title" style="color:#1E293B;">Passive tools (Jira / Trello / Asana)</span>
+    <div class="int-grid">
+      <div class="int-card">
+        <div class="ilogo">
+          <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><path d="M24 5 8 21l16 16 16-16L24 5z" fill="#2684FF"/><path d="M24 18l-6 6 6 6 6-6-6-6z" fill="#0052CC"/><path d="M24 24.4l-1.4-1.4 1.4-1.4 1.4 1.4-1.4 1.4z" fill="#fff"/></svg>
         </div>
-        <ul class="ba-list">
-          <li><span class="material-symbols-outlined" style="color:#CBD5E1;">do_not_disturb_on</span>Someone has to remember to log in and update</li>
-          <li><span class="material-symbols-outlined" style="color:#CBD5E1;">do_not_disturb_on</span>Deadlines slip silently — no one warns you</li>
-          <li><span class="material-symbols-outlined" style="color:#CBD5E1;">do_not_disturb_on</span>Zero intelligence about your team as people</li>
-          <li><span class="material-symbols-outlined" style="color:#CBD5E1;">do_not_disturb_on</span>Someone must manually write every status report</li>
-          <li><span class="material-symbols-outlined" style="color:#CBD5E1;">do_not_disturb_on</span>Blocked tasks sit unnoticed for days</li>
-        </ul>
+        <div class="int-name">Jira</div>
       </div>
-      <div class="ba-card ba-after">
-        <div class="ba-head">
-          <div class="ba-ico"><span class="material-symbols-outlined" style="font-size:1.2rem;">check</span></div>
-          <span class="ba-title" style="color:#0F172A;">GoalChaser.co — Active AI Manager</span>
+      <div class="int-card">
+        <div class="ilogo">
+          <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="5" width="38" height="38" rx="8" fill="#0079BF"/><rect x="12" y="14" width="11" height="19" rx="2" fill="#fff"/><rect x="26" y="14" width="11" height="12" rx="2" fill="#fff"/></svg>
         </div>
-        <ul class="ba-list">
-          <li><span class="material-symbols-outlined" style="color:#00AFF0;">check_circle</span>AI calls your team — no login required</li>
-          <li><span class="material-symbols-outlined" style="color:#00AFF0;">check_circle</span>Pre-deadline warnings before anything slips</li>
-          <li><span class="material-symbols-outlined" style="color:#00AFF0;">check_circle</span>Baseline-aware performance monitoring per person</li>
-          <li><span class="material-symbols-outlined" style="color:#00AFF0;">check_circle</span>Reports auto-generated from call transcripts</li>
-          <li><span class="material-symbols-outlined" style="color:#00AFF0;">check_circle</span>Blockers escalated and resolved in real time</li>
-        </ul>
+        <div class="int-name">Trello</div>
       </div>
-    </div>
-
-    <div class="feat-grid">
-      <div class="feat-card fc1">
-        <div class="feat-ico"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">alarm_on</span></div>
-        <div class="feat-title">Friendly Reminders</div>
-        <p class="feat-desc">Get helpful warnings before a deadline so you have time to finish your work comfortably.</p>
+      <div class="int-card">
+        <div class="ilogo">
+          <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><circle cx="24" cy="14" r="6.5" fill="#F06A6A"/><circle cx="14.5" cy="33" r="6.5" fill="#F8A31B"/><circle cx="33.5" cy="33" r="6.5" fill="#F15822"/></svg>
+        </div>
+        <div class="int-name">Asana</div>
       </div>
-      <div class="feat-card fc2">
-        <div class="feat-ico"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">support_agent</span></div>
-        <div class="feat-title">Help When Stuck</div>
-        <p class="feat-desc">When you hit a roadblock, GoalChaser can suggest solutions or connect you with the right person on your team.</p>
+      <div class="int-card">
+        <div class="ilogo">
+          <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><path d="M24 6 42 28H28L24 42 20 28H6L24 6z" fill="#7B68EE"/><circle cx="24" cy="30" r="4" fill="#fff"/></svg>
+        </div>
+        <div class="int-name">ClickUp</div>
       </div>
-      <div class="feat-card fc3">
-        <div class="feat-ico"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">monitoring</span></div>
-        <div class="feat-title">Personal Progress</div>
-        <p class="feat-desc">Track your own growth and productivity over time, so you can celebrate your personal wins.</p>
+      <div class="int-card">
+        <div class="ilogo">
+          <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><rect x="8" y="8" width="32" height="32" rx="8" fill="#111"/><text x="24" y="33" font-family="Nunito,Arial,sans-serif" font-size="22" font-weight="900" fill="#fff" text-anchor="middle">N</text></svg>
+        </div>
+        <div class="int-name">Notion</div>
       </div>
-      <div class="feat-card fc4">
-        <div class="feat-ico"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">notifications_active</span></div>
-        <div class="feat-title">Stays on Top</div>
-        <p class="feat-desc">GoalChaser remembers everything so you don't have to, keeping tasks organized until they are done.</p>
+      <div class="int-card">
+        <div class="ilogo">
+          <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><g fill="none"><path d="M24 10 22 14l-4-2 2 4h-6v4h6l2 6-4 4 4 4 4-6 6 6-4-4 4-4-4-4v-4h6v-4h-8l2-4-4 2-4-2z" fill="#1A73E8"/></g></svg>
+        </div>
+        <div class="int-name">Monday.com</div>
       </div>
-      <div class="feat-card fc1">
-        <div class="feat-ico"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">groups</span></div>
-        <div class="feat-title">Team Harmony</div>
-        <p class="feat-desc">When your work affects a teammate, GoalChaser automatically updates them so everyone stays perfectly in sync.</p>
+      <div class="int-card">
+        <div class="ilogo">
+          <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="5" width="18" height="18" rx="4" fill="#5059C9"/><rect x="25" y="5" width="18" height="18" rx="4" fill="#7B83EB"/><rect x="5" y="25" width="18" height="18" rx="4" fill="#464EB8"/><rect x="25" y="25" width="18" height="18" rx="4" fill="#7B83EB"/><path d="M29 31c-2.2 0-4 1.8-4 4s1.8 4 4 4h4l3-3-3-3h-4c-.6 0-1-.4-1-1s.4-1 1-1h6l2-2-3-3h-5z" fill="#fff"/></svg>
+        </div>
+        <div class="int-name">Teams</div>
       </div>
-      <div class="feat-card fc2">
-        <div class="feat-ico"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">auto_awesome</span></div>
-        <div class="feat-title">Smart Planning</div>
-        <p class="feat-desc">GoalChaser looks at your upcoming tasks and makes sure you aren't overwhelmed before the week begins.</p>
+      <div class="int-card">
+        <div class="ilogo">
+          <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><path d="M24 4C13 4 4 13 4 24c0 8.8 5.7 16.3 13.7 18.9 1 .2 1.4-.4 1.4-.9v-3.4c-5.6 1.2-6.8-2.7-6.8-2.7-.9-2.3-2.2-2.9-2.2-2.9-1.8-1.2.1-1.2.1-1.2 2 .1 3 2 3 2 1.8 3 4.6 2.2 5.7 1.7.2-1.3.7-2.2 1.3-2.7-4.4-.5-9-2.2-9-9.7 0-2.1.8-3.9 2-5.2-.2-.5-.9-2.5.2-5.2 0 0 1.6-.5 5.3 2 1.5-.4 3.2-.6 4.8-.6s3.3.2 4.8.6c3.7-2.5 5.3-2 5.3-2 1.1 2.7.4 4.7.2 5.2 1.2 1.3 2 3.1 2 5.2 0 7.6-4.6 9.2-9 9.7.7.6 1.4 1.9 1.4 3.8v5.6c0 .5.4 1.1 1.4.9C38.3 40.3 44 32.8 44 24 44 13 35 4 24 4z" fill="#181717"/></svg>
+        </div>
+        <div class="int-name">GitHub</div>
       </div>
-      <div class="feat-card fc3">
-        <div class="feat-ico"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">history</span></div>
-        <div class="feat-title">Clear Records</div>
-        <p class="feat-desc">Every chat is securely saved, so you can easily review what was agreed upon without taking notes.</p>
+      <div class="int-card">
+        <div class="ilogo">
+          <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="8" width="38" height="32" rx="7" fill="#1A73E8"/><text x="24" y="31" font-family="Nunito,Arial,sans-serif" font-size="18" font-weight="800" fill="#fff" text-anchor="middle">31</text><rect x="9" y="12" width="30" height="4" rx="2" fill="#fff"/></svg>
+        </div>
+        <div class="int-name">Google Calendar</div>
       </div>
-      <div class="feat-card fc4">
-        <div class="feat-ico"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">import_contacts</span></div>
-        <div class="feat-title">Knows Your Style</div>
-        <p class="feat-desc">Teach GoalChaser your personal or team guidelines, and it will adapt its check-ins to match your way of working.</p>
+      <div class="int-card">
+        <div class="ilogo">
+          <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><path d="M20 5 9 18h6l-2 14 14-14h-5l4-13z" fill="#E01E5A"/><path d="M26 10l-8 8h5l-2 12 14-12h-5l2-8z" fill="#36C5F0"/><path d="M24 5l-7 7h5l-3 14 14-14h-6l3-7z" fill="#2EB67D"/><circle cx="31" cy="35" r="7" fill="#ECB22E"/></svg>
+        </div>
+        <div class="int-name">Slack</div>
+      </div>
+      <div class="int-card">
+        <div class="ilogo">
+          <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="8" width="34" height="32" rx="8" fill="#0B5CFF"/><path d="M29 24l-11 7V17l11 7z" fill="#fff"/></svg>
+        </div>
+        <div class="int-name">Zoom</div>
+      </div>
+      <div class="int-card">
+        <div class="ilogo">
+          <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><path d="M24 6 13 22h5l-6 20 16-20h-5l1-16z" fill="#8CC63F"/><path d="M24 18 16 30h4l-4 12 12-12h-4l0-12z" fill="#4F9E43"/><path d="M24 32l-3 4 3 4 3-4-3-4z" fill="#2E7D32"/></svg>
+        </div>
+        <div class="int-name">Wrike</div>
       </div>
     </div>
   </div>
@@ -1324,6 +1376,154 @@
   </div>
 </section>
 
+<!-- BUILT FOR WORKPLACES -->
+<section class="section ind-bg" id="built-for">
+  <div class="sec-inner">
+    <div class="tc mb16">
+      <h2 class="sec-h2">Built for real <span>workplaces</span></h2>
+      <p class="sec-sub cx">From the factory floor to the sprint board, one layer keeps everyone moving — keeping people executing and management informed.</p>
+    </div>
+    <div class="ind-grid">
+      <div class="ind-card">
+        <div class="ind-head">
+          <div class="ind-ico green"><span class="material-symbols-outlined">factory</span></div>
+          <h3 class="ind-title">Textile Operations</h3>
+        </div>
+        <div class="ind-tag">Keep production moving — without chasing anyone.</div>
+        <p class="ind-desc">AI calls every unit and shift for updates, surfaces exceptions early, coordinates recovery, and hands management a clear, up-to-date picture from purchase order to delivery.</p>
+        <div class="gf green">
+          <svg viewBox="0 0 460 240" role="img" aria-label="AI coordination flow for textile operations">
+            <defs>
+              <marker id="gfArrT" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path class="gf-arr" d="M0 0L10 5L0 10z"/>
+              </marker>
+            </defs>
+            <path class="gfline" d="M205 92 C160 58 135 52 96 47"/>
+            <path class="edge alive" marker-end="url(#gfArrT)" d="M205 92 C160 58 135 52 96 47"/>
+            <path class="gfline" d="M255 92 C300 58 325 52 364 47"/>
+            <path class="edge alive" marker-end="url(#gfArrT)" d="M255 92 C300 58 325 52 364 47"/>
+            <path class="gfline" d="M205 158 C168 182 140 194 112 200"/>
+            <path class="edge alive" marker-end="url(#gfArrT)" d="M205 158 C168 182 140 194 112 200"/>
+            <path class="gfline" d="M255 158 C292 182 320 194 348 200"/>
+            <path class="edge alive" marker-end="url(#gfArrT)" d="M255 158 C292 182 320 194 348 200"/>
+            <circle r="4" fill="#0EB647"><animateMotion dur="2.2s" repeatCount="indefinite" path="M205 92 C160 58 135 52 96 47"/></circle>
+            <circle r="4" fill="#0EB647"><animateMotion dur="2.4s" repeatCount="indefinite" path="M255 92 C300 58 325 52 364 47"/></circle>
+            <circle r="4" fill="#0EB647"><animateMotion dur="2.6s" repeatCount="indefinite" path="M205 158 C168 182 140 194 112 200"/></circle>
+            <circle r="4" fill="#0EB647"><animateMotion dur="2.8s" repeatCount="indefinite" path="M255 158 C292 182 320 194 348 200"/></circle>
+            <foreignObject x="184" y="45" width="92" height="150">
+              <div class="gf-node gf-hub" xmlns="http://www.w3.org/1999/xhtml">
+                <div class="gf-ring"><span class="material-symbols-outlined">smart_toy</span></div>
+                <div class="gf-name">AI<br>Planner</div>
+                <div class="gf-stage">Plans &amp; calls</div>
+              </div>
+            </foreignObject>
+            <foreignObject x="23" y="0" width="74" height="100">
+              <div class="gf-node" xmlns="http://www.w3.org/1999/xhtml">
+                <div class="gf-ring"><span class="material-symbols-outlined">receipt_long</span></div>
+                <div class="gf-name">Order in</div>
+              </div>
+            </foreignObject>
+            <foreignObject x="363" y="0" width="74" height="100">
+              <div class="gf-node" xmlns="http://www.w3.org/1999/xhtml">
+                <div class="gf-ring"><span class="material-symbols-outlined">call</span></div>
+                <div class="gf-name">AI calls</div>
+              </div>
+            </foreignObject>
+            <foreignObject x="43" y="146" width="74" height="100">
+              <div class="gf-node" xmlns="http://www.w3.org/1999/xhtml">
+                <div class="gf-ring"><span class="material-symbols-outlined">security</span></div>
+                <div class="gf-name">Recovery</div>
+              </div>
+            </foreignObject>
+            <foreignObject x="343" y="146" width="74" height="100">
+              <div class="gf-node" xmlns="http://www.w3.org/1999/xhtml">
+                <div class="gf-ring"><span class="material-symbols-outlined">monitor_heart</span></div>
+                <div class="gf-name">Reports</div>
+              </div>
+            </foreignObject>
+          </svg>
+        </div>
+        <ul class="ind-uses green">
+          <li>Shift-by-shift follow-up calls</li>
+          <li>Early blocker &amp; machine-exception detection</li>
+          <li>Recovery coordination, not fire drills</li>
+          <li>Approvals that stay tracked, not chased</li>
+          <li>Live dashboards and daily briefings</li>
+        </ul>
+        <a href="/goalchaser-for-textile" class="btn-primary btn-green">See Textile Operations →</a>
+      </div>
+      <div class="ind-card">
+        <div class="ind-head">
+          <div class="ind-ico"><span class="material-symbols-outlined">code</span></div>
+          <h3 class="ind-title">Corporate IT</h3>
+        </div>
+        <div class="ind-tag">Keep technology teams moving — automatically.</div>
+        <p class="ind-desc">AI follows up on tasks and deadlines by voice, surfaces the blockers only humans can solve, and gives managers a live view of sprint and delivery progress.</p>
+        <div class="gf">
+          <svg viewBox="0 0 460 240" role="img" aria-label="AI coordination flow for corporate IT">
+            <defs>
+              <marker id="gfArrIt" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path class="gf-arr" d="M0 0L10 5L0 10z"/>
+              </marker>
+            </defs>
+            <path class="gfline" d="M205 92 C160 58 135 52 96 47"/>
+            <path class="edge alive" marker-end="url(#gfArrIt)" d="M205 92 C160 58 135 52 96 47"/>
+            <path class="gfline" d="M255 92 C300 58 325 52 364 47"/>
+            <path class="edge alive" marker-end="url(#gfArrIt)" d="M255 92 C300 58 325 52 364 47"/>
+            <path class="gfline" d="M205 158 C168 182 140 194 112 200"/>
+            <path class="edge alive" marker-end="url(#gfArrIt)" d="M205 158 C168 182 140 194 112 200"/>
+            <path class="gfline" d="M255 158 C292 182 320 194 348 200"/>
+            <path class="edge alive" marker-end="url(#gfArrIt)" d="M255 158 C292 182 320 194 348 200"/>
+            <circle r="4" fill="#00AFF0"><animateMotion dur="2.2s" repeatCount="indefinite" path="M205 92 C160 58 135 52 96 47"/></circle>
+            <circle r="4" fill="#00AFF0"><animateMotion dur="2.4s" repeatCount="indefinite" path="M255 92 C300 58 325 52 364 47"/></circle>
+            <circle r="4" fill="#00AFF0"><animateMotion dur="2.6s" repeatCount="indefinite" path="M205 158 C168 182 140 194 112 200"/></circle>
+            <circle r="4" fill="#00AFF0"><animateMotion dur="2.8s" repeatCount="indefinite" path="M255 158 C292 182 320 194 348 200"/></circle>
+            <foreignObject x="184" y="45" width="92" height="150">
+              <div class="gf-node gf-hub" xmlns="http://www.w3.org/1999/xhtml">
+                <div class="gf-ring"><span class="material-symbols-outlined">smart_toy</span></div>
+                <div class="gf-name">AI<br>Follow-up</div>
+                <div class="gf-stage">Talks for you</div>
+              </div>
+            </foreignObject>
+            <foreignObject x="23" y="0" width="74" height="100">
+              <div class="gf-node" xmlns="http://www.w3.org/1999/xhtml">
+                <div class="gf-ring"><span class="material-symbols-outlined">task_alt</span></div>
+                <div class="gf-name">Task in</div>
+              </div>
+            </foreignObject>
+            <foreignObject x="363" y="0" width="74" height="100">
+              <div class="gf-node" xmlns="http://www.w3.org/1999/xhtml">
+                <div class="gf-ring"><span class="material-symbols-outlined">mic</span></div>
+                <div class="gf-name">Talks to dev</div>
+              </div>
+            </foreignObject>
+            <foreignObject x="43" y="146" width="74" height="100">
+              <div class="gf-node" xmlns="http://www.w3.org/1999/xhtml">
+                <div class="gf-ring"><span class="material-symbols-outlined">build</span></div>
+                <div class="gf-name">Blocker</div>
+              </div>
+            </foreignObject>
+            <foreignObject x="343" y="146" width="74" height="100">
+              <div class="gf-node" xmlns="http://www.w3.org/1999/xhtml">
+                <div class="gf-ring"><span class="material-symbols-outlined">bar_chart</span></div>
+                <div class="gf-name">Reports</div>
+              </div>
+            </foreignObject>
+          </svg>
+        </div>
+        <ul class="ind-uses">
+          <li>Voice check-ins instead of status meetings</li>
+          <li>Blocker detection with full context</li>
+          <li>Humans step in only when needed</li>
+          <li>Auto-written sprint reports &amp; retros</li>
+          <li>Executive visibility into every team</li>
+        </ul>
+        <a href="/goalchaser-for-it" class="btn-primary">See Corporate IT →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- USER ROLES -->
 <section class="section roles-section">
   <div class="sec-inner">
@@ -1372,27 +1572,27 @@
   <div class="sec-inner">
     <div class="retro-grid">
       <div>
-        <div class="eyebrow"><span class="material-symbols-outlined">psychology</span>Auto Retrospectives</div>
-        <h2 class="sec-h2" style="max-width:400px;">Sprint retros, <span>written themselves</span></h2>
-        <p style="font-size:1rem;color:var(--s6);line-height:1.7;margin-bottom:1rem;">At the end of every sprint, GoalChaser auto-generates a full retrospective from call transcripts and task data. No meeting required. No one has to write it.</p>
-        <p style="font-size:1rem;color:var(--s6);line-height:1.7;">Over time, the AI gets better at sprint planning for that specific team — because it learns their real velocity, their common blockers, and their patterns. Every sprint makes the next one smarter.</p>
+        <div class="eyebrow"><span class="material-symbols-outlined">summarize</span>An Auto-Written Report</div>
+        <h2 class="sec-h2" style="max-width:400px;">Every sprint, a report <span>compiled for you</span></h2>
+        <p style="font-size:1rem;color:var(--s6);line-height:1.7;margin-bottom:1rem;">When a sprint ends, GoalChaser puts together a full retrospective report from call transcripts and task data — then hands it to you. No meeting to run, no notes to write, nothing to prepare.</p>
+        <p style="font-size:1rem;color:var(--s6);line-height:1.7;">It's based on what actually happened, not what people remember — and it gets better with every sprint.</p>
       </div>
       <div class="retro-items">
         <div class="retro-item">
           <div class="retro-icon ri-c"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">fact_check</span></div>
-          <div class="retro-content"><h4>Delivery Rate</h4><p>Completed vs planned — how many tasks were finished, and what fell off and why.</p></div>
+          <div class="retro-content"><h4>What was delivered</h4><p>The work that got done, what didn't, and the reasons behind both.</p></div>
         </div>
         <div class="retro-item">
           <div class="retro-icon ri-g"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">block</span></div>
-          <div class="retro-content"><h4>Blocker Analysis</h4><p>What blocked the team, how long blockers lasted, which ones were resolved on-call vs escalated.</p></div>
+          <div class="retro-content"><h4>What got in the way</h4><p>The delays, what caused them, and how each one was fixed.</p></div>
         </div>
         <div class="retro-item">
           <div class="retro-icon ri-p"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">schedule</span></div>
-          <div class="retro-content"><h4>Estimate Accuracy</h4><p>How accurate were estimates per person and per team — and is this improving sprint over sprint?</p></div>
+          <div class="retro-content"><h4>How accurate the plan was</h4><p>Where the estimates held up, and where the plan drifted off.</p></div>
         </div>
         <div class="retro-item">
           <div class="retro-icon ri-o"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">lightbulb</span></div>
-          <div class="retro-content"><h4>AI Recommendation</h4><p>What to carry over, what to reduce, what patterns to watch — in plain English, ready for the team.</p></div>
+          <div class="retro-content"><h4>What to do next</h4><p>Simple, clear priorities the team can act on in the next sprint.</p></div>
         </div>
       </div>
     </div>
@@ -1433,10 +1633,10 @@
     <div class="us-banner" style="margin-top:4rem;">
       <div class="us-ico"><span class="material-symbols-outlined" style="font-size:2rem;color:var(--cyan);font-variation-settings:'FILL' 1;">phone_in_talk</span></div>
       <div class="us-text">
-        <h4>US Phone Numbers Only — For Now</h4>
-        <p>Currently serving US-based phone numbers with premium VoIP infrastructure. Crystal-clear calls, minimal latency, enterprise-grade reliability.</p>
+        <h4>In-App Voice Calling — Everywhere</h4>
+        <p>AI voice calls happen right inside the GoalChaser app — no phone numbers needed. Just open the app and talk. Crystal-clear calls, minimal latency, available to every user worldwide.</p>
       </div>
-      <div class="us-badge"><span class="material-symbols-outlined" style="font-size:14px;vertical-align:middle;margin-right:4px;font-variation-settings:'FILL' 1;">star</span>More regions coming soon</div>
+      <div class="us-badge"><span class="material-symbols-outlined" style="font-size:14px;vertical-align:middle;margin-right:4px;font-variation-settings:'FILL' 1;">star</span>Works for all users</div>
     </div>
   </div>
 </section>
@@ -1448,7 +1648,7 @@
       <div class="mobile-content">
         <div class="eyebrow"><span class="material-symbols-outlined">phone_android</span>Mobile App</div>
         <h2>GoalChaser <span>On the Go</span></h2>
-        <p>The full GoalChaser experience in your pocket. Manage calls, tasks, and daily reports from anywhere in the world — no US phone number needed.</p>
+        <p>The full GoalChaser experience in your pocket. Manage calls, tasks, and daily reports from anywhere in the world — all in-app calling, no phone numbers needed.</p>
         <a href="#" class="mobile-dl-btn" style="display:inline-flex;text-decoration:none;">
           <span class="material-symbols-outlined" style="font-size:20px;">download</span>
           Download APK
@@ -1538,12 +1738,13 @@
       <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">How does the AI know about our tech stack and processes?<span class="material-symbols-outlined">add</span></button><div class="faq-a">During onboarding, you configure your tech stack (languages, frameworks, APIs, cloud providers) and upload internal SOP documents. The AI indexes all of this so it can give specific, contextual help during check-in calls — not generic advice.</div></div>
       <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Can I import projects from Jira, Trello or Asana?<span class="material-symbols-outlined">add</span></button><div class="faq-a">Yes. GoalChaser supports full project and task import from Jira, Trello, and Asana. You don't have to start from scratch — migration is a first-class feature.</div></div>
       <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">What communication channels does GoalChaser use?<span class="material-symbols-outlined">add</span></button><div class="faq-a">Voice calls are primary — higher response rate and harder to ignore. WhatsApp is used for async preference or as follow-up when a call isn't answered. Email handles reports, digests, and formal escalation notifications. All interactions are logged in one place.</div></div>
-      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Is it available internationally?<span class="material-symbols-outlined">add</span></button><div class="faq-a">Currently, GoalChaser.co is for US-based phone numbers only. Join the waitlist to get notified when your region is supported.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Do I need a US phone number?<span class="material-symbols-outlined">add</span></button><div class="faq-a">No. Calling in GoalChaser happens inside the app for all users — no phone numbers required. Just open the app and your AI calls come straight through, wherever you are.</div></div>
       <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">How much does it cost?<span class="material-symbols-outlined">add</span></button><div class="faq-a">We're in private beta with a free tier. Join the waitlist for early access pricing when paid plans launch.</div></div>
     </div>
   </div>
 </section>
 
+<!-- BUILT FOR -->
 <!-- CTA -->
 <section class="section cta-bg">
   <div class="sec-inner cta-inner">
@@ -1563,7 +1764,7 @@
   <div class="footer-inner">
     <div class="footer-grid">
       <div class="footer-brand">
-        <a href="/" class="footer-brand-name"><img src="/assets/logo-light-new.png" alt="GoalChaser.co" /></a>
+        <a href="/" class="footer-brand-name"><img src="/assets//logo/logo-dark-full.png" alt="GoalChaser.co" /></a>
         <p style="margin-top:0;">The active AI project manager that calls your team — schedules tasks, resolves blockers, monitors performance, and keeps leadership informed automatically.</p>
         <div class="footer-social">
           <a href="mailto:support@goalchaser.co" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></a>
@@ -1667,21 +1868,15 @@
   }
 
   /* Hero toggle — For You / For Team */
-  const toggleOpts = document.querySelectorAll('.hero-toggle-opt');
+const toggleOpts = document.querySelectorAll('.hero-toggle-opt');
   const heroH1 = document.getElementById('heroHeadline');
-  const heroSubBig = document.getElementById('heroSubBig');
-  const heroSub = document.getElementById('heroSub');
 
   const toggleContent = {
     personal: {
-      h1: 'Your personal <span class="c1">procrastination killer</span><br>one call at a time',
-      subBig: 'Your AI accountability partner.',
-      sub: 'GoalChaser calls you daily, learns what matters, and keeps you accountable — so you stop procrastinating and start finishing. No dashboards, no distractions, just results.'
+      h1: 'Your personal <span class="c1">procrastination killer</span><br>one call at a time'
     },
     team: {
-      h1: 'Your team\'s <span class="c1">productivity engine</span><br>without endless meetings',
-      subBig: 'Coordinate your entire team effortlessly.',
-      sub: 'GoalChaser runs AI-powered standups, tracks every task, resolves blockers in real time, and delivers executive summaries — all through natural voice calls. Your team stays aligned without a single status meeting.'
+      h1: 'Your team\'s <span class="c1">productivity partner</span> without endless meetings'
     }
   };
 
@@ -1692,8 +1887,6 @@
       const mode = this.dataset.mode;
       const content = toggleContent[mode];
       heroH1.innerHTML = content.h1;
-      heroSubBig.textContent = content.subBig;
-      heroSub.textContent = content.sub;
     });
   });
 
