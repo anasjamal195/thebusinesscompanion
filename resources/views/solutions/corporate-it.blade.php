@@ -900,8 +900,8 @@
     .hero { position:relative; z-index:2; }
     .split-section { position:relative; z-index:1; }
     .split-section.dark { background:#fff; }
-    .split-section.light { background:rgba(255,255,255,.3); backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px); }
-    .faq-bg { position:relative; z-index:1; background:rgba(255,255,255,.3); backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px); }
+    .split-section.light { background:rgba(255,255,255,.6); backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px); }
+    .faq-bg { position:relative; z-index:1; background:rgba(255,255,255,.6); backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px); }
     .faq-item { background:rgba(255,255,255,.85); }
     .cta-bg { position:relative; z-index:1; background:transparent; }
     footer { position:relative; z-index:1; }
@@ -1408,7 +1408,7 @@
 <!-- CTA -->
 <section class="section cta-bg">
   <div class="sec-inner cta-inner reveal-up">
-    <h2 class="cta-h2">Interested in an <span>Enterprise Plan?</span></h2>
+    <h2 class="cta-h2">Interested in an Enterprise Plan?</h2>
     <p class="cta-sub">Reach out to scale GoalChaser across your entire organization with dedicated support and custom integrations.</p>
     <div class="cta-actions">
       <button class="btn-primary" onclick="openModal(event)">
