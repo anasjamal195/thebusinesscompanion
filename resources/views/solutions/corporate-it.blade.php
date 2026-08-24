@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>GoalChaser.co Your AI Project Manager</title>
   <link rel="icon" type="image/png" href="/assets/logo/logo.png" />
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@400,0..1&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -13,13 +13,13 @@
       --navy:#1A253A; --navy2:#223048; --navy3:#2E3F5B; --navy4:#3C5072;
       --cyan:#00AFF0; --cyan2:#0091C8;
       --green:#0EB647; --green2:#0A9A3B;
-      --gold:#F59E0B; --orange:#EA580C;
+      --gold:#F59E0B; --orange:#F97316;
       --white:#FFFFFF;
       --s1:#F8FAFC; --s2:#F1F5F9; --s3:#E2E8F0; --s4:#CBD5E1;
       --s5:#94A3B8; --s6:#64748B; --s7:#475569; --s8:#475569; --s9:#334155;
     }
     html { font-size:16px; }
-    body { font-family:'Nunito',sans-serif; background:#fff; color:var(--s9); -webkit-font-smoothing:antialiased; overflow-x:hidden; }
+    body { font-family:'Inter',sans-serif; background:#fff; color:var(--s9); -webkit-font-smoothing:antialiased; overflow-x:hidden; }
 
     /* ─── NAV ─── */
     nav { position:fixed; top:0; left:0; right:0; z-index:100; padding:0 2rem; background:rgba(255,255,255,0); border-bottom:1px solid transparent; transition:background .3s,border-color .3s,box-shadow .3s; }
@@ -38,11 +38,11 @@
     .nav-links a:hover { color:var(--white); }
     nav.scrolled .nav-links a:hover { color:var(--cyan); }
     .nav-actions { display:flex; align-items:center; gap:1rem; }
-    .nav-actions .btn-ghost { font-family:'Nunito',sans-serif; font-size:.875rem; font-weight:700; background:none; border:none; cursor:pointer; text-decoration:none; transition:color .2s; color:rgba(255,255,255,.75); }
+    .nav-actions .btn-ghost { font-family:'Inter',sans-serif; font-size:.875rem; font-weight:700; background:none; border:none; cursor:pointer; text-decoration:none; transition:color .2s; color:rgba(255,255,255,.75); }
     nav.scrolled .nav-actions .btn-ghost { color:var(--s6); }
     .nav-actions .btn-ghost:hover { color:var(--white); }
     nav.scrolled .nav-actions .btn-ghost:hover { color:var(--cyan); }
-    .nav-actions .btn-primary { font-family:'Nunito',sans-serif; font-size:.875rem; font-weight:800; background:var(--cyan); border:none; padding:.625rem 1.375rem; border-radius:8px; cursor:pointer; text-decoration:none; display:inline-flex; align-items:center; gap:.5rem; transition:background .2s,transform .15s; box-shadow:0 4px 14px rgba(0,175,240,.3); color:#fff; }
+    .nav-actions .btn-primary { font-family:'Inter',sans-serif; font-size:.875rem; font-weight:800; background:var(--cyan); border:none; padding:.625rem 1.375rem; border-radius:8px; cursor:pointer; text-decoration:none; display:inline-flex; align-items:center; gap:.5rem; transition:background .2s,transform .15s; box-shadow:0 4px 14px rgba(0,175,240,.3); color:#fff; }
     nav.scrolled .nav-actions .btn-primary { background:var(--s9); color:#fff; box-shadow:none; }
     nav.scrolled .nav-actions .btn-primary:hover { background:var(--cyan); }
     .nav-actions .btn-primary:hover { background:var(--cyan2); transform:translateY(-1px); }
@@ -57,8 +57,8 @@
     .mobile-menu a:hover { color:var(--cyan); }
     .mobile-menu .mobile-actions { display:flex; flex-direction:column; gap:.75rem; padding-top:.75rem; border-top:1px solid var(--s3); }
     .mobile-menu .mobile-actions a { justify-content:center; text-align:center; }
-    .mobile-menu .mobile-actions .btn-primary { background:var(--cyan); color:#fff; padding:.75rem; border-radius:12px; font-weight:800; display:flex; align-items:center; gap:.5rem; text-decoration:none; font-family:'Nunito',sans-serif; font-size:.875rem; }
-    .mobile-menu .mobile-actions .btn-ghost { background:var(--s2); color:var(--s7); padding:.75rem; border-radius:12px; font-weight:700; display:flex; align-items:center; gap:.5rem; text-decoration:none; font-family:'Nunito',sans-serif; font-size:.875rem; }
+    .mobile-menu .mobile-actions .btn-primary { background:var(--cyan); color:#fff; padding:.75rem; border-radius:12px; font-weight:800; display:flex; align-items:center; gap:.5rem; text-decoration:none; font-family:'Inter',sans-serif; font-size:.875rem; }
+    .mobile-menu .mobile-actions .btn-ghost { background:var(--s2); color:var(--s7); padding:.75rem; border-radius:12px; font-weight:700; display:flex; align-items:center; gap:.5rem; text-decoration:none; font-family:'Inter',sans-serif; font-size:.875rem; }
     @media(max-width:900px) {
       .nav-links, .nav-actions { display:none; }
       .nav-hamburger { display:block; }
@@ -67,8 +67,8 @@
     }
 
     /* ─── HERO ─── */
-    .hero { position:relative; min-height:100vh; display:flex; align-items:center; overflow:hidden; margin-top:-110px; padding-top:110px; background-image:url('assets/background.png'); background-size:cover; background-position:center; }
-    .hero-overlay { position:absolute; inset:0; background:linear-gradient(135deg,rgba(10,15,25,.95) 0%,rgba(15,20,30,.90) 50%,rgba(5,10,15,.85) 100%); }
+    .hero { position:relative; min-height:100vh; display:flex; align-items:center; overflow:hidden; margin-top:-110px; padding-top:110px; background-image:url('assets/background-it.png'); background-size:cover; background-position:center; }
+    .hero-overlay { position:absolute; inset:0; background:rgba(0,0,0,.82); }
     .hero-glow1 { position:absolute; top:25%; left:25%; width:384px; height:384px; border-radius:50%; background:radial-gradient(circle,rgba(0,175,240,.12),transparent 70%); filter:blur(40px); pointer-events:none; }
     .hero-glow2 { position:absolute; bottom:25%; right:25%; width:320px; height:320px; border-radius:50%; background:radial-gradient(circle,rgba(14,182,71,.10),transparent 70%); filter:blur(40px); pointer-events:none; }
     .hero-glow3 { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:600px; height:600px; border-radius:50%; background:radial-gradient(circle,rgba(124,58,237,.05),transparent 70%); filter:blur(60px); pointer-events:none; }
@@ -80,11 +80,7 @@
     .eyebrow-dot { width:6px; height:6px; border-radius:50%; background:var(--green); animation:blink 1.8s ease-in-out infinite; }
     @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:.4;} }
 
-    .hero-toggle { display:inline-flex; align-items:center; padding:4px; background:rgba(255,255,255,.10); border:1px solid rgba(255,255,255,.2); border-radius:999px; margin-bottom:1.5rem; }
-    .hero-toggle-opt { padding:.35rem 1rem; border-radius:999px; font-size:.75rem; font-weight:700; cursor:pointer; transition:all .2s; color:rgba(255,255,255,.6); }
-    .hero-toggle-opt.active { background:var(--cyan); color:#fff; }
-
-    .hero-h1 { font-family:'Nunito',sans-serif; font-size:clamp(1.8rem,3.8vw,3rem); font-weight:900; color:#fff; line-height:1.1; letter-spacing:-.04em; margin-bottom:1.5rem; }
+    .hero-h1 { font-family:'Inter',sans-serif; font-size:clamp(2rem,4.2vw,3.4rem); font-weight:700; color:#fff; line-height:1.1; letter-spacing:-.04em; margin-bottom:1.5rem; }
     .hero-h1 .c1 { color:var(--cyan); }
     .hero-h1 .c2 { color:var(--green); }
 
@@ -132,12 +128,13 @@
     .gh-foot { display:flex; flex-direction:column; gap:.5rem; margin-top:auto; }
 
     /* active white card */
-    .hcard-active { background:#fff; border-color:rgba(255,255,255,.2); box-shadow:0 20px 60px rgba(0,0,0,.35); z-index:20; overflow:visible; }
+    .hcard-active { background:#fff; border-color:rgba(255,255,255,.2); box-shadow:0 20px 60px rgba(0,0,0,.35),0 0 0 0 rgba(0,175,240,0); z-index:20; overflow:hidden; animation:cardGlow 3s ease-in-out infinite; }
     .hcard-dim { background:var(--navy4); border-color:rgba(255,255,255,.1); opacity:.6; z-index:10; transform:scale(.95); overflow:hidden; }
+    @keyframes cardGlow { 0%,100% { box-shadow:0 20px 60px rgba(0,0,0,.35),0 0 0 0 rgba(0,175,240,0); } 50% { box-shadow:0 20px 60px rgba(0,0,0,.35),0 0 20px 2px rgba(0,175,240,.12); } }
 
     /* CARD 1 content live call */
-    .card1-inner { padding:2rem; display:flex; flex-direction:column; height:100%; color:var(--navy2); }
-    .card1-caller { display:flex; align-items:center; gap:.75rem; margin-bottom:1.25rem; }
+    .card1-inner { padding:1.5rem; display:flex; flex-direction:column; height:100%; color:var(--navy2); overflow:hidden; }
+    .card1-caller { display:flex; align-items:center; gap:.75rem; margin-bottom:1rem; }
     .caller-av { width:48px; height:48px; border-radius:50%; background:linear-gradient(135deg,var(--cyan),var(--green)); display:flex; align-items:center; justify-content:center; color:#fff; box-shadow:0 4px 12px rgba(0,175,240,.3); }
     .caller-av .material-symbols-outlined { font-size:1.5rem; }
     .caller-label { font-size:.6rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--cyan); }
@@ -145,8 +142,8 @@
     .live-pill { display:flex; align-items:center; gap:.3rem; padding:.25rem .6rem; background:rgba(34,197,94,.12); border:1px solid rgba(34,197,94,.3); border-radius:999px; font-size:.6rem; font-weight:700; color:#16a34a; animation:livefade 2s ease-in-out infinite; }
     @keyframes livefade { 0%,100%{opacity:1;} 50%{opacity:.6;} }
     .live-dot { width:5px; height:5px; border-radius:50%; background:#16a34a; }
-    .card1-bubble { flex:1; background:linear-gradient(to bottom,#EBF8FF,#F0FFF4); border:1px solid rgba(0,175,240,.2); border-radius:16px; padding:1.25rem; }
-    .bubble-row { display:flex; align-items:flex-start; gap:.6rem; margin-bottom:.75rem; }
+    .card1-bubble { flex:1; background:linear-gradient(to bottom,#EBF8FF,#F0FFF4); border:1px solid rgba(0,175,240,.2); border-radius:16px; padding:1rem; }
+    .bubble-row { display:flex; align-items:flex-start; gap:.6rem; margin-bottom:.5rem; }
     .bubble-av { width:30px; height:30px; border-radius:50%; background:rgba(0,175,240,.1); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
     .bubble-av .material-symbols-outlined { font-size:1rem; color:var(--cyan); }
     .bubble-text { font-size:.75rem; font-weight:700; color:var(--navy2); }
@@ -170,15 +167,15 @@
     .live-badge span { font-size:.6rem; color:#fff; font-weight:700; letter-spacing:.08em; }
 
     /* CARD 2 progress check */
-    .card2-inner { padding:2rem; display:flex; flex-direction:column; height:100%; }
-    .card2-header { display:flex; align-items:center; gap:1rem; margin-bottom:1.5rem; }
+    .card2-inner { padding:.75rem 1.5rem 1.5rem; display:flex; flex-direction:column; height:100%; overflow:hidden; }
+    .card2-header { display:flex; align-items:center; gap:.75rem; margin-bottom:1rem; }
     .card2-av-wrap { position:relative; }
     .card2-av { width:48px; height:48px; border-radius:50%; background:rgba(59,122,158,.1); display:flex; align-items:center; justify-content:center; }
     .card2-av .material-symbols-outlined { color:#3B7A9E; }
     .card2-online { position:absolute; bottom:0; right:0; width:12px; height:12px; background:#22c55e; border:2px solid #fff; border-radius:50%; animation:blink 1.8s ease-in-out infinite; }
     .card2-title-row .sub { font-size:.65rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:#2C5F8A; }
     .card2-title-row .main { font-size:1.1rem; font-weight:800; }
-    .task-list { background:rgba(255,255,255,.4); border:1px solid rgba(255,255,255,.4); border-radius:12px; padding:1rem; flex:1; display:flex; flex-direction:column; gap:.6rem; margin-bottom:1rem; }
+    .task-list { background:rgba(255,255,255,.4); border:1px solid rgba(255,255,255,.4); border-radius:12px; padding:.75rem; flex:1; display:flex; flex-direction:column; gap:.4rem; margin-bottom:.75rem; }
     .task-row { display:flex; align-items:center; gap:.6rem; font-size:.8rem; }
     .task-row .material-symbols-outlined { font-size:1.1rem; }
     .task-row .task-label { flex:1; font-weight:700; color:var(--navy2); }
@@ -191,9 +188,9 @@
     @keyframes ping2 { 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:.3;transform:scale(1.5);} }
 
     /* CARD 3 call logs */
-    .card3-inner { padding:2rem; display:flex; flex-direction:column; height:100%; }
-    .card3-title { font-size:1.05rem; font-weight:800; display:flex; align-items:center; gap:.5rem; margin-bottom:1rem; }
-    .log-item { background:rgba(255,255,255,.6); border:1px solid #B8D8EC; border-radius:12px; padding:.75rem 1rem; display:flex; align-items:center; gap:.75rem; margin-bottom:.5rem; }
+    .card3-inner { padding:.75rem 1.5rem 1.5rem; display:flex; flex-direction:column; height:100%; overflow:hidden; }
+    .card3-title { font-size:1.05rem; font-weight:800; display:flex; align-items:center; gap:.5rem; margin-bottom:.75rem; }
+    .log-item { background:rgba(255,255,255,.3); border:1px solid #B8D8EC; border-radius:12px; padding:.6rem .8rem; display:flex; align-items:center; gap:.6rem; margin-bottom:.4rem; }
     .log-item.dim { opacity:.7; }
     .log-icon { width:32px; height:32px; border-radius:50%; background:rgba(59,122,158,.1); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
     .log-icon .material-symbols-outlined { font-size:1rem; color:#3B7A9E; }
@@ -206,13 +203,13 @@
     .card3-foot .count { background:rgba(59,122,158,.1); padding:.25rem .6rem; border-radius:999px; }
 
     /* RIGHT column cards */
-    .card-r1 { padding:2rem; display:flex; flex-direction:column; height:100%; }
-    .sched-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:1.5rem; }
+    .card-r1 { padding:.75rem 1.5rem 1.5rem; display:flex; flex-direction:column; height:100%; overflow:hidden; }
+    .sched-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:1rem; }
     .sched-label { font-size:.65rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:#2C5F8A; }
     .sched-num { font-size:1.6rem; font-weight:900; color:var(--navy2); }
     .sched-pct { font-size:1.05rem; font-weight:800; color:#3B7A9E; }
-    .task-items { flex:1; display:flex; flex-direction:column; gap:.5rem; }
-    .ti { display:flex; align-items:center; gap:.6rem; background:#E8F4FC; padding:.65rem .85rem; border-radius:12px; border:1px solid #B8D8EC; }
+    .task-items { flex:1; display:flex; flex-direction:column; gap:.4rem; }
+    .ti { display:flex; align-items:center; gap:.5rem; background:#E8F4FC; padding:.5rem .7rem; border-radius:12px; border:1px solid #B8D8EC; }
     .ti .material-symbols-outlined { font-size:1.1rem; flex-shrink:0; }
     .ti-text .ti-name { font-size:.8rem; font-weight:700; color:var(--navy2); }
     .ti-text .ti-meta { font-size:.6rem; color:#4A7B9E; }
@@ -220,36 +217,33 @@
     .sched-foot { border-top:1px solid #B8D8EC; padding-top:.75rem; display:flex; justify-content:space-between; font-size:.65rem; font-weight:700; color:#4A7B9E; margin-top:auto; }
 
     /* card r2 daily report */
-    .rpt-inner { padding:2rem; display:flex; flex-direction:column; height:100%; }
+    .rpt-inner { padding:.75rem 1.5rem 1.5rem; display:flex; flex-direction:column; height:100%; overflow:hidden; }
     .rpt-title { font-size:1.1rem; font-weight:800; display:flex; align-items:center; gap:.5rem; margin-bottom:1rem; }
-    .rpt-box { background:rgba(255,255,255,.4); border:1px solid rgba(255,255,255,.4); border-radius:16px; padding:1rem; margin-bottom:.75rem; }
+    .rpt-box { background:rgba(255,255,255,.4); border:1px solid rgba(255,255,255,.4); border-radius:16px; padding:.75rem; margin-bottom:.6rem; }
     .rpt-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:.5rem; }
     .rpt-row .rl { font-size:.65rem; font-weight:700; color:#2C5F8A; }
     .rpt-row .rv { font-size:1.1rem; font-weight:900; color:#22c55e; }
     .progress-bar { height:8px; background:#B8D8EC; border-radius:4px; overflow:hidden; margin-bottom:.5rem; }
     .progress-fill { height:100%; width:60%; background:#22c55e; border-radius:4px; }
     .rpt-meta { display:flex; justify-content:space-between; font-size:.6rem; color:#4A7B9E; }
-    .rpt-preview { background:rgba(255,255,255,.3); border:1px solid rgba(255,255,255,.4); border-radius:12px; padding:.75rem; margin-bottom:.75rem; }
+    .rpt-preview { background:rgba(255,255,255,.3); border:1px solid rgba(255,255,255,.4); border-radius:12px; padding:.6rem; margin-bottom:.6rem; }
     .rpt-preview .rp-label { font-size:.65rem; font-weight:700; color:var(--navy2); margin-bottom:.3rem; }
     .rpt-preview .rp-text { font-size:.7rem; color:#4A7B9E; font-style:italic; }
-    .rpt-btn { background:#3B7A9E; color:#fff; border:none; border-radius:12px; padding:.75rem; font-size:.65rem; font-weight:700; cursor:pointer; letter-spacing:.05em; text-align:center; }
+    .rpt-btn { background:#3B7A9E; color:#fff; border:none; border-radius:12px; padding:.6rem; font-size:.65rem; font-weight:700; cursor:pointer; letter-spacing:.05em; text-align:center; }
 
     /* card r3 stats */
-    .stats-inner-card { padding:2rem; display:flex; flex-direction:column; height:100%; }
+    .stats-inner-card { padding:.75rem 1.5rem 1.5rem; display:flex; flex-direction:column; height:100%; overflow:hidden; }
     .stats-grid { display:grid; grid-template-columns:1fr 1fr; gap:.75rem; flex:1; }
-    .stat-box { background:rgba(255,255,255,.6); border:1px solid #B8D8EC; border-radius:12px; padding:1rem; text-align:center; }
-    .stat-box .sn { font-size:1.5rem; font-weight:900; color:var(--navy2); font-family:'Nunito',sans-serif; }
+    .stat-box { background:rgba(255,255,255,.3); border:1px solid #B8D8EC; border-radius:12px; padding:.75rem; text-align:center; }
+    .stat-box .sn { font-size:1.3rem; font-weight:900; color:var(--navy2); font-family:'Inter',sans-serif; }
     .stat-box .sl { font-size:.6rem; font-weight:700; color:#4A7B9E; margin-top:.2rem; }
     .stat-box .sn.green { color:#22c55e; }
     .stat-box .sn.blue { color:#3B7A9E; }
     .procrastination { background:rgba(59,122,158,.05); border:1px solid rgba(59,122,158,.2); border-radius:12px; padding:.75rem; text-align:center; font-size:.65rem; font-weight:700; color:#3B7A9E; letter-spacing:.05em; margin-top:.75rem; }
 
-    /* ─── STATS BAR ─── */
-    .stats-bar { background:linear-gradient(90deg,var(--navy) 0%,#001432 50%,var(--navy) 100%); border-top:1px solid rgba(255,255,255,.05); border-bottom:1px solid rgba(255,255,255,.05); padding:2rem; }
-    .sb-inner { max-width:1280px; margin:0 auto; display:flex; justify-content:space-around; flex-wrap:wrap; gap:1.5rem; }
-    .sb-item { text-align:center; }
-    .sb-num { font-family:'Nunito',sans-serif; font-size:1.6rem; font-weight:900; color:#fff; letter-spacing:-.03em; }
-    .sb-label { font-size:.7rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--cyan); margin-top:.2rem; }
+    /* ─── BUILT FOR TEAMS ─── */
+    .built-for-teams { width:100%; padding:2.5rem 2rem; background:rgba(26,37,58,.85); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); border-top:1px solid rgba(255,255,255,.06); border-bottom:1px solid rgba(255,255,255,.06); text-align:center; }
+    .bft-heading { font-family:'Inter',sans-serif; font-size:clamp(1.3rem,2.5vw,1.8rem); font-weight:700; color:#fff; line-height:1.15; letter-spacing:-.03em; margin:0; }
 
     /* ─── SECTION COMMONS ─── */
     .section { padding:7rem 2rem; overflow-x:hidden; }
@@ -257,7 +251,7 @@
     .eyebrow { display:inline-flex; align-items:center; gap:.5rem; padding:.35rem .9rem; background:#fff; border:1px solid var(--s3); border-radius:8px; font-size:.7rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--cyan); margin-bottom:1.5rem; box-shadow:0 1px 4px rgba(0,0,0,.06); }
     .eyebrow .material-symbols-outlined { font-size:16px; }
     .eyebrow-dark { background:rgba(255,255,255,.07); border-color:rgba(255,255,255,.12); color:var(--cyan); }
-    .sec-h2 { font-family:'Nunito',sans-serif; font-size:clamp(2rem,4vw,3rem); font-weight:900; letter-spacing:-.04em; color:var(--s9); margin-bottom:1rem; }
+    .sec-h2 { font-family:'Inter',sans-serif; font-size:clamp(2.2rem,4.5vw,3.3rem); font-weight:700; letter-spacing:-.04em; color:var(--s9); margin-bottom:1rem; }
     .sec-h2 span { color:var(--cyan); }
     .sec-h2.light { color:#fff; }
     .sec-sub { font-size:1.05rem; color:var(--s6); line-height:1.7; max-width:640px; }
@@ -280,7 +274,7 @@
     .s1 .step-icon{background:#EFF9FF;color:var(--cyan);} .s1:hover{border-color:rgba(0,175,240,.3);} .s1 .step-num{background:rgba(0,175,240,.1);color:var(--cyan);}
     .s2 .step-icon{background:#F0FDF4;color:var(--green);} .s2:hover{border-color:rgba(14,182,71,.3);} .s2 .step-num{background:rgba(14,182,71,.1);color:var(--green);}
     .s3 .step-icon{background:#FAF5FF;color:var(--purple);} .s3:hover{border-color:rgba(124,58,237,.3);} .s3 .step-num{background:rgba(124,58,237,.1);color:var(--purple);}
-    .s4 .step-icon{background:#FFF7ED;color:var(--orange);} .s4:hover{border-color:rgba(234,88,12,.3);} .s4 .step-num{background:rgba(234,88,12,.1);color:var(--orange);}
+    .s4 .step-icon{background:#FFF7ED;color:var(--orange);} .s4:hover{border-color:rgba(249,115,22,.3);} .s4 .step-num{background:rgba(249,115,22,.1);color:var(--orange);}
 
     /* ─── VS SECTION ─── */
     .vs-bg { background:#fff; }
@@ -318,7 +312,7 @@
     .int-name { font-size:.8rem; font-weight:800; color:var(--s7); }
     .fc2 .feat-ico{background:rgba(14,182,71,.1);color:var(--green);} .fc2:hover{border-color:rgba(14,182,71,.3);}
     .fc3 .feat-ico{background:rgba(124,58,237,.1);color:var(--purple);} .fc3:hover{border-color:rgba(124,58,237,.3);}
-    .fc4 .feat-ico{background:rgba(234,88,12,.1);color:var(--orange);} .fc4:hover{border-color:rgba(234,88,12,.3);}
+    .fc4 .feat-ico{background:rgba(249,115,22,.1);color:var(--orange);} .fc4:hover{border-color:rgba(249,115,22,.3);}
 
     /* ─── BUILT FOR (INDUSTRIES) ─── */
     .ind-bg { background:#fff; }
@@ -353,8 +347,8 @@
     .gf-node .gf-ring::after { content:''; position:absolute; inset:-3px; border-radius:50%; border:1.5px solid rgba(0,175,240,.35); animation:gfPing 2.6s ease-out infinite; }
     .gf.green .gf-node .gf-ring::after { border-color:rgba(14,182,71,.35); }
     .gf-node .gf-ring .material-symbols-outlined { font-size:20px; }
-    .gf-node .gf-name { font-family:'Nunito',sans-serif; font-size:11px; font-weight:800; color:#334155; line-height:1.05; }
-    .gf-node .gf-stage { font-family:'Nunito',sans-serif; font-size:8px; font-weight:800; color:#64748B; letter-spacing:.6px; text-transform:uppercase; }
+    .gf-node .gf-name { font-family:'Inter',sans-serif; font-size:11px; font-weight:800; color:#334155; line-height:1.05; }
+    .gf-node .gf-stage { font-family:'Inter',sans-serif; font-size:8px; font-weight:800; color:#64748B; letter-spacing:.6px; text-transform:uppercase; }
     .gf-node.gf-hub { width:92px; height:150px; padding:18px 8px; border-radius:28px; border-width:2px; border-color:#CBD5E1; box-shadow:0 10px 26px rgba(0,175,240,.18); }
     .gf.green .gf-node.gf-hub { box-shadow:0 10px 26px rgba(14,182,71,.18); }
     .gf-node.gf-hub .gf-ring { width:52px; height:52px; margin-bottom:8px; }
@@ -372,7 +366,7 @@
     .ai-mgr-bg { background:var(--navy); position:relative; overflow:hidden; }
     .ai-mgr-bg::before { content:''; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:800px; height:800px; background:radial-gradient(circle,rgba(0,175,240,.07),transparent 70%); pointer-events:none; }
     .ai-mgr-grid { display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:center; }
-    .ai-mgr-text h3 { font-family:'Nunito',sans-serif; font-size:clamp(1.6rem,3vw,2.4rem); font-weight:900; color:#fff; letter-spacing:-.04em; margin-bottom:1rem; }
+    .ai-mgr-text h3 { font-family:'Inter',sans-serif; font-size:clamp(1.8rem,3.4vw,2.7rem); font-weight:700; color:#fff; letter-spacing:-.04em; margin-bottom:1rem; }
     .ai-mgr-text h3 span { color:var(--cyan); }
     .ai-mgr-text p { font-size:.95rem; color:rgba(255,255,255,.65); line-height:1.75; margin-bottom:1rem; }
     .ai-mgr-bullets { display:flex; flex-direction:column; gap:.75rem; margin-top:1.5rem; }
@@ -382,7 +376,7 @@
     .bi-cyan { background:rgba(0,175,240,.15); color:var(--cyan); }
     .bi-green { background:rgba(14,182,71,.15); color:var(--green); }
     .bi-purple { background:rgba(124,58,237,.15); color:var(--purple); }
-    .bi-orange { background:rgba(234,88,12,.15); color:var(--orange); }
+    .bi-orange { background:rgba(249,115,22,.15); color:var(--orange); }
 
     /* ─── CALL UI REPLACING CONVO-CARD ─── */
     .call-card { background:linear-gradient(180deg, rgba(26,37,58,0.95), rgba(11,20,38,0.98)); border:1px solid rgba(255,255,255,.08); border-radius:24px; padding:2rem; position:relative; overflow:hidden; display:flex; flex-direction:column; align-items:center; box-shadow:0 24px 48px rgba(0,0,0,0.4); }
@@ -447,7 +441,7 @@
 
     .watch-flow { display:grid; grid-template-columns:1fr auto 1fr auto 1fr; gap:1rem; align-items:center; margin-top:3rem; }
     .wf-item { background:#fff; border:1px solid var(--s3); border-radius:16px; padding:1.5rem; text-align:center; }
-    .wf-num { font-family:'Nunito',sans-serif; font-size:1.5rem; font-weight:900; margin-bottom:.4rem; }
+    .wf-num { font-family:'Inter',sans-serif; font-size:1.5rem; font-weight:900; margin-bottom:.4rem; }
     .wf-label { font-size:.75rem; font-weight:700; color:var(--s6); }
     .wf-arrow { color:var(--s4); font-size:1.5rem; text-align:center; }
     .wf1 { color:var(--cyan); }
@@ -500,7 +494,7 @@
     .ri-c { background:rgba(0,175,240,.1); color:var(--cyan); }
     .ri-g { background:rgba(14,182,71,.1); color:var(--green); }
     .ri-p { background:rgba(124,58,237,.1); color:var(--purple); }
-    .ri-o { background:rgba(234,88,12,.1); color:var(--orange); }
+    .ri-o { background:rgba(249,115,22,.1); color:var(--orange); }
     .retro-content h4 { font-size:.9rem; font-weight:800; color:var(--s9); margin-bottom:.3rem; }
     .retro-content p { font-size:.82rem; color:var(--s6); line-height:1.6; }
 
@@ -513,7 +507,7 @@
     .rb-c { background:rgba(0,175,240,.15); color:var(--cyan); }
     .rb-g { background:rgba(14,182,71,.15); color:var(--green); }
     .rb-p { background:rgba(124,58,237,.15); color:var(--purple); }
-    .rb-o { background:rgba(234,88,12,.15); color:var(--orange); }
+    .rb-o { background:rgba(249,115,22,.15); color:var(--orange); }
     .rb-y { background:rgba(251,191,36,.15); color:#FBBF24; }
     .rb-s { background:rgba(148,163,184,.15); color:var(--s5); }
     .role-title { font-size:.95rem; font-weight:800; color:#fff; margin-bottom:.5rem; }
@@ -530,7 +524,7 @@
     .vi1{background:rgba(0,175,240,.15);color:var(--cyan);}
     .vi2{background:var(--green);color:#fff;box-shadow:0 0 0 4px rgba(14,182,71,.15);}
     .vi3{background:rgba(124,58,237,.15);color:var(--purple);}
-    .vi4{background:rgba(234,88,12,.15);color:var(--orange);}
+    .vi4{background:rgba(249,115,22,.15);color:var(--orange);}
     .voip-title { font-size:1rem; font-weight:800; color:#fff; margin-bottom:.75rem; }
     .voip-desc { font-size:.85rem; color:rgba(255,255,255,.55); line-height:1.65; }
 
@@ -545,7 +539,7 @@
     /* ─── MOBILE APP ─── */
     .mobile-bg { background:linear-gradient(160deg,#f8fafc,#f0f9ff); }
     .mobile-grid { display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:center; }
-    .mobile-content h2 { font-family:'Nunito',sans-serif; font-size:clamp(2rem,4vw,3rem); font-weight:900; letter-spacing:-.04em; color:var(--s9); margin-bottom:1rem; }
+    .mobile-content h2 { font-family:'Inter',sans-serif; font-size:clamp(2.2rem,4.5vw,3.3rem); font-weight:700; letter-spacing:-.04em; color:var(--s9); margin-bottom:1rem; }
     .mobile-content h2 span { color:var(--cyan); }
     .mobile-content p { font-size:1.05rem; color:var(--s6); line-height:1.7; margin-bottom:1.5rem; max-width:500px; }
     .mobile-dl-btn { display:inline-flex; align-items:center; gap:.5rem; padding:.85rem 2rem; background:linear-gradient(135deg,var(--cyan),var(--cyan2)); color:#fff; font-weight:700; font-size:.95rem; border-radius:12px; text-decoration:none; border:none; cursor:pointer; box-shadow:0 6px 24px rgba(0,175,240,.35); transition:transform .2s,box-shadow .2s; font-family:inherit; }
@@ -561,7 +555,7 @@
     .phone-brand-dot span { color:#fff; font-size:8px; font-weight:900; }
     .phone-brand-text { color:#fff; font-size:8px; font-weight:700; letter-spacing:-.02em; }
     .phone-greeting { color:#fff; font-size:1rem; font-weight:900; }
-    .phone-sub { color:rgba(255,255,255,.6); font-size:9px; }
+    .phone-sub { color:rgba(255,255,255,.3); font-size:9px; }
     .phone-body { flex:1; background:#E8F4FC; padding:.65rem; display:flex; flex-direction:column; gap:.45rem; }
     .phone-card { background:#fff; border:1px solid #B8D8EC; border-radius:10px; padding:.5rem .65rem; display:flex; align-items:center; gap:.45rem; box-shadow:0 1px 4px rgba(0,0,0,.04); }
     .phone-ci { width:24px; height:24px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
@@ -600,10 +594,12 @@
     }
 
     /* ─── FAQ ─── */
-    .faq-bg { background:var(--s1); }
+    .faq-bg { }
+    .faq-bg .sec-h2 { color:var(--s9); }
+    .faq-bg .sec-h2 span { color:var(--cyan); }
     .faq-list { max-width:760px; margin:0 auto; }
     .faq-item { border:1px solid var(--s3); border-radius:14px; overflow:hidden; margin-bottom:.75rem; background:#fff; box-shadow:0 1px 4px rgba(0,0,0,.04); }
-    .faq-q { width:100%; padding:1.4rem 1.75rem; display:flex; align-items:center; justify-content:space-between; background:none; border:none; cursor:pointer; text-align:left; font-size:1rem; font-weight:700; color:var(--s9); font-family:'Nunito',sans-serif; }
+    .faq-q { width:100%; padding:1.4rem 1.75rem; display:flex; align-items:center; justify-content:space-between; background:none; border:none; cursor:pointer; text-align:left; font-size:1.05rem; font-weight:600; color:var(--s9); font-family:'Inter',sans-serif; }
     .faq-q .material-symbols-outlined { color:var(--cyan); transition:transform .3s; flex-shrink:0; }
     .faq-q.open .material-symbols-outlined { transform:rotate(45deg); }
     .faq-a { padding:0 1.75rem 1.4rem; font-size:.9rem; color:var(--s6); line-height:1.7; display:none; }
@@ -613,9 +609,9 @@
     .cta-bg { background:var(--navy); text-align:center; position:relative; overflow:hidden; }
     .cta-bg::before { content:''; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:600px; height:600px; background:radial-gradient(circle,rgba(0,175,240,.12),transparent 70%); pointer-events:none; }
     .cta-inner { position:relative; z-index:1; }
-    .cta-h2 { font-family:'Nunito',sans-serif; font-size:clamp(2rem,4vw,3.25rem); font-weight:900; color:#fff; letter-spacing:-.04em; margin-bottom:1rem; }
+    .cta-h2 { font-family:'Inter',sans-serif; font-size:clamp(2.2rem,4.5vw,3.5rem); font-weight:700; color:var(--s9); letter-spacing:-.04em; margin-bottom:1rem; }
     .cta-h2 span { color:var(--cyan); }
-    .cta-sub { font-size:1.05rem; color:rgba(255,255,255,.6); margin-bottom:2.5rem; }
+    .cta-sub { font-size:1.05rem; color:var(--s6); margin-bottom:2.5rem; }
     .cta-actions { display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; }
 
     /* ─── FOOTER ─── */
@@ -627,7 +623,7 @@
     .footer-brand-name img { height:100px; width:auto; display:block; }
     @media(max-width:640px) { .footer-brand-name img { height:70px; } }
     .footer-social { display:flex; gap:.75rem; margin-top:1rem; }
-    .footer-social a { width:36px; height:36px; border-radius:8px; border:1px solid rgba(255,255,255,.15); display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,.6); text-decoration:none; font-size:1rem; transition:border-color .2s,color .2s; }
+    .footer-social a { width:36px; height:36px; border-radius:8px; border:1px solid rgba(255,255,255,.15); display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,.3); text-decoration:none; font-size:1rem; transition:border-color .2s,color .2s; }
     .footer-social a:hover { border-color:var(--cyan); color:var(--cyan); }
     .footer-col h5 { font-size:.7rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:rgba(255,255,255,.7); margin-bottom:1rem; }
     .footer-col ul { list-style:none; }
@@ -647,7 +643,7 @@
     .modal-close:hover { background:var(--s3); }
     .modal-icon { width:60px; height:60px; border-radius:16px; background:rgba(0,175,240,.1); display:flex; align-items:center; justify-content:center; margin-bottom:1.5rem; }
     .modal-icon .material-symbols-outlined { font-size:1.75rem; color:var(--cyan); }
-    .modal h3 { font-size:1.6rem; font-weight:900; color:var(--s9); margin-bottom:.5rem; font-family:'Nunito',sans-serif; letter-spacing:-.03em; }
+    .modal h3 { font-size:1.8rem; font-weight:700; color:var(--s9); margin-bottom:.5rem; font-family:'Inter',sans-serif; letter-spacing:-.03em; }
     .modal p { font-size:.9rem; color:var(--s6); line-height:1.6; margin-bottom:1.5rem; }
     .modal input[type=email] { width:100%; padding:.85rem 1.1rem; background:var(--s1); border:1px solid var(--s3); border-radius:12px; font-size:.95rem; font-family:inherit; color:var(--s9); margin-bottom:1rem; outline:none; transition:border-color .2s,box-shadow .2s; }
     .modal input[type=email]:focus { border-color:var(--cyan); box-shadow:0 0 0 3px rgba(0,175,240,.1); }
@@ -715,7 +711,7 @@
       .pw-card { padding:1.25rem; }
       .stats-bar { padding:1rem; }
     }
-    @media(prefers-reduced-motion:reduce) { *,*::before,*::after { animation-duration:.001ms !important; } }
+    @media(prefers-reduced-motion:reduce) { *,*::before,*::after { animation-duration:.001ms !important; } .reveal-up,.reveal-left,.reveal-right,.reveal-scale,.reveal-blur,.reveal-rotate,.reveal-flip,.reveal-zoom-bounce,.reveal-clip,.reveal-perspective,.reveal-elastic,.reveal-pop,.stagger-item,.hero-reveal { opacity:1 !important; } .split-inner { transform:none !important; } }
 
     /* teams section */
     .teams-bg { background:#fff; border-top:1px solid var(--s3); border-bottom:1px solid var(--s3); overflow-x:hidden; }
@@ -728,7 +724,7 @@
     .tc1{background:rgba(0,175,240,.1);color:var(--cyan);}
     .tc2{background:var(--green);color:#fff;}
     .tc3{background:rgba(124,58,237,.1);color:var(--purple);}
-    .tc4{background:rgba(234,88,12,.1);color:var(--orange);}
+    .tc4{background:rgba(249,115,22,.1);color:var(--orange);}
     .team-title { font-size:1rem; font-weight:800; color:var(--s9); margin-bottom:.75rem; }
     .team-desc { font-size:.85rem; color:var(--s6); line-height:1.65; }
     .int-logos-hero { display:flex; justify-content:center; align-items:center; flex-wrap:wrap; gap:2rem; max-width:100%; }
@@ -739,27 +735,25 @@
 
     /* ─── SPLIT ALTERNATING SECTIONS ─── */
     .split-section { padding:6rem 2rem; overflow:hidden; }
-    .split-section.dark { background:var(--s1); }
-    .split-section.light { background:#fff; }
     .split-inner { max-width:1120px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:center; }
     .split-inner.reverse { direction:rtl; }
     .split-inner.reverse > * { direction:ltr; }
     .split-content .eyebrow-split { display:inline-flex; align-items:center; gap:.5rem; padding:.35rem .9rem; border:1px solid rgba(0,175,240,.25); background:rgba(0,175,240,.06); border-radius:999px; font-size:.7rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--cyan); margin-bottom:1.25rem; }
     .split-content .eyebrow-split .material-symbols-outlined { font-size:1rem; }
     .split-content .eyebrow-split.green { border-color:rgba(14,182,71,.25); background:rgba(14,182,71,.06); color:var(--green); }
-    .split-content h2 { font-family:'Nunito',sans-serif; font-size:clamp(1.5rem,2.8vw,2.2rem); font-weight:900; color:var(--s9); line-height:1.15; letter-spacing:-.03em; margin-bottom:1.25rem; }
+    .split-content h2 { font-family:'Inter',sans-serif; font-size:clamp(1.6rem,3vw,2.4rem); font-weight:700; line-height:1.15; letter-spacing:-.03em; margin-bottom:1.25rem; color:var(--s9); }
     .split-content h2 span { color:var(--cyan); }
     .split-content h2 span.green { color:var(--green); }
     .split-content h2 span.gold { color:var(--gold); }
     .split-content h2 span.orange { color:var(--orange); }
-    .split-content p { font-size:1rem; color:var(--s6); line-height:1.7; margin-bottom:1.5rem; }
+    .split-content p { font-size:1.05rem; line-height:1.7; margin-bottom:1.5rem; color:var(--s6); }
     .split-content ul { list-style:none; display:flex; flex-direction:column; gap:.75rem; }
-    .split-content ul li { display:flex; align-items:flex-start; gap:.75rem; font-size:.95rem; color:var(--s7); line-height:1.5; font-weight:600; }
+    .split-content ul li { display:flex; align-items:flex-start; gap:.75rem; font-size:.95rem; line-height:1.5; font-weight:600; color:var(--s7); }
     .split-content ul li .li-icon { width:28px; height:28px; border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:1rem; }
-    .split-content ul li .li-icon.cyan { background:rgba(0,175,240,.1); color:var(--cyan); }
-    .split-content ul li .li-icon.green { background:rgba(14,182,71,.1); color:var(--green); }
-    .split-content ul li .li-icon.gold { background:rgba(245,158,11,.1); color:var(--gold); }
-    .split-content ul li .li-icon.orange { background:rgba(234,88,12,.1); color:var(--orange); }
+    .split-content ul li .li-icon.cyan { background:rgba(0,175,240,.15); color:var(--cyan); }
+    .split-content ul li .li-icon.green { background:rgba(14,182,71,.15); color:var(--green); }
+    .split-content ul li .li-icon.gold { background:rgba(245,158,11,.15); color:var(--gold); }
+    .split-content ul li .li-icon.orange { background:rgba(249,115,22,.15); color:var(--orange); }
 
     /* Split visuals / infographics */
     .split-visual { display:flex; align-items:center; justify-content:center; }
@@ -857,6 +851,64 @@
       .ba-arrow { transform:rotate(90deg); text-align:center; }
       .proof-row { flex-direction:column; align-items:center; }
     }
+
+    /* ─── REVEAL ANIMATIONS ─── */
+    @keyframes revealUp { from { opacity:0; transform:translateY(60px); } to { opacity:1; transform:translateY(0); } }
+    @keyframes revealRotate { from { opacity:0; transform:rotate(-4deg) translateY(30px); } to { opacity:1; transform:rotate(0) translateY(0); } }
+    @keyframes revealFlip { from { opacity:0; transform:perspective(600px) rotateX(-15deg) translateY(20px); } to { opacity:1; transform:perspective(600px) rotateX(0) translateY(0); } }
+    @keyframes revealZoomBounce { 0% { opacity:0; transform:scale(0.7); } 60% { opacity:1; transform:scale(1.04); } 100% { opacity:1; transform:scale(1); } }
+    @keyframes revealClip { from { clip-path:inset(100% 0 0 0); opacity:0; } to { clip-path:inset(0 0 0 0); opacity:1; } }
+    @keyframes revealBlur { from { opacity:0; filter:blur(12px); transform:translateY(16px); } to { opacity:1; filter:blur(0); transform:translateY(0); } }
+    @keyframes revealPerspective { from { opacity:0; transform:perspective(800px) rotateY(8deg) translateX(40px); } to { opacity:1; transform:perspective(800px) rotateY(0) translateX(0); } }
+    @keyframes revealElastic { 0% { opacity:0; transform:scale(0.6); } 50% { opacity:1; transform:scale(1.06); } 70% { transform:scale(0.97); } 100% { opacity:1; transform:scale(1); } }
+    @keyframes revealPop { 0% { opacity:0; transform:scale(0.5) rotate(-6deg); } 60% { opacity:1; transform:scale(1.05) rotate(1deg); } 100% { opacity:1; transform:scale(1) rotate(0); } }
+    @keyframes revealAccordion { from { opacity:0; max-height:0; transform:translateY(20px); } to { opacity:1; max-height:600px; transform:translateY(0); } }
+    @keyframes heroFadeLeft { from { opacity:0; transform:translateX(-40px); } to { opacity:1; transform:translateX(0); } }
+    @keyframes heroFadeRight { from { opacity:0; transform:translateX(40px); } to { opacity:1; transform:translateX(0); } }
+    @keyframes heroFadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+    @keyframes cardFloat { 0%,100% { transform:translateY(-50%) translateY(0); } 50% { transform:translateY(-50%) translateY(-6px); } }
+
+    .reveal-up, .reveal-left, .reveal-right, .reveal-scale, .reveal-blur, .reveal-rotate, .reveal-flip, .reveal-zoom-bounce, .reveal-clip, .reveal-perspective, .reveal-elastic, .reveal-pop, .stagger-item { opacity:0; }
+    .reveal-up.visible { animation:revealUp 1.2s cubic-bezier(0.22,1,0.36,1) forwards; }
+    .reveal-left.visible { animation:revealUp 1.2s cubic-bezier(0.22,1,0.36,1) forwards; }
+    .reveal-right.visible { animation:revealUp 1.2s cubic-bezier(0.22,1,0.36,1) forwards; }
+    .reveal-scale.visible { animation:revealZoomBounce 1.3s cubic-bezier(0.22,1,0.36,1) forwards; }
+    .reveal-blur.visible { animation:revealBlur 1.4s cubic-bezier(0.22,1,0.36,1) forwards; }
+    .reveal-rotate.visible { animation:revealRotate 1.3s cubic-bezier(0.22,1,0.36,1) forwards; }
+    .reveal-flip.visible { animation:revealFlip 1.3s cubic-bezier(0.22,1,0.36,1) forwards; }
+    .reveal-zoom-bounce.visible { animation:revealZoomBounce 1.3s cubic-bezier(0.22,1,0.36,1) forwards; }
+    .reveal-clip.visible { animation:revealClip 1.2s cubic-bezier(0.22,1,0.36,1) forwards; }
+    .reveal-perspective.visible { animation:revealPerspective 1.3s cubic-bezier(0.22,1,0.36,1) forwards; }
+    .reveal-elastic.visible { animation:revealElastic 1.4s cubic-bezier(0.22,1,0.36,1) forwards; }
+    .reveal-pop.visible { animation:revealPop 1.2s cubic-bezier(0.22,1,0.36,1) forwards; }
+    .stagger-item.visible { animation:revealUp .9s cubic-bezier(0.22,1,0.36,1) forwards; }
+    .stagger-1 { animation-delay:.15s !important; }
+    .stagger-2 { animation-delay:.3s !important; }
+    .stagger-3 { animation-delay:.45s !important; }
+    .stagger-4 { animation-delay:.6s !important; }
+
+    .hero-reveal { opacity:0; animation:heroFadeLeft 1s cubic-bezier(0.22,1,0.36,1) forwards; }
+    .hero-reveal-1 { animation-delay:.2s; }
+    .hero-reveal-2 { animation-name:heroFadeRight; animation-delay:.4s; }
+    .hero-reveal-3 { animation-name:heroFadeUp; animation-delay:.6s; }
+
+    /* ─── VANTA CLOUDS BACKGROUND ─── */
+    #vanta-bg { position:fixed; inset:0; z-index:0; }
+    #vanta-bg canvas { display:block; }
+
+    /* ─── SECTION OVERLAYS ─── */
+    .hero { position:relative; z-index:2; }
+    .split-section { position:relative; z-index:1; }
+    .split-section.dark { background:#fff; }
+    .split-section.light { background:rgba(255,255,255,.3); backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px); }
+    .faq-bg { position:relative; z-index:1; background:rgba(255,255,255,.3); backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px); }
+    .faq-item { background:rgba(255,255,255,.85); }
+    .cta-bg { position:relative; z-index:1; background:transparent; }
+    footer { position:relative; z-index:1; }
+
+    /* 3D scroll depth */
+    .split-section { transform-style:preserve-3d; perspective:1200px; }
+    .split-inner { will-change:transform; transition:transform .1s linear; }
   </style>
 </head>
 <body>
@@ -875,8 +927,7 @@
       <li><a href="#faq">FAQ</a></li>
     </ul>
     <div class="nav-actions">
-      <a href="/login" class="btn-ghost">Sign in</a>
-      <a href="/login" class="btn-primary">Get Started →</a>
+      <a href="#" onclick="openModal(event)" class="btn-primary" style="background:#fe904f;box-shadow:0 6px 24px rgba(254,144,79,.35);">Contact Sales</a>
     </div>
     <button class="nav-hamburger" id="hamburger" aria-label="Open menu">
       <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round">
@@ -892,8 +943,7 @@
     <a href="/goalchaser-for-it">For IT</a>
     <a href="#faq">FAQ</a>
     <div class="mobile-actions">
-      <a href="/login" class="btn-ghost">Sign in</a>
-      <a href="/login" class="btn-primary">Get Started →</a>
+      <a href="#" onclick="openModal(event)" class="btn-primary" style="background:#fe904f;box-shadow:0 6px 24px rgba(254,144,79,.35);">Contact Sales</a>
     </div>
   </div>
 </nav>
@@ -911,30 +961,18 @@
     <!-- LEFT: text -->
     <div>
 
-      <div class="hero-toggle" id="heroToggle">
-        <span class="hero-toggle-opt active" data-mode="personal">For you</span>
-        <span class="hero-toggle-opt" data-mode="team">For your team</span>
-      </div>
-
-      <h1 class="hero-h1" id="heroHeadline">
-        Your personal <span class="c1">procrastination killer</span><br>
-
+      <h1 class="hero-h1 hero-reveal hero-reveal-1" id="heroHeadline">
+        Your team's <br> Productivity Partner
       </h1>
 
-      <div class="hero-actions">
-        <a href="/login" class="btn-primary" style="text-decoration:none;">
-          Start for Free
-          <span class="material-symbols-outlined" style="font-size:20px;">arrow_forward</span>
-        </a>
-        <a href="#how-it-works" class="btn-ghost">
-          <div class="play-ring">
-            <span class="material-symbols-outlined" style="font-size:18px;color:#0EB647;margin-left:2px;">play_arrow</span>
-          </div>
-          See how it works
-        </a>
+      <div class="hero-actions hero-reveal hero-reveal-2">
+        <button class="btn-primary" onclick="openModal(event)" style="text-decoration:none;background:#fe904f;box-shadow:0 6px 24px rgba(254,144,79,.35);">
+          <span class="material-symbols-outlined" style="font-size:20px;">headset_mic</span>
+          Contact Sales
+        </button>
       </div>
 
-      <div class="hero-chips">
+      <div class="hero-chips hero-reveal hero-reveal-3">
         <span class="chip"><span class="material-symbols-outlined" style="color:#00AFF0;">mic</span>AI Voice Calls</span>
         <span class="chip"><span class="material-symbols-outlined" style="color:#0EB647;">settings_input_antenna</span>Enterprise VoIP</span>
         <span class="chip"><span class="material-symbols-outlined" style="color:#FBBF24;">groups</span>Personal &amp; Teams</span>
@@ -979,10 +1017,7 @@
             </div>
             <!-- active state: live call -->
             <div class="card1-inner" style="position:absolute;inset:0;" :class="(active===0&&!scrolling)?'':''" :style="(active===0&&!scrolling)?'opacity:1':'opacity:0;pointer-events:none'">
-              <div class="live-badge" style="position:absolute;top:-1rem;right:-2rem;">
-                <span style="width:8px;height:8px;border-radius:50%;background:#fff;display:inline-block;"></span>
-                <span>Live Call</span>
-              </div>
+
               <div class="card1-caller">
                 <div class="caller-av"><span class="material-symbols-outlined">call</span></div>
                 <div>
@@ -1137,29 +1172,24 @@
   </div>
 </section>
 
-<!-- STATS BAR -->
-<div class="stats-bar">
-  <div class="sb-inner">
-    <div class="sb-item"><div class="sb-num">10,000+</div><div class="sb-label">Early Signups</div></div>
-    <div class="sb-item"><div class="sb-num">100K+</div><div class="sb-label">Tasks Completed</div></div>
-    <div class="sb-item"><div class="sb-num">5,000+</div><div class="sb-label">Blockers Resolved</div></div>
-    <div class="sb-item"><div class="sb-num">24/7</div><div class="sb-label">AI Follow-ups</div></div>
-    <div class="sb-item"><div class="sb-num">In-App</div><div class="sb-label">Voice Calling</div></div>
-  </div>
-</div>
+<!-- VANTA CLOUDS BACKGROUND -->
+<div id="vanta-bg" aria-hidden="true"></div>
+
+<!-- BUILT FOR TEAMS -->
+
 
 <!-- SLIDE 1 -->
 <section class="split-section dark">
   <div class="split-inner">
-    <div class="split-content">
+    <div class="split-content reveal-rotate">
       <h2>Running the company shouldn't mean <span>chasing</span> the team</h2>
       <ul>
-        <li><span class="li-icon cyan"><span class="material-symbols-outlined" style="font-size:1rem;">block</span></span>No more running after updates</li>
-        <li><span class="li-icon green"><span class="material-symbols-outlined" style="font-size:1rem;">block</span></span>No more interrupting your team for status</li>
-        <li><span class="li-icon gold"><span class="material-symbols-outlined" style="font-size:1rem;">trending_up</span></span>Lead the company, not the follow-ups</li>
+        <li class="stagger-item stagger-1"><span class="li-icon cyan"><span class="material-symbols-outlined" style="font-size:1rem;">block</span></span>No more running after updates</li>
+        <li class="stagger-item stagger-2"><span class="li-icon green"><span class="material-symbols-outlined" style="font-size:1rem;">block</span></span>No more interrupting your team for status</li>
+        <li class="stagger-item stagger-3"><span class="li-icon gold"><span class="material-symbols-outlined" style="font-size:1rem;">trending_up</span></span>Lead the company, not the follow-ups</li>
       </ul>
     </div>
-    <div class="split-visual">
+    <div class="split-visual reveal-zoom-bounce">
       <img src="/assets/corporate-infographics/1.png" alt="Running the company shouldn't mean chasing the team" loading="lazy" />
     </div>
   </div>
@@ -1168,15 +1198,15 @@
 <!-- SLIDE 2 -->
 <section class="split-section light">
   <div class="split-inner reverse">
-    <div class="split-content">
+    <div class="split-content reveal-flip">
       <h2>You shouldn't have to ask for updates <span class="orange">all</span> day</h2>
       <ul>
-        <li><span class="li-icon orange"><span class="material-symbols-outlined" style="font-size:1rem;">chat</span></span>"Is this done?" "Any update?" all day, every day</li>
-        <li><span class="li-icon cyan"><span class="material-symbols-outlined" style="font-size:1rem;">notifications</span></span>Constant pings pull focus from real work</li>
-        <li><span class="li-icon green"><span class="material-symbols-outlined" style="font-size:1rem;">battery_alert</span></span>Manual tracking drains your energy</li>
+        <li class="stagger-item stagger-2"><span class="li-icon orange"><span class="material-symbols-outlined" style="font-size:1rem;">chat</span></span>"Is this done?" "Any update?" all day, every day</li>
+        <li class="stagger-item stagger-3"><span class="li-icon cyan"><span class="material-symbols-outlined" style="font-size:1rem;">notifications</span></span>Constant pings pull focus from real work</li>
+        <li class="stagger-item stagger-4"><span class="li-icon green"><span class="material-symbols-outlined" style="font-size:1rem;">battery_alert</span></span>Manual tracking drains your energy</li>
       </ul>
     </div>
-    <div class="split-visual">
+    <div class="split-visual reveal-elastic">
       <img src="/assets/corporate-infographics/2.png" alt="You shouldn't have to ask for updates all day" loading="lazy" />
     </div>
   </div>
@@ -1185,15 +1215,15 @@
 <!-- SLIDE 3 -->
 <section class="split-section dark">
   <div class="split-inner">
-    <div class="split-content">
+    <div class="split-content reveal-clip">
       <h2>What if AI could handle the <span class="green">follow-ups</span>?</h2>
       <ul>
-        <li><span class="li-icon green"><span class="material-symbols-outlined" style="font-size:1rem;">smart_toy</span></span>AI checks in with your team, automatically</li>
-        <li><span class="li-icon cyan"><span class="material-symbols-outlined" style="font-size:1rem;">cable</span></span>Covers calls, chats, tasks &amp; reports</li>
-        <li><span class="li-icon gold"><span class="material-symbols-outlined" style="font-size:1rem;">bolt</span></span>One system, zero manual chasing</li>
+        <li class="stagger-item stagger-3"><span class="li-icon green"><span class="material-symbols-outlined" style="font-size:1rem;">smart_toy</span></span>AI checks in with your team, automatically</li>
+        <li class="stagger-item stagger-1"><span class="li-icon cyan"><span class="material-symbols-outlined" style="font-size:1rem;">cable</span></span>Covers calls, chats, tasks &amp; reports</li>
+        <li class="stagger-item stagger-2"><span class="li-icon gold"><span class="material-symbols-outlined" style="font-size:1rem;">bolt</span></span>One system, zero manual chasing</li>
       </ul>
     </div>
-    <div class="split-visual">
+    <div class="split-visual reveal-rotate">
       <img src="/assets/corporate-infographics/3.png" alt="What if AI could handle the follow-ups" loading="lazy" />
     </div>
   </div>
@@ -1202,15 +1232,15 @@
 <!-- SLIDE 4 -->
 <section class="split-section light">
   <div class="split-inner reverse">
-    <div class="split-content">
+    <div class="split-content reveal-perspective">
       <h2>Meet GoalChaser <span class="gold">AI</span> powered productivity partner</h2>
       <ul>
-        <li><span class="li-icon gold"><span class="material-symbols-outlined" style="font-size:1rem;">support_agent</span></span>Your team's always-on AI assistant</li>
-        <li><span class="li-icon cyan"><span class="material-symbols-outlined" style="font-size:1rem;">devices</span></span>Works across desktop &amp; mobile</li>
-        <li><span class="li-icon green"><span class="material-symbols-outlined" style="font-size:1rem;">speed</span></span>Built to keep everyone moving forward</li>
+        <li class="stagger-item stagger-1"><span class="li-icon gold"><span class="material-symbols-outlined" style="font-size:1rem;">support_agent</span></span>Your team's always-on AI assistant</li>
+        <li class="stagger-item stagger-2"><span class="li-icon cyan"><span class="material-symbols-outlined" style="font-size:1rem;">devices</span></span>Works across desktop &amp; mobile</li>
+        <li class="stagger-item stagger-3"><span class="li-icon green"><span class="material-symbols-outlined" style="font-size:1rem;">speed</span></span>Built to keep everyone moving forward</li>
       </ul>
     </div>
-    <div class="split-visual">
+    <div class="split-visual reveal-zoom-bounce">
       <img src="/assets/corporate-infographics/4.png" alt="Meet GoalChaser AI powered productivity partner" loading="lazy" />
     </div>
   </div>
@@ -1219,15 +1249,15 @@
 <!-- SLIDE 5 -->
 <section class="split-section dark">
   <div class="split-inner">
-    <div class="split-content">
+    <div class="split-content reveal-pop">
       <h2>Connect the tools your team <span>already</span> uses</h2>
       <ul>
-        <li><span class="li-icon cyan"><span class="material-symbols-outlined" style="font-size:1rem;">link</span></span>Jira, Trello, Asana, Monday, ClickUp &amp; more</li>
-        <li><span class="li-icon green"><span class="material-symbols-outlined" style="font-size:1rem;">school</span></span>No new tools to learn</li>
-        <li><span class="li-icon orange"><span class="material-symbols-outlined" style="font-size:1rem;">settings_suggest</span></span>Fits right into your existing workflow</li>
+        <li class="stagger-item stagger-2"><span class="li-icon cyan"><span class="material-symbols-outlined" style="font-size:1rem;">link</span></span>Jira, Trello, Asana, Monday, ClickUp &amp; more</li>
+        <li class="stagger-item stagger-3"><span class="li-icon green"><span class="material-symbols-outlined" style="font-size:1rem;">school</span></span>No new tools to learn</li>
+        <li class="stagger-item stagger-4"><span class="li-icon orange"><span class="material-symbols-outlined" style="font-size:1rem;">settings_suggest</span></span>Fits right into your existing workflow</li>
       </ul>
     </div>
-    <div class="split-visual">
+    <div class="split-visual reveal-flip">
       <img src="/assets/corporate-infographics/5.png" alt="Connect the tools your team already uses" loading="lazy" />
     </div>
   </div>
@@ -1236,15 +1266,15 @@
 <!-- SLIDE 6 -->
 <section class="split-section light">
   <div class="split-inner reverse">
-    <div class="split-content">
+    <div class="split-content reveal-rotate">
       <h2>GoalChaser reads what <span class="green">everyone</span> is working on</h2>
       <ul>
-        <li><span class="li-icon green"><span class="material-symbols-outlined" style="font-size:1rem;">task_alt</span></span>Understands tasks, boards &amp; progress</li>
-        <li><span class="li-icon orange"><span class="material-symbols-outlined" style="font-size:1rem;">psychology</span></span>Reads context, not just status labels</li>
-        <li><span class="li-icon cyan"><span class="material-symbols-outlined" style="font-size:1rem;">sync</span></span>Always in sync with real work</li>
+        <li class="stagger-item stagger-3"><span class="li-icon green"><span class="material-symbols-outlined" style="font-size:1rem;">task_alt</span></span>Understands tasks, boards &amp; progress</li>
+        <li class="stagger-item stagger-1"><span class="li-icon orange"><span class="material-symbols-outlined" style="font-size:1rem;">psychology</span></span>Reads context, not just status labels</li>
+        <li class="stagger-item stagger-2"><span class="li-icon cyan"><span class="material-symbols-outlined" style="font-size:1rem;">sync</span></span>Always in sync with real work</li>
       </ul>
     </div>
-    <div class="split-visual">
+    <div class="split-visual reveal-clip">
       <img src="/assets/corporate-infographics/6.png" alt="GoalChaser reads what everyone is working on" loading="lazy" />
     </div>
   </div>
@@ -1253,15 +1283,15 @@
 <!-- SLIDE 7 -->
 <section class="split-section dark">
   <div class="split-inner">
-    <div class="split-content">
+    <div class="split-content reveal-zoom-bounce">
       <h2>AI follows up with your team through <span class="gold">voice</span> calls</h2>
       <ul>
-        <li><span class="li-icon gold"><span class="material-symbols-outlined" style="font-size:1rem;">call</span></span>Natural voice check-ins, not robotic pings</li>
-        <li><span class="li-icon cyan"><span class="material-symbols-outlined" style="font-size:1rem;">record_voice_over</span></span>Employees respond in real conversation</li>
-        <li><span class="li-icon orange"><span class="material-symbols-outlined" style="font-size:1rem;">favorite</span></span>Feels personal, not intrusive</li>
+        <li class="stagger-item stagger-1"><span class="li-icon gold"><span class="material-symbols-outlined" style="font-size:1rem;">call</span></span>Natural voice check-ins, not robotic pings</li>
+        <li class="stagger-item stagger-2"><span class="li-icon cyan"><span class="material-symbols-outlined" style="font-size:1rem;">record_voice_over</span></span>Employees respond in real conversation</li>
+        <li class="stagger-item stagger-3"><span class="li-icon orange"><span class="material-symbols-outlined" style="font-size:1rem;">favorite</span></span>Feels personal, not intrusive</li>
       </ul>
     </div>
-    <div class="split-visual">
+    <div class="split-visual reveal-perspective">
       <img src="/assets/corporate-infographics/7.png" alt="AI follows up with your team through voice calls" loading="lazy" />
     </div>
   </div>
@@ -1270,15 +1300,15 @@
 <!-- SLIDE 8 -->
 <section class="split-section light">
   <div class="split-inner reverse">
-    <div class="split-content">
+    <div class="split-content reveal-flip">
       <h2>Finds what's slowing your team down and <span class="orange">resolves</span> it</h2>
       <ul>
-        <li><span class="li-icon orange"><span class="material-symbols-outlined" style="font-size:1rem;">warning</span></span>Detects delays, blockers &amp; bugs early</li>
-        <li><span class="li-icon green"><span class="material-symbols-outlined" style="font-size:1rem;">flag</span></span>Flags what's holding progress back</li>
-        <li><span class="li-icon cyan"><span class="material-symbols-outlined" style="font-size:1rem;">build</span></span>Helps clear the block, not just report it</li>
+        <li class="stagger-item stagger-2"><span class="li-icon orange"><span class="material-symbols-outlined" style="font-size:1rem;">warning</span></span>Detects delays, blockers &amp; bugs early</li>
+        <li class="stagger-item stagger-3"><span class="li-icon green"><span class="material-symbols-outlined" style="font-size:1rem;">flag</span></span>Flags what's holding progress back</li>
+        <li class="stagger-item stagger-4"><span class="li-icon cyan"><span class="material-symbols-outlined" style="font-size:1rem;">build</span></span>Helps clear the block, not just report it</li>
       </ul>
     </div>
-    <div class="split-visual">
+    <div class="split-visual reveal-pop">
       <img src="/assets/corporate-infographics/8.png" alt="Finds what's slowing your team down and resolves it" loading="lazy" />
     </div>
   </div>
@@ -1287,15 +1317,15 @@
 <!-- SLIDE 9 -->
 <section class="split-section dark">
   <div class="split-inner">
-    <div class="split-content">
+    <div class="split-content reveal-clip">
       <h2>Turns team updates into progress reports using <span class="green">AI</span></h2>
       <ul>
-        <li><span class="li-icon green"><span class="material-symbols-outlined" style="font-size:1rem;">summarize</span></span>Auto-generated performance reports</li>
-        <li><span class="li-icon gold"><span class="material-symbols-outlined" style="font-size:1rem;">bar_chart</span></span>Task completion, trends &amp; skill breakdowns</li>
-        <li><span class="li-icon cyan"><span class="material-symbols-outlined" style="font-size:1rem;">done_all</span></span>No manual reporting needed</li>
+        <li class="stagger-item stagger-3"><span class="li-icon green"><span class="material-symbols-outlined" style="font-size:1rem;">summarize</span></span>Auto-generated performance reports</li>
+        <li class="stagger-item stagger-1"><span class="li-icon gold"><span class="material-symbols-outlined" style="font-size:1rem;">bar_chart</span></span>Task completion, trends &amp; skill breakdowns</li>
+        <li class="stagger-item stagger-2"><span class="li-icon cyan"><span class="material-symbols-outlined" style="font-size:1rem;">done_all</span></span>No manual reporting needed</li>
       </ul>
     </div>
-    <div class="split-visual">
+    <div class="split-visual reveal-elastic">
       <img src="/assets/corporate-infographics/9.png" alt="Turns team updates into progress reports using AI" loading="lazy" />
     </div>
   </div>
@@ -1304,15 +1334,15 @@
 <!-- SLIDE 10 -->
 <section class="split-section light">
   <div class="split-inner reverse">
-    <div class="split-content">
+    <div class="split-content reveal-perspective">
       <h2>Get <span>smart</span> alerts when an employee needs your attention</h2>
       <ul>
-        <li><span class="li-icon cyan"><span class="material-symbols-outlined" style="font-size:1rem;">notification_important</span></span>Know exactly who's falling behind</li>
-        <li><span class="li-icon orange"><span class="material-symbols-outlined" style="font-size:1rem;">visibility</span></span>See real progress, not guesses</li>
-        <li><span class="li-icon green"><span class="material-symbols-outlined" style="font-size:1rem;">touch_app</span></span>Step in only when it truly matters</li>
+        <li class="stagger-item stagger-1"><span class="li-icon cyan"><span class="material-symbols-outlined" style="font-size:1rem;">notification_important</span></span>Know exactly who's falling behind</li>
+        <li class="stagger-item stagger-2"><span class="li-icon orange"><span class="material-symbols-outlined" style="font-size:1rem;">visibility</span></span>See real progress, not guesses</li>
+        <li class="stagger-item stagger-3"><span class="li-icon green"><span class="material-symbols-outlined" style="font-size:1rem;">touch_app</span></span>Step in only when it truly matters</li>
       </ul>
     </div>
-    <div class="split-visual">
+    <div class="split-visual reveal-flip">
       <img src="/assets/corporate-infographics/10.png" alt="Get smart alerts when an employee needs your attention" loading="lazy" />
     </div>
   </div>
@@ -1321,15 +1351,15 @@
 <!-- SLIDE 11 -->
 <section class="split-section dark">
   <div class="split-inner">
-    <div class="split-content">
+    <div class="split-content reveal-rotate">
       <h2>See everything clearly. <span class="gold">Act</span> only when needed.</h2>
       <ul>
-        <li><span class="li-icon gold"><span class="material-symbols-outlined" style="font-size:1rem;">dashboard</span></span>One dashboard, full team visibility</li>
-        <li><span class="li-icon green"><span class="material-symbols-outlined" style="font-size:1rem;">group</span></span>Track progress across every employee</li>
-        <li><span class="li-icon orange"><span class="material-symbols-outlined" style="font-size:1rem;">balance</span></span>Stay informed without micromanaging</li>
+        <li class="stagger-item stagger-2"><span class="li-icon gold"><span class="material-symbols-outlined" style="font-size:1rem;">dashboard</span></span>One dashboard, full team visibility</li>
+        <li class="stagger-item stagger-3"><span class="li-icon green"><span class="material-symbols-outlined" style="font-size:1rem;">group</span></span>Track progress across every employee</li>
+        <li class="stagger-item stagger-4"><span class="li-icon orange"><span class="material-symbols-outlined" style="font-size:1rem;">balance</span></span>Stay informed without micromanaging</li>
       </ul>
     </div>
-    <div class="split-visual">
+    <div class="split-visual reveal-zoom-bounce">
       <img src="/assets/corporate-infographics/11.png" alt="See everything clearly act only when needed" loading="lazy" />
     </div>
   </div>
@@ -1338,15 +1368,15 @@
 <!-- SLIDE 12 -->
 <section class="split-section light">
   <div class="split-inner reverse">
-    <div class="split-content">
+    <div class="split-content reveal-pop">
       <h2>Spend less time chasing. <span class="green">Growing</span>.</h2>
       <ul>
-        <li><span class="li-icon green"><span class="material-symbols-outlined" style="font-size:1rem;">emoji_objects</span></span>Redirect energy toward strategy</li>
-        <li><span class="li-icon cyan"><span class="material-symbols-outlined" style="font-size:1rem;">show_chart</span></span>Focus on growth, not micromanagement</li>
-        <li><span class="li-icon gold"><span class="material-symbols-outlined" style="font-size:1rem;">rocket_launch</span></span>Scale the business, not your to-do list</li>
+        <li class="stagger-item stagger-3"><span class="li-icon green"><span class="material-symbols-outlined" style="font-size:1rem;">emoji_objects</span></span>Redirect energy toward strategy</li>
+        <li class="stagger-item stagger-1"><span class="li-icon cyan"><span class="material-symbols-outlined" style="font-size:1rem;">show_chart</span></span>Focus on growth, not micromanagement</li>
+        <li class="stagger-item stagger-2"><span class="li-icon gold"><span class="material-symbols-outlined" style="font-size:1rem;">rocket_launch</span></span>Scale the business, not your to-do list</li>
       </ul>
     </div>
-    <div class="split-visual">
+    <div class="split-visual reveal-clip">
       <img src="/assets/corporate-infographics/12.png" alt="Spend less time chasing more time growing" loading="lazy" />
     </div>
   </div>
@@ -1355,47 +1385,29 @@
 <!-- SLIDE 13 -->
 <section class="split-section dark">
   <div class="split-inner">
-    <div class="split-content">
+    <div class="split-content reveal-elastic">
       <h2>Official app is <span class="green">live</span> on Google Play</h2>
       <ul>
-        <li><span class="li-icon green"><span class="material-symbols-outlined" style="font-size:1rem;">android</span></span>Available now for corporate teams</li>
-        <li><span class="li-icon cyan"><span class="material-symbols-outlined" style="font-size:1rem;">star</span></span>Rated 4.8 by early users</li>
-        <li><span class="li-icon gold"><span class="material-symbols-outlined" style="font-size:1rem;">phone_iphone</span></span>iOS version coming soon</li>
+        <li class="stagger-item stagger-1"><span class="li-icon green"><span class="material-symbols-outlined" style="font-size:1rem;">android</span></span>Available now for corporate teams</li>
+        <li class="stagger-item stagger-2"><span class="li-icon cyan"><span class="material-symbols-outlined" style="font-size:1rem;">star</span></span>Rated 4.8 by early users</li>
+        <li class="stagger-item stagger-3"><span class="li-icon gold"><span class="material-symbols-outlined" style="font-size:1rem;">phone_iphone</span></span>iOS version coming soon</li>
       </ul>
       <a href="#" class="btn-primary" style="text-decoration:none;margin-top:1.5rem;display:inline-flex;">
         <span class="material-symbols-outlined" style="font-size:20px;">download</span>
         Get it on Google Play
       </a>
     </div>
-    <div class="split-visual">
+    <div class="split-visual reveal-perspective">
       <img src="/assets/corporate-infographics/13.png" alt="Official app is live on Google Play" loading="lazy" />
     </div>
   </div>
 </section>
-<!-- FAQ -->
-<section class="section faq-bg" id="faq">
-  <div class="sec-inner">
-    <div class="tc mb16">
-      <h2 class="sec-h2">Everything you <span>need to know</span></h2>
-    </div>
-    <div class="faq-list">
-      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">What is GoalChaser.co?<span class="material-symbols-outlined">add</span></button><div class="faq-a">GoalChaser.co is an active AI project manager that calls your team via VoIP. It schedules work, tracks progress, resolves blockers, auto-generates reports, and keeps leadership informed all without anyone logging into a dashboard.</div></div>
-      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">How is this different from Jira, Trello, or Asana?<span class="material-symbols-outlined">add</span></button><div class="faq-a">Those tools are passive they wait for someone to log in. GoalChaser is active. It calls your team, parses their updates, flags blockers, escalates problems, and writes reports. It acts like a manager, not a noticeboard.</div></div>
-      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Does it work for teams and enterprises?<span class="material-symbols-outlined">add</span></button><div class="faq-a">Yes. GoalChaser scales from a single person to an entire enterprise. It handles individual daily check-ins, team standups, department health monitoring, and executive-level org-wide pulse all from the same system.</div></div>
-      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Is the performance monitoring surveillance?<span class="material-symbols-outlined">add</span></button><div class="faq-a">No. GoalChaser measures each person against their own personal baseline not a company-wide standard. It uses a private Watch State before any manager is notified, and flags go to the direct manager only. GoalChaser surfaces signals; humans make decisions.</div></div>
-      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">How does the AI know about our tech stack and processes?<span class="material-symbols-outlined">add</span></button><div class="faq-a">During onboarding, you configure your tech stack (languages, frameworks, APIs, cloud providers) and upload internal SOP documents. The AI indexes all of this so it can give specific, contextual help during check-in calls not generic advice.</div></div>
-      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Can I import projects from Jira, Trello or Asana?<span class="material-symbols-outlined">add</span></button><div class="faq-a">Yes. GoalChaser supports full project and task import from Jira, Trello, and Asana. You don't have to start from scratch migration is a first-class feature.</div></div>
-      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">What communication channels does GoalChaser use?<span class="material-symbols-outlined">add</span></button><div class="faq-a">Voice calls are primary higher response rate and harder to ignore. WhatsApp is used for async preference or as follow-up when a call isn't answered. Email handles reports, digests, and formal escalation notifications. All interactions are logged in one place.</div></div>
-      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Do I need a US phone number?<span class="material-symbols-outlined">add</span></button><div class="faq-a">No. Calling in GoalChaser happens inside the app for all users no phone numbers required. Just open the app and your AI calls come straight through, wherever you are.</div></div>
-      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">How much does it cost?<span class="material-symbols-outlined">add</span></button><div class="faq-a">We're in private beta with a free tier. Join the waitlist for early access pricing when paid plans launch.</div></div>
-    </div>
-  </div>
-</section>
+
 
 <!-- BUILT FOR -->
 <!-- CTA -->
 <section class="section cta-bg">
-  <div class="sec-inner cta-inner">
+  <div class="sec-inner cta-inner reveal-up">
     <h2 class="cta-h2">Interested in an <span>Enterprise Plan?</span></h2>
     <p class="cta-sub">Reach out to scale GoalChaser across your entire organization with dedicated support and custom integrations.</p>
     <div class="cta-actions">
@@ -1473,7 +1485,7 @@
     </div>
     <div class="success-state" id="modal-success">
       <div class="success-icon"><span class="material-symbols-outlined">check_circle</span></div>
-      <h3 style="font-size:1.6rem;font-weight:900;font-family:'Nunito',sans-serif;margin-bottom:.5rem;">Message Sent!</h3>
+      <h3 style="font-size:1.6rem;font-weight:900;font-family:'Inter',sans-serif;margin-bottom:.5rem;">Message Sent!</h3>
       <p style="font-size:.9rem;color:#64748B;">Our enterprise team will reach out to you within 24 hours.</p>
       <button onclick="closeModal()" style="margin-top:2rem;background:none;border:none;cursor:pointer;font-weight:700;color:#00AFF0;font-family:inherit;">Close</button>
     </div>
@@ -1481,6 +1493,8 @@
 </div>
 
 <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+<script src="https://unpkg.com/vanta@latest/dist/vanta.clouds.min.js"></script>
 <script>
   const navbar = document.getElementById('navbar');
   const hamburger = document.getElementById('hamburger');
@@ -1515,29 +1529,6 @@
     if (!isOpen) { btn.classList.add('open'); btn.nextElementSibling.classList.add('open'); }
   }
 
-  /* Hero toggle For You / For Team */
-const toggleOpts = document.querySelectorAll('.hero-toggle-opt');
-  const heroH1 = document.getElementById('heroHeadline');
-
-  const toggleContent = {
-    personal: {
-      h1: 'Your personal <span class="c1">procrastination killer</span><br>one call at a time'
-    },
-    team: {
-      h1: 'Your team\'s <span class="c1">productivity partner</span> without endless meetings'
-    }
-  };
-
-  toggleOpts.forEach(opt => {
-    opt.addEventListener('click', function() {
-      toggleOpts.forEach(o => o.classList.remove('active'));
-      this.classList.add('active');
-      const mode = this.dataset.mode;
-      const content = toggleContent[mode];
-      heroH1.innerHTML = content.h1;
-    });
-  });
-
   /* Modal */
   function openModal(e) { e.preventDefault(); document.getElementById('waitlist-modal').classList.add('open'); }
   function closeModal() {
@@ -1554,6 +1545,56 @@ const toggleOpts = document.querySelectorAll('.hero-toggle-opt');
     document.getElementById('modal-form').style.display = 'none';
     document.getElementById('modal-success').style.display = 'block';
   }
+
+  /* ─── REVEAL ANIMATIONS ─── */
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal-up, .reveal-left, .reveal-right, .reveal-scale, .reveal-blur, .reveal-rotate, .reveal-flip, .reveal-zoom-bounce, .reveal-clip, .reveal-perspective, .reveal-elastic, .reveal-pop, .stagger-item').forEach(el => {
+    revealObserver.observe(el);
+  });
+
+  /* ─── 3D SCROLL DEPTH ─── */
+  const splitInners = document.querySelectorAll('.split-inner');
+  function updateDepth() {
+    const vh = window.innerHeight;
+    splitInners.forEach(inner => {
+      const rect = inner.getBoundingClientRect();
+      const center = rect.top + rect.height / 2;
+      const progress = (center - vh / 2) / (vh / 2);
+      const clamped = Math.max(-1, Math.min(1, progress));
+      const tz = Math.round(clamped * -12);
+      const ry = Math.round(clamped * 1.5);
+      inner.style.transform = `translateZ(${tz}px) rotateY(${ry}deg)`;
+    });
+  }
+  window.addEventListener('scroll', updateDepth, { passive: true });
+  updateDepth();
+</script>
+
+<!-- VANTA CLOUDS INIT -->
+<script>
+  VANTA.CLOUDS({
+    el: "#vanta-bg",
+    mouseControls: true,
+    touchControls: true,
+    gyroControls: false,
+    minHeight: 200.00,
+    minWidth: 200.00,
+    speed: 1,
+    skyColor: 0x68b8d7,
+    cloudColor: 0xadc1de,
+    cloudShadowColor: 0x183550,
+    sunColor: 0xff9919,
+    sunGlareColor: 0xff6633,
+    sunlightColor: 0xff9933
+  })
 </script>
 </body>
 </html>
