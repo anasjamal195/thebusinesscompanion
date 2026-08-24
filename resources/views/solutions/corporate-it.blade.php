@@ -655,7 +655,11 @@
 
     /* ─── RESPONSIVE ─── */
     @media(max-width:1024px) {
-      .hero-inner { grid-template-columns:1fr; }
+      .hero { min-height:100vh; min-height:100dvh; width:100%; }
+      .hero-inner { grid-template-columns:1fr; text-align:center; justify-items:center; width:100%; }
+      .hero-inner > div:first-child { display:flex; flex-direction:column; align-items:center; width:100%; }
+      .hero-actions { justify-content:center; width:100%; }
+      .hero-sub-big,.hero-sub { max-width:36rem; }
       .hero-visual { display:none; }
       .steps-row,.feat-grid,.voip-steps,.pw-grid,.exec-tiers,.exec-metrics,.int-categories,.roles-grid { grid-template-columns:1fr 1fr; }
       .int-grid { grid-template-columns:repeat(4,1fr); }
@@ -671,8 +675,12 @@
       .hero-inner { padding:3rem 1.5rem; }
     }
     @media(max-width:768px) {
+      .hero { margin-top:-70px; padding-top:70px; min-height:100vh; min-height:100dvh; width:100vw; max-width:100%; display:flex; align-items:center; justify-content:center; }
+      .hero-inner { padding:2.5rem 1.25rem 3rem; gap:0; width:100%; min-height:calc(100vh - 70px); min-height:calc(100dvh - 70px); display:flex; flex-direction:column; justify-content:center; align-items:center; }
+      .hero-h1 { font-size:clamp(1.75rem,7vw,2.2rem); line-height:1.15; }
+      .hero-sub-big { font-size:.95rem; }
       .footer-grid { grid-template-columns:1fr 1fr; gap:2rem 1.5rem; }
-      .hero-chips { display:none; }
+      .hero-chips { gap:.5rem; justify-content:center; }
       .hero-stats { display:none; }
       .stats-bar { padding:1.5rem 1rem; }
       .sb-inner { gap:1rem; }
@@ -684,13 +692,21 @@
       .steps-row,.feat-grid,.voip-steps,.pw-grid,.exec-tiers,.exec-metrics,.int-categories,.roles-grid,.teams-grid { grid-template-columns:1fr; }
       .int-grid { grid-template-columns:repeat(2,1fr); }
       .footer-grid { grid-template-columns:1fr; gap:2rem; }
-      .hero-actions { flex-direction:column; width:100%; }
-      .hero-actions a { width:100%; justify-content:center; }
+      .hero { background-position:center top; width:100vw; max-width:100%; min-height:100vh; min-height:100dvh; }
+      .hero-inner { padding:3.5rem 1.25rem 3rem; width:100%; min-height:inherit; text-align:left; justify-items:start; align-items:flex-start; gap:1.5rem; }
+      .hero-inner > div:first-child { align-items:flex-start; text-align:left; gap:.5rem; }
+      .hero-h1 { font-size:clamp(2rem,9vw,2.4rem); margin-bottom:1.25rem; text-align:left; line-height:1.12; }
+      .hero-sub-big, .hero-sub { text-wrap:balance; }
+      .hero-chips { flex-wrap:wrap; overflow:visible; justify-content:flex-start; align-content:flex-start; padding-bottom:0; width:100%; text-align:left; }
+      .chip { white-space:normal; flex-shrink:1; text-align:left; }
+      .hero-actions { flex-direction:column; width:100%; max-width:320px; margin:0 0 2rem 0; align-items:flex-start; }
+      .hero-chips { margin-top:.5rem; }
+      .hero-actions a, .hero-actions button { width:auto; min-width:180px; justify-content:center; min-height:44px; font-size:1rem; }
       .footer-bottom { flex-direction:column; gap:.5rem; text-align:center; }
       .us-banner { flex-direction:column; text-align:center; }
       .us-badge { margin:0 auto; }
-      .hero-inner { padding:2rem 1rem; }
-      .hero-h1 { font-size:1.75rem; }
+      .hero-inner { padding:3.5rem 1.25rem 3rem; }
+      .hero-h1 { font-size:clamp(2rem,9vw,2.4rem); }
       .hero-sub-big { font-size:.95rem; }
       .hero-sub { font-size:.85rem; }
       .hero-toggle { margin-top:.5rem; }
@@ -1201,7 +1217,7 @@
     <div class="split-content reveal-flip">
       <h2>You shouldn't have to ask for updates <span class="orange">all</span> day</h2>
       <ul>
-        <li class="stagger-item stagger-2"><span class="li-icon orange"><span class="material-symbols-outlined" style="font-size:1rem;">chat</span></span>"Is this done?" "Any update?" all day, every day</li>
+        <li class="stagger-item stagger-2"><span class="li-icon orange"><span class="material-symbols-outlined" style="font-size:1rem;">chat</span></span>Endless status-checking kills momentum</li>
         <li class="stagger-item stagger-3"><span class="li-icon cyan"><span class="material-symbols-outlined" style="font-size:1rem;">notifications</span></span>Constant pings pull focus from real work</li>
         <li class="stagger-item stagger-4"><span class="li-icon green"><span class="material-symbols-outlined" style="font-size:1rem;">battery_alert</span></span>Manual tracking drains your energy</li>
       </ul>
