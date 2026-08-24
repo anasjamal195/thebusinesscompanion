@@ -1398,28 +1398,6 @@
   </div>
 </section>
 
-<!-- SLIDE 13 -->
-<section class="split-section dark">
-  <div class="split-inner">
-    <div class="split-content reveal-elastic">
-      <h2>Official app is <span class="green">live</span> on Google Play</h2>
-      <ul>
-        <li class="stagger-item stagger-1"><span class="li-icon green"><span class="material-symbols-outlined" style="font-size:1rem;">android</span></span>Available now for corporate teams</li>
-        <li class="stagger-item stagger-2"><span class="li-icon cyan"><span class="material-symbols-outlined" style="font-size:1rem;">star</span></span>Rated 4.8 by early users</li>
-        <li class="stagger-item stagger-3"><span class="li-icon gold"><span class="material-symbols-outlined" style="font-size:1rem;">phone_iphone</span></span>iOS version coming soon</li>
-      </ul>
-      <a href="#" class="btn-primary" style="text-decoration:none;margin-top:1.5rem;display:inline-flex;">
-        <span class="material-symbols-outlined" style="font-size:20px;">download</span>
-        Get it on Google Play
-      </a>
-    </div>
-    <div class="split-visual reveal-perspective">
-      <img src="/assets/corporate-infographics/13.png" alt="Official app is live on Google Play" loading="lazy" />
-    </div>
-  </div>
-</section>
-
-
 <!-- BUILT FOR -->
 <!-- CTA -->
 <section class="section cta-bg">
