@@ -29,35 +29,26 @@
     body { font-family:'Inter',sans-serif; background:#fff; color:var(--s9); -webkit-font-smoothing:antialiased; overflow-x:hidden; }
 
     /* ─── NAV ─── */
-    nav { position:fixed; top:0; left:0; right:0; z-index:100; padding:0 2rem; background:rgba(255,255,255,0); border-bottom:1px solid transparent; transition:background .3s,border-color .3s,box-shadow .3s; }
-    nav.scrolled { background:rgba(255,255,255,.97); backdrop-filter:blur(12px); border-bottom-color:var(--s3); box-shadow:0 1px 16px rgba(45,55,72,0.05); }
+    nav { position:fixed; top:0; left:0; right:0; z-index:100; padding:0 2rem; background:transparent; border-bottom:1px solid transparent; }
+    nav::before { content:''; position:absolute; inset:0; background:linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(255,255,255,0.95) 20%, rgba(255,255,255,0.7) 50%, rgba(255,255,255,0.3) 75%, rgba(255,255,255,0) 100%); z-index:-1; }
     .nav-inner { max-width:1280px; margin:0 auto; height:80px; display:flex; align-items:center; justify-content:space-between; }
     .nav-logo { display:flex; align-items:center; text-decoration:none; }
     .nav-logo img { height:70px; width:auto; display:block; }
     @media(max-width:640px) { .nav-logo img { height:70px; } .nav-inner { height:80px; } .hero { margin-top:-80px; padding-top:80px; } }
-    .nav-logo .logo-light { display:block; }
-    .nav-logo .logo-dark { display:none; }
-    nav.scrolled .nav-logo .logo-light { display:none; }
-    nav.scrolled .nav-logo .logo-dark { display:block; }
+    .nav-logo .logo-light { display:none; }
+    .nav-logo .logo-dark { display:block; }
     .nav-links { display:flex; align-items:center; gap:2rem; list-style:none; }
-    .nav-links a { color:rgba(255,255,255,.75); text-decoration:none; font-size:.875rem; font-weight:700; transition:color .2s; }
-    nav.scrolled .nav-links a { color:var(--s6); }
-    .nav-links a:hover { color:var(--white); }
-    nav.scrolled .nav-links a:hover { color:var(--cyan); }
+    .nav-links a { color:var(--s7); text-decoration:none; font-size:.875rem; font-weight:700; transition:color .2s; }
+    .nav-links a:hover { color:var(--cyan); }
     .nav-actions { display:flex; align-items:center; gap:1rem; }
-    .nav-actions .btn-ghost { font-family:'Inter',sans-serif; font-size:.875rem; font-weight:700; background:none; border:none; cursor:pointer; text-decoration:none; transition:color .2s; color:rgba(255,255,255,.75); }
-    nav.scrolled .nav-actions .btn-ghost { color:var(--s6); }
-    .nav-actions .btn-ghost:hover { color:var(--white); }
-    nav.scrolled .nav-actions .btn-ghost:hover { color:var(--cyan); }
-    .nav-actions .btn-primary { font-family:'Inter',sans-serif; font-size:.875rem; font-weight:800; background:var(--cyan); border:none; padding:.625rem 1.375rem; border-radius:8px; cursor:pointer; text-decoration:none; display:inline-flex; align-items:center; gap:.5rem; transition:background .2s,transform .15s; box-shadow:0 4px 14px rgba(0,175,240,.3); color:#fff; }
-    nav.scrolled .nav-actions .btn-primary { background:var(--s9); color:#fff; box-shadow:none; }
-    nav.scrolled .nav-actions .btn-primary:hover { background:var(--cyan); }
-    .nav-actions .btn-primary:hover { background:var(--cyan2); transform:translateY(-1px); }
+    .nav-actions .btn-ghost { font-family:'Inter',sans-serif; font-size:.875rem; font-weight:700; background:none; border:none; cursor:pointer; text-decoration:none; transition:color .2s; color:var(--s7); }
+    .nav-actions .btn-ghost:hover { color:var(--cyan); }
+    .nav-actions .btn-primary { font-family:'Inter',sans-serif; font-size:.875rem; font-weight:800; background:var(--s9); border:none; padding:.625rem 1.375rem; border-radius:8px; cursor:pointer; text-decoration:none; display:inline-flex; align-items:center; gap:.5rem; transition:background .2s,transform .15s; color:#fff; }
+    .nav-actions .btn-primary:hover { background:var(--cyan); transform:translateY(-1px); }
 
     /* ─── HAMBURGER / MOBILE MENU ─── */
     .nav-hamburger { display:none; background:none; border:none; cursor:pointer; padding:0.25rem; }
-    .nav-hamburger svg { width:24px; height:24px; stroke:rgba(255,255,255,.8); transition:stroke .35s; }
-    nav.scrolled .nav-hamburger svg { stroke:var(--s9); }
+    .nav-hamburger svg { width:24px; height:24px; stroke:var(--s9); }
     .mobile-menu { display:none; flex-direction:column; gap:1rem; padding:1.5rem 2rem; background:rgba(255,255,255,.98); backdrop-filter:blur(20px); border-top:1px solid var(--s3); }
     .mobile-menu.open { display:flex; }
     .mobile-menu a { font-weight:700; font-size:.9375rem; color:var(--s7); text-decoration:none; transition:color .2s; }
@@ -74,7 +65,7 @@
     }
 
     /* ─── HERO ─── */
-    .hero { position:relative; min-height:100vh; display:flex; align-items:center; overflow:hidden; margin-top:-110px; padding-top:110px; background-color:#f8fafc; }
+    .hero { position:relative; min-height:100vh; display:flex; align-items:center; overflow:hidden; margin-top:-110px; padding-top:110px; background:rgba(255,255,255,.6); }
     .hero-overlay { position:absolute; inset:0; background:transparent; display:none; }
     .hero-glow1 { position:absolute; top:25%; left:25%; width:384px; height:384px; border-radius:50%; background:radial-gradient(circle,rgba(0,175,240,.08),transparent 70%); filter:blur(40px); pointer-events:none; }
     .hero-glow2 { position:absolute; bottom:25%; right:25%; width:320px; height:320px; border-radius:50%; background:radial-gradient(circle,rgba(14,182,71,.10),transparent 70%); filter:blur(40px); pointer-events:none; }
@@ -87,7 +78,7 @@
     .eyebrow-dot { width:6px; height:6px; border-radius:50%; background:var(--green); animation:blink 1.8s ease-in-out infinite; }
     @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:.4;} }
 
-    .hero-h1 { font-family:'Inter',sans-serif; font-size:clamp(2rem,4.2vw,3.4rem); font-weight:700; color:#fff; line-height:1.1; letter-spacing:-.04em; margin-bottom:1.5rem; text-shadow:0 2px 12px rgba(0,0,0,.15),0 1px 3px rgba(0,0,0,.1); }
+    .hero-h1 { font-family:'Inter',sans-serif; font-size:clamp(2rem,4.2vw,3.4rem); font-weight:700; color:#1a1a2e; line-height:1.1; letter-spacing:-.04em; margin-top:-2rem; margin-bottom:1.5rem; }
     .hero-h1 .c1 { color:var(--cyan); }
     .hero-h1 .c2 { color:var(--green); }
 
@@ -102,7 +93,7 @@
     .play-ring { width:32px; height:32px; border-radius:50%; background:rgba(14,182,71,.2); border:1px solid rgba(14,182,71,.4); display:flex; align-items:center; justify-content:center; }
 
     .hero-chips { display:flex; flex-wrap:wrap; gap:.6rem; }
-    .chip { display:flex; align-items:center; gap:.4rem; padding:.35rem .85rem; background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.2); border-radius:999px; font-size:.75rem; color:#fff; font-weight:600; }
+    .chip { display:flex; align-items:center; gap:.4rem; padding:.35rem .85rem; background:var(--cyan); border-radius:999px; font-size:.75rem; color:#fff; font-weight:600; }
     .chip .material-symbols-outlined { font-size:15px; }
 
     /* ─── HERO VISUAL (original sliding cards) ─── */
@@ -928,7 +919,7 @@
     .split-section.light { background:rgba(255,255,255,.6); backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px); }
     .faq-bg { position:relative; z-index:1; background:rgba(255,255,255,.6); backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px); }
     .faq-item { background:rgba(255,255,255,.85); }
-    .cta-bg { position:relative; z-index:1; background:transparent; }
+    .cta-bg { position:relative; z-index:1; background:rgba(255,255,255,.6); }
     footer { position:relative; z-index:1; }
 
     /* 3D scroll depth */
@@ -987,7 +978,7 @@
     <div>
 
       <h1 class="hero-h1 hero-reveal hero-reveal-1" id="heroHeadline">
-        Reimagining Textile<br><span style="color:var(--orange)">Operations</span> with AI-Driven Execution
+        AI-Driven Textile Operations
       </h1>
 
       <div class="hero-actions hero-reveal hero-reveal-2">
@@ -997,11 +988,6 @@
         </button>
       </div>
 
-      <div class="hero-chips hero-reveal hero-reveal-3">
-        <span class="chip"><span class="material-symbols-outlined" style="color:#00AFF0;">description</span>PO → Shipment in 1 Click</span>
-        <span class="chip"><span class="material-symbols-outlined" style="color:#0EB647;">mic</span>AI VoIP Calls</span>
-        <span class="chip"><span class="material-symbols-outlined" style="color:#FBBF24;">factory</span>CEO → Unit Incharge</span>
-      </div>
     </div>
 
     <!-- RIGHT: original sliding card visual -->
@@ -1189,11 +1175,9 @@
         <li class="stagger-item stagger-3"><span class="li-icon gold"><span class="material-symbols-outlined" style="font-size:1rem">target</span></span>On-time shipment depends on daily coordination</li>
       </ul>
     </div>
-    <div class="split-visual reveal-zoom-bounce"><div style="height:280px;background:var(--s1);border:1px solid var(--s3);border-radius:20px;padding:1.5rem;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem">
-        <div style="width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#00AFF0,#0EB647);display:flex;align-items:center;justify-content:center;color:#fff"><span class="material-symbols-outlined" style="font-size:28px">smart_toy</span></div>
-        <div style="display:flex;gap:.5rem;flex-wrap:wrap;justify-content:center"><span style="padding:.35rem .7rem;background:#fff;border:1px solid var(--s3);border-radius:999px;font-size:.7rem;font-weight:700">Plan</span><span style="padding:.35rem .7rem;background:#fff;border:1px solid var(--s3);border-radius:999px;font-size:.7rem;font-weight:700">Communicate</span><span style="padding:.35rem .7rem;background:#fff;border:1px solid var(--s3);border-radius:999px;font-size:.7rem;font-weight:700">Follow-up</span><span style="padding:.35rem .7rem;background:#fff;border:1px solid var(--s3);border-radius:999px;font-size:.7rem;font-weight:700">Report</span></div>
-        <div style="font-size:.75rem;color:var(--s6)">Automatically — no manual chasing</div>
-      </div></div>
+    <div class="split-visual reveal-zoom-bounce">
+      <img src="/assets/textile-infographics/1.png" alt="Every shipment starts with one order" loading="lazy" />
+    </div>
   </div>
 </section>
 
@@ -1209,10 +1193,9 @@
         <li class="stagger-item stagger-3"><span class="li-icon green"><span class="material-symbols-outlined" style="font-size:1rem">hourglass_empty</span></span>Delays and blockers surface too late</li>
       </ul>
     </div>
-    <div class="split-visual reveal-elastic"><div style="height:280px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:1.2rem;display:flex;flex-direction:column;gap:.7rem;justify-content:center">
-        <div style="display:flex;gap:.6rem"><div style="flex:1;background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);border-radius:12px;padding:.7rem;text-align:center;color:#FCA5A5;font-size:.7rem;font-weight:700"><span class="material-symbols-outlined" style="display:block;font-size:20px;margin-bottom:.2rem">wifi_off</span>Outside system</div><div style="flex:1;background:rgba(249,115,22,.15);border:1px solid rgba(249,115,22,.3);border-radius:12px;padding:.7rem;text-align:center;color:#FDBA74;font-size:.7rem;font-weight:700"><span class="material-symbols-outlined" style="display:block;font-size:20px;margin-bottom:.2rem">hourglass_empty</span>Surface too late</div></div>
-        <div style="padding:.7rem;background:rgba(255,255,255,.06);border-radius:12px;color:rgba(255,255,255,.6);font-size:.75rem;text-align:center">Chasing updates ≠ making decisions</div>
-      </div></div>
+    <div class="split-visual reveal-elastic">
+      <img src="/assets/textile-infographics/2.png" alt="Things fall apart on the floor" loading="lazy" />
+    </div>
   </div>
 </section>
 
@@ -1227,11 +1210,9 @@
         <li class="stagger-item stagger-3"><span class="li-icon gold"><span class="material-symbols-outlined" style="font-size:1rem">bolt</span></span>One system running the entire loop</li>
       </ul>
     </div>
-    <div class="split-visual reveal-rotate"><div style="height:280px;background:var(--s1);border:1px solid var(--s3);border-radius:20px;padding:1rem;display:flex;flex-direction:column;gap:.7rem;justify-content:center">
-        <div style="display:flex;align-items:center;gap:.6rem"><span style="width:36px;height:36px;border-radius:10px;background:#EFF9FF;display:flex;align-items:center;justify-content:center;color:var(--cyan)"><span class="material-symbols-outlined" style="font-size:18px">description</span></span><span style="font-weight:800;font-size:.85rem">PO Upload</span><span style="margin-left:auto;color:var(--green);font-weight:700;font-size:.7rem">✓ Risks flagged</span></div>
-        <div style="height:1px;background:var(--s3)"></div>
-        <div style="display:flex;gap:.5rem"><div style="flex:1;background:#fff;border:1px solid var(--s3);border-radius:12px;padding:.6rem;text-align:center"><div style="font-size:.65rem;font-weight:700;color:var(--cyan)">Milestones</div><div style="font-size:.7rem">AVP</div></div><div style="flex:1;background:#fff;border:1px solid var(--s3);border-radius:12px;padding:.6rem;text-align:center"><div style="font-size:.65rem;font-weight:700;color:var(--green)">Assignments</div><div style="font-size:.7rem">Managers</div></div><div style="flex:1;background:#fff;border:1px solid var(--s3);border-radius:12px;padding:.6rem;text-align:center"><div style="font-size:.65rem;font-weight:700;color:var(--orange)">Work Items</div><div style="font-size:.7rem">Unit In.</div></div></div>
-      </div></div>
+    <div class="split-visual reveal-rotate">
+      <img src="/assets/textile-infographics/3.png" alt="What if AI did this" loading="lazy" />
+    </div>
   </div>
 </section>
 
@@ -1246,11 +1227,9 @@
         <li class="stagger-item stagger-3"><span class="li-icon gold"><span class="material-symbols-outlined" style="font-size:1rem">verified</span></span>No re-engineering — fits how textile teams already work</li>
       </ul>
     </div>
-    <div class="split-visual reveal-zoom-bounce"><div style="height:280px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:1.2rem;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.8rem">
-        <div style="width:56px;height:56px;border-radius:16px;background:linear-gradient(135deg,#00AFF0,#0EB647);display:flex;align-items:center;justify-content:center;color:#fff"><span class="material-symbols-outlined">hub</span></div>
-        <div style="font-weight:800;color:#fff;font-size:.9rem">One Source of Truth</div>
-        <div style="display:flex;gap:.4rem"><span style="padding:.3rem .6rem;background:rgba(255,255,255,.1);border-radius:999px;color:#fff;font-size:.65rem">CEO</span><span style="color:rgba(255,255,255,.4)">→</span><span style="padding:.3rem .6rem;background:rgba(255,255,255,.1);border-radius:999px;color:#fff;font-size:.65rem">AVP</span><span style="color:rgba(255,255,255,.4)">→</span><span style="padding:.3rem .6rem;background:rgba(255,255,255,.1);border-radius:999px;color:#fff;font-size:.65rem">Mgr</span><span style="color:rgba(255,255,255,.4)">→</span><span style="padding:.3rem .6rem;background:rgba(255,255,255,.1);border-radius:999px;color:#fff;font-size:.65rem">Unit</span></div>
-      </div></div>
+    <div class="split-visual reveal-zoom-bounce">
+      <img src="/assets/textile-infographics/4.png" alt="Meet GoalChaser" loading="lazy" />
+    </div>
   </div>
 </section>
 
@@ -1266,11 +1245,9 @@
         <li class="stagger-item stagger-3"><span class="li-icon gold"><span class="material-symbols-outlined" style="font-size:1rem">approval</span></span>Each level approves for the one below — execution begins</li>
       </ul>
     </div>
-    <div class="split-visual reveal-flip"><div style="height:280px;background:var(--s1);border:1px solid var(--s3);border-radius:20px;padding:1rem;display:flex;flex-direction:column;gap:.6rem;justify-content:center">
-        <div style="display:flex;align-items:center;gap:.5rem;padding:.6rem;background:#fff;border:1px solid var(--s3);border-radius:12px"><span class="material-symbols-outlined" style="color:var(--cyan)">factory</span><span style="font-weight:700;font-size:.8rem">Unit Incharge</span><span style="margin-left:auto;font-size:.7rem;background:#EFF9FF;padding:.2rem .5rem;border-radius:999px">3× daily</span></div>
-        <div style="display:flex;align-items:center;gap:.5rem;padding:.6rem;background:#fff;border:1px solid var(--s3);border-radius:12px"><span class="material-symbols-outlined" style="color:var(--green)">supervisor_account</span><span style="font-weight:700;font-size:.8rem">Manager</span><span style="margin-left:auto;font-size:.7rem;background:#F0FDF4;padding:.2rem .5rem;border-radius:999px">Daily</span></div>
-        <div style="display:flex;align-items:center;gap:.5rem;padding:.6rem;background:#fff;border:1px solid var(--s3);border-radius:12px"><span class="material-symbols-outlined" style="color:#F59E0B">monitoring</span><span style="font-weight:700;font-size:.8rem">AVP · CEO</span><span style="margin-left:auto;font-size:.7rem;background:#FFFBEB;padding:.2rem .5rem;border-radius:999px">Weekly / Monthly</span></div>
-      </div></div>
+    <div class="split-visual reveal-flip">
+      <img src="/assets/textile-infographics/5.png" alt="From purchase order to task plan" loading="lazy" />
+    </div>
   </div>
 </section>
 
@@ -1286,11 +1263,9 @@
         <li class="stagger-item stagger-3"><span class="li-icon gold"><span class="material-symbols-outlined" style="font-size:1rem">call</span></span>All coordination via the AI VoIP app</li>
       </ul>
     </div>
-    <div class="split-visual reveal-clip"><div style="height:280px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:1.2rem;display:flex;flex-direction:column;gap:.6rem;justify-content:center">
-        <div style="display:flex;align-items:center;gap:.6rem;color:#fff;font-weight:700"><span class="material-symbols-outlined" style="color:#00AFF0">phone_in_talk</span> AI Calling Plan</div>
-        <div style="display:flex;gap:.5rem"><div style="flex:1;background:rgba(0,175,240,.15);border-radius:10px;padding:.5rem;text-align:center;color:#7DD3FC;font-size:.65rem;font-weight:700">Pre-shift</div><div style="flex:1;background:rgba(14,182,71,.15);border-radius:10px;padding:.5rem;text-align:center;color:#86EFAC;font-size:.65rem;font-weight:700">Mid-shift</div><div style="flex:1;background:rgba(245,158,11,.15);border-radius:10px;padding:.5rem;text-align:center;color:#FDE68A;font-size:.65rem;font-weight:700">End-shift</div></div>
-        <div style="font-size:.7rem;color:rgba(255,255,255,.5);text-align:center">Every call updates task plan</div>
-      </div></div>
+    <div class="split-visual reveal-clip">
+      <img src="/assets/textile-infographics/6.png" alt="AI takes over daily operations" loading="lazy" />
+    </div>
   </div>
 </section>
 
@@ -1306,12 +1281,9 @@
         <li class="stagger-item stagger-4"><span class="li-icon gold"><span class="material-symbols-outlined" style="font-size:1rem">phone_in_talk</span></span>All calls handled through the AI VoIP app</li>
       </ul>
     </div>
-    <div class="split-visual reveal-perspective"><div style="height:280px;background:var(--s1);border:1px solid var(--s3);border-radius:20px;padding:1.2rem;display:flex;flex-direction:column;gap:.7rem;justify-content:center">
-        <div style="display:flex;align-items:center;gap:.6rem"><span style="width:32px;height:32px;border-radius:50%;background:#FEF2F2;display:flex;align-items:center;justify-content:center;color:#EF4444"><span class="material-symbols-outlined" style="font-size:16px">warning</span></span><span style="font-weight:700;font-size:.8rem">Delay without reason</span></div>
-        <div style="display:flex;align-items:center;justify-content:center;color:var(--s4)"><span class="material-symbols-outlined">arrow_downward</span></div>
-        <div style="padding:.7rem;background:#EFF9FF;border:1px solid rgba(0,175,240,.2);border-radius:12px;display:flex;align-items:center;gap:.5rem"><span class="material-symbols-outlined" style="color:var(--cyan)">escalator_warning</span><span style="font-size:.8rem;font-weight:700">Escalated with full context</span></div>
-        <div style="font-size:.7rem;color:var(--s6);text-align:center">Higher management — only when needed</div>
-      </div></div>
+    <div class="split-visual reveal-perspective">
+      <img src="/assets/textile-infographics/7.png" alt="Everyone gets called at the right frequency" loading="lazy" />
+    </div>
   </div>
 </section>
 
@@ -1327,11 +1299,9 @@
         <li class="stagger-item stagger-3"><span class="li-icon green"><span class="material-symbols-outlined" style="font-size:1rem">approval</span></span>Manager reviews and approves the plan</li>
       </ul>
     </div>
-    <div class="split-visual reveal-pop"><div style="height:280px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:1.2rem;display:flex;flex-direction:column;gap:.6rem;justify-content:center">
-        <div style="display:flex;align-items:center;gap:.6rem;padding:.6rem;background:rgba(239,68,68,.15);border-radius:12px;color:#FCA5A5;font-size:.8rem;font-weight:700"><span class="material-symbols-outlined">precision_manufacturing</span> Cutting M/C Breaks</div>
-        <div style="display:flex;align-items:center;gap:.4rem;color:rgba(255,255,255,.6);font-size:.7rem;justify-content:center"><span>Unit calls AI</span><span class="material-symbols-outlined" style="font-size:14px">arrow_forward</span><span>AI reassigns</span><span class="material-symbols-outlined" style="font-size:14px">arrow_forward</span><span>Mgr approves</span></div>
-        <div style="padding:.6rem;background:rgba(14,182,71,.15);border-radius:12px;color:#86EFAC;font-size:.7rem;text-align:center;font-weight:700">Targets → Line 3 · Maintenance aligned</div>
-      </div></div>
+    <div class="split-visual reveal-pop">
+      <img src="/assets/textile-infographics/8.png" alt="When something breaks AI responds instantly" loading="lazy" />
+    </div>
   </div>
 </section>
 
@@ -1347,11 +1317,9 @@
         <li class="stagger-item stagger-3"><span class="li-icon green"><span class="material-symbols-outlined" style="font-size:1rem">visibility</span></span>Higher management steps in only when truly needed</li>
       </ul>
     </div>
-    <div class="split-visual reveal-elastic"><div style="height:280px;background:var(--s1);border:1px solid var(--s3);border-radius:20px;padding:1rem;display:flex;gap:.7rem;align-items:center;justify-content:center">
-        <div style="flex:1;background:#fff;border:1px solid #FECACA;border-radius:12px;padding:.8rem"><div style="font-size:.65rem;font-weight:800;color:#EF4444;margin-bottom:.4rem">WITHOUT</div><div style="font-size:.7rem;color:var(--s6)">Days of planning<br>Scattered info</div></div>
-        <span class="material-symbols-outlined" style="color:var(--s4)">arrow_forward</span>
-        <div style="flex:1;background:#F0FDF4;border:1px solid #BBF7D0;border-radius:12px;padding:.8rem"><div style="font-size:.65rem;font-weight:800;color:var(--green);margin-bottom:.4rem">WITH GC</div><div style="font-size:.7rem;color:var(--s7)">AI in minutes<br>Live visibility</div></div>
-      </div></div>
+    <div class="split-visual reveal-elastic">
+      <img src="/assets/textile-infographics/9.png" alt="Unresolved issues escalate automatically" loading="lazy" />
+    </div>
   </div>
 </section>
 
@@ -1367,10 +1335,9 @@
         <li class="stagger-item stagger-3"><span class="li-icon gold"><span class="material-symbols-outlined" style="font-size:1rem">receipt_long</span></span>Every decision traceable, every role accountable — full audit trail</li>
       </ul>
     </div>
-    <div class="split-visual reveal-flip"><div style="height:280px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:1rem;display:flex;flex-direction:column;gap:.6rem;justify-content:center">
-        <div style="background:rgba(255,255,255,.06);border-radius:12px;padding:.7rem;display:flex;align-items:center;gap:.6rem"><span class="material-symbols-outlined" style="color:var(--cyan)">dashboard</span><span style="color:#fff;font-weight:700;font-size:.8rem">Executive Dashboard</span><span style="margin-left:auto;width:8px;height:8px;background:#0EB647;border-radius:50%"></span></div>
-        <div style="display:flex;gap:.5rem"><div style="flex:1;background:rgba(255,255,255,.05);border-radius:10px;padding:.5rem;text-align:center;color:rgba(255,255,255,.7);font-size:.65rem"><span class="material-symbols-outlined" style="display:block;font-size:16px">history</span>Call Logs</div><div style="flex:1;background:rgba(255,255,255,.05);border-radius:10px;padding:.5rem;text-align:center;color:rgba(255,255,255,.7);font-size:.65rem"><span class="material-symbols-outlined" style="display:block;font-size:16px">receipt_long</span>Audit Trail</div><div style="flex:1;background:rgba(255,255,255,.05);border-radius:10px;padding:.5rem;text-align:center;color:rgba(255,255,255,.7);font-size:.65rem"><span class="material-symbols-outlined" style="display:block;font-size:16px">record_voice_over</span>Transcript</div></div>
-      </div></div>
+    <div class="split-visual reveal-flip">
+      <img src="/assets/textile-infographics/10.png" alt="Full visibility anytime" loading="lazy" />
+    </div>
   </div>
 </section>
 
@@ -1401,7 +1368,9 @@
         </div>
       </div>
     </div>
-    <div class="split-visual reveal-clip"><div style="height:280px;background:var(--s1);border:1px solid var(--s3);border-radius:20px;display:flex;align-items:center;justify-content:center;color:var(--s5)">Visual</div></div>
+    <div class="split-visual reveal-clip">
+      <img src="/assets/textile-infographics/11.png" alt="The payoff business impact" loading="lazy" />
+    </div>
   </div>
 </section>
 
@@ -1590,7 +1559,7 @@
     minHeight: 200.00,
     minWidth: 200.00,
     speed: 1,
-    skyColor: 0x68b8d7,
+    skyColor: 0x1E90FF,
     cloudColor: 0xadc1de,
     cloudShadowColor: 0x183550,
     sunColor: 0xff9919,
