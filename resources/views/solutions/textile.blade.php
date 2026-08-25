@@ -74,9 +74,9 @@
     }
 
     /* ─── HERO ─── */
-    .hero { position:relative; min-height:100vh; display:flex; align-items:center; overflow:hidden; margin-top:-110px; padding-top:110px; background-image:url('assets/background-textile.png'); background-size:cover; background-position:center; }
-    .hero-overlay { position:absolute; inset:0; background:rgba(0,0,0,.82); }
-    .hero-glow1 { position:absolute; top:25%; left:25%; width:384px; height:384px; border-radius:50%; background:radial-gradient(circle,rgba(0,175,240,.12),transparent 70%); filter:blur(40px); pointer-events:none; }
+    .hero { position:relative; min-height:100vh; display:flex; align-items:center; overflow:hidden; margin-top:-110px; padding-top:110px; background-color:#f8fafc; }
+    .hero-overlay { position:absolute; inset:0; background:transparent; display:none; }
+    .hero-glow1 { position:absolute; top:25%; left:25%; width:384px; height:384px; border-radius:50%; background:radial-gradient(circle,rgba(0,175,240,.08),transparent 70%); filter:blur(40px); pointer-events:none; }
     .hero-glow2 { position:absolute; bottom:25%; right:25%; width:320px; height:320px; border-radius:50%; background:radial-gradient(circle,rgba(14,182,71,.10),transparent 70%); filter:blur(40px); pointer-events:none; }
     .hero-glow3 { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:600px; height:600px; border-radius:50%; background:radial-gradient(circle,rgba(124,58,237,.05),transparent 70%); filter:blur(60px); pointer-events:none; }
 
@@ -87,12 +87,12 @@
     .eyebrow-dot { width:6px; height:6px; border-radius:50%; background:var(--green); animation:blink 1.8s ease-in-out infinite; }
     @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:.4;} }
 
-    .hero-h1 { font-family:'Inter',sans-serif; font-size:clamp(2rem,4.2vw,3.4rem); font-weight:700; color:#fff; line-height:1.1; letter-spacing:-.04em; margin-bottom:1.5rem; }
+    .hero-h1 { font-family:'Inter',sans-serif; font-size:clamp(2rem,4.2vw,3.4rem); font-weight:700; color:#fff; line-height:1.1; letter-spacing:-.04em; margin-bottom:1.5rem; text-shadow:0 2px 12px rgba(0,0,0,.15),0 1px 3px rgba(0,0,0,.1); }
     .hero-h1 .c1 { color:var(--cyan); }
     .hero-h1 .c2 { color:var(--green); }
 
-    .hero-sub-big { color:rgba(255,255,255,.9); font-size:1.1rem; font-weight:600; max-width:500px; line-height:1.6; margin-bottom:.75rem; }
-    .hero-sub { color:rgba(255,255,255,.65); font-size:.95rem; max-width:480px; line-height:1.7; margin-bottom:2rem; }
+    .hero-sub-big { color:var(--s7); font-size:1.1rem; font-weight:600; max-width:500px; line-height:1.6; margin-bottom:.75rem; }
+    .hero-sub { color:var(--s6); font-size:.95rem; max-width:480px; line-height:1.7; margin-bottom:2rem; }
 
     .hero-actions { display:flex; gap:1rem; flex-wrap:wrap; margin-bottom:2.5rem; }
     .btn-primary { display:inline-flex; align-items:center; gap:.5rem; padding:.85rem 2rem; background:linear-gradient(135deg,var(--cyan),var(--cyan2)); color:#fff; font-weight:700; font-size:.95rem; border-radius:12px; text-decoration:none; border:none; cursor:pointer; box-shadow:0 6px 24px rgba(0,175,240,.35); transition:transform .2s,box-shadow .2s; font-family:inherit; }
@@ -102,7 +102,7 @@
     .play-ring { width:32px; height:32px; border-radius:50%; background:rgba(14,182,71,.2); border:1px solid rgba(14,182,71,.4); display:flex; align-items:center; justify-content:center; }
 
     .hero-chips { display:flex; flex-wrap:wrap; gap:.6rem; }
-    .chip { display:flex; align-items:center; gap:.4rem; padding:.35rem .85rem; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12); border-radius:999px; font-size:.75rem; color:rgba(255,255,255,.75); font-weight:600; }
+    .chip { display:flex; align-items:center; gap:.4rem; padding:.35rem .85rem; background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.2); border-radius:999px; font-size:.75rem; color:#fff; font-weight:600; }
     .chip .material-symbols-outlined { font-size:15px; }
 
     /* ─── HERO VISUAL (original sliding cards) ─── */
@@ -135,9 +135,9 @@
     .gh-foot { display:flex; flex-direction:column; gap:.5rem; margin-top:auto; }
 
     /* active white card */
-    .hcard-active { background:#fff; border-color:rgba(255,255,255,.2); box-shadow:0 20px 60px rgba(0,0,0,.35),0 0 0 0 rgba(0,175,240,0); z-index:20; overflow:hidden; animation:cardGlow 3s ease-in-out infinite; }
+    .hcard-active { background:#fff; border-color:rgba(255,255,255,.2); box-shadow:none; z-index:20; overflow:hidden; animation:cardGlow 3s ease-in-out infinite; }
     .hcard-dim { background:var(--navy4); border-color:rgba(255,255,255,.1); opacity:.6; z-index:10; transform:scale(.95); overflow:hidden; }
-    @keyframes cardGlow { 0%,100% { box-shadow:0 20px 60px rgba(0,0,0,.35),0 0 0 0 rgba(0,175,240,0); } 50% { box-shadow:0 20px 60px rgba(0,0,0,.35),0 0 20px 2px rgba(0,175,240,.12); } }
+    @keyframes cardGlow { 0%,100% { box-shadow:none; } 50% { box-shadow:none; } }
 
     /* CARD 1 content live call */
     .card1-inner { padding:1.5rem; display:flex; flex-direction:column; height:100%; color:var(--navy2); overflow:hidden; }
@@ -757,7 +757,7 @@
     .int-logo .material-symbols-outlined { flex-shrink:0; }
 
     /* ─── SPLIT ALTERNATING SECTIONS ─── */
-    .split-section { padding:6rem 2rem; overflow:hidden; }
+    .split-section { padding:6rem 2rem; overflow:hidden; position:relative; }
     .split-inner { max-width:1120px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:center; }
     .split-inner.reverse { direction:rtl; }
     .split-inner.reverse > * { direction:ltr; }
@@ -782,6 +782,8 @@
     .split-visual { display:flex; align-items:center; justify-content:center; }
     .split-visual svg { width:100%; max-width:480px; height:auto; }
     .split-visual img { width:100%; max-width:480px; height:auto; border-radius:16px; box-shadow:0 8px 32px rgba(0,0,0,.08); }
+    .split-section.dark .split-visual img { box-shadow:none; }
+    .split-section.dark .split-visual > div { background:linear-gradient(0deg, rgba(255,255,255,.6) 0%, rgba(255,255,255,.95) 25%, rgba(255,255,255,.95) 75%, rgba(255,255,255,.6) 100%) !important; border-color:rgba(255,255,255,.25) !important; -webkit-mask-image:linear-gradient(to bottom,transparent,black 30px,black calc(100% - 30px),transparent); mask-image:linear-gradient(to bottom,transparent,black 30px,black calc(100% - 30px),transparent); }
 
     /* Problem icon cards */
     .problem-cards { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
@@ -922,7 +924,7 @@
     /* ─── SECTION OVERLAYS ─── */
     .hero { position:relative; z-index:2; }
     .split-section { position:relative; z-index:1; }
-    .split-section.dark { background:#fff; }
+    .split-section.dark { background:linear-gradient(0deg, rgba(255,255,255,.6) 0%, white 25%, white 75%, rgba(255,255,255,.6) 100%); }
     .split-section.light { background:rgba(255,255,255,.6); backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px); }
     .faq-bg { position:relative; z-index:1; background:rgba(255,255,255,.6); backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px); }
     .faq-item { background:rgba(255,255,255,.85); }
@@ -1187,7 +1189,11 @@
         <li class="stagger-item stagger-3"><span class="li-icon gold"><span class="material-symbols-outlined" style="font-size:1rem">target</span></span>On-time shipment depends on daily coordination</li>
       </ul>
     </div>
-    <div class="split-visual reveal-zoom-bounce"><div style="height:280px;background:var(--s1);border:1px solid var(--s3);border-radius:20px;display:flex;align-items:center;justify-content:center;color:var(--s5)">Infographic placeholder</div></div>
+    <div class="split-visual reveal-zoom-bounce"><div style="height:280px;background:var(--s1);border:1px solid var(--s3);border-radius:20px;padding:1.5rem;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem">
+        <div style="width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#00AFF0,#0EB647);display:flex;align-items:center;justify-content:center;color:#fff"><span class="material-symbols-outlined" style="font-size:28px">smart_toy</span></div>
+        <div style="display:flex;gap:.5rem;flex-wrap:wrap;justify-content:center"><span style="padding:.35rem .7rem;background:#fff;border:1px solid var(--s3);border-radius:999px;font-size:.7rem;font-weight:700">Plan</span><span style="padding:.35rem .7rem;background:#fff;border:1px solid var(--s3);border-radius:999px;font-size:.7rem;font-weight:700">Communicate</span><span style="padding:.35rem .7rem;background:#fff;border:1px solid var(--s3);border-radius:999px;font-size:.7rem;font-weight:700">Follow-up</span><span style="padding:.35rem .7rem;background:#fff;border:1px solid var(--s3);border-radius:999px;font-size:.7rem;font-weight:700">Report</span></div>
+        <div style="font-size:.75rem;color:var(--s6)">Automatically — no manual chasing</div>
+      </div></div>
   </div>
 </section>
 
@@ -1203,7 +1209,10 @@
         <li class="stagger-item stagger-3"><span class="li-icon green"><span class="material-symbols-outlined" style="font-size:1rem">hourglass_empty</span></span>Delays and blockers surface too late</li>
       </ul>
     </div>
-    <div class="split-visual reveal-elastic"><div style="height:280px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:20px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.4)">Infographic placeholder</div></div>
+    <div class="split-visual reveal-elastic"><div style="height:280px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:1.2rem;display:flex;flex-direction:column;gap:.7rem;justify-content:center">
+        <div style="display:flex;gap:.6rem"><div style="flex:1;background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);border-radius:12px;padding:.7rem;text-align:center;color:#FCA5A5;font-size:.7rem;font-weight:700"><span class="material-symbols-outlined" style="display:block;font-size:20px;margin-bottom:.2rem">wifi_off</span>Outside system</div><div style="flex:1;background:rgba(249,115,22,.15);border:1px solid rgba(249,115,22,.3);border-radius:12px;padding:.7rem;text-align:center;color:#FDBA74;font-size:.7rem;font-weight:700"><span class="material-symbols-outlined" style="display:block;font-size:20px;margin-bottom:.2rem">hourglass_empty</span>Surface too late</div></div>
+        <div style="padding:.7rem;background:rgba(255,255,255,.06);border-radius:12px;color:rgba(255,255,255,.6);font-size:.75rem;text-align:center">Chasing updates ≠ making decisions</div>
+      </div></div>
   </div>
 </section>
 
@@ -1218,7 +1227,11 @@
         <li class="stagger-item stagger-3"><span class="li-icon gold"><span class="material-symbols-outlined" style="font-size:1rem">bolt</span></span>One system running the entire loop</li>
       </ul>
     </div>
-    <div class="split-visual reveal-rotate"><div style="height:280px;background:var(--s1);border:1px solid var(--s3);border-radius:20px;display:flex;align-items:center;justify-content:center;color:var(--s5)">Infographic placeholder</div></div>
+    <div class="split-visual reveal-rotate"><div style="height:280px;background:var(--s1);border:1px solid var(--s3);border-radius:20px;padding:1rem;display:flex;flex-direction:column;gap:.7rem;justify-content:center">
+        <div style="display:flex;align-items:center;gap:.6rem"><span style="width:36px;height:36px;border-radius:10px;background:#EFF9FF;display:flex;align-items:center;justify-content:center;color:var(--cyan)"><span class="material-symbols-outlined" style="font-size:18px">description</span></span><span style="font-weight:800;font-size:.85rem">PO Upload</span><span style="margin-left:auto;color:var(--green);font-weight:700;font-size:.7rem">✓ Risks flagged</span></div>
+        <div style="height:1px;background:var(--s3)"></div>
+        <div style="display:flex;gap:.5rem"><div style="flex:1;background:#fff;border:1px solid var(--s3);border-radius:12px;padding:.6rem;text-align:center"><div style="font-size:.65rem;font-weight:700;color:var(--cyan)">Milestones</div><div style="font-size:.7rem">AVP</div></div><div style="flex:1;background:#fff;border:1px solid var(--s3);border-radius:12px;padding:.6rem;text-align:center"><div style="font-size:.65rem;font-weight:700;color:var(--green)">Assignments</div><div style="font-size:.7rem">Managers</div></div><div style="flex:1;background:#fff;border:1px solid var(--s3);border-radius:12px;padding:.6rem;text-align:center"><div style="font-size:.65rem;font-weight:700;color:var(--orange)">Work Items</div><div style="font-size:.7rem">Unit In.</div></div></div>
+      </div></div>
   </div>
 </section>
 
@@ -1233,7 +1246,11 @@
         <li class="stagger-item stagger-3"><span class="li-icon gold"><span class="material-symbols-outlined" style="font-size:1rem">verified</span></span>No re-engineering — fits how textile teams already work</li>
       </ul>
     </div>
-    <div class="split-visual reveal-zoom-bounce"><div style="height:280px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:20px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.4)">Infographic placeholder</div></div>
+    <div class="split-visual reveal-zoom-bounce"><div style="height:280px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:1.2rem;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.8rem">
+        <div style="width:56px;height:56px;border-radius:16px;background:linear-gradient(135deg,#00AFF0,#0EB647);display:flex;align-items:center;justify-content:center;color:#fff"><span class="material-symbols-outlined">hub</span></div>
+        <div style="font-weight:800;color:#fff;font-size:.9rem">One Source of Truth</div>
+        <div style="display:flex;gap:.4rem"><span style="padding:.3rem .6rem;background:rgba(255,255,255,.1);border-radius:999px;color:#fff;font-size:.65rem">CEO</span><span style="color:rgba(255,255,255,.4)">→</span><span style="padding:.3rem .6rem;background:rgba(255,255,255,.1);border-radius:999px;color:#fff;font-size:.65rem">AVP</span><span style="color:rgba(255,255,255,.4)">→</span><span style="padding:.3rem .6rem;background:rgba(255,255,255,.1);border-radius:999px;color:#fff;font-size:.65rem">Mgr</span><span style="color:rgba(255,255,255,.4)">→</span><span style="padding:.3rem .6rem;background:rgba(255,255,255,.1);border-radius:999px;color:#fff;font-size:.65rem">Unit</span></div>
+      </div></div>
   </div>
 </section>
 
@@ -1249,7 +1266,11 @@
         <li class="stagger-item stagger-3"><span class="li-icon gold"><span class="material-symbols-outlined" style="font-size:1rem">approval</span></span>Each level approves for the one below — execution begins</li>
       </ul>
     </div>
-    <div class="split-visual reveal-flip"><div style="height:280px;background:var(--s1);border:1px solid var(--s3);border-radius:20px;display:flex;align-items:center;justify-content:center;color:var(--s5)">Infographic placeholder</div></div>
+    <div class="split-visual reveal-flip"><div style="height:280px;background:var(--s1);border:1px solid var(--s3);border-radius:20px;padding:1rem;display:flex;flex-direction:column;gap:.6rem;justify-content:center">
+        <div style="display:flex;align-items:center;gap:.5rem;padding:.6rem;background:#fff;border:1px solid var(--s3);border-radius:12px"><span class="material-symbols-outlined" style="color:var(--cyan)">factory</span><span style="font-weight:700;font-size:.8rem">Unit Incharge</span><span style="margin-left:auto;font-size:.7rem;background:#EFF9FF;padding:.2rem .5rem;border-radius:999px">3× daily</span></div>
+        <div style="display:flex;align-items:center;gap:.5rem;padding:.6rem;background:#fff;border:1px solid var(--s3);border-radius:12px"><span class="material-symbols-outlined" style="color:var(--green)">supervisor_account</span><span style="font-weight:700;font-size:.8rem">Manager</span><span style="margin-left:auto;font-size:.7rem;background:#F0FDF4;padding:.2rem .5rem;border-radius:999px">Daily</span></div>
+        <div style="display:flex;align-items:center;gap:.5rem;padding:.6rem;background:#fff;border:1px solid var(--s3);border-radius:12px"><span class="material-symbols-outlined" style="color:#F59E0B">monitoring</span><span style="font-weight:700;font-size:.8rem">AVP · CEO</span><span style="margin-left:auto;font-size:.7rem;background:#FFFBEB;padding:.2rem .5rem;border-radius:999px">Weekly / Monthly</span></div>
+      </div></div>
   </div>
 </section>
 
@@ -1265,7 +1286,11 @@
         <li class="stagger-item stagger-3"><span class="li-icon gold"><span class="material-symbols-outlined" style="font-size:1rem">call</span></span>All coordination via the AI VoIP app</li>
       </ul>
     </div>
-    <div class="split-visual reveal-clip"><div style="height:280px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:20px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.4)">Infographic placeholder</div></div>
+    <div class="split-visual reveal-clip"><div style="height:280px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:1.2rem;display:flex;flex-direction:column;gap:.6rem;justify-content:center">
+        <div style="display:flex;align-items:center;gap:.6rem;color:#fff;font-weight:700"><span class="material-symbols-outlined" style="color:#00AFF0">phone_in_talk</span> AI Calling Plan</div>
+        <div style="display:flex;gap:.5rem"><div style="flex:1;background:rgba(0,175,240,.15);border-radius:10px;padding:.5rem;text-align:center;color:#7DD3FC;font-size:.65rem;font-weight:700">Pre-shift</div><div style="flex:1;background:rgba(14,182,71,.15);border-radius:10px;padding:.5rem;text-align:center;color:#86EFAC;font-size:.65rem;font-weight:700">Mid-shift</div><div style="flex:1;background:rgba(245,158,11,.15);border-radius:10px;padding:.5rem;text-align:center;color:#FDE68A;font-size:.65rem;font-weight:700">End-shift</div></div>
+        <div style="font-size:.7rem;color:rgba(255,255,255,.5);text-align:center">Every call updates task plan</div>
+      </div></div>
   </div>
 </section>
 
@@ -1281,7 +1306,12 @@
         <li class="stagger-item stagger-4"><span class="li-icon gold"><span class="material-symbols-outlined" style="font-size:1rem">phone_in_talk</span></span>All calls handled through the AI VoIP app</li>
       </ul>
     </div>
-    <div class="split-visual reveal-perspective"><div style="height:280px;background:var(--s1);border:1px solid var(--s3);border-radius:20px;display:flex;align-items:center;justify-content:center;color:var(--s5)">Infographic placeholder</div></div>
+    <div class="split-visual reveal-perspective"><div style="height:280px;background:var(--s1);border:1px solid var(--s3);border-radius:20px;padding:1.2rem;display:flex;flex-direction:column;gap:.7rem;justify-content:center">
+        <div style="display:flex;align-items:center;gap:.6rem"><span style="width:32px;height:32px;border-radius:50%;background:#FEF2F2;display:flex;align-items:center;justify-content:center;color:#EF4444"><span class="material-symbols-outlined" style="font-size:16px">warning</span></span><span style="font-weight:700;font-size:.8rem">Delay without reason</span></div>
+        <div style="display:flex;align-items:center;justify-content:center;color:var(--s4)"><span class="material-symbols-outlined">arrow_downward</span></div>
+        <div style="padding:.7rem;background:#EFF9FF;border:1px solid rgba(0,175,240,.2);border-radius:12px;display:flex;align-items:center;gap:.5rem"><span class="material-symbols-outlined" style="color:var(--cyan)">escalator_warning</span><span style="font-size:.8rem;font-weight:700">Escalated with full context</span></div>
+        <div style="font-size:.7rem;color:var(--s6);text-align:center">Higher management — only when needed</div>
+      </div></div>
   </div>
 </section>
 
@@ -1297,7 +1327,11 @@
         <li class="stagger-item stagger-3"><span class="li-icon green"><span class="material-symbols-outlined" style="font-size:1rem">approval</span></span>Manager reviews and approves the plan</li>
       </ul>
     </div>
-    <div class="split-visual reveal-pop"><div style="height:280px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:20px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.4)">Infographic placeholder</div></div>
+    <div class="split-visual reveal-pop"><div style="height:280px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:1.2rem;display:flex;flex-direction:column;gap:.6rem;justify-content:center">
+        <div style="display:flex;align-items:center;gap:.6rem;padding:.6rem;background:rgba(239,68,68,.15);border-radius:12px;color:#FCA5A5;font-size:.8rem;font-weight:700"><span class="material-symbols-outlined">precision_manufacturing</span> Cutting M/C Breaks</div>
+        <div style="display:flex;align-items:center;gap:.4rem;color:rgba(255,255,255,.6);font-size:.7rem;justify-content:center"><span>Unit calls AI</span><span class="material-symbols-outlined" style="font-size:14px">arrow_forward</span><span>AI reassigns</span><span class="material-symbols-outlined" style="font-size:14px">arrow_forward</span><span>Mgr approves</span></div>
+        <div style="padding:.6rem;background:rgba(14,182,71,.15);border-radius:12px;color:#86EFAC;font-size:.7rem;text-align:center;font-weight:700">Targets → Line 3 · Maintenance aligned</div>
+      </div></div>
   </div>
 </section>
 
@@ -1313,7 +1347,11 @@
         <li class="stagger-item stagger-3"><span class="li-icon green"><span class="material-symbols-outlined" style="font-size:1rem">visibility</span></span>Higher management steps in only when truly needed</li>
       </ul>
     </div>
-    <div class="split-visual reveal-elastic"><div style="height:280px;background:var(--s1);border:1px solid var(--s3);border-radius:20px;display:flex;align-items:center;justify-content:center;color:var(--s5)">Infographic placeholder</div></div>
+    <div class="split-visual reveal-elastic"><div style="height:280px;background:var(--s1);border:1px solid var(--s3);border-radius:20px;padding:1rem;display:flex;gap:.7rem;align-items:center;justify-content:center">
+        <div style="flex:1;background:#fff;border:1px solid #FECACA;border-radius:12px;padding:.8rem"><div style="font-size:.65rem;font-weight:800;color:#EF4444;margin-bottom:.4rem">WITHOUT</div><div style="font-size:.7rem;color:var(--s6)">Days of planning<br>Scattered info</div></div>
+        <span class="material-symbols-outlined" style="color:var(--s4)">arrow_forward</span>
+        <div style="flex:1;background:#F0FDF4;border:1px solid #BBF7D0;border-radius:12px;padding:.8rem"><div style="font-size:.65rem;font-weight:800;color:var(--green);margin-bottom:.4rem">WITH GC</div><div style="font-size:.7rem;color:var(--s7)">AI in minutes<br>Live visibility</div></div>
+      </div></div>
   </div>
 </section>
 
@@ -1329,7 +1367,10 @@
         <li class="stagger-item stagger-3"><span class="li-icon gold"><span class="material-symbols-outlined" style="font-size:1rem">receipt_long</span></span>Every decision traceable, every role accountable — full audit trail</li>
       </ul>
     </div>
-    <div class="split-visual reveal-flip"><div style="height:280px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:20px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.4)">Infographic placeholder</div></div>
+    <div class="split-visual reveal-flip"><div style="height:280px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:1rem;display:flex;flex-direction:column;gap:.6rem;justify-content:center">
+        <div style="background:rgba(255,255,255,.06);border-radius:12px;padding:.7rem;display:flex;align-items:center;gap:.6rem"><span class="material-symbols-outlined" style="color:var(--cyan)">dashboard</span><span style="color:#fff;font-weight:700;font-size:.8rem">Executive Dashboard</span><span style="margin-left:auto;width:8px;height:8px;background:#0EB647;border-radius:50%"></span></div>
+        <div style="display:flex;gap:.5rem"><div style="flex:1;background:rgba(255,255,255,.05);border-radius:10px;padding:.5rem;text-align:center;color:rgba(255,255,255,.7);font-size:.65rem"><span class="material-symbols-outlined" style="display:block;font-size:16px">history</span>Call Logs</div><div style="flex:1;background:rgba(255,255,255,.05);border-radius:10px;padding:.5rem;text-align:center;color:rgba(255,255,255,.7);font-size:.65rem"><span class="material-symbols-outlined" style="display:block;font-size:16px">receipt_long</span>Audit Trail</div><div style="flex:1;background:rgba(255,255,255,.05);border-radius:10px;padding:.5rem;text-align:center;color:rgba(255,255,255,.7);font-size:.65rem"><span class="material-symbols-outlined" style="display:block;font-size:16px">record_voice_over</span>Transcript</div></div>
+      </div></div>
   </div>
 </section>
 
@@ -1360,7 +1401,7 @@
         </div>
       </div>
     </div>
-    <div class="split-visual reveal-clip"><div style="height:280px;background:var(--s1);border:1px solid var(--s3);border-radius:20px;display:flex;align-items:center;justify-content:center;color:var(--s5)">Infographic placeholder</div></div>
+    <div class="split-visual reveal-clip"><div style="height:280px;background:var(--s1);border:1px solid var(--s3);border-radius:20px;display:flex;align-items:center;justify-content:center;color:var(--s5)">Visual</div></div>
   </div>
 </section>
 
