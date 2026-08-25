@@ -1571,7 +1571,7 @@
     minHeight: 200.00,
     minWidth: 200.00,
     speed: 1,
-    skyColor: 0x68b8d7,
+    skyColor: 0x1E90FF,
     cloudColor: 0xadc1de,
     cloudShadowColor: 0x183550,
     sunColor: 0xff9919,
